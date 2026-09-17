@@ -70,6 +70,9 @@ Các chuỗi giao diện thật nằm trong `i18n/vi.toml` và `i18n/ja.toml`. B
 | `suy-nghi` | Suy nghĩ | `shisaku` | 思索 |
 | `nhat-ky` | Nhật ký | `nikki` | 日記 |
 
+Ranh giới giữa hai mục dễ lẫn: **Nhật ký** là ghi chép gắn với một ngày cụ thể;
+**Đời sống** là bài theo chủ đề, không gắn ngày.
+
 ## 4. Hai mươi bốn tiết khí
 
 Người Việt và người Nhật dùng chung hệ tiết khí này, nên tên gọi luôn khớp

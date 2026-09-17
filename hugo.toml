@@ -224,7 +224,7 @@ defaultContentLanguageInSubdir = false
 [params]
   author = "Gen"
   authorKanji = "英元"
-  email = "nguyentajp1403@gmail.com"
+  email = "info@nguyenta.com"
   # Số bài hiện trên trang chủ, không tính bài mới nhất đã hiện đầy đủ
   homeRecentCount = 4
   # Số bài "cùng rễ" (liên quan qua thẻ chung) ở cuối mỗi bài

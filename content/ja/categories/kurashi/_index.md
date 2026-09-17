@@ -2,5 +2,5 @@
 title: 暮らし
 slug: kurashi
 translationKey: cat-life
-description: 大阪での日々の暮らし。
+description: "日本での暮らしについて、テーマごとに書いた記事。特定の日付には結びつきません。"
 ---

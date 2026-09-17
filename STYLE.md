@@ -83,9 +83,17 @@ khoảng cách giữa các đoạn đã đủ tách ý.
 
 ### Xưng hô
 
-- Tự gọi là **tôi**.
+- Tự gọi mình bằng tên: **Nguyên**. Không dùng "tôi", "mình", "tớ".
 - Với người đọc: **không gọi trực tiếp**. Nếu buộc phải gọi thì dùng "bạn",
   không dùng "các bạn", "mọi người".
+
+```
+✅ Nguyên ngồi viết trong một căn phòng nhỏ, nghe lá tre cọ vào nhau.
+❌ Tôi ngồi viết trong một căn phòng nhỏ, nghe lá tre cọ vào nhau.
+```
+
+Khi dịch sang tiếng Nhật, "Nguyên" thành **私** như thường; tiếng Nhật không
+có lối tự gọi bằng tên trong văn viết trang nhã.
 
 ### Mức độ trang trọng: trung tính
 
