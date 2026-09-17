@@ -1,0 +1,118 @@
+# Mọi chuỗi giao diện tiếng Việt nằm ở đây, không hardcode trong layout.
+
+[nav_posts]
+other = "Bài viết"
+[nav_categories]
+other = "Danh mục"
+[nav_tags]
+other = "Thẻ"
+[nav_photos]
+other = "Ảnh"
+[nav_about]
+other = "Giới thiệu"
+[nav_contact]
+other = "Liên hệ"
+[nav_archive]
+other = "Lưu trữ"
+[nav_search]
+other = "Tìm kiếm"
+[nav_home]
+other = "Trang chủ"
+[nav_menu]
+other = "Menu"
+[nav_menu_close]
+other = "Đóng"
+[skip_to_content]
+other = "Sang phần nội dung"
+
+[lang_current]
+other = "Tiếng Việt"
+[lang_other]
+other = "日本語"
+[lang_read_in]
+other = "Đọc bằng"
+[lang_no_translation]
+other = "Bài này chưa có bản tiếng Nhật"
+[lang_no_translation_short]
+other = "chưa dịch"
+
+[read_more]
+other = "Đọc tiếp"
+[reading_time]
+other = "{{ .Count }} phút đọc"
+[sekki_label]
+other = "Tiết {{ .Name }}"
+[updated_on]
+other = "Sửa lần cuối {{ .Date }}"
+
+[post_tags]
+other = "Thẻ"
+[post_related]
+other = "Cùng rễ"
+[post_related_via]
+other = "chung thẻ {{ .Tag }}"
+[post_prev]
+other = "Bài trước"
+[post_next]
+other = "Bài sau"
+[post_seal_alt]
+other = "Dấu 元 của Gen"
+
+[list_recent]
+other = "Gần đây"
+[list_all_posts]
+other = "Tất cả bài viết"
+[list_no_posts]
+other = "Chưa có bài nào ở đây."
+[list_count]
+other = "{{ .Count }} bài"
+[page_older]
+other = "Bài cũ hơn"
+[page_newer]
+other = "Bài mới hơn"
+[page_of]
+other = "Trang {{ .Current }} trên {{ .Total }}"
+
+[photos_from_post]
+other = "Trong bài"
+[photos_open]
+other = "Xem ảnh lớn"
+[lightbox_close]
+other = "Đóng ảnh"
+[lightbox_prev]
+other = "Ảnh trước"
+[lightbox_next]
+other = "Ảnh sau"
+[video_play]
+other = "Phát video"
+
+[search_placeholder]
+other = "Tìm trong các bài viết"
+[search_results]
+other = "{{ .Count }} kết quả"
+[search_no_results]
+other = "Không tìm thấy gì cho từ khoá này."
+[search_loading]
+other = "Đang tìm"
+[search_clear]
+other = "Xoá"
+
+[archive_year]
+other = "Năm {{ .Year }}"
+
+[error_404_title]
+other = "Trang này chưa mọc lên"
+[error_404_text]
+other = "Đường dẫn anh vừa mở không có gì cả. Có thể bài đã đổi đường dẫn, hoặc bản nháp chưa đăng."
+[error_404_home]
+other = "Về trang chủ"
+
+[sei_line]
+other = "Ở đây không có gì để đọc. Nghỉ một chút."
+[sei_back]
+other = "Quay lại"
+
+[footer_colophon]
+other = "Viết tại Osaka. Dựng bằng Hugo, đặt trên GitHub Pages."
+[footer_rss]
+other = "RSS"

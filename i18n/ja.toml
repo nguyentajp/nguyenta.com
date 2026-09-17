@@ -1,0 +1,118 @@
+# 日本語のインターフェース文字列。レイアウトに直接書かないこと。
+
+[nav_posts]
+other = "記事"
+[nav_categories]
+other = "カテゴリー"
+[nav_tags]
+other = "タグ"
+[nav_photos]
+other = "写真"
+[nav_about]
+other = "プロフィール"
+[nav_contact]
+other = "お問い合わせ"
+[nav_archive]
+other = "アーカイブ"
+[nav_search]
+other = "検索"
+[nav_home]
+other = "ホーム"
+[nav_menu]
+other = "メニュー"
+[nav_menu_close]
+other = "閉じる"
+[skip_to_content]
+other = "本文へ移動"
+
+[lang_current]
+other = "日本語"
+[lang_other]
+other = "Tiếng Việt"
+[lang_read_in]
+other = "他の言語で読む"
+[lang_no_translation]
+other = "この記事のベトナム語版はまだありません"
+[lang_no_translation_short]
+other = "未訳"
+
+[read_more]
+other = "続きを読む"
+[reading_time]
+other = "約 {{ .Count }} 分"
+[sekki_label]
+other = "{{ .Name }}"
+[updated_on]
+other = "最終更新 {{ .Date }}"
+
+[post_tags]
+other = "タグ"
+[post_related]
+other = "同じ根から"
+[post_related_via]
+other = "共通のタグ「{{ .Tag }}」"
+[post_prev]
+other = "前の記事"
+[post_next]
+other = "次の記事"
+[post_seal_alt]
+other = "Gen の落款"
+
+[list_recent]
+other = "最近の記事"
+[list_all_posts]
+other = "記事の一覧"
+[list_no_posts]
+other = "まだ記事がありません。"
+[list_count]
+other = "{{ .Count }} 件"
+[page_older]
+other = "前のページ"
+[page_newer]
+other = "次のページ"
+[page_of]
+other = "{{ .Total }} ページ中 {{ .Current }} ページ"
+
+[photos_from_post]
+other = "掲載記事"
+[photos_open]
+other = "拡大して見る"
+[lightbox_close]
+other = "閉じる"
+[lightbox_prev]
+other = "前の写真"
+[lightbox_next]
+other = "次の写真"
+[video_play]
+other = "動画を再生"
+
+[search_placeholder]
+other = "記事を検索"
+[search_results]
+other = "{{ .Count }} 件"
+[search_no_results]
+other = "見つかりませんでした。"
+[search_loading]
+other = "検索中"
+[search_clear]
+other = "消す"
+
+[archive_year]
+other = "{{ .Year }} 年"
+
+[error_404_title]
+other = "このページはまだ芽を出していません"
+[error_404_text]
+other = "お探しのページはありません。URL が変わったか、下書きのままかもしれません。"
+[error_404_home]
+other = "ホームへ"
+
+[sei_line]
+other = "ここでは読むものがありません。少し休んでいきませんか。"
+[sei_back]
+other = "戻る"
+
+[footer_colophon]
+other = "大阪にて。Hugo で作り、GitHub Pages に置いています。"
+[footer_rss]
+other = "RSS"
