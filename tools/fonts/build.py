@@ -34,9 +34,9 @@ from fontTools.varLib import instancer
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 SRC = ROOT / "tools/fonts/src"
 
-# Khối @font-face trong <head> nằm giữa hai mốc này; chế độ --pages thay ruột nó.
-MARK_START = "/* GEN-FONTS-START */"
-MARK_END = "/* GEN-FONTS-END */"
+# Khối @font-face trong <head> mang id này; chế độ --pages thay ruột thẻ style.
+# Không dùng comment CSS làm mốc vì Go html/template xoá comment trong <style>.
+STYLE_RE = re.compile(r'(<style id="gen-fonts"[^>]*>)(.*?)(</style>)', re.S)
 
 # ── Bộ ký tự luôn có mặt, không phụ thuộc nội dung ───────────────────────────
 # Nhờ vậy bài viết mới vẫn hiện đúng dù chưa chạy lại script.
@@ -100,6 +100,7 @@ FACES = [
         "style": "italic",
         "weight": "380 620",
         "scope": "latin",
+        "needs": "italic",
         "limit": {"wght": (380, 450, 620)},
         "pin": {"opsz": 20},
     },
@@ -170,15 +171,28 @@ def subset_font(source: pathlib.Path, chars: set[str], destination: pathlib.Path
     return destination.stat().st_size
 
 
-def chars_for(scope: str, text_all: str, text_display: str) -> set[str]:
-    """Bộ ký tự cho một scope, gồm phần cốt lõi cộng phần thật sự xuất hiện."""
+ASCII = ranges((0x20, 0x7E))
+
+
+def chars_for(scope: str, text_all: str, text_display: str, core: bool = True) -> set[str]:
+    """Bộ ký tự cho một scope.
+
+    core = True: thêm phần cốt lõi (toàn bộ dấu tiếng Việt, toàn bộ kana). Dùng
+    cho chế độ --dev và cho những trang có chữ sinh ra động như trang tìm kiếm,
+    vì lúc đó không biết trước sẽ hiện chữ nào.
+
+    core = False: chỉ đúng ký tự trang đó dùng. Đây là chỗ tiết kiệm lớn nhất:
+    trang tiếng Nhật từ khoảng 200 KB xuống vài chục KB.
+    """
     if scope == "latin":
         found = {c for c in text_all if not is_cjk(c) and ord(c) < 0x3000}
-        return CORE_LATIN | found
+        return (CORE_LATIN if core else ASCII) | found
     if scope == "ja":
-        return CORE_JA | {c for c in text_all if is_cjk(c)}
+        found = {c for c in text_all if is_cjk(c) or 0x3000 <= ord(c) < 0x3100 or 0xFF00 <= ord(c) < 0xFFF0}
+        return (CORE_JA if core else set()) | found
     if scope == "ja-display":
-        return CORE_JA | {c for c in text_display if is_cjk(c)}
+        found = {c for c in text_display if is_cjk(c) or 0x3000 <= ord(c) < 0x3100 or 0xFF00 <= ord(c) < 0xFFF0}
+        return (CORE_JA if core else set()) | found
     raise ValueError(scope)
 
 
@@ -245,18 +259,25 @@ def build_pages(public: pathlib.Path) -> None:
     font_dir = public / "fonts/p"
     cache: dict[tuple[str, str], str] = {}
     pages = sorted(public.rglob("*.html"))
-    total_before = total_after = 0
+    total_after = 0
 
     for page in pages:
         markup = page.read_text(encoding="utf-8")
-        if MARK_START not in markup:
+        if not STYLE_RE.search(markup):
             continue
         all_text, display_text = page_text(markup)
+        # Trang có chữ sinh ra động (trang tìm kiếm) tự khai báo cần bộ cốt lõi.
+        core = 'data-fonts="core"' in markup
 
         rules = []
         page_bytes = 0
+        has_italic = bool(re.search(r"<(em|i)[ >]", markup))
         for face in FACES:
-            chars = chars_for(face["scope"], all_text, display_text)
+            if face.get("needs") == "italic" and not has_italic:
+                continue          # không có chữ in nghiêng thì không cần face italic
+            chars = chars_for(face["scope"], all_text, display_text, core=core)
+            if not {c for c in chars if not c.isspace()}:
+                continue          # trang tiếng Việt thường không có chữ Nhật nào
             digest = hashlib.sha256("".join(sorted(chars)).encode("utf-8")).hexdigest()[:12]
             key = (face["key"], digest)
             if key not in cache:
@@ -275,11 +296,8 @@ def build_pages(public: pathlib.Path) -> None:
                 "}"
             )
 
-        start = markup.index(MARK_START) + len(MARK_START)
-        end = markup.index(MARK_END)
-        before = len(markup[start:end])
-        page.write_text(markup[:start] + "".join(rules) + markup[end:], encoding="utf-8")
-        total_before += before
+        css = "".join(rules)
+        page.write_text(STYLE_RE.sub(lambda m: m.group(1) + css + m.group(3), markup, count=1), encoding="utf-8")
         total_after += page_bytes
 
     print(f"Đã subset font riêng cho {len(pages)} trang.")

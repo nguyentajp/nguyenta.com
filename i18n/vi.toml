@@ -36,6 +36,12 @@ other = "Bài này chưa có bản tiếng Nhật"
 [lang_no_translation_short]
 other = "chưa dịch"
 
+# Định dạng ngày theo cú pháp layout của Go, mỗi ngôn ngữ một kiểu riêng
+[date_full]
+other = "2 tháng 1, 2006"
+[date_compact]
+other = "02.01"
+
 [read_more]
 other = "Đọc tiếp"
 [reading_time]
@@ -51,6 +57,8 @@ other = "Thẻ"
 other = "Cùng rễ"
 [post_related_via]
 other = "chung thẻ {{ .Tag }}"
+[post_nearby]
+other = "Trước và sau"
 [post_prev]
 other = "Bài trước"
 [post_next]

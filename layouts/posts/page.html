@@ -1,0 +1,56 @@
+{{ define "main" }}
+  <div class="page">
+    <article class="row">
+      <div class="marg">{{ partial "post-marginalia.html" (dict "page" .) }}</div>
+      <div class="col">
+        <h1 class="post-title">{{ .Title }}</h1>
+        <div class="post-body prose">{{ .Content }}</div>
+        {{ partial "hanko.html" . }}
+      </div>
+    </article>
+
+    {{/* Mặt đất: bên dưới là những gì nối bài này với các bài khác */}}
+    <div class="row">
+      <hr class="ground full">
+      <dl class="under">
+        {{- with .GetTerms "tags" }}
+          <dt>{{ i18n "post_tags" }}</dt>
+          <dd>
+            <div class="tags">{{ range . }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</div>
+          </dd>
+        {{- end }}
+
+        {{- $related := first (site.Params.relatedCount | default 3) (site.RegularPages.Related .) }}
+        {{- with $related }}
+          <dt>{{ i18n "post_related" }}</dt>
+          <dd>
+            <ul class="roots">
+              {{- $tagNames := slice }}
+              {{- range $.GetTerms "tags" }}{{ $tagNames = $tagNames | append .LinkTitle }}{{ end }}
+              {{- range . }}
+                {{- $shared := "" }}
+                {{- range .GetTerms "tags" }}
+                  {{- if and (eq $shared "") (in $tagNames .LinkTitle) }}{{ $shared = .LinkTitle }}{{ end }}
+                {{- end }}
+                <li>
+                  <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                  {{- with $shared }}<span class="via">{{ i18n "post_related_via" (dict "Tag" .) }}</span>{{ end }}
+                </li>
+              {{- end }}
+            </ul>
+          </dd>
+        {{- end }}
+
+        {{- if or .PrevInSection .NextInSection }}
+          <dt>{{ i18n "post_nearby" }}</dt>
+          <dd>
+            <div class="neighbours">
+              {{- with .NextInSection }}<span>{{ i18n "post_next" }}: <a href="{{ .RelPermalink }}">{{ .Title }}</a></span>{{ end }}
+              {{- with .PrevInSection }}<span>{{ i18n "post_prev" }}: <a href="{{ .RelPermalink }}">{{ .Title }}</a></span>{{ end }}
+            </div>
+          </dd>
+        {{- end }}
+      </dl>
+    </div>
+  </div>
+{{ end }}

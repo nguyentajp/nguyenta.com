@@ -1,0 +1,15 @@
+{{- /* Danh sách bài: hàng chữ có ngày ở cột trái, không dùng card. */ -}}
+{{- $excerpt := .excerpt | default false -}}
+<ul class="entries">
+  {{- range .pages }}
+    <li>
+      <article class="entry">
+        <time class="entry-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (i18n "date_compact") }}</time>
+        <h3 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        {{- if $excerpt }}{{ with or .Description .Summary }}<p class="entry-excerpt">{{ . | plainify | truncate 160 }}</p>{{ end }}{{ end }}
+      </article>
+    </li>
+  {{- else }}
+    <li>{{ i18n "list_no_posts" }}</li>
+  {{- end }}
+</ul>

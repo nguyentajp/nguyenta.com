@@ -1,0 +1,4 @@
+{{- /* Con dấu 元 đóng ở cuối bài, như người viết thư pháp đóng dấu cuối tác phẩm. */ -}}
+{{- with resources.Get "brand/hanko.svg" -}}
+  <span class="seal" role="img" aria-label="{{ i18n "post_seal_alt" }}">{{ .Content | safeHTML }}</span>
+{{- end -}}

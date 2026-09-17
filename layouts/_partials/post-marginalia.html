@@ -1,0 +1,16 @@
+{{- /* Ghi chú ở lề của một bài: ngày, tiết khí, danh mục, thời gian đọc.
+     Không xếp thành chuỗi nối bằng dấu chấm giữa; mỗi thứ một dòng. */ -}}
+{{- $page := .page -}}
+<p><time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ $page.Date.Format (i18n "date_full") }}</time></p>
+<p>{{ partial "sekki.html" (dict "date" $page.Date) }}</p>
+{{- with $page.GetTerms "categories" }}
+  <p>{{ range . }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</p>
+{{- end }}
+{{- if not (.brief | default false) }}
+  <p>{{ i18n "reading_time" (dict "Count" $page.ReadingTime) }}</p>
+  {{- with index (where $page.Translations "Lang" (cond (eq site.Language.Lang "vi") "ja" "vi")) 0 }}
+    <p><a href="{{ .RelPermalink }}" lang="{{ .Language.Lang }}" hreflang="{{ .Language.Lang }}">{{ i18n "lang_read_in" }} {{ .Language.Label }}</a></p>
+  {{- else }}
+    <p>{{ i18n "lang_no_translation" }}</p>
+  {{- end }}
+{{- end }}

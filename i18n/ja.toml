@@ -36,6 +36,12 @@ other = "この記事のベトナム語版はまだありません"
 [lang_no_translation_short]
 other = "未訳"
 
+# Định dạng ngày theo cú pháp layout của Go, mỗi ngôn ngữ một kiểu riêng
+[date_full]
+other = "2006年1月2日"
+[date_compact]
+other = "1月2日"
+
 [read_more]
 other = "続きを読む"
 [reading_time]
@@ -51,6 +57,8 @@ other = "タグ"
 other = "同じ根から"
 [post_related_via]
 other = "共通のタグ「{{ .Tag }}」"
+[post_nearby]
+other = "前後の記事"
 [post_prev]
 other = "前の記事"
 [post_next]

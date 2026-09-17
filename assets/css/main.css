@@ -1,0 +1,923 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   nguyenta.com — stylesheet duy nhất của site
+   Không dùng CSS framework. Mọi giá trị màu, khoảng cách, cỡ chữ đều đi qua
+   custom property khai báo ở :root, nên sửa một chỗ là đổi cả site.
+
+   Bố cục dựa trên 白銀比 (tỷ lệ 1 : √2), tỷ lệ truyền thống của kiến trúc Nhật:
+   lề ghi chú 29,3% | cột chữ 50% | khoảng 間 20,7%.
+   Con số 29,3% là 1 − 1/√2, nên ảnh rộng (cột chữ cộng khoảng 間) chiếm đúng
+   1/√2 chiều rộng khung.
+
+   Mục lục:
+     1. Token
+     2. Nền tảng
+     3. Typography theo từng ngôn ngữ
+     4. Lưới và khoảng 間
+     5. Header, menu, nút chuyển ngôn ngữ
+     6. Trang chủ
+     7. Bài viết
+     8. Dưới mặt đất: thẻ, bài cùng rễ, chân trang
+     9. Danh sách bài
+    10. Chuyển động duy nhất
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Token ─────────────────────────────────────────────────────────────── */
+:root {
+  /* Màu. Không có màu nhấn khi trang đứng yên: thứ bậc tạo bằng đậm nhạt và cỡ
+     chữ. Màu 銀杏 chỉ hiện khi người đọc rê chuột hoặc Tab tới. */
+  --shoji: #f2f3ee;      /* 障子 — ánh sáng qua giấy dán cửa, hơi ngả xanh vì bóng tre */
+  --sumi: #22251f;       /* 墨 — mực, đen có chút xanh rêu */
+  --chikuei: #5a6055;    /* 竹影 — bóng tre, dùng cho chữ phụ */
+  --byakuroku: #dce3d6;  /* 白緑 — dải dưới mặt đất */
+  --fushi: #c5cbbf;      /* 節 — đốt tre, dùng cho đường mảnh */
+  --icho: #7d5e12;       /* 銀杏 — vàng lá bạch quả, chỉ khi tương tác */
+  --shu: #a8402e;        /* 朱 — mực dấu, chỉ con dấu 元 */
+
+  --bg: var(--shoji);
+  --ink: var(--sumi);
+  --muted: var(--chikuei);
+  --band: var(--byakuroku);
+  --rule: var(--fushi);
+  --accent: var(--icho);
+  --seal: var(--shu);
+
+  /* Chữ. "Gen Latin" là Literata, "Gen JP" là Shippori Mincho, "Gen JP Display"
+     là Shippori Mincho B1 (bản có mực đọng ở góc nét). Chữ Latin trong câu
+     tiếng Nhật vẫn lấy từ Gen Latin để hai ngôn ngữ chung một giọng. */
+  --font-text: "Gen Latin", "Gen JP", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+  --font-display: var(--font-text);
+
+  /* Nhịp dọc: các bậc khoảng trắng, bậc lớn nhất là khoảng 間 giữa các phần */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1.25rem;
+  --space-5: 2rem;
+  --space-6: 3.25rem;
+  --ma: clamp(4.5rem, 10vw, 8.5rem);
+
+  --page: 78rem;      /* 1248px */
+  --gutter: clamp(1.25rem, 5vw, 4.5rem);
+
+  color-scheme: light;
+}
+
+/* Dark mode theo cài đặt hệ thống, không có nút bật tắt.
+   Không phải đảo màu: đây là rừng trúc ban đêm, nền xanh rất tối. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #171915;
+    --ink: #daddd3;
+    --muted: #9ca296;
+    --band: #222720;
+    --rule: #363b33;
+    --accent: #d6b04a;
+    --seal: #c4493d;
+    color-scheme: dark;
+  }
+}
+
+/* ── 2. Nền tảng ──────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd,
+ul,
+ol {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline 1px var(--muted);
+  text-underline-offset: 0.22em;
+}
+
+/* Màu nhấn duy nhất, chỉ xuất hiện khi người đọc chạm vào */
+a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--band);
+  color: var(--ink);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Link bỏ qua phần đầu, chỉ hiện khi Tab tới */
+.skip {
+  position: absolute;
+  left: var(--gutter);
+  top: -4rem;
+  z-index: 10;
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg);
+  box-shadow: 0 0 0 1px var(--rule);
+  transition: none;
+}
+
+.skip:focus {
+  top: var(--space-3);
+}
+
+/* ── 3. Typography theo từng ngôn ngữ ─────────────────────────────────────── */
+/* Tiếng Việt và tiếng Nhật đọc theo hai nhịp khác nhau, nên mỗi ngôn ngữ có
+   bộ thông số riêng: cỡ chữ, line-height, giãn chữ và độ dài dòng.
+   Dấu tiếng Việt xếp hai tầng (ẫ, ệ, ở) nên cần line-height thoáng hơn Latin
+   thường; tiếng Nhật cần thoáng hơn nữa và mỗi dòng chỉ nên 35–40 chữ. */
+:root:lang(vi) {
+  --text-size: 1.125rem;   /* 18px */
+  --text-leading: 1.8;
+  --text-tracking: 0;
+}
+
+:root:lang(ja) {
+  --text-size: 1.0625rem;  /* 17px */
+  --text-leading: 2;
+  --text-tracking: 0.04em;
+  --font-display: "Gen Latin", "Gen JP Display", "Gen JP", "Hiragino Mincho ProN", serif;
+}
+
+.prose {
+  font-size: var(--text-size);
+  line-height: var(--text-leading);
+  letter-spacing: var(--text-tracking);
+  text-wrap: pretty;
+}
+
+.prose:lang(ja) {
+  line-break: strict;
+  hanging-punctuation: allow-end;
+  text-autospace: normal;
+  font-variant-numeric: lining-nums;
+}
+
+.prose > * + * {
+  margin-block-start: 1.1em;
+}
+
+.prose h2,
+.prose h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.3;
+  text-wrap: balance;
+  margin-block-start: 2.2em;
+  margin-block-end: -0.35em;   /* đoạn văn ngay dưới tiêu đề nằm gần hơn */
+}
+
+.prose h2 {
+  font-size: 1.45em;
+}
+
+.prose h3 {
+  font-size: 1.15em;
+}
+
+.prose h2:lang(ja),
+.prose h3:lang(ja) {
+  font-weight: 600;
+  font-feature-settings: "palt";
+  word-break: auto-phrase;
+  letter-spacing: 0.05em;
+}
+
+.prose blockquote {
+  padding-inline-start: var(--space-4);
+  border-inline-start: 1px solid var(--rule);
+  color: var(--muted);
+}
+
+.prose ul,
+.prose ol {
+  padding-inline-start: 1.4em;
+}
+
+.prose li + li {
+  margin-block-start: 0.4em;
+}
+
+.prose ul {
+  list-style: none;
+}
+
+.prose ul > li::before {
+  content: "—";
+  position: absolute;
+  margin-inline-start: -1.4em;
+  color: var(--muted);
+}
+
+.prose code {
+  font-size: 0.9em;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+.prose pre {
+  overflow-x: auto;
+  padding: var(--space-4);
+  background: var(--band);
+  font-size: 0.85em;
+  line-height: 1.6;
+}
+
+.prose hr {
+  margin-block: var(--space-6);
+  border: 0;
+  border-top: 1px solid var(--rule);
+}
+
+/* ── 4. Lưới và khoảng 間 ─────────────────────────────────────────────────── */
+.page {
+  max-width: var(--page);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Một hàng của lưới: lề ghi chú | cột chữ | khoảng 間.
+   Mọi trang canh theo cùng một trục dọc ở 29,3%, nên chuyển trang chữ không nhảy. */
+.row {
+  display: grid;
+  grid-template-columns: 29.3% 50% 1fr;
+}
+
+.row + .row {
+  margin-block-start: var(--ma);
+}
+
+/* Hàng đầu tiên của mỗi trang cũng cách header một khoảng 間 */
+main .row:first-child {
+  margin-block-start: var(--ma);
+}
+
+.marg {
+  grid-column: 1;
+  padding-inline-end: var(--space-5);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.marg > * + * {
+  margin-block-start: 0.1rem;
+}
+
+.col {
+  grid-column: 2;
+  min-width: 0;
+}
+
+/* Ảnh rộng lấn sang khoảng 間: đúng 1/√2 chiều rộng khung */
+.wide {
+  grid-column: 2 / 4;
+  min-width: 0;
+}
+
+.full {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+.label {
+  grid-column: 1;
+  padding-inline-end: var(--space-5);
+  padding-block-start: 0.3rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* ── 5. Header, menu, nút chuyển ngôn ngữ ─────────────────────────────────── */
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-5);
+  align-items: baseline;
+  justify-content: space-between;
+  padding-block: var(--space-5) 0;
+}
+
+.masthead-name {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  font-size: 1.0625rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+.masthead-name .kamon {
+  width: 1.75rem;
+}
+
+.masthead-name:hover {
+  color: var(--ink);
+}
+
+.masthead-name:hover .kamon {
+  color: var(--accent);
+}
+
+.masthead nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  align-items: baseline;
+  font-size: 0.9375rem;
+}
+
+.masthead nav a {
+  text-decoration-color: transparent;
+}
+
+.masthead nav a:hover,
+.masthead nav a[aria-current="page"] {
+  text-decoration-color: var(--accent);
+}
+
+.masthead nav a[aria-current="page"] {
+  color: var(--muted);
+}
+
+.lang {
+  display: flex;
+  gap: var(--space-2);
+  align-items: baseline;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.lang [aria-current] {
+  color: var(--ink);
+}
+
+.lang [aria-disabled] {
+  text-decoration: line-through 1px var(--rule);
+}
+
+.lang-note {
+  font-size: 0.8125rem;
+}
+
+/* Menu mobile dùng Popover API của HTML: không cần JavaScript, có sẵn đóng bằng
+   phím Esc và bấm ra ngoài. */
+.menu-button {
+  display: none;
+  font: inherit;
+  font-size: 0.9375rem;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  text-decoration: underline 1px var(--muted);
+  text-underline-offset: 0.22em;
+  cursor: pointer;
+}
+
+#menu {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: var(--gutter);
+  border: 0;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+#menu:not(:popover-open) {
+  display: none;
+}
+
+.menu-panel {
+  display: grid;
+  gap: var(--space-4);
+  padding-block-start: 4rem;
+  font-size: 1.5rem;
+}
+
+.menu-panel a {
+  text-decoration-color: transparent;
+}
+
+.menu-close {
+  position: absolute;
+  top: var(--gutter);
+  right: var(--gutter);
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  text-decoration: underline 1px var(--muted);
+  cursor: pointer;
+}
+
+/* ── 6. Trang chủ ─────────────────────────────────────────────────────────── */
+/* Trang chủ mở thẳng vào bài mới nhất, như mở cuốn nhật ký ra trang đang viết.
+   Kamon lớn nằm ở lề, cạnh tiêu đề. */
+.home-lead {
+  margin-block-start: var(--ma);
+}
+
+.home-lead .kamon-large {
+  width: clamp(4.5rem, 9vw, 8rem);
+  margin-block-end: var(--space-4);
+}
+
+.lead-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.6vw, 2.75rem);
+  font-weight: 450;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+.lead-title:lang(ja) {
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  font-feature-settings: "palt";
+  word-break: auto-phrase;
+}
+
+.lead-title a {
+  text-decoration-color: transparent;
+}
+
+.lead-excerpt {
+  margin-block-start: var(--space-4);
+}
+
+.more {
+  display: inline-block;
+  margin-block-start: var(--space-4);
+  font-size: 0.9375rem;
+}
+
+/* Danh sách bài gần đây: hàng chữ, không phải card */
+.entries {
+  list-style: none;
+}
+
+.entries li + li {
+  margin-block-start: var(--space-4);
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid var(--rule);
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: var(--space-1) var(--space-4);
+  align-items: baseline;
+}
+
+.entry-date {
+  font-size: 0.875rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.entry-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 450;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.entry-title:lang(ja) {
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.entry-title a {
+  text-decoration-color: transparent;
+}
+
+.entry-excerpt {
+  grid-column: 2;
+  margin-block-start: var(--space-2);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* ── 7. Bài viết ──────────────────────────────────────────────────────────── */
+.post-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 450;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.post-title:lang(ja) {
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  font-feature-settings: "palt";
+  word-break: auto-phrase;
+}
+
+.post-body {
+  margin-block-start: var(--space-6);
+}
+
+/* Ảnh trong bài: mặc định rộng bằng cột chữ; ảnh đánh dấu "wide" lấn sang
+   khoảng 間 bên phải, còn "full" tràn hết khung. */
+.figure {
+  margin-block: var(--space-6);
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure figcaption {
+  margin-block-start: var(--space-3);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* Con dấu 元 đóng ở cuối bài, như người viết thư pháp đóng dấu cuối tác phẩm */
+.seal {
+  display: block;   /* span mặc định là inline, width sẽ không có tác dụng */
+  width: 2.75rem;
+  margin: var(--space-6) 0 0 auto;
+  color: var(--seal);
+}
+
+/* ── 8. Dưới mặt đất ─────────────────────────────────────────────────────── */
+/* Nội dung nằm trên mặt đất; những gì nối các bài với nhau (thẻ, bài cùng rễ,
+   danh mục, lưu trữ) nằm dưới một đường mặt đất, trên dải 白緑. */
+.ground {
+  margin: var(--ma) 0 0;
+  border: 0;
+  border-block-start: 1px solid var(--rule);
+}
+
+.under {
+  background: var(--band);
+  box-shadow: 0 0 0 100vmax var(--band);
+  clip-path: inset(0 -100vmax);
+  padding-block: var(--space-6);
+}
+
+.under + .under {
+  margin-block-start: 0;
+  padding-block-start: 0;
+}
+
+.under dt,
+.under .under-label {
+  grid-column: 1;
+  padding-inline-end: var(--space-5);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.under dd {
+  grid-column: 2 / 4;
+  margin: 0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+}
+
+.roots {
+  list-style: none;
+}
+
+.roots li + li {
+  margin-block-start: var(--space-3);
+}
+
+.roots .via {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.neighbours {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.site-footer {
+  margin-block-start: var(--ma);
+  border-block-start: 1px solid var(--rule);   /* đường mặt đất */
+  background: var(--band);
+  box-shadow: 0 0 0 100vmax var(--band);
+  clip-path: inset(0 -100vmax);
+  padding-block: var(--space-6) var(--space-6);
+  font-size: 0.9375rem;
+}
+
+.site-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+}
+
+.colophon {
+  margin-block-start: var(--space-4);
+  font-size: 0.8125rem;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* ── 9. Danh sách bài ─────────────────────────────────────────────────────── */
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+  font-weight: 450;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.page-intro {
+  margin-block-start: var(--space-4);
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.pager {
+  display: flex;
+  gap: var(--space-5);
+  justify-content: space-between;
+  margin-block-start: var(--ma);
+  font-size: 0.9375rem;
+}
+
+/* ── 10. Chuyển động duy nhất ────────────────────────────────────────────── */
+/* Cả site chỉ có một khoảnh khắc chuyển động: kamon tự vẽ khi vào trang chủ
+   lần đầu trong mỗi phiên. Không có hiệu ứng khi cuộn, không transition khi
+   rê chuột. */
+.kamon-draw .leaf {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+
+.kamon-draw.is-drawing .ring-mask {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: gen-ring 1.5s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
+}
+
+.kamon-draw.is-drawing .leaf {
+  transform: scale(0);
+  animation: gen-leaf 1.2s cubic-bezier(0.3, 0, 0.15, 1) var(--delay) forwards;
+}
+
+@keyframes gen-ring {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes gen-leaf {
+  to {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kamon-draw.is-drawing .ring-mask,
+  .kamon-draw.is-drawing .leaf {
+    animation: none;
+    stroke-dashoffset: 0;
+    transform: none;
+  }
+}
+
+/* ── Tablet: lưới hai cột, lề hẹp lại nhưng vẫn là lề ─────────────────────── */
+@media (max-width: 63.999rem) {
+  .row {
+    grid-template-columns: 11rem minmax(0, 1fr);
+  }
+
+  .col,
+  .wide {
+    grid-column: 2;
+  }
+
+  .under dd {
+    grid-column: 2;
+  }
+}
+
+/* ── Mobile: một cột, không phải bản co lại ───────────────────────────────── */
+@media (max-width: 47.999rem) {
+  :root {
+    --text-size: 1.0625rem;
+  }
+
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .label,
+  .marg,
+  .col,
+  .wide,
+  .under dt,
+  .under dd,
+  .under .under-label {
+    grid-column: 1;
+    padding-inline-end: 0;
+  }
+
+  .label {
+    padding-block: 0 var(--space-3);
+  }
+
+  /* Ngày và tiết khí lên trên tiêu đề, xếp ngang */
+  .marg {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-4);
+    margin-block-end: var(--space-3);
+  }
+
+  .marg > * + * {
+    margin-block-start: 0;
+  }
+
+  /* Kamon giữ riêng một dòng, không chen ngang với ngày và tiết khí */
+  .marg > .kamon-large {
+    flex-basis: 100%;
+    margin-block-end: var(--space-3);
+  }
+
+  .masthead nav {
+    display: none;
+  }
+
+  .menu-button {
+    display: inline-block;
+  }
+
+  .entry {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .entry-excerpt {
+    grid-column: 1;
+  }
+
+  /* Ảnh tràn sát hai mép màn hình */
+  .figure {
+    margin-inline: calc(var(--gutter) * -1);
+  }
+
+  .figure figcaption {
+    padding-inline: var(--gutter);
+  }
+
+  .seal {
+    margin-block-start: var(--space-5);
+  }
+}
+
+@media print {
+  .masthead nav,
+  .lang,
+  .menu-button,
+  .under,
+  .site-footer {
+    display: none;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+}
+
+/* ── Bổ sung: dải dưới mặt đất dùng chung lưới với nội dung ───────────────── */
+/* subgrid giữ cho nhãn ở dải này thẳng cùng một trục với lề ghi chú phía trên */
+.under {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: var(--space-5);
+}
+
+.under > dd > * + * {
+  margin-block-start: var(--space-3);
+}
+
+.masthead-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  text-align: end;
+}
+
+.count {
+  font-size: 0.8125rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.page-label {
+  font-size: 1.0625rem;
+  color: var(--ink);
+}
+
+.kamon svg,
+.kamon-large svg {
+  width: 100%;
+  height: auto;
+}
+
+.kamon,
+.kamon-large {
+  display: block;
+}
+
+.seal svg {
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 47.999rem) {
+  .masthead-right {
+    align-items: baseline;
+    flex-direction: row;
+    gap: var(--space-4);
+  }
+
+  .under {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--space-4);
+  }
+}

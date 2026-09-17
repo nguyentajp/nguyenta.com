@@ -1,5 +1,12 @@
 {{ define "main" }}
-  <h1>{{ i18n "error_404_title" }}</h1>
-  <p>{{ i18n "error_404_text" }}</p>
-  <p><a href="{{ "" | relLangURL }}">{{ i18n "error_404_home" }}</a></p>
+  <div class="page">
+    <div class="row">
+      <div class="marg">{{ partial "kamon.html" (dict "class" "kamon-large") }}</div>
+      <div class="col">
+        <h1 class="post-title">{{ i18n "error_404_title" }}</h1>
+        <p class="prose" style="margin-block-start: var(--space-4)">{{ i18n "error_404_text" }}</p>
+        <p class="more"><a href="{{ "" | relLangURL }}">{{ i18n "error_404_home" }}</a></p>
+      </div>
+    </div>
+  </div>
 {{ end }}

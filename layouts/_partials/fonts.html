@@ -1,0 +1,25 @@
+{{- /* Khối @font-face nằm inline trong <head>, mang id="gen-fonts".
+     Sau khi build, tools/fonts/build.py --pages thay ruột thẻ style này bằng
+     subset riêng của từng trang, nên mỗi trang chỉ tải đúng những chữ nó dùng.
+     Không dùng comment CSS làm mốc: Go html/template xoá comment trong <style>.
+     Nếu chưa chạy script font, khối này trống và site dùng font hệ thống. */ -}}
+{{- $faces := slice
+  (dict "file" "fonts/literata-roman.woff2"    "family" "Gen Latin"      "style" "normal" "weight" "380 620" "preload" true)
+  (dict "file" "fonts/literata-italic.woff2"   "family" "Gen Latin"      "style" "italic" "weight" "380 620")
+  (dict "file" "fonts/shippori-body.woff2"     "family" "Gen JP"         "style" "normal" "weight" "500")
+  (dict "file" "fonts/shippori-display.woff2"  "family" "Gen JP Display" "style" "normal" "weight" "600")
+-}}
+{{- range $faces -}}
+  {{- if .preload -}}
+    {{- with resources.Get .file -}}
+      <link rel="preload" href="{{ .RelPermalink }}" as="font" type="font/woff2" crossorigin>
+    {{- end -}}
+  {{- end -}}
+{{- end }}
+<style id="gen-fonts">
+{{- range $face := $faces -}}
+  {{- with resources.Get $face.file -}}
+    @font-face{font-family:'{{ $face.family }}';font-style:{{ $face.style }};font-weight:{{ $face.weight }};font-display:swap;src:url({{ .RelPermalink }}) format('woff2')}
+  {{- end -}}
+{{- end -}}
+</style>

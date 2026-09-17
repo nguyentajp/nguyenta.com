@@ -1,13 +1,10 @@
 {{ define "main" }}
-  <article>
-    <h1>{{ .Title }}</h1>
-    {{ if eq .Section "posts" }}
-      <p><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02.01.2006" }}</time>
-      {{ range .GetTerms "categories" }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</p>
-    {{ end }}
-    {{ .Content }}
-    {{ with .GetTerms "tags" }}
-      <p>{{ i18n "post_tags" }}: {{ range . }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a> {{ end }}</p>
-    {{ end }}
-  </article>
+  <div class="page">
+    <article class="row">
+      <h1 class="label page-label">{{ .Title }}</h1>
+      <div class="col">
+        <div class="prose">{{ .Content }}</div>
+      </div>
+    </article>
+  </div>
 {{ end }}

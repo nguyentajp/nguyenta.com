@@ -14,6 +14,12 @@ copyright = "Gen"
 timeZone = "Asia/Tokyo"
 
 enableRobotsTXT = true
+# Cần cho tiếng Nhật: Hugo đếm chữ theo ký tự thay vì theo khoảng trắng, nên
+# thời gian đọc và đoạn tóm tắt của bài tiếng Nhật mới đúng.
+hasCJKLanguage = true
+# Giữ nguyên chữ hoa chữ thường của thẻ: mặc định Hugo đổi "mùa thu" thành
+# "Mùa Thu", nhưng thẻ là chữ anh tự viết nên phải tôn trọng đúng như đã gõ.
+titleCaseStyle = "none"
 enableEmoji = false
 
 # KHÔNG bật removePathAccents: nó bỏ mọi dấu tổ hợp Unicode, nên chữ Nhật có

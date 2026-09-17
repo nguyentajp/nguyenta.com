@@ -1,7 +1,8 @@
 {{- /* Nút chuyển ngôn ngữ.
      - Trang có bản dịch: link thẳng tới đúng trang đó ở ngôn ngữ kia.
-     - Trang chưa có bản dịch: hiện trạng thái rõ ràng, không đưa về trang chủ. */ -}}
-<p class="lang-switch">
+     - Trang chưa có bản dịch: gạch ngang tên ngôn ngữ và nói rõ lý do, không
+       đưa người đọc về trang chủ. */ -}}
+<p class="lang">
   <span aria-current="true" lang="{{ .Site.Language.Lang }}">{{ i18n "lang_current" }}</span>
   {{- range hugo.Sites }}
     {{- $other := .Language }}
@@ -9,8 +10,8 @@
       {{- with index (where $.Translations "Lang" $other.Lang) 0 }}
         <a href="{{ .RelPermalink }}" lang="{{ $other.Lang }}" hreflang="{{ $other.Lang }}">{{ $other.Label }}</a>
       {{- else }}
-        <span lang="{{ $other.Lang }}" aria-disabled="true">{{ $other.Label }}</span>
-        <small>{{ i18n "lang_no_translation_short" }}</small>
+        <span lang="{{ $other.Lang }}" aria-disabled="true" title="{{ i18n "lang_no_translation" }}">{{ $other.Label }}</span>
+        <span class="lang-note">{{ i18n "lang_no_translation_short" }}</span>
       {{- end }}
     {{- end }}
   {{- end }}

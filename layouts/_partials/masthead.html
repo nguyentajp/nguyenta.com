@@ -1,0 +1,29 @@
+<header class="page masthead">
+  <a class="masthead-name" href="{{ "" | relLangURL }}">
+    {{ partial "kamon.html" (dict "class" "kamon" "simple" true) }}
+    <span>{{ .Site.Title }}</span>
+  </a>
+  <div class="masthead-right">
+    <nav aria-label="{{ i18n "nav_menu" }}">
+      {{- range .Site.Menus.main }}
+        {{- $current := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }}
+        <a href="{{ .URL }}"{{ if $current }} aria-current="page"{{ end }}>{{ .Name }}</a>
+      {{- end }}
+      {{- with site.GetPage "/search" }}
+        <a href="{{ .RelPermalink }}">{{ i18n "nav_search" }}</a>
+      {{- end }}
+    </nav>
+    {{ partial "lang-switch.html" . }}
+    <button class="menu-button" type="button" popovertarget="menu">{{ i18n "nav_menu" }}</button>
+  </div>
+
+  {{/* Menu mobile dùng Popover API: đóng được bằng Esc và bấm ra ngoài, không cần JS */}}
+  <div id="menu" popover>
+    <button class="menu-close" type="button" popovertarget="menu" popovertargetaction="hide">{{ i18n "nav_menu_close" }}</button>
+    <nav class="menu-panel" aria-label="{{ i18n "nav_menu" }}">
+      {{- range .Site.Menus.main }}<a href="{{ .URL }}">{{ .Name }}</a>{{ end }}
+      {{- with site.GetPage "/search" }}<a href="{{ .RelPermalink }}">{{ i18n "nav_search" }}</a>{{ end }}
+      {{- range .Site.Menus.under }}<a href="{{ .URL }}">{{ .Name }}</a>{{ end }}
+    </nav>
+  </div>
+</header>

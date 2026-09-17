@@ -112,9 +112,27 @@ def ginkgo_leaf(angle: float, apex: float = 7.0, radius: float = 34.6, spread: f
     return path
 
 
-def kamon(veins: bool = True, gap: float = 2.6) -> str:
-    leaves = "".join(ginkgo_leaf(angle, veins=veins) for angle in (-90, 30, 150))
-    return svg(f'<path fill-rule="evenodd" d="{bamboo_ring(gap=gap)}{leaves}"/>', "Kamon của Gen")
+def kamon(veins: bool = True, gap: float = 2.6, animated: bool = False) -> str:
+    """Kamon dạng nhiều path: vòng tre và ba lá tách riêng.
+
+    Bản animated dùng cho trang chủ: vòng tre hiện dần nhờ mask là một đường
+    tròn nét liền có stroke-dasharray, ba lá lớn dần từ tâm ra.
+    """
+    ring = f'<path class="ring" fill-rule="evenodd" d="{bamboo_ring(gap=gap)}"/>'
+    leaves = "".join(
+        f'<path class="leaf" style="--delay:{0.75 + index * 0.16:.2f}s" fill-rule="evenodd" '
+        f'd="{ginkgo_leaf(angle, veins=veins)}"/>'
+        for index, angle in enumerate((-90, 30, 150))
+    )
+    if not animated:
+        return svg(ring + leaves, "Kamon của Gen")
+
+    mask = (
+        '<defs><mask id="gen-ring-draw" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">'
+        '<circle class="ring-mask" cx="50" cy="50" r="46.6" fill="none" stroke="#fff" stroke-width="10" '
+        'pathLength="1" transform="rotate(-90 50 50)"/></mask></defs>'
+    )
+    return svg(mask + f'<g mask="url(#gen-ring-draw)">{ring}</g>' + leaves, "Kamon của Gen", "kamon-draw")
 
 
 # ── Con dấu 落款印 chữ 元, lối 古印体 ─────────────────────────────────────────
@@ -219,9 +237,10 @@ def hanko() -> str:
     )
 
 
-def svg(body: str, label: str) -> str:
+def svg(body: str, label: str, classes: str = "") -> str:
+    attr = f' class="{classes}"' if classes else ""
     return (
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" '
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"{attr} role="img" '
         f'aria-label="{label}"><g fill="currentColor">{body}</g></svg>'
     )
 
@@ -230,6 +249,7 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     files = {
         "kamon.svg": kamon(),
+        "kamon-draw.svg": kamon(animated=True),
         # Cỡ favicon: gân lá và khe đốt nhỏ hơn một pixel nên bỏ đi cho nét sạch.
         "favicon.svg": kamon(veins=False, gap=1.4),
         "hanko.svg": hanko(),

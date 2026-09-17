@@ -1,0 +1,9 @@
+{{- /* Kamon 竹輪に三つ銀杏, nhúng inline để nét lấy màu theo currentColor.
+     animated = true dùng bản có mask, để vòng tre hiện dần trên trang chủ. */ -}}
+{{- $class := .class | default "kamon" -}}
+{{- /* simple = bản giản lược (không gân lá, khe đốt hẹp) cho cỡ nhỏ ở header */ -}}
+{{- $file := "brand/kamon.svg" -}}
+{{- if .animated }}{{ $file = "brand/kamon-draw.svg" }}{{ else if .simple }}{{ $file = "brand/favicon.svg" }}{{ end -}}
+{{- with resources.Get $file -}}
+  <span class="{{ $class }}">{{ .Content | safeHTML }}</span>
+{{- end -}}

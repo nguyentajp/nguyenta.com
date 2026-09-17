@@ -1,11 +1,34 @@
 {{ define "main" }}
-  <h1>{{ .Site.Title }}</h1>
-  {{ with .Site.Params.description }}<p>{{ . }}</p>{{ end }}
-  <h2>{{ i18n "list_recent" }}</h2>
-  <ul>
-    {{ range first 5 (where .Site.RegularPages "Section" "posts") }}
-      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a> <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02.01.2006" }}</time></li>
-    {{ end }}
-  </ul>
-  <p><a href="{{ (site.GetPage "/posts").RelPermalink }}">{{ i18n "list_all_posts" }}</a></p>
+  {{- $posts := where .Site.RegularPages "Section" "posts" -}}
+  <div class="page">
+    {{- with index $posts 0 }}
+      {{/* Trang chủ mở thẳng vào bài mới nhất, như mở cuốn nhật ký ra trang đang viết */}}
+      <article class="row home-lead">
+        <div class="marg">
+          {{ partial "kamon.html" (dict "class" "kamon-large" "animated" true) }}
+          {{ partial "post-marginalia.html" (dict "page" . "brief" true) }}
+        </div>
+        <div class="col">
+          <h1 class="lead-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h1>
+          {{- with or .Description .Summary }}
+            <p class="lead-excerpt prose">{{ . | plainify | truncate 260 }}</p>
+          {{- end }}
+          <a class="more" href="{{ .RelPermalink }}">{{ i18n "read_more" }}</a>
+        </div>
+      </article>
+    {{- end }}
+
+    {{- $recent := $posts | after 1 | first (site.Params.homeRecentCount | default 4) }}
+    {{- with $recent }}
+      <section class="row">
+        <h2 class="label">{{ i18n "list_recent" }}</h2>
+        <div class="col">
+          {{ partial "entries.html" (dict "pages" .) }}
+          <p class="more"><a href="{{ (site.GetPage "/posts").RelPermalink }}">{{ i18n "list_all_posts" }}</a></p>
+        </div>
+      </section>
+    {{- end }}
+  </div>
 {{ end }}
+
+{{ define "scripts" }}{{ partial "scripts.html" . }}{{ end }}
