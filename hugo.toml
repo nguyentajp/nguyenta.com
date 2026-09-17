@@ -1,0 +1,254 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# nguyenta.com — blog cá nhân song ngữ của Gen
+#
+# Ghi chú cho chủ blog: file này là "bảng điều khiển" của cả site. Mỗi khi sửa
+# file này, `hugo server` đang chạy sẽ tự khởi động lại. Các mục quan trọng:
+#   - [languages]  : hai ngôn ngữ vi (mặc định) và ja
+#   - [permalinks] : quy định đường dẫn URL của từng loại trang, theo ngôn ngữ
+#   - [taxonomies] : categories (danh mục, cố định) và tags (thẻ, tự do)
+# ─────────────────────────────────────────────────────────────────────────────
+
+baseURL = "https://nguyenta.com/"
+title = "Gen"
+copyright = "Gen"
+timeZone = "Asia/Tokyo"
+
+enableRobotsTXT = true
+enableEmoji = false
+
+# KHÔNG bật removePathAccents: nó bỏ mọi dấu tổ hợp Unicode, nên chữ Nhật có
+# dakuten bị phá (学び -> 学ひ). Danh mục vì thế khai báo slug tường minh trong
+# front matter; thẻ thì giữ nguyên chữ có dấu trong URL.
+removePathAccents = false
+
+# Bài draft, bài hẹn ngày đăng ở tương lai và bài đã hết hạn không được build.
+# Khi chạy thử ở local, dùng `hugo server -D` để xem cả bài draft.
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+
+# ── Song ngữ ─────────────────────────────────────────────────────────────────
+# vi là ngôn ngữ mặc định nên URL không có tiền tố: nguyenta.com/
+# ja nằm trong thư mục con:                        nguyenta.com/ja/
+defaultContentLanguage = "vi"
+defaultContentLanguageInSubdir = false
+
+[languages]
+
+  [languages.vi]
+    label = "Tiếng Việt"          # tên ngôn ngữ hiển thị cho người đọc
+    locale = "vi-VN"           # dùng cho định dạng ngày tháng
+    direction = "ltr"
+    contentDir = "content/vi"
+    title = "Gen"
+    weight = 1
+
+    [languages.vi.params]
+      description = "Ghi chép của Gen từ Osaka: học tập, đời sống, du lịch, suy nghĩ và nhật ký."
+
+    [languages.vi.permalinks.page]
+      posts = "/bai-viet/:slug/"
+    [languages.vi.permalinks.section]
+      posts = "/bai-viet/"
+    [languages.vi.permalinks.term]
+      categories = "/danh-muc/:slug/"
+      tags = "/the/:slug/"
+    [languages.vi.permalinks.taxonomy]
+      categories = "/danh-muc/"
+      tags = "/the/"
+
+    [[languages.vi.menus.main]]
+      name = "Bài viết"
+      pageRef = "/posts"
+      weight = 1
+    [[languages.vi.menus.main]]
+      name = "Danh mục"
+      pageRef = "/categories"
+      weight = 2
+    [[languages.vi.menus.main]]
+      name = "Ảnh"
+      pageRef = "/photos"
+      weight = 3
+    [[languages.vi.menus.main]]
+      name = "Giới thiệu"
+      pageRef = "/about"
+      weight = 4
+
+    # Menu "dưới mặt đất" ở chân trang
+    [[languages.vi.menus.under]]
+      name = "Lưu trữ"
+      pageRef = "/archive"
+      weight = 1
+    [[languages.vi.menus.under]]
+      name = "Thẻ"
+      pageRef = "/tags"
+      weight = 2
+    [[languages.vi.menus.under]]
+      name = "Liên hệ"
+      pageRef = "/contact"
+      weight = 3
+    [[languages.vi.menus.under]]
+      name = "Tĩnh"
+      pageRef = "/sei"
+      weight = 4
+
+  [languages.ja]
+    label = "日本語"          # tên ngôn ngữ hiển thị cho người đọc
+    locale = "ja-JP"           # dùng cho định dạng ngày tháng
+    direction = "ltr"
+    contentDir = "content/ja"
+    title = "Gen"
+    weight = 2
+
+    [languages.ja.params]
+      description = "大阪から、学びと暮らしと旅の記録。Gen の個人ブログです。"
+
+    [languages.ja.permalinks.page]
+      posts = "/kiji/:slug/"
+    [languages.ja.permalinks.section]
+      posts = "/kiji/"
+    [languages.ja.permalinks.term]
+      categories = "/category/:slug/"
+      tags = "/tag/:slug/"
+    [languages.ja.permalinks.taxonomy]
+      categories = "/category/"
+      tags = "/tag/"
+
+    [[languages.ja.menus.main]]
+      name = "記事"
+      pageRef = "/posts"
+      weight = 1
+    [[languages.ja.menus.main]]
+      name = "カテゴリー"
+      pageRef = "/categories"
+      weight = 2
+    [[languages.ja.menus.main]]
+      name = "写真"
+      pageRef = "/photos"
+      weight = 3
+    [[languages.ja.menus.main]]
+      name = "プロフィール"
+      pageRef = "/about"
+      weight = 4
+
+    [[languages.ja.menus.under]]
+      name = "アーカイブ"
+      pageRef = "/archive"
+      weight = 1
+    [[languages.ja.menus.under]]
+      name = "タグ"
+      pageRef = "/tags"
+      weight = 2
+    [[languages.ja.menus.under]]
+      name = "お問い合わせ"
+      pageRef = "/contact"
+      weight = 3
+    [[languages.ja.menus.under]]
+      name = "静"
+      pageRef = "/sei"
+      weight = 4
+
+# ── Danh mục và thẻ ──────────────────────────────────────────────────────────
+# categories: 5 mục cố định, là xương sống điều hướng.
+# tags: tự do, dùng để liên kết chéo giữa các bài ("cùng rễ").
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+# ── Phân trang ───────────────────────────────────────────────────────────────
+[pagination]
+  pagerSize = 10
+
+# ── Markdown ─────────────────────────────────────────────────────────────────
+[markup]
+
+  [markup.goldmark.renderer]
+    # Không cho phép HTML thô trong file Markdown: mọi thứ đặc biệt đi qua
+    # shortcode, nhờ vậy nội dung viết từ Decap CMS không thể làm hỏng layout.
+    unsafe = false
+
+  [markup.goldmark.parser]
+    # Ảnh đứng một mình không bị bọc trong <p>, để dùng <figure> cho tử tế.
+    wrapStandAloneImageWithinParagraph = false
+    [markup.goldmark.parser.attribute]
+      block = true
+      title = true
+
+  [markup.goldmark.extensions.typographer]
+    # Tắt: việc tự đổi dấu nháy và dấu gạch không hợp cho tiếng Việt lẫn tiếng Nhật.
+    disable = true
+
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+
+  [markup.highlight]
+    noClasses = false
+    lineNos = false
+    tabWidth = 2
+
+# ── Xử lý ảnh ────────────────────────────────────────────────────────────────
+# Hugo đọc ảnh gốc trong page bundle rồi tự sinh nhiều kích thước và WebP.
+# Ảnh sinh ra được mã hóa lại, nên mọi EXIF (gồm cả toạ độ GPS) đều bị bỏ.
+[imaging]
+  resampleFilter = "Lanczos"
+
+  [imaging.jpeg]
+    quality = 82
+  [imaging.webp]
+    quality = 82
+    hint = "photo"
+
+  [imaging.exif]
+    disableDate = false
+    disableLatLong = true
+
+# ── Quyền riêng tư của người đọc ─────────────────────────────────────────────
+[privacy]
+  [privacy.youtube]
+    privacyEnhanced = true
+
+# ── Output ───────────────────────────────────────────────────────────────────
+# RSS riêng cho từng ngôn ngữ do Hugo tự sinh: / index.xml và /ja/index.xml
+[outputs]
+  home = ["html", "rss"]
+  section = ["html"]
+  taxonomy = ["html"]
+  term = ["html"]
+
+[services]
+  [services.rss]
+    limit = 20
+
+# ── Thông số dùng chung cho cả hai ngôn ngữ ──────────────────────────────────
+[params]
+  author = "Gen"
+  authorKanji = "英元"
+  email = "nguyentajp1403@gmail.com"
+  # Số bài hiện trên trang chủ, không tính bài mới nhất đã hiện đầy đủ
+  homeRecentCount = 4
+  # Số bài "cùng rễ" (liên quan qua thẻ chung) ở cuối mỗi bài
+  relatedCount = 3
+
+  [params.socials]
+    # Để trống nghĩa là không hiện. Điền dần khi anh muốn.
+    github = "nguyentajp"
+    instagram = ""
+    x = ""
+    youtube = ""
+
+# ── Bài "cùng rễ": Hugo dùng thẻ chung để tìm bài liên quan ─────────────────
+[related]
+  includeNewer = true
+  threshold = 60
+  toLower = true
+
+  [[related.indices]]
+    name = "tags"
+    weight = 100
+  [[related.indices]]
+    name = "categories"
+    weight = 40
+  [[related.indices]]
+    name = "date"
+    weight = 10

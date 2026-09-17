@@ -1,0 +1,22 @@
+# Thư mục Hugo tự sinh khi build, không đưa vào repo
+/public/
+/resources/_gen/
+.hugo_build.lock
+
+# Hệ điều hành và editor
+.DS_Store
+.vscode/
+.idea/
+
+# Node (Pagefind, Decap CMS server chạy ở local)
+node_modules/
+
+# Python venv dùng cho các script dựng kamon, hanko, ensō
+.venv/
+brushenv/
+
+# Bản phác thảo của các script brand, sẽ được đưa vào assets/ khi chốt
+tools/brand/draft-output/
+
+# Bản brief cá nhân: repo này sẽ là public, nên không đẩy file này lên
+Yêu cầu.md
