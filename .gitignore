@@ -11,12 +11,17 @@
 # Node (Pagefind, Decap CMS server chạy ở local)
 node_modules/
 
-# Python venv dùng cho các script dựng kamon, hanko, ensō
+# Python venv cho các script font và brand: tạo bằng
+#   python3 -m venv .venv && ./.venv/bin/pip install "fonttools[woff]" brotli numpy pillow
 .venv/
-brushenv/
 
-# Bản phác thảo của các script brand, sẽ được đưa vào assets/ khi chốt
-tools/brand/draft-output/
+# Font gốc rất nặng (Shippori Mincho B1 gần 15 MB) nên không commit.
+# Tải lại bằng: python3 tools/fonts/get-sources.py
+tools/fonts/src/
+
+# File font đã subset: sinh ra từ nội dung, không commit.
+# Dựng lại bằng: python3 tools/fonts/build.py --dev
+assets/fonts/*.woff2
 
 # Bản brief cá nhân: repo này sẽ là public, nên không đẩy file này lên
 Yêu cầu.md

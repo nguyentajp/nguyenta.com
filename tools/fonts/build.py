@@ -1,0 +1,308 @@
+#!/usr/bin/env python3
+"""Subset font: chỉ giữ lại đúng những chữ mà site thật sự dùng.
+
+Font Nhật rất nặng. Đo thử với một đoạn tiếng Nhật khoảng 330 chữ:
+cách chia sẵn của Google Fonts cần 28 file và 364 KB, còn subset đúng các ký
+tự của trang đó chỉ 27 KB. Script này làm việc đó.
+
+Hai chế độ:
+
+    python3 tools/fonts/build.py --dev
+        Quét toàn bộ content, i18n, data rồi ghi 4 file woff2 vào assets/fonts/.
+        Dùng khi chạy `hugo server` ở máy.
+
+    python3 tools/fonts/build.py --pages public
+        Chạy SAU `hugo`. Với từng trang HTML, sinh subset riêng cho trang đó và
+        thay khối @font-face trong <head>. Dùng trong GitHub Actions.
+
+Font gốc lấy bằng tools/fonts/get-sources.py.
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import html
+import json
+import pathlib
+import re
+import sys
+
+from fontTools import subset
+from fontTools.ttLib import TTFont
+from fontTools.varLib import instancer
+
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+SRC = ROOT / "tools/fonts/src"
+
+# Khối @font-face trong <head> nằm giữa hai mốc này; chế độ --pages thay ruột nó.
+MARK_START = "/* GEN-FONTS-START */"
+MARK_END = "/* GEN-FONTS-END */"
+
+# ── Bộ ký tự luôn có mặt, không phụ thuộc nội dung ───────────────────────────
+# Nhờ vậy bài viết mới vẫn hiện đúng dù chưa chạy lại script.
+def ranges(*pairs: tuple[int, int]) -> set[str]:
+    out: set[str] = set()
+    for start, end in pairs:
+        out.update(chr(c) for c in range(start, end + 1))
+    return out
+
+
+# Không lấy trọn Latin Extended-A (U+0100–017F): 128 glyph cho tiếng Ba Lan,
+# Séc, Thổ… mà site không dùng. Chỉ giữ đúng các ký tự tiếng Việt cần.
+CORE_LATIN = ranges(
+    (0x20, 0x7E),      # ASCII
+    (0xA0, 0xFF),      # Latin-1: à â ê ô ...
+    (0x1A0, 0x1B0),    # ơ ư (tiếng Việt)
+    (0x300, 0x323),    # dấu tổ hợp
+    (0x1EA0, 0x1EF9),  # toàn bộ dấu tiếng Việt: ạ ả ấ ầ ệ ộ ợ ự ỹ ...
+    (0x2010, 0x2027),  # – — ‘ ’ “ ” …
+    (0x2030, 0x203A),
+) | set("ĂăĐđĨĩŨũŒœŠšŽžŸ") | set("€₫°±×÷•§¶†‡№")
+
+CORE_JA = ranges(
+    (0x3000, 0x303F),  # 、。「」『』〜 và khoảng trắng toàn chiều
+    (0x3040, 0x309F),  # hiragana
+    (0x30A0, 0x30FF),  # katakana
+    (0xFF01, 0xFF60),  # ký tự toàn chiều: ！？（）：
+    (0xFFE0, 0xFFE6),
+)
+
+CJK = [(0x3400, 0x4DBF), (0x4E00, 0x9FFF), (0xF900, 0xFAFF), (0x20000, 0x2FA1F)]
+
+
+def is_cjk(ch: str) -> bool:
+    code = ord(ch)
+    return any(start <= code <= end for start, end in CJK)
+
+
+# ── Các face của site ────────────────────────────────────────────────────────
+# scope quyết định bộ ký tự: "latin" cho chữ Latin và dấu tiếng Việt,
+# "ja" cho kana và kanji ở thân bài, "ja-display" chỉ cho tiêu đề.
+FACES = [
+    # Literata là variable font hai trục. Trục opsz (optical size) chiếm khoảng
+    # một nửa dung lượng file, nên ghim opsz = 20, mức trung gian giữa thân bài
+    # 18px và tiêu đề. Trục wght giữ lại để vẫn có chữ đậm.
+    # Đo thật: 2 trục 114 KB -> ghim opsz 58 KB.
+    {
+        "key": "literata-roman",
+        "src": "Literata[opsz,wght].ttf",
+        "family": "Gen Latin",
+        "style": "normal",
+        "weight": "380 620",
+        "scope": "latin",
+        "limit": {"wght": (380, 450, 620)},
+        "pin": {"opsz": 20},
+    },
+    {
+        "key": "literata-italic",
+        "src": "Literata-Italic[opsz,wght].ttf",
+        "family": "Gen Latin",
+        "style": "italic",
+        "weight": "380 620",
+        "scope": "latin",
+        "limit": {"wght": (380, 450, 620)},
+        "pin": {"opsz": 20},
+    },
+    {
+        "key": "shippori-body",
+        "src": "ShipporiMincho-Medium.ttf",
+        "family": "Gen JP",
+        "style": "normal",
+        "weight": "500",
+        "scope": "ja",
+    },
+    {
+        "key": "shippori-display",
+        "src": "ShipporiMinchoB1-SemiBold.ttf",
+        "family": "Gen JP Display",
+        "style": "normal",
+        "weight": "600",
+        "scope": "ja-display",
+    },
+]
+
+# Giữ lại các feature cần dùng: kern, chữ ghép, và palt cho tiêu đề tiếng Nhật.
+LAYOUT_FEATURES = ["kern", "liga", "clig", "calt", "palt", "ccmp", "locl", "mark", "mkmk"]
+
+
+# Bản font đã thu hẹp trục được dựng một lần rồi dùng lại cho mọi trang.
+_narrowed: dict[str, pathlib.Path] = {}
+
+
+def narrowed_source(face: dict) -> pathlib.Path:
+    """Thu hẹp và ghim các trục của variable font trước khi subset."""
+    source = SRC / face["src"]
+    if not face.get("limit") and not face.get("pin"):
+        return source
+    if face["key"] in _narrowed:
+        return _narrowed[face["key"]]
+
+    axes = dict(face.get("limit") or {})
+    axes.update(face.get("pin") or {})
+    font = TTFont(str(source))
+    instancer.instantiateVariableFont(font, axes, inplace=True, updateFontNames=False)
+    cache_dir = SRC / ".narrowed"
+    cache_dir.mkdir(exist_ok=True)
+    target = cache_dir / f"{face['key']}.ttf"
+    font.save(str(target))
+    font.close()
+    _narrowed[face["key"]] = target
+    return target
+
+
+def subset_font(source: pathlib.Path, chars: set[str], destination: pathlib.Path) -> int:
+    options = subset.Options()
+    options.flavor = "woff2"
+    options.layout_features = LAYOUT_FEATURES
+    options.drop_tables += ["DSIG"]
+    options.name_IDs = ["*"]
+    options.name_legacy = True
+    options.notdef_outline = True
+    options.recalc_bounds = True
+
+    font = subset.load_font(str(source), options)
+    subsetter = subset.Subsetter(options=options)
+    subsetter.populate(text="".join(sorted(chars)))
+    subsetter.subset(font)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    subset.save_font(font, str(destination), options)
+    font.close()
+    return destination.stat().st_size
+
+
+def chars_for(scope: str, text_all: str, text_display: str) -> set[str]:
+    """Bộ ký tự cho một scope, gồm phần cốt lõi cộng phần thật sự xuất hiện."""
+    if scope == "latin":
+        found = {c for c in text_all if not is_cjk(c) and ord(c) < 0x3000}
+        return CORE_LATIN | found
+    if scope == "ja":
+        return CORE_JA | {c for c in text_all if is_cjk(c)}
+    if scope == "ja-display":
+        return CORE_JA | {c for c in text_display if is_cjk(c)}
+    raise ValueError(scope)
+
+
+# ── Chế độ --dev: quét nguồn nội dung ────────────────────────────────────────
+def collect_from_sources() -> tuple[str, str]:
+    all_text: list[str] = []
+    display_text: list[str] = []
+
+    for path in sorted((ROOT / "content").rglob("*.md")):
+        text = path.read_text(encoding="utf-8")
+        all_text.append(text)
+        # Tiêu đề bài, description và các heading dùng font display
+        for match in re.finditer(r'^(?:title|description):\s*"?(.*?)"?\s*$', text, re.M):
+            display_text.append(match.group(1))
+        for match in re.finditer(r"^#{1,3}\s+(.*)$", text, re.M):
+            display_text.append(match.group(1))
+
+    for name in ("i18n/vi.toml", "i18n/ja.toml", "data/sekki.toml", "hugo.toml"):
+        path = ROOT / name
+        if path.exists():
+            content = path.read_text(encoding="utf-8")
+            all_text.append(content)
+            display_text.append(content)
+
+    return "".join(all_text), "".join(display_text)
+
+
+def build_dev() -> None:
+    all_text, display_text = collect_from_sources()
+    out_dir = ROOT / "assets/fonts"
+    report = []
+    for face in FACES:
+        chars = chars_for(face["scope"], all_text, display_text)
+        size = subset_font(narrowed_source(face), chars, out_dir / f"{face['key']}.woff2")
+        report.append((face["key"], len(chars), size))
+
+    print("Subset cho toàn site (dùng khi chạy hugo server ở máy):")
+    total = 0
+    for key, glyphs, size in report:
+        total += size
+        print(f"  {key:<20} {glyphs:>6} ký tự   {size / 1024:>7.1f} KB")
+    print(f"  {'tổng':<20} {'':>6}          {total / 1024:>7.1f} KB")
+
+
+# ── Chế độ --pages: subset riêng cho từng trang, chạy sau hugo ───────────────
+TAG_RE = re.compile(r"<(script|style)\b.*?</\1>", re.S | re.I)
+ATTR_RE = re.compile(r'(?:alt|title|aria-label|content)="([^"]*)"', re.I)
+HEADING_RE = re.compile(r"<h[1-3]\b[^>]*>(.*?)</h[1-3]>", re.S | re.I)
+STRIP_RE = re.compile(r"<[^>]+>")
+
+
+def page_text(markup: str) -> tuple[str, str]:
+    body = TAG_RE.sub(" ", markup)
+    visible = html.unescape(STRIP_RE.sub(" ", body))
+    attrs = " ".join(html.unescape(m) for m in ATTR_RE.findall(body))
+    headings = " ".join(html.unescape(STRIP_RE.sub(" ", m)) for m in HEADING_RE.findall(body))
+    title = re.search(r"<title>(.*?)</title>", body, re.S | re.I)
+    if title:
+        headings += " " + html.unescape(title.group(1))
+    return visible + " " + attrs, headings
+
+
+def build_pages(public: pathlib.Path) -> None:
+    font_dir = public / "fonts/p"
+    cache: dict[tuple[str, str], str] = {}
+    pages = sorted(public.rglob("*.html"))
+    total_before = total_after = 0
+
+    for page in pages:
+        markup = page.read_text(encoding="utf-8")
+        if MARK_START not in markup:
+            continue
+        all_text, display_text = page_text(markup)
+
+        rules = []
+        page_bytes = 0
+        for face in FACES:
+            chars = chars_for(face["scope"], all_text, display_text)
+            digest = hashlib.sha256("".join(sorted(chars)).encode("utf-8")).hexdigest()[:12]
+            key = (face["key"], digest)
+            if key not in cache:
+                name = f"{face['key']}.{digest}.woff2"
+                size = subset_font(narrowed_source(face), chars, font_dir / name)
+                cache[key] = name
+            name = cache[key]
+            page_bytes += (font_dir / name).stat().st_size
+            rules.append(
+                "@font-face{"
+                f"font-family:'{face['family']}';"
+                f"font-style:{face['style']};"
+                f"font-weight:{face['weight']};"
+                "font-display:swap;"
+                f"src:url(/fonts/p/{name}) format('woff2')"
+                "}"
+            )
+
+        start = markup.index(MARK_START) + len(MARK_START)
+        end = markup.index(MARK_END)
+        before = len(markup[start:end])
+        page.write_text(markup[:start] + "".join(rules) + markup[end:], encoding="utf-8")
+        total_before += before
+        total_after += page_bytes
+
+    print(f"Đã subset font riêng cho {len(pages)} trang.")
+    print(f"  số file woff2 sinh ra: {len(cache)}")
+    print(f"  tổng dung lượng font: {total_after / 1024:.1f} KB")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--dev", action="store_true", help="subset cho toàn site, ghi vào assets/fonts/")
+    group.add_argument("--pages", metavar="DIR", help="subset riêng từng trang trong thư mục đã build")
+    args = parser.parse_args()
+
+    missing = [face["src"] for face in FACES if not (SRC / face["src"]).exists()]
+    if missing:
+        sys.exit(f"Thiếu font gốc: {missing}\nChạy trước: python3 tools/fonts/get-sources.py")
+
+    if args.dev:
+        build_dev()
+    else:
+        build_pages(pathlib.Path(args.pages))
+
+
+if __name__ == "__main__":
+    main()

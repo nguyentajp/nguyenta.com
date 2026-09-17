@@ -1,0 +1,49 @@
+{
+  "_ghi_chu": "Nguồn font, ghim theo commit của repo google/fonts. Tất cả đều giấy phép OFL. Chạy: python3 tools/fonts/get-sources.py",
+  "repo": "google/fonts",
+  "commit": "a54f7446f84a1125ef6bf08baa46f3639e8905e0",
+  "files": [
+    {
+      "remote": "ofl/literata/Literata[opsz,wght].ttf",
+      "local": "Literata[opsz,wght].ttf",
+      "sha256": "b41138c9373112f32abb589cc22e8674b06ed4048b0c513be922bdd26f274440",
+      "bytes": 955132
+    },
+    {
+      "remote": "ofl/literata/Literata-Italic[opsz,wght].ttf",
+      "local": "Literata-Italic[opsz,wght].ttf",
+      "sha256": "d483dfaeba9cbf4ce71d32a52ee65df82f7e35b15fff8d1011cdb242d1fcd465",
+      "bytes": 902728
+    },
+    {
+      "remote": "ofl/literata/OFL.txt",
+      "local": "Literata-OFL.txt",
+      "sha256": "8742963604cd89dc81437811a850018fc03b2bfad686d7422c8235967c87614e",
+      "bytes": 4389
+    },
+    {
+      "remote": "ofl/shipporimincho/ShipporiMincho-Medium.ttf",
+      "local": "ShipporiMincho-Medium.ttf",
+      "sha256": "700e505afc4cded2338eba29478a041e04c1c2ea5114fbb3e0b04e76c302c5d8",
+      "bytes": 8678848
+    },
+    {
+      "remote": "ofl/shipporimincho/OFL.txt",
+      "local": "ShipporiMincho-OFL.txt",
+      "sha256": "41fba056279be5f45ff9a99e44b7b53897b42732f5806d8e666e0ab49ac6bd38",
+      "bytes": 4399
+    },
+    {
+      "remote": "ofl/shipporiminchob1/ShipporiMinchoB1-SemiBold.ttf",
+      "local": "ShipporiMinchoB1-SemiBold.ttf",
+      "sha256": "2d0dfceb662d522c9dd643f6822e9af2def6b0a0186ed5cb303463d2ed8f5c06",
+      "bytes": 15160536
+    },
+    {
+      "remote": "ofl/shipporiminchob1/OFL.txt",
+      "local": "ShipporiMinchoB1-OFL.txt",
+      "sha256": "41fba056279be5f45ff9a99e44b7b53897b42732f5806d8e666e0ab49ac6bd38",
+      "bytes": 4399
+    }
+  ]
+}
