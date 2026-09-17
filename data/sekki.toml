@@ -1,0 +1,197 @@
+# 二十四節気 — dữ liệu cho nhãn tiết khí dưới ngày đăng của mỗi bài.
+#
+# Layout so ngày đăng với các mốc dưới đây và lấy tiết khí gần nhất trước đó.
+# Ngày bắt đầu mỗi tiết xê dịch một ngày tuỳ năm; sai số đó không ảnh hưởng
+# tới ý nghĩa của nhãn. Bảng người đọc được nằm trong GLOSSARY.md.
+
+[[sekki]]
+  order = 23
+  month = 1
+  day = 5
+  ja = "小寒"
+  kana = "しょうかん"
+  vi = "Tiểu hàn"
+
+[[sekki]]
+  order = 24
+  month = 1
+  day = 20
+  ja = "大寒"
+  kana = "だいかん"
+  vi = "Đại hàn"
+
+[[sekki]]
+  order = 1
+  month = 2
+  day = 4
+  ja = "立春"
+  kana = "りっしゅん"
+  vi = "Lập xuân"
+
+[[sekki]]
+  order = 2
+  month = 2
+  day = 19
+  ja = "雨水"
+  kana = "うすい"
+  vi = "Vũ thủy"
+
+[[sekki]]
+  order = 3
+  month = 3
+  day = 5
+  ja = "啓蟄"
+  kana = "けいちつ"
+  vi = "Kinh trập"
+
+[[sekki]]
+  order = 4
+  month = 3
+  day = 20
+  ja = "春分"
+  kana = "しゅんぶん"
+  vi = "Xuân phân"
+
+[[sekki]]
+  order = 5
+  month = 4
+  day = 5
+  ja = "清明"
+  kana = "せいめい"
+  vi = "Thanh minh"
+
+[[sekki]]
+  order = 6
+  month = 4
+  day = 20
+  ja = "穀雨"
+  kana = "こくう"
+  vi = "Cốc vũ"
+
+[[sekki]]
+  order = 7
+  month = 5
+  day = 5
+  ja = "立夏"
+  kana = "りっか"
+  vi = "Lập hạ"
+
+[[sekki]]
+  order = 8
+  month = 5
+  day = 21
+  ja = "小満"
+  kana = "しょうまん"
+  vi = "Tiểu mãn"
+
+[[sekki]]
+  order = 9
+  month = 6
+  day = 6
+  ja = "芒種"
+  kana = "ぼうしゅ"
+  vi = "Mang chủng"
+
+[[sekki]]
+  order = 10
+  month = 6
+  day = 21
+  ja = "夏至"
+  kana = "げし"
+  vi = "Hạ chí"
+
+[[sekki]]
+  order = 11
+  month = 7
+  day = 7
+  ja = "小暑"
+  kana = "しょうしょ"
+  vi = "Tiểu thử"
+
+[[sekki]]
+  order = 12
+  month = 7
+  day = 23
+  ja = "大暑"
+  kana = "たいしょ"
+  vi = "Đại thử"
+
+[[sekki]]
+  order = 13
+  month = 8
+  day = 7
+  ja = "立秋"
+  kana = "りっしゅう"
+  vi = "Lập thu"
+
+[[sekki]]
+  order = 14
+  month = 8
+  day = 23
+  ja = "処暑"
+  kana = "しょしょ"
+  vi = "Xử thử"
+
+[[sekki]]
+  order = 15
+  month = 9
+  day = 8
+  ja = "白露"
+  kana = "はくろ"
+  vi = "Bạch lộ"
+
+[[sekki]]
+  order = 16
+  month = 9
+  day = 23
+  ja = "秋分"
+  kana = "しゅうぶん"
+  vi = "Thu phân"
+
+[[sekki]]
+  order = 17
+  month = 10
+  day = 8
+  ja = "寒露"
+  kana = "かんろ"
+  vi = "Hàn lộ"
+
+[[sekki]]
+  order = 18
+  month = 10
+  day = 23
+  ja = "霜降"
+  kana = "そうこう"
+  vi = "Sương giáng"
+
+[[sekki]]
+  order = 19
+  month = 11
+  day = 7
+  ja = "立冬"
+  kana = "りっとう"
+  vi = "Lập đông"
+
+[[sekki]]
+  order = 20
+  month = 11
+  day = 22
+  ja = "小雪"
+  kana = "しょうせつ"
+  vi = "Tiểu tuyết"
+
+[[sekki]]
+  order = 21
+  month = 12
+  day = 7
+  ja = "大雪"
+  kana = "たいせつ"
+  vi = "Đại tuyết"
+
+[[sekki]]
+  order = 22
+  month = 12
+  day = 22
+  ja = "冬至"
+  kana = "とうじ"
+  vi = "Đông chí"
