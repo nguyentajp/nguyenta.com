@@ -1,0 +1,9 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+  <ul>
+    {{ range .Pages }}
+      <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a> ({{ i18n "list_count" (dict "Count" (len .Pages)) }})</li>
+    {{ end }}
+  </ul>
+{{ end }}

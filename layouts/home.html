@@ -1,0 +1,11 @@
+{{ define "main" }}
+  <h1>{{ .Site.Title }}</h1>
+  {{ with .Site.Params.description }}<p>{{ . }}</p>{{ end }}
+  <h2>{{ i18n "list_recent" }}</h2>
+  <ul>
+    {{ range first 5 (where .Site.RegularPages "Section" "posts") }}
+      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a> <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02.01.2006" }}</time></li>
+    {{ end }}
+  </ul>
+  <p><a href="{{ (site.GetPage "/posts").RelPermalink }}">{{ i18n "list_all_posts" }}</a></p>
+{{ end }}

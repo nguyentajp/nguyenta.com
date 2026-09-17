@@ -1,0 +1,5 @@
+{{- /* Thẻ hreflang giúp Google hiểu hai bản của cùng một bài. */ -}}
+<link rel="alternate" hreflang="{{ .Site.Language.Lang }}" href="{{ .Permalink }}">
+{{- range .Translations }}
+<link rel="alternate" hreflang="{{ .Site.Language.Lang }}" href="{{ .Permalink }}">
+{{- end }}
