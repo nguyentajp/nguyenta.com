@@ -34,6 +34,7 @@
   --chikuei: #5a6055;    /* 竹影 — bóng tre, dùng cho chữ phụ */
   --byakuroku: #dce3d6;  /* 白緑 — dải dưới mặt đất */
   --fushi: #c5cbbf;      /* 節 — đốt tre, dùng cho đường mảnh */
+  --kabe: #858b7f;       /* 壁 — viền ô nhập liệu, đủ 3:1 theo WCAG 1.4.11 */
   --icho: #6b4f0d;       /* 銀杏 — vàng lá bạch quả, chỉ khi tương tác */
   --shu: #a8402e;        /* 朱 — mực dấu, chỉ con dấu 元 */
 
@@ -42,6 +43,7 @@
   --muted: var(--chikuei);
   --band: var(--byakuroku);
   --rule: var(--fushi);
+  --field: var(--kabe);
   --accent: var(--icho);
   --seal: var(--shu);
 
@@ -88,6 +90,7 @@
     --muted: #9ca296;
     --band: #222720;
     --rule: #363b33;
+    --field: #646960;
     --accent: #e3c05e;
     --seal: #c4493d;
     color-scheme: dark;
@@ -998,7 +1001,7 @@ main {
   flex: 1;
   min-width: 0;
   padding: 0.5rem 0.75rem;
-  border: 1px solid var(--rule);
+  border: 1px solid var(--field);
   border-inline-end: 0;
   border-radius: 0;
   background: var(--bg);
@@ -1117,6 +1120,24 @@ main {
     padding-block-start: var(--space-6);
     border-block-start: 1px solid var(--rule);
   }
+
+  /* Sidebar xuống cuối trang thì ảnh chân dung không cần to bằng cả cột:
+     thành ảnh nhỏ nằm cạnh lời giới thiệu, như chữ ký cuối thư */
+  .widget-about:has(.avatar) {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 0 var(--space-4);
+    align-content: start;
+  }
+
+  .widget-about .widget-title {
+    grid-column: 1 / -1;
+  }
+
+  .widget-about .avatar {
+    grid-row: span 2;
+    margin: 0;
+  }
 }
 
 @media (max-width: 47.999rem) {
@@ -1171,10 +1192,16 @@ main {
     grid-column: 1;
   }
 
-  /* Ảnh tràn sát hai mép màn hình */
+  /* Ảnh tràn sát hai mép màn hình, nên góc vuông: bo góc sát mép màn hình
+     trông như bị cắt lẹm */
   .figure,
   .cover {
     margin-inline: calc(var(--gutter) * -1);
+  }
+
+  .figure img,
+  .cover img {
+    border-radius: 0;
   }
 
   .figure figcaption {
@@ -1433,6 +1460,11 @@ html:has(.lightbox[open]) {
   /* Một cột thì không cần cắt ảnh cho đều hàng nữa */
   .gallery-item img {
     aspect-ratio: auto;
+    border-radius: 0;
+  }
+
+  .video-frame {
+    border-radius: 0;
   }
 
   .gallery-item figcaption,
@@ -1709,7 +1741,7 @@ html:has(.lightbox[open]) {
   width: 100%;
   padding: 0 0 var(--space-2);
   border: 0;
-  border-block-end: 1px solid var(--rule);
+  border-block-end: 1px solid var(--field);
   border-radius: 0;
   background: none;
   color: var(--ink);
@@ -1725,9 +1757,11 @@ html:has(.lightbox[open]) {
   opacity: 1;
 }
 
+/* Focus: gạch chân đậm thành 2px bằng box-shadow, không đẩy chữ bên dưới */
 .search-form input:focus {
   outline: none;
   border-block-end-color: var(--ink);
+  box-shadow: 0 1px 0 var(--ink);
 }
 
 .search-form input::-webkit-search-cancel-button {
