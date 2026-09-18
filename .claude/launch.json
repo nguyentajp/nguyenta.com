@@ -4,8 +4,27 @@
     {
       "name": "hugo",
       "runtimeExecutable": "/opt/homebrew/bin/hugo",
-      "runtimeArgs": ["server", "--port", "1313", "--disableFastRender", "--buildDrafts"],
+      "runtimeArgs": [
+        "server",
+        "--port",
+        "1313",
+        "--disableFastRender",
+        "--buildDrafts"
+      ],
       "port": 1313
+    },
+    {
+      "name": "prod",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "--yes",
+        "serve@14",
+        "public",
+        "-l",
+        "4173",
+        "--no-clipboard"
+      ],
+      "port": 4173
     }
   ]
 }
