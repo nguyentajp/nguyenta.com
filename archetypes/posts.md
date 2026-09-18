@@ -13,5 +13,8 @@ description: ""
 categories: []
 # Thẻ viết tự nhiên, có dấu: ["osaka", "mùa thu"]
 tags: []
+# Ảnh bìa: tên một file ảnh trong thư mục bài, ví dụ "minoo.jpg".
+# Để trống thì lấy ảnh đầu tiên trong bài.
+cover: ""
 draft: true
 ---
