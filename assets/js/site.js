@@ -1,6 +1,6 @@
 // JavaScript của cả site. Chỉ bốn việc, việc nào không có phần tử tương ứng
 // trên trang thì bỏ qua:
-//   1. Kamon tự vẽ khi vào trang chủ lần đầu trong phiên (chuyển động duy nhất)
+//   1. Kamon tự vẽ khi vào trang chủ lần đầu trong phiên
 //   2. Lightbox: bấm ảnh để xem lớn, Esc hoặc bấm nền để đóng, ← → để chuyển
 //   3. Video YouTube: chỉ tải iframe khi người đọc bấm phát
 //   4. Trang 静: Esc hoặc chạm vào đâu cũng quay lại trang trước

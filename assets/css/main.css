@@ -17,7 +17,7 @@
      7. Bài viết
      8. Sidebar
      9. Chân trang
-    10. Chuyển động duy nhất
+    10. Chuyển động
     11. Ảnh, gallery, video, lightbox
     12. Lưu trữ, danh mục, thẻ, ảnh
     13. Trang 静
@@ -1067,10 +1067,39 @@ main {
 }
 
 
-/* ── 10. Chuyển động duy nhất ────────────────────────────────────────────── */
-/* Cả site chỉ có một khoảnh khắc chuyển động: kamon tự vẽ khi vào trang chủ
-   lần đầu trong mỗi phiên. Không có hiệu ứng khi cuộn, không transition khi
-   rê chuột. */
+/* ── 10. Chuyển động ─────────────────────────────────────────────────────── */
+/* Chuyển động chỉ ở mức thì thầm, không có hiệu ứng khi cuộn:
+   - kamon tự vẽ khi vào trang chủ lần đầu trong mỗi phiên
+   - màu nhấn loang ra khi rê chuột: hiện nhanh, phai chậm, như mực thấm giấy
+   Người đọc bật "giảm chuyển động" trong hệ điều hành thì tắt hết. */
+
+/* Hiện nhanh để thấy ngay mình đang chạm vào đâu; phai chậm để mắt không bị
+   giật khi chuột lướt qua nhiều link liền nhau */
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    --ink-in: 120ms;
+    --ink-out: 420ms;
+  }
+
+  a,
+  button,
+  .neighbour-title,
+  .brand-mark,
+  .video-pill {
+    transition-property: color, text-decoration-color, background-color, border-color;
+    transition-duration: var(--ink-out);
+    transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  a:hover,
+  button:hover,
+  .neighbour:hover .neighbour-title,
+  .brand:hover .brand-mark,
+  .video-play:hover .video-pill {
+    transition-duration: var(--ink-in);
+  }
+}
+
 .kamon-draw .leaf {
   transform-box: view-box;
   transform-origin: 50% 50%;
