@@ -75,6 +75,9 @@
   /* Thang cỡ chữ cho tiêu đề, bước gần √2 */
   --size-brand: clamp(2.1rem, 4vw, 2.75rem);
   --size-mark: 3.75rem;
+  /* Tên blog ở trang con: nhỏ hơn tiêu đề bài một bậc rõ rệt */
+  --size-brand-sub: clamp(1.75rem, 2.8vw, 2rem);
+  --size-mark-sub: 3rem;
   --size-title: clamp(1.9rem, 3.4vw, 2.6rem);
   --size-lead: clamp(1.75rem, 3vw, 2.25rem);
 
@@ -465,6 +468,14 @@ main {
   font-weight: 450;
   line-height: 1;
   letter-spacing: 0.02em;
+}
+
+.masthead:not(.is-home) .brand-name {
+  font-size: var(--size-brand-sub);
+}
+
+.masthead:not(.is-home) .brand-mark {
+  width: var(--size-mark-sub);
 }
 
 .brand:hover {
@@ -1174,6 +1185,8 @@ main {
     --text-size: 1.0625rem;
     --size-mark: 3rem;
     --size-brand: 1.9rem;
+    --size-mark-sub: 2.5rem;
+    --size-brand-sub: 1.6rem;
   }
 
   .masthead-brand {

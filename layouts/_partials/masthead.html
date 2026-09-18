@@ -1,7 +1,9 @@
 {{- /* Đầu trang đặt giữa như bìa một cuốn sổ: kamon, tên blog, một dòng mô tả,
      rồi hàng menu nằm giữa hai đường mảnh. Trên trang chủ, kamon là bản tự vẽ
      (nét vẽ duy nhất của site) và tên blog là <h1>. */ -}}
-<header class="masthead">
+{{- /* Ở trang chủ, tên blog là thứ lớn nhất trang. Ở các trang khác, tên blog
+     nhỏ lại để tiêu đề bài viết là điểm nhìn đầu tiên. */}}
+<header class="masthead{{ if .IsHome }} is-home{{ end }}">
   <div class="shell masthead-brand">
     <a class="brand" href="{{ "" | relLangURL }}">
       {{- if .IsHome }}
