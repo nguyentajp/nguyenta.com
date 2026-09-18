@@ -1,0 +1,29 @@
+<!doctype html>
+<!--
+  Trang quản trị Decap CMS: https://nguyenta.com/admin/
+  Cấu hình form nằm ở config.yml bên cạnh; các nút chèn Ảnh, Bộ ảnh, Video
+  YouTube nằm ở cms.js.
+
+  Decap tải từ jsDelivr, ghim đúng một phiên bản. "integrity" là mã băm của
+  file: nếu CDN trả về file khác dù chỉ một byte, trình duyệt từ chối chạy.
+  Nâng phiên bản thì phải tính lại mã băm:
+    curl -sL https://cdn.jsdelivr.net/npm/decap-cms@X.Y.Z/dist/decap-cms.js \
+      | openssl dgst -sha384 -binary | openssl base64 -A
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Quản trị — Gen</title>
+  <link rel="icon" href="/brand/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+</head>
+<body>
+  <!-- Phải nằm trong body: Decap gắn giao diện vào document.body ngay khi chạy -->
+  <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.16.2/dist/decap-cms.js"
+          integrity="sha384-tbnFsiSBvMm2vOLu70Mx7HlnMj6kXxR0Tdo0USlY9564mb1AyMnIdCjOZ738PWPr"
+          crossorigin="anonymous"></script>
+  <script src="cms.js"></script>
+</body>
+</html>

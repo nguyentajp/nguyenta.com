@@ -25,6 +25,15 @@
         "--no-clipboard"
       ],
       "port": 4173
+    },
+    {
+      "name": "decap",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "--yes",
+        "decap-server@3.11.2"
+      ],
+      "port": 8081
     }
   ]
 }

@@ -1,0 +1,232 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Cấu hình Decap CMS cho nguyenta.com
+# Tài liệu: https://decapcms.org/docs/configuration-options/
+#
+# Mỗi bài là một thư mục (page bundle): index.md và ảnh của bài nằm chung, ví
+# dụ content/vi/posts/duong-ve-nha/index.md + content/vi/posts/duong-ve-nha/anh.jpg.
+# Ảnh tải lên trong form bài viết vì vậy vào thẳng thư mục của bài đó.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Giao diện CMS bằng tiếng Việt
+locale: vi
+
+backend:
+  name: github
+  # Đổi nếu Bước 7 đặt tên repo khác
+  repo: nguyentajp/nguyenta.com
+  branch: main
+  # Địa chỉ máy chủ OAuth (đổi mã đăng nhập GitHub thành token). GitHub Pages
+  # chỉ phục vụ file tĩnh nên không tự làm được việc này. Điền ở Bước 7.
+  # base_url: https://...
+  commit_messages:
+    create: "Viết {{collection}}: {{slug}}"
+    update: "Sửa {{collection}}: {{slug}}"
+    delete: "Xoá {{collection}}: {{slug}}"
+    uploadMedia: "Tải lên {{path}}"
+    deleteMedia: "Xoá {{path}}"
+
+# Viết bài ở máy, không cần GitHub: mở một terminal chạy
+#   npx decap-server
+# rồi mở http://localhost:1313/admin/ trong lúc hugo server đang chạy.
+# Trên nguyenta.com dòng này không có tác dụng.
+local_backend: true
+
+site_url: https://nguyenta.com
+display_url: https://nguyenta.com
+# Ảnh PNG có sẵn kích thước; file SVG không khai kích thước sẽ bị Decap phóng to hết màn hình
+logo_url: /apple-touch-icon.png
+
+# Ảnh dùng chung (cho các trang như Giới thiệu). Ảnh của bài viết thì không
+# vào đây mà vào thư mục của bài, xem media_folder trong từng collection.
+media_folder: assets/images
+public_folder: images
+
+# Tên thư mục bài tạo từ tiêu đề: bỏ dấu, chữ thường, nối bằng gạch ngang.
+# "Đường về nhà" → duong-ve-nha. Tên thư mục cũng là đường dẫn URL của bài.
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+# Tắt khung xem trước: khung này dùng CSS của Decap, không giống site thật,
+# dễ gây hiểu nhầm. Muốn xem thật thì mở hugo server.
+editor:
+  preview: false
+
+# GitHub Pages không có "deploy preview" (bản build xem thử cho từng lần lưu),
+# nên tắt để Decap không cố tải rồi báo lỗi "Không thể tải xem trước"
+show_preview_links: false
+
+collections:
+  # ── Bài viết tiếng Việt ──────────────────────────────────────────────────
+  - name: bai-viet
+    label: "Bài viết · Tiếng Việt"
+    label_singular: "bài viết tiếng Việt"
+    description: "Bài mới luôn bắt đầu là bản nháp. Nút “Công bố” chỉ là lưu bài; bài hiện lên site khi tắt ô “Bản nháp” rồi Công bố."
+    folder: content/vi/posts
+    path: "{{slug}}/index"
+    media_folder: ""
+    public_folder: ""
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} · {{date | date('DD/MM/YYYY')}}{{draft | ternary(' · bản nháp', '')}}"
+    sortable_fields: [date, title]
+    view_filters:
+      - label: "Bản nháp"
+        field: draft
+        pattern: true
+      - label: "Đã đăng"
+        field: draft
+        pattern: false
+    view_groups:
+      - label: "Năm"
+        field: date
+        pattern: '\d{4}'
+    fields:
+      - label: "Tiêu đề"
+        name: title
+        widget: string
+      - &date
+        label: "Ngày đăng"
+        name: date
+        widget: datetime
+        default: "{{now}}"
+        format: "YYYY-MM-DDTHH:mm:ssZ"
+        date_format: "DD/MM/YYYY"
+        time_format: "HH:mm"
+        hint: "Chọn giờ trong tương lai để hẹn giờ đăng: bài hiện lên ở lần build đầu tiên sau giờ đó (site tự build lại mỗi ngày lúc 0:05)."
+      - &draft
+        label: "Bản nháp"
+        name: draft
+        widget: boolean
+        default: true
+        hint: "Bật: bài chỉ nằm trong CMS, chưa hiện trên site. Tắt rồi bấm Công bố: khoảng hai phút sau bài lên site. (Chữ “Đã công bố” ở góc trên chỉ có nghĩa là đã lưu.)"
+      - label: "Mô tả ngắn"
+        name: description
+        widget: text
+        required: false
+        hint: "Một hai câu. Hiện dưới tiêu đề trong danh sách bài, khi chia sẻ link lên mạng xã hội và trong kết quả tìm kiếm."
+      - label: "Danh mục"
+        name: categories
+        widget: select
+        multiple: true
+        min: 1
+        max: 1
+        options:
+          - { label: "Học tập", value: hoc-tap }
+          - { label: "Đời sống", value: doi-song }
+          - { label: "Du lịch", value: du-lich }
+          - { label: "Suy nghĩ", value: suy-nghi }
+          - { label: "Nhật ký", value: nhat-ky }
+      - label: "Thẻ"
+        name: tags
+        widget: list
+        required: false
+        hint: "Viết tự nhiên, có dấu, cách nhau bằng dấu phẩy. Ví dụ: osaka, mùa thu"
+      - &cover
+        label: "Ảnh bìa"
+        name: cover
+        widget: image
+        required: false
+        choose_url: false
+        hint: "Hiện trong danh sách bài và khi chia sẻ link. Để trống thì lấy ảnh đầu tiên trong bài."
+      - &body
+        label: "Nội dung"
+        name: body
+        widget: markdown
+        modes: [rich_text, raw]
+        buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
+        editor_components: [image, gallery, youtube]
+        hint: "Dùng nút + để chèn Ảnh, Bộ ảnh hoặc Video YouTube."
+
+  # ── Bài viết tiếng Nhật ──────────────────────────────────────────────────
+  # Thường tạo bằng lệnh /dich trong Claude Code; ở đây để sửa và xuất bản.
+  - name: kiji
+    label: "Bài viết · Tiếng Nhật"
+    label_singular: "bài viết tiếng Nhật"
+    description: "Bản dịch tiếng Nhật. Thường tạo bằng lệnh /dich trong Claude Code rồi sửa và xuất bản ở đây."
+    folder: content/ja/posts
+    path: "{{slug}}/index"
+    media_folder: ""
+    public_folder: ""
+    create: true
+    # Tiêu đề tiếng Nhật không bỏ dấu thành chữ Latin được, nên tên thư mục
+    # lấy từ ô "Đường dẫn" (romaji) chứ không lấy từ tiêu đề
+    slug: "{{fields.slug}}"
+    summary: "{{title}} · {{date | date('DD/MM/YYYY')}}{{draft | ternary(' · bản nháp', '')}}"
+    sortable_fields: [date, title]
+    view_filters:
+      - label: "Bản nháp"
+        field: draft
+        pattern: true
+      - label: "Đã đăng"
+        field: draft
+        pattern: false
+    fields:
+      - label: "Tiêu đề (tiếng Nhật)"
+        name: title
+        widget: string
+      - label: "Đường dẫn (romaji)"
+        name: slug
+        widget: string
+        pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', "Chỉ chữ thường không dấu, số và gạch ngang. Ví dụ: take-no-ha-ga-naru-heya-de"]
+        hint: "Phần cuối của URL: nguyenta.com/ja/kiji/<đường-dẫn>/. Viết romaji, nối bằng gạch ngang."
+      - label: "Mã nối bản dịch"
+        name: translationKey
+        widget: string
+        required: false
+        hint: "Tên thư mục của bản tiếng Việt, ví dụ tieng-la-tre-luc-chuyen-mua. Hai bản cùng mã thì nút chuyển ngôn ngữ nối đúng bài."
+      - *date
+      - *draft
+      - label: "Mô tả ngắn"
+        name: description
+        widget: text
+        required: false
+      - label: "Danh mục"
+        name: categories
+        widget: select
+        multiple: true
+        min: 1
+        max: 1
+        options:
+          - { label: "学び · Học tập", value: manabi }
+          - { label: "暮らし · Đời sống", value: kurashi }
+          - { label: "旅 · Du lịch", value: tabi }
+          - { label: "思索 · Suy nghĩ", value: shisaku }
+          - { label: "日記 · Nhật ký", value: nikki }
+      - label: "Thẻ"
+        name: tags
+        widget: list
+        required: false
+        hint: "Viết bằng tiếng Nhật, cách nhau bằng dấu phẩy. Tra GLOSSARY.md để dùng đúng thẻ đã có."
+      - *cover
+      - *body
+
+  # ── Các trang cố định ────────────────────────────────────────────────────
+  - name: trang
+    label: "Trang"
+    label_singular: "trang"
+    description: "Các trang không phải bài viết."
+    files:
+      - name: gioi-thieu
+        label: "Giới thiệu · Tiếng Việt"
+        file: content/vi/about.md
+        fields:
+          - { label: "Tiêu đề", name: title, widget: string }
+          - label: "Nội dung"
+            name: body
+            widget: markdown
+            modes: [rich_text, raw]
+            buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
+            editor_components: [image]
+      - name: profile
+        label: "Giới thiệu · Tiếng Nhật"
+        file: content/ja/about.md
+        fields:
+          - { label: "Tiêu đề", name: title, widget: string }
+          - label: "Nội dung"
+            name: body
+            widget: markdown
+            modes: [rich_text, raw]
+            buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
+            editor_components: [image]
