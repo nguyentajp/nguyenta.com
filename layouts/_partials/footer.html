@@ -6,8 +6,11 @@
       <dt class="under-label">{{ i18n "nav_categories" }}</dt>
       <dd>
         <div class="tags">
-          {{- range site.Taxonomies.categories }}
-            <a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }} <span class="count">{{ len .Pages }}</span></a>
+          {{- /* Năm danh mục luôn theo thứ tự cố định (weight), không theo số bài */}}
+          {{- with site.GetPage "/categories" }}
+            {{- range .Pages.ByWeight }}
+              <a href="{{ .RelPermalink }}">{{ .LinkTitle }} <span class="count">{{ len .Pages }}</span></a>
+            {{- end }}
           {{- end }}
         </div>
       </dd>

@@ -1,9 +1,40 @@
+{{- /* Hai hệ thống khác nhau dùng chung template này:
+     - Danh mục: 5 thân tre cố định, mỗi cái một hàng lớn.
+     - Thẻ: thân rễ ngầm, nhiều và tự do, xếp thành một dòng chữ chảy liền. */ -}}
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
-  {{ .Content }}
-  <ul>
-    {{ range .Pages }}
-      <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a> ({{ i18n "list_count" (dict "Count" (len .Pages)) }})</li>
-    {{ end }}
-  </ul>
+  <div class="page">
+    <div class="row">
+      <h1 class="label page-label">{{ .Title }}</h1>
+      <div class="col">
+        {{- with .Description }}<p class="page-intro">{{ . }}</p>{{ end }}
+      </div>
+    </div>
+
+    {{- if eq .Data.Plural "categories" }}
+      {{- range .Pages.ByWeight }}
+        <section class="row category">
+          <p class="label category-count">{{ i18n "list_count" (dict "Count" (len .Pages)) }}</p>
+          <div class="col">
+            <h2 class="category-name"><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+            {{- with .Description }}<p class="category-desc">{{ . }}</p>{{ end }}
+            {{- with first 3 .Pages }}
+              <ul class="category-latest" aria-label="{{ i18n "categories_latest" }}">
+                {{- range . }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}
+              </ul>
+            {{- end }}
+          </div>
+        </section>
+      {{- end }}
+    {{- else }}
+      <div class="row">
+        <div class="col">
+          <ul class="tag-cloud">
+            {{- range .Data.Terms.Alphabetical }}
+              <li><a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}</a> <span class="count">{{ .Count }}</span></li>
+            {{- end }}
+          </ul>
+        </div>
+      </div>
+    {{- end }}
+  </div>
 {{ end }}

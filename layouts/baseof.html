@@ -2,14 +2,18 @@
 <html lang="{{ .Site.Language.Lang }}">
 <head>
   {{ partial "head.html" . }}
+  {{- /* Trang nào cần thêm thẻ riêng trong <head> (ví dụ preload) thì định nghĩa block này */}}
+  {{ block "head" . }}{{ end }}
 </head>
 <body>
   <a class="skip" href="#noi-dung">{{ i18n "skip_to_content" }}</a>
-  {{ partial "masthead.html" . }}
+  {{- /* Trang có "bare: true" trong front matter (trang 静) không có header và
+       footer. Dùng cờ thay vì block rỗng: Go template bỏ qua define có thân rỗng. */}}
+  {{ if not .Params.bare }}{{ partial "masthead.html" . }}{{ end }}
   <main id="noi-dung">
     {{ block "main" . }}{{ end }}
   </main>
-  {{ partial "footer.html" . }}
+  {{ if not .Params.bare }}{{ partial "footer.html" . }}{{ end }}
   {{ partial "lightbox.html" . }}
   {{ partial "scripts.html" . }}
   {{- /* Trang nào cần thêm JS riêng (ví dụ Tìm kiếm) thì định nghĩa block này */}}

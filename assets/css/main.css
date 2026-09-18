@@ -1199,3 +1199,197 @@ html:has(.lightbox[open]) {
     translate: none;
   }
 }
+
+/* ── 12. Lưu trữ, danh mục, thẻ, ảnh ─────────────────────────────────────── */
+.years {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  font-variant-numeric: tabular-nums;
+}
+
+.archive-year + .archive-year {
+  margin-block-start: var(--space-6);
+}
+
+.archive-year-label {
+  font-size: 1.25rem;
+  font-weight: 450;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.archive-month {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.archive-month:not(:first-child) {
+  margin-block-start: var(--space-5);
+}
+
+.archive-list {
+  list-style: none;
+  margin-block-start: var(--space-2);
+}
+
+.archive-list li {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: baseline;
+  padding-block: 0.35rem;
+}
+
+.archive-list time {
+  font-size: 0.875rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.archive-list a {
+  text-decoration-color: transparent;
+}
+
+.archive-list a:hover {
+  text-decoration-color: var(--accent);
+}
+
+.category + .category {
+  margin-block-start: var(--space-6);
+}
+
+.category-count {
+  font-variant-numeric: tabular-nums;
+  padding-block-start: 0.7rem;
+}
+
+.category-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+  font-weight: 450;
+  line-height: 1.25;
+}
+
+.category-name:lang(ja) {
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.category-name a {
+  text-decoration-color: transparent;
+}
+
+.category-desc {
+  margin-block-start: var(--space-2);
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.category-latest {
+  list-style: none;
+  margin-block-start: var(--space-4);
+  font-size: 0.9375rem;
+}
+
+.category-latest li + li {
+  margin-block-start: var(--space-1);
+}
+
+.tag-cloud {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-5);
+  font-size: 1.0625rem;
+}
+
+/* Contact sheet: hàng ảnh giữ tỷ lệ gốc. Mỗi ảnh lớn lên theo tỷ lệ của
+   chính nó (--r = rộng ÷ cao), nên cả hàng cao đều nhau mà không ảnh nào bị
+   cắt. Không cần JavaScript. */
+.sheet + .sheet {
+  margin-block-start: var(--space-6);
+}
+
+.sheet-row {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.sheet-row li {
+  flex: var(--r) 1 calc(var(--r) * 11rem);
+}
+
+/* Phần tử rỗng ở cuối hàng hút hết chỗ thừa, để hàng cuối không bị kéo giãn */
+.sheet-row::after {
+  content: "";
+  flex: 999 1 0;
+}
+
+.sheet-row img {
+  width: 100%;
+  aspect-ratio: var(--r);
+  background: var(--band);
+}
+
+@media (max-width: 47.999rem) {
+  .sheet-row {
+    margin-inline: calc(var(--gutter) * -1);
+  }
+
+  .sheet-row li {
+    flex-basis: calc(var(--r) * 7rem);
+  }
+
+  .category-count {
+    padding-block-start: 0;
+  }
+}
+
+/* ── 13. Trang 静 ────────────────────────────────────────────────────────── */
+/* Không header, không footer, không chuyển động: chỉ một vòng mực và một dòng
+   chữ giữa trang. Cả trang là một vùng bấm để quay lại. */
+.sei {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-6);
+  min-height: 100dvh;
+  padding: var(--gutter);
+  text-align: center;
+  cursor: default;
+}
+
+.enso {
+  width: min(62vmin, 30rem);
+  aspect-ratio: 1;
+  background: var(--ink);
+  -webkit-mask: var(--enso) center / contain no-repeat;
+  mask: var(--enso) center / contain no-repeat;
+}
+
+.sei-line {
+  max-width: 26em;
+  font-size: 1rem;
+  line-height: 1.9;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-wrap: balance;
+}
+
+/* Tiếng Nhật không có dấu cách giữa các từ: ngắt theo cụm từ để không bao giờ
+   tách đôi một chữ như 「ありませ／ん」 */
+.sei-line:lang(ja) {
+  max-width: 32em;
+  letter-spacing: 0.14em;
+  word-break: auto-phrase;
+}
+
+.sei-back {
+  font-size: 0.8125rem;
+  color: var(--muted);
+  text-decoration-color: var(--rule);
+}

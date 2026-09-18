@@ -108,6 +108,17 @@ other = "消す"
 [archive_year]
 other = "{{ .Year }} 年"
 
+[archive_month]
+other = "{{ .Month }}月"
+[archive_jump]
+other = "年ごとに見る"
+[photos_intro]
+other = "記事に載せた写真です。新しい順に並んでいます。写真を押すと大きく表示されます。"
+[photos_none]
+other = "まだ写真がありません。"
+[categories_latest]
+other = "最新の記事"
+
 [error_404_title]
 other = "このページはまだ芽を出していません"
 [error_404_text]
@@ -117,6 +128,8 @@ other = "ホームへ"
 
 [sei_line]
 other = "ここでは読むものがありません。少し休んでいきませんか。"
+[sei_enso_alt]
+other = "一筆で描いた円相"
 [sei_back]
 other = "戻る"
 

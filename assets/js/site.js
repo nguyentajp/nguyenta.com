@@ -1,8 +1,9 @@
-// JavaScript của cả site. Chỉ ba việc, việc nào không có phần tử tương ứng trên
-// trang thì bỏ qua:
+// JavaScript của cả site. Chỉ bốn việc, việc nào không có phần tử tương ứng
+// trên trang thì bỏ qua:
 //   1. Kamon tự vẽ khi vào trang chủ lần đầu trong phiên (chuyển động duy nhất)
 //   2. Lightbox: bấm ảnh để xem lớn, Esc hoặc bấm nền để đóng, ← → để chuyển
 //   3. Video YouTube: chỉ tải iframe khi người đọc bấm phát
+//   4. Trang 静: Esc hoặc chạm vào đâu cũng quay lại trang trước
 
 // ── 1. Kamon ────────────────────────────────────────────────────────────────
 // Lần thứ hai trở đi trong cùng phiên, kamon hiện sẵn. Người đọc bật
@@ -114,5 +115,33 @@
       frame.classList.add("is-playing");
       iframe.focus();
     });
+  });
+})();
+
+// ── 4. Trang 静 ─────────────────────────────────────────────────────────────
+// Link "Quay lại" trỏ về trang chủ, nên không có JS vẫn ra được. Có JS thì
+// quay lại đúng bài người đọc vừa rời đi, nếu họ tới từ chính site này.
+(() => {
+  const sei = document.querySelector(".sei");
+  if (!sei) return;
+
+  const leave = () => {
+    let cameFromHere = false;
+    try {
+      cameFromHere = new URL(document.referrer).origin === location.origin;
+    } catch {
+      // Không có referrer (mở thẳng link): về trang chủ.
+    }
+    if (cameFromHere && history.length > 1) history.back();
+    else location.href = sei.dataset.home;
+  };
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") leave();
+  });
+
+  sei.addEventListener("click", (event) => {
+    event.preventDefault();
+    leave();
   });
 })();

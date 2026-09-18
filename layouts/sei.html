@@ -1,0 +1,23 @@
+{{- /* Trang 静: một căn phòng nghỉ, không có gì để đọc. Chỉ vòng ensō và một
+     dòng chữ; front matter đặt bare: true nên không có header và footer.
+     Lối vào duy nhất là chữ "Tĩnh" ở
+     dải dưới mặt đất. Bấm Esc hoặc chạm vào đâu cũng quay lại trang trước.
+
+     Ensō là ảnh mặt nạ: phần có mực nằm ở kênh alpha, màu do CSS tô bằng
+     var(--ink), nên dark mode dùng lại đúng một file. */ -}}
+{{ define "head" }}
+  {{- with resources.Get "brand/enso.webp" }}
+    <link rel="preload" as="image" href="{{ .RelPermalink }}" type="image/webp">
+  {{- end }}
+{{ end }}
+
+{{ define "main" }}
+  <div class="sei" data-home="{{ "" | relLangURL }}">
+    {{- with resources.Get "brand/enso.webp" }}
+      <div class="enso" role="img" aria-label="{{ i18n "sei_enso_alt" }}"
+           style="{{ printf "--enso: url(%s)" .RelPermalink | safeCSS }}"></div>
+    {{- end }}
+    <p class="sei-line">{{ i18n "sei_line" }}</p>
+    <a class="sei-back" href="{{ "" | relLangURL }}">{{ i18n "sei_back" }}</a>
+  </div>
+{{ end }}

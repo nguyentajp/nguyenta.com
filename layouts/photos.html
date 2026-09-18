@@ -1,0 +1,37 @@
+{{- /* Trang Ảnh: mỗi bài là một tờ contact sheet. Ngày và tên bài ở lề, bên phải
+     là một hàng ảnh giữ đúng tỷ lệ gốc. Ảnh cùng dùng lightbox của cả trang,
+     nên ← → đi xuyên qua mọi ảnh. */ -}}
+{{ define "main" }}
+  {{- $sheets := slice -}}
+  {{- range where .Site.RegularPages "Section" "posts" -}}
+    {{- $imgs := .Resources.ByType "image" -}}
+    {{- if $imgs }}{{ $sheets = $sheets | append (dict "page" . "imgs" $imgs) }}{{ end -}}
+  {{- end -}}
+  <div class="page">
+    <div class="row">
+      <h1 class="label page-label">{{ .Title }}</h1>
+      <div class="col"><p class="page-intro">{{ i18n "photos_intro" }}</p></div>
+    </div>
+    {{- range $sheets }}
+      {{- $page := .page }}
+      <section class="row sheet">
+        <div class="marg">
+          <p><time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ $page.Date.Format (i18n "date_full") }}</time></p>
+          <p><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></p>
+        </div>
+        <div class="wide">
+          <ul class="sheet-row">
+            {{- range .imgs }}
+              {{- $ratio := div (float .Width) .Height }}
+              <li style="--r: {{ printf "%.3f" $ratio }}">
+                {{ partial "picture.html" (dict "res" . "alt" (or .Title $page.Title) "caption" $page.Title "sizes" "(min-width: 64rem) 22rem, 50vw") }}
+              </li>
+            {{- end }}
+          </ul>
+        </div>
+      </section>
+    {{- else }}
+      <div class="row"><p class="col">{{ i18n "photos_none" }}</p></div>
+    {{- end }}
+  </div>
+{{ end }}

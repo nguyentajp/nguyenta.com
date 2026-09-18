@@ -108,6 +108,17 @@ other = "Xoá"
 [archive_year]
 other = "Năm {{ .Year }}"
 
+[archive_month]
+other = "Tháng {{ .Month }}"
+[archive_jump]
+other = "Nhảy tới năm"
+[photos_intro]
+other = "Ảnh trong các bài viết, mới nhất ở trên. Bấm vào ảnh để xem lớn."
+[photos_none]
+other = "Chưa có ảnh nào."
+[categories_latest]
+other = "Mới nhất"
+
 [error_404_title]
 other = "Trang này chưa mọc lên"
 [error_404_text]
@@ -117,6 +128,8 @@ other = "Về trang chủ"
 
 [sei_line]
 other = "Ở đây không có gì để đọc. Nghỉ một chút."
+[sei_enso_alt]
+other = "Vòng ensō vẽ bằng một nét bút lông"
 [sei_back]
 other = "Quay lại"
 

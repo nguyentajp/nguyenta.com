@@ -1,10 +1,19 @@
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
-  {{ .Content }}
-  <ul>
-    {{ range .Pages }}
-      <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02.01.2006" }}</time>
-        <a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-    {{ end }}
-  </ul>
+  <div class="page">
+    <div class="row">
+      <p class="label">
+        {{- with .Parent }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end -}}
+      </p>
+      <div class="col">
+        <h1 class="page-title">{{ .Title }}</h1>
+        {{- with .Description }}<p class="page-intro">{{ . }}</p>{{ end }}
+      </div>
+    </div>
+    <div class="row">
+      <p class="label">{{ i18n "list_count" (dict "Count" (len .Pages)) }}</p>
+      <div class="col">
+        {{ partial "entries.html" (dict "pages" .Pages "excerpt" true) }}
+      </div>
+    </div>
+  </div>
 {{ end }}
