@@ -5,6 +5,29 @@
 // layouts/_shortcodes/). Khi mở lại bài, pattern đọc ngược cú pháp đó thành
 // form, nên người viết không phải nhớ cú pháp nào.
 
+// ── Nhắc chạy decap-server khi viết bài ở máy ─────────────────────────────
+// Mở /admin ở localhost mà decap-server chưa chạy thì Decap lặng lẽ chuyển
+// sang đăng nhập GitHub thật, rồi báo lỗi "Repo not found" rất khó hiểu. Ở
+// đây kiểm tra trước và hiện một dòng nhắc bằng tiếng Việt.
+if (["localhost", "127.0.0.1"].includes(location.hostname)) {
+  fetch("http://localhost:8081/api/v1", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "info" }),
+  }).catch(() => {
+    const note = document.createElement("div");
+    note.setAttribute("role", "alert");
+    note.style.cssText =
+      "position:fixed;inset:0 0 auto;z-index:99999;padding:12px 16px;background:#6b4f0d;color:#fff;" +
+      "font:15px/1.5 system-ui,sans-serif;text-align:center";
+    note.innerHTML =
+      "Chưa chạy <b>decap-server</b>, nên CMS sẽ đòi đăng nhập GitHub. " +
+      "Mở thêm một terminal, chạy <code style=\"background:#0003;padding:1px 6px;border-radius:4px\">npx decap-server</code> " +
+      "rồi tải lại trang này.";
+    document.body.append(note);
+  });
+}
+
 // Chuỗi đặt trong dấu nháy kép của Markdown hoặc shortcode: thoát dấu nháy
 const quote = (text) => String(text ?? "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
 const unquote = (text) => String(text ?? "").replace(/\\(["\\])/g, "$1");
