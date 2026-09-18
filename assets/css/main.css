@@ -1393,3 +1393,62 @@ html:has(.lightbox[open]) {
   color: var(--muted);
   text-decoration-color: var(--rule);
 }
+
+/* ── 14. Tìm kiếm ────────────────────────────────────────────────────────── */
+/* Ô tìm kiếm là một dòng chữ lớn có gạch chân, không khung, không bo góc */
+.search-form input {
+  width: 100%;
+  padding: 0 0 var(--space-2);
+  border: 0;
+  border-block-end: 1px solid var(--rule);
+  border-radius: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.4vw, 1.75rem);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search-form input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.search-form input:focus {
+  outline: none;
+  border-block-end-color: var(--ink);
+}
+
+.search-form input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.search-status {
+  min-height: 1.5em;
+  margin-block: var(--space-4) var(--space-5);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+/* Kết quả tìm kiếm có thể trải nhiều năm nên ngày có đủ năm: cột ngày rộng hơn */
+.search-results .entry {
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+}
+
+.search-results .entry-date {
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 47.999rem) {
+  .search-results .entry {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.search-results mark {
+  background: var(--band);
+  color: var(--ink);
+}

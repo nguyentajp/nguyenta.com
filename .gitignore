@@ -11,6 +11,9 @@
 # Node (Pagefind, Decap CMS server chạy ở local)
 node_modules/
 
+# Chỉ mục tìm kiếm cho hugo server ở máy, do tools/dev.sh sinh ra
+static/pagefind/
+
 # Python venv cho các script font và brand: tạo bằng
 #   python3 -m venv .venv && ./.venv/bin/pip install "fonttools[woff]" brotli numpy pillow
 .venv/

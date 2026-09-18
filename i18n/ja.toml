@@ -105,6 +105,9 @@ other = "検索中"
 [search_clear]
 other = "消す"
 
+[search_noscript]
+other = "検索には JavaScript が必要です。すべての記事はアーカイブから見られます。"
+
 [archive_year]
 other = "{{ .Year }} 年"
 

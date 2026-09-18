@@ -105,6 +105,9 @@ other = "Đang tìm"
 [search_clear]
 other = "Xoá"
 
+[search_noscript]
+other = "Trang tìm kiếm cần bật JavaScript. Anh có thể xem toàn bộ bài ở trang Lưu trữ."
+
 [archive_year]
 other = "Năm {{ .Year }}"
 

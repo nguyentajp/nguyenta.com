@@ -2,7 +2,8 @@
   <div class="page">
     <article class="row">
       <div class="marg">{{ partial "post-marginalia.html" (dict "page" .) }}</div>
-      <div class="col">
+      {{- /* data-pagefind-body: Pagefind chỉ lập chỉ mục phần này, không lẫn menu hay chân trang */}}
+      <div class="col" data-pagefind-body data-pagefind-meta="date:{{ .Date.Format "2006-01-02" }}">
         <h1 class="post-title">{{ .Title }}</h1>
         <div class="post-body prose">{{ .Content }}</div>
         {{ partial "hanko.html" . }}
