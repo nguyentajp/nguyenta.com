@@ -8,7 +8,7 @@ tự của trang đó chỉ 27 KB. Script này làm việc đó.
 Hai chế độ:
 
     python3 tools/fonts/build.py --dev
-        Quét toàn bộ content, i18n, data rồi ghi 4 file woff2 vào assets/fonts/.
+        Quét toàn bộ content, i18n, data rồi ghi 5 file woff2 vào assets/fonts/.
         Dùng khi chạy `hugo server` ở máy.
 
     python3 tools/fonts/build.py --pages public
@@ -82,7 +82,8 @@ def is_cjk(ch: str) -> bool:
 
 # ── Các face của site ────────────────────────────────────────────────────────
 # scope quyết định bộ ký tự: "latin" cho chữ Latin và dấu tiếng Việt,
-# "ja" cho kana và kanji ở thân bài, "ja-display" chỉ cho tiêu đề.
+# "latin-display" và "ja-display" chỉ cho chữ trong tiêu đề, "ja" cho kana và
+# kanji ở thân bài.
 FACES = [
     # Literata là variable font hai trục. Trục opsz (optical size) chiếm khoảng
     # một nửa dung lượng file, nên ghim opsz = 20, mức trung gian giữa thân bài
@@ -108,6 +109,23 @@ FACES = [
         "needs": "italic",
         "limit": {"wght": (380, 450, 620)},
         "pin": {"opsz": 20},
+    },
+    # Bản Literata cắt cho cỡ lớn, chỉ dùng cho tiêu đề từ khoảng 24px trở lên.
+    # opsz càng cao thì nét thanh càng mảnh, khoảng chữ càng khít: đúng dáng chữ
+    # người thiết kế vẽ riêng cho tiêu đề, thay vì phóng to chữ thân bài.
+    # Ghim 60: so bằng mắt 20/40/60/72, mức 40 gần như không khác chữ thân bài,
+    # 72 đẹp nhất ở cỡ lớn nhưng nét thanh hơi mảnh cho h2 26px trên màn hình
+    # thường; 60 giữ gần trọn dáng 72 mà vẫn chắc nét. Chỉ subset đúng các chữ
+    # có trong tiêu đề của trang nên file rất nhỏ.
+    {
+        "key": "literata-display",
+        "src": "Literata[opsz,wght].ttf",
+        "family": "Gen Latin Display",
+        "style": "normal",
+        "weight": "380 620",
+        "scope": "latin-display",
+        "limit": {"wght": (380, 450, 620)},
+        "pin": {"opsz": 60},
     },
     {
         "key": "shippori-body",
@@ -192,6 +210,9 @@ def chars_for(scope: str, text_all: str, text_display: str, core: bool = True) -
     if scope == "latin":
         found = {c for c in text_all if not is_cjk(c) and ord(c) < 0x3000}
         return (CORE_LATIN if core else ASCII) | found
+    if scope == "latin-display":
+        found = {c for c in text_display if not is_cjk(c) and ord(c) < 0x3000}
+        return (CORE_LATIN if core else set()) | found
     if scope == "ja":
         found = {c for c in text_all if is_cjk(c) or 0x3000 <= ord(c) < 0x3100 or 0xFF00 <= ord(c) < 0xFFF0}
         return (CORE_JA if core else set()) | found
@@ -286,6 +307,10 @@ def build_pages(public: pathlib.Path) -> None:
             if face.get("needs") == "italic" and not has_italic:
                 continue          # không có chữ in nghiêng thì không cần face italic
             use_core = core_ja if face["scope"].startswith("ja") else core
+            # Kết quả tìm kiếm hiện bằng chữ thân bài, không dùng font tiêu đề,
+            # nên font tiêu đề không cần bộ cốt lõi ngay cả ở trang tìm kiếm
+            if face["scope"] == "latin-display":
+                use_core = False
             chars = chars_for(face["scope"], all_text, display_text, core=use_core)
             if not {c for c in chars if not c.isspace()}:
                 continue          # trang tiếng Việt thường không có chữ Nhật nào
@@ -312,7 +337,9 @@ def build_pages(public: pathlib.Path) -> None:
         # Preload đúng file subset của trang này, thay cho dòng preload trỏ tới
         # file toàn site mà Hugo sinh ra (nếu giữ, trình duyệt tải thừa một file
         # và file thật lại về muộn, chữ bị đổi font muộn làm bố cục xô lệch).
-        wanted = ["literata-roman"] + (["shippori-body"] if lang and lang.group(1).startswith("ja") else [])
+        # Font tiêu đề cũng preload: nó về muộn thì tiêu đề đổi độ rộng, có thể
+        # xuống dòng khác và đẩy nội dung bên dưới (CLS).
+        wanted = ["literata-roman", "literata-display"] + (["shippori-body"] if lang and lang.group(1).startswith("ja") else [])
         preload = "".join(
             f'<link rel=preload href=/fonts/p/{page_files[k]} as=font type=font/woff2 crossorigin>'
             for k in wanted if k in page_files
