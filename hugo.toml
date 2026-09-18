@@ -56,8 +56,11 @@ defaultContentLanguageInSubdir = false
       # Đoạn giới thiệu ngắn trong khung "Về Nguyên" ở sidebar. Anh sửa tuỳ ý.
       bio = "Nguyên, bút danh Gen (元), sống và làm việc ở Osaka. Nơi đây ghi lại chuyện học tiếng Nhật, đời sống và những chuyến đi, bằng tiếng Việt và tiếng Nhật."
 
+    # URL bài viết: lấy "slug" trong front matter; không có slug thì lấy tên
+    # thư mục của bài (Decap CMS tự đặt tên thư mục không dấu theo tiêu đề).
+    # Không dùng ":slug" trơn: thiếu slug thì Hugo lấy tiêu đề, URL sẽ có dấu.
     [languages.vi.permalinks.page]
-      posts = "/bai-viet/:slug/"
+      posts = "/bai-viet/:slugorcontentbasename/"
     [languages.vi.permalinks.section]
       posts = "/bai-viet/"
     [languages.vi.permalinks.term]
@@ -116,7 +119,7 @@ defaultContentLanguageInSubdir = false
       bio = "大阪で暮らし、働いている Gen（元）です。日本語の勉強や暮らし、旅のことを、ベトナム語と日本語で書いています。"
 
     [languages.ja.permalinks.page]
-      posts = "/kiji/:slug/"
+      posts = "/kiji/:slugorcontentbasename/"
     [languages.ja.permalinks.section]
       posts = "/kiji/"
     [languages.ja.permalinks.term]
