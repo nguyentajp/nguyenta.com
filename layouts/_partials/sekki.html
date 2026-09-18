@@ -2,7 +2,7 @@
      Dữ liệu ở data/sekki.toml, xếp theo thứ tự trong năm. Lấy tiết gần nhất
      trước ngày đăng; nếu là mấy ngày đầu tháng Một thì vẫn là Đông chí. */ -}}
 {{- $date := .date -}}
-{{- $terms := site.Data.sekki.sekki -}}
+{{- $terms := hugo.Data.sekki.sekki -}}
 {{- $found := index (where $terms "month" 12) 1 -}}
 {{- range $terms -}}
   {{- if or (lt .month $date.Month) (and (eq .month $date.Month) (le .day $date.Day)) -}}
