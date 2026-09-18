@@ -1,0 +1,111 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Build nguyenta.com và đưa lên GitHub Pages.
+#
+# Chạy khi: có commit mới trên main (kể cả commit từ Decap CMS), mỗi ngày lúc
+# 0:05 giờ Nhật, hoặc bấm tay "Run workflow" trong tab Actions.
+#
+# Thứ tự build giống hệt ở máy:
+#   tải font gốc → subset font toàn site → hugo → subset font từng trang → Pagefind
+# ─────────────────────────────────────────────────────────────────────────────
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  # 15:05 UTC = 0:05 giờ Nhật. Build lại mỗi ngày để bài hẹn giờ (ngày đăng
+  # trong tương lai) tự hiện khi tới ngày, không cần ai bấm gì.
+  schedule:
+    - cron: "5 15 * * *"
+  workflow_dispatch:
+
+# Quyền tối thiểu: đọc code, ghi lên Pages. id-token để Pages xác minh lần deploy.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Mỗi lúc chỉ một lần deploy. Không huỷ lần đang chạy dở, để site không bao
+# giờ bị bỏ lại giữa chừng.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  HUGO_VERSION: 0.166.0
+  PAGEFIND_VERSION: 1.5.2
+  # Ngày giờ trong bài tính theo giờ Nhật, giống máy của Nguyên
+  TZ: Asia/Tokyo
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Lấy mã nguồn
+        uses: actions/checkout@v7
+
+      - name: Cài Hugo extended
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/hugo.deb" \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i "$RUNNER_TEMP/hugo.deb"
+          hugo version
+
+      - name: Cài Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: tools/fonts/requirements.txt
+
+      - name: Cài thư viện font
+        run: python -m pip install -r tools/fonts/requirements.txt
+
+      # Font gốc khoảng 25 MB, không có trong repo. Lưu cache theo fonts.lock.json:
+      # lock không đổi thì lần sau khỏi tải lại.
+      - name: Cache font gốc
+        uses: actions/cache@v6
+        with:
+          path: tools/fonts/src
+          key: fonts-${{ hashFiles('tools/fonts/fonts.lock.json') }}
+
+      - name: Tải font gốc (kiểm tra SHA256)
+        run: python tools/fonts/get-sources.py
+
+      - name: Subset font cho toàn site
+        run: python tools/fonts/build.py --dev
+
+      # Ảnh đã resize (WebP nhiều cỡ) nằm trong resources/_gen. Giữ lại giữa các
+      # lần build để khỏi xử lý lại ảnh cũ mỗi khi thêm một bài.
+      - name: Cache ảnh đã xử lý
+        uses: actions/cache@v6
+        with:
+          path: resources/_gen
+          key: hugo-gen-${{ env.HUGO_VERSION }}-${{ hashFiles('content/**/*.jpg', 'content/**/*.jpeg', 'content/**/*.png', 'content/**/*.webp', 'assets/**/*.jpg', 'assets/**/*.png') }}
+          restore-keys: hugo-gen-${{ env.HUGO_VERSION }}-
+
+      - name: Build site
+        env:
+          HUGO_ENVIRONMENT: production
+        run: hugo --minify
+
+      - name: Subset font riêng từng trang
+        run: python tools/fonts/build.py --pages public
+
+      - name: Lập chỉ mục tìm kiếm
+        run: npx --yes "pagefind@${PAGEFIND_VERSION}" --site public
+
+      - name: Đóng gói cho GitHub Pages
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Đưa lên GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
