@@ -1082,6 +1082,7 @@ main {
 /* Chuyển động chỉ ở mức thì thầm, không có hiệu ứng khi cuộn:
    - kamon tự vẽ khi vào trang chủ lần đầu trong mỗi phiên
    - màu nhấn loang ra khi rê chuột: hiện nhanh, phai chậm, như mực thấm giấy
+   - chuyển trang mờ dần, không trượt, không phóng to
    Người đọc bật "giảm chuyển động" trong hệ điều hành thì tắt hết. */
 
 /* Hiện nhanh để thấy ngay mình đang chạm vào đâu; phai chậm để mắt không bị
@@ -1108,6 +1109,21 @@ main {
   .brand:hover .brand-mark,
   .video-play:hover .video-pill {
     transition-duration: var(--ink-in);
+  }
+
+  /* Chuyển trang: trang cũ mờ đi, trang mới hiện lên (View Transitions, không
+     cần JS). Phần giống nhau giữa hai trang như đầu trang, sidebar trông như
+     đứng yên. Không đặt view-transition-name riêng cho đầu trang: đang cuộn
+     giữa bài mà bấm sang trang khác thì nó sẽ trượt từ xa về, quá ồn.
+     Trình duyệt chưa hỗ trợ thì chuyển trang như thường. */
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 300ms;
+    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
   }
 }
 
