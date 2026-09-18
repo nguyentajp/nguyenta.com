@@ -29,12 +29,12 @@
 :root {
   /* Màu. Không có màu nhấn khi trang đứng yên: thứ bậc tạo bằng đậm nhạt và cỡ
      chữ. Màu 銀杏 chỉ hiện khi người đọc rê chuột hoặc Tab tới. */
-  --shoji: #f2f3ee;      /* 障子 — ánh sáng qua giấy dán cửa, hơi ngả xanh vì bóng tre */
+  --shoji: #f6f7f2;      /* 障子 — ánh sáng qua giấy dán cửa, hơi ngả xanh vì bóng tre */
   --sumi: #22251f;       /* 墨 — mực, đen có chút xanh rêu */
   --chikuei: #5a6055;    /* 竹影 — bóng tre, dùng cho chữ phụ */
   --byakuroku: #dce3d6;  /* 白緑 — dải dưới mặt đất */
   --fushi: #c5cbbf;      /* 節 — đốt tre, dùng cho đường mảnh */
-  --icho: #7d5e12;       /* 銀杏 — vàng lá bạch quả, chỉ khi tương tác */
+  --icho: #6b4f0d;       /* 銀杏 — vàng lá bạch quả, chỉ khi tương tác */
   --shu: #a8402e;        /* 朱 — mực dấu, chỉ con dấu 元 */
 
   --bg: var(--shoji);
@@ -67,6 +67,9 @@
   --col-gap: clamp(2.5rem, 5vw, 4rem);
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
 
+  /* Bo góc khung ảnh: bìa bài, gallery, video, ảnh chân dung */
+  --radius: 0.5rem;
+
   /* Thang cỡ chữ cho tiêu đề, bước gần √2 */
   --size-brand: clamp(2.1rem, 4vw, 2.75rem);
   --size-mark: 3.75rem;
@@ -85,7 +88,7 @@
     --muted: #9ca296;
     --band: #222720;
     --rule: #363b33;
-    --accent: #d6b04a;
+    --accent: #e3c05e;
     --seal: #c4493d;
     color-scheme: dark;
   }
@@ -668,6 +671,7 @@ main {
   aspect-ratio: 3 / 2;
   object-fit: cover;
   background: var(--band);
+  border-radius: var(--radius);
 }
 
 .post-item-excerpt {
@@ -798,6 +802,7 @@ main {
 
 .figure img {
   width: 100%;
+  border-radius: var(--radius);
 }
 
 .figure figcaption {
@@ -934,6 +939,7 @@ main {
   object-fit: cover;
   margin-block-end: var(--space-3);
   background: var(--band);
+  border-radius: var(--radius);
 }
 
 .bio {
@@ -1242,6 +1248,7 @@ main {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+  border-radius: var(--radius);
 }
 
 .gallery-item figcaption,
@@ -1268,6 +1275,7 @@ main {
   aspect-ratio: 16 / 9;
   overflow: hidden;
   background: var(--band);
+  border-radius: var(--radius);
 }
 
 .video-frame img,
