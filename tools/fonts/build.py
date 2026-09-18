@@ -163,7 +163,10 @@ def narrowed_source(face: dict) -> pathlib.Path:
 
     axes = dict(face.get("limit") or {})
     axes.update(face.get("pin") or {})
-    font = TTFont(str(source))
+    # recalcTimestamp=False: giữ nguyên ngày trong bảng head của font gốc. Mặc
+    # định fontTools ghi giờ lúc build vào đó, nên mỗi lần build ra file khác
+    # byte dù cùng nội dung, và build ở máy với build trên GitHub không khớp.
+    font = TTFont(str(source), recalcTimestamp=False)
     instancer.instantiateVariableFont(font, axes, inplace=True, updateFontNames=False)
     cache_dir = SRC / ".narrowed"
     cache_dir.mkdir(exist_ok=True)

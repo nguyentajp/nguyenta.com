@@ -1,0 +1,5 @@
+# Thư viện cho tools/fonts/build.py. Ghim phiên bản để máy và GitHub Actions
+# subset font ra cùng một kết quả.
+#   python3 -m pip install -r tools/fonts/requirements.txt
+fonttools==4.60.2
+brotli==1.2.0
