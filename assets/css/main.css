@@ -45,7 +45,7 @@
   /* Chữ. "Gen Latin" là Literata, "Gen JP" là Shippori Mincho, "Gen JP Display"
      là Shippori Mincho B1 (bản có mực đọng ở góc nét). Chữ Latin trong câu
      tiếng Nhật vẫn lấy từ Gen Latin để hai ngôn ngữ chung một giọng. */
-  --font-text: "Gen Latin", "Gen JP", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+  --font-text: "Gen Latin", "Gen Latin Fallback", "Gen JP", "Gen JP Fallback", serif;
   --font-display: var(--font-text);
 
   /* Nhịp dọc: các bậc khoảng trắng, bậc lớn nhất là khoảng 間 giữa các phần */
@@ -76,6 +76,42 @@
     --seal: #c4493d;
     color-scheme: dark;
   }
+}
+
+/* ── Font dự phòng đã chỉnh số đo ────────────────────────────────────────────
+   Trong lúc font thật đang tải, chữ hiện bằng font có sẵn trong máy. Nếu font
+   đó rộng hẹp hay cao thấp khác font thật, khi font thật về, đoạn văn đổi số
+   dòng và đẩy mọi thứ bên dưới xuống (Lighthouse gọi là CLS).
+   Các số dưới đây đo thật từ file font bằng fontTools:
+   - Georgia hẹp hơn Literata 7,8% trên một đoạn tiếng Việt mẫu, nên phóng lên
+     107,8%; ascent và descent chia cho 1,078 để khớp 1,177 và 0,308 của Literata.
+   - Hiragino/Yu Mincho chỉnh ascent và descent cho khớp Shippori (1,16 và 0,288),
+     để một chữ Hán như 元 giữa câu tiếng Việt không làm dòng cao lên. */
+@font-face {
+  font-family: "Gen Latin Fallback";
+  src: local("Georgia");
+  size-adjust: 107.8%;
+  ascent-override: 109.2%;
+  descent-override: 28.6%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Gen Latin Fallback";
+  font-style: italic;
+  src: local("Georgia Italic"), local("Georgia-Italic");
+  size-adjust: 107.8%;
+  ascent-override: 109.2%;
+  descent-override: 28.6%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Gen JP Fallback";
+  src: local("Hiragino Mincho ProN"), local("HiraMinProN-W3"), local("Yu Mincho"), local("YuMincho");
+  ascent-override: 116%;
+  descent-override: 28.8%;
+  line-gap-override: 0%;
 }
 
 /* ── 2. Nền tảng ──────────────────────────────────────────────────────────── */
@@ -190,7 +226,7 @@ a:hover {
   --text-size: 1.0625rem;  /* 17px */
   --text-leading: 2;
   --text-tracking: 0.04em;
-  --font-display: "Gen Latin", "Gen JP Display", "Gen JP", "Hiragino Mincho ProN", serif;
+  --font-display: "Gen Latin", "Gen Latin Fallback", "Gen JP Display", "Gen JP", "Gen JP Fallback", serif;
 }
 
 .prose {

@@ -36,7 +36,12 @@ SRC = ROOT / "tools/fonts/src"
 
 # Khối @font-face trong <head> mang id này; chế độ --pages thay ruột thẻ style.
 # Không dùng comment CSS làm mốc vì Go html/template xoá comment trong <style>.
-STYLE_RE = re.compile(r'(<style id="gen-fonts"[^>]*>)(.*?)(</style>)', re.S)
+# hugo --minify bỏ dấu nháy quanh thuộc tính (id="gen-fonts" thành id=gen-fonts),
+# nên các biểu thức dưới đây chấp nhận cả hai dạng.
+STYLE_RE = re.compile(r'(<style[^>]*\bid=["\']?gen-fonts["\']?[^>]*>)(.*?)(</style>)', re.S)
+CORE_RE = re.compile(r'data-fonts=["\']?core\b')
+LANG_RE = re.compile(r'<html[^>]*\blang=["\']?([A-Za-z-]+)')
+PRELOAD_RE = re.compile(r'<link\b[^>]*\brel=["\']?preload["\']?[^>]*\bas=["\']?font["\']?[^>]*>\s*', re.I)
 
 # ── Bộ ký tự luôn có mặt, không phụ thuộc nội dung ───────────────────────────
 # Nhờ vậy bài viết mới vẫn hiện đúng dù chưa chạy lại script.
@@ -266,16 +271,22 @@ def build_pages(public: pathlib.Path) -> None:
         if not STYLE_RE.search(markup):
             continue
         all_text, display_text = page_text(markup)
-        # Trang có chữ sinh ra động (trang tìm kiếm) tự khai báo cần bộ cốt lõi.
-        core = 'data-fonts="core"' in markup
+        # Trang có chữ sinh ra động (trang tìm kiếm) tự khai báo cần bộ cốt lõi,
+        # nhưng chỉ bộ cốt lõi của đúng ngôn ngữ trang đó: tìm bằng tiếng Việt
+        # thì kết quả không bao giờ có kana.
+        core = bool(CORE_RE.search(markup))
+        lang = LANG_RE.search(markup)
+        core_ja = core and bool(lang) and lang.group(1).startswith("ja")
 
         rules = []
+        page_files: dict[str, str] = {}
         page_bytes = 0
         has_italic = bool(re.search(r"<(em|i)[ >]", markup))
         for face in FACES:
             if face.get("needs") == "italic" and not has_italic:
                 continue          # không có chữ in nghiêng thì không cần face italic
-            chars = chars_for(face["scope"], all_text, display_text, core=core)
+            use_core = core_ja if face["scope"].startswith("ja") else core
+            chars = chars_for(face["scope"], all_text, display_text, core=use_core)
             if not {c for c in chars if not c.isspace()}:
                 continue          # trang tiếng Việt thường không có chữ Nhật nào
             digest = hashlib.sha256("".join(sorted(chars)).encode("utf-8")).hexdigest()[:12]
@@ -285,6 +296,7 @@ def build_pages(public: pathlib.Path) -> None:
                 size = subset_font(narrowed_source(face), chars, font_dir / name)
                 cache[key] = name
             name = cache[key]
+            page_files[face["key"]] = name
             page_bytes += (font_dir / name).stat().st_size
             rules.append(
                 "@font-face{"
@@ -297,7 +309,17 @@ def build_pages(public: pathlib.Path) -> None:
             )
 
         css = "".join(rules)
-        page.write_text(STYLE_RE.sub(lambda m: m.group(1) + css + m.group(3), markup, count=1), encoding="utf-8")
+        # Preload đúng file subset của trang này, thay cho dòng preload trỏ tới
+        # file toàn site mà Hugo sinh ra (nếu giữ, trình duyệt tải thừa một file
+        # và file thật lại về muộn, chữ bị đổi font muộn làm bố cục xô lệch).
+        wanted = ["literata-roman"] + (["shippori-body"] if lang and lang.group(1).startswith("ja") else [])
+        preload = "".join(
+            f'<link rel=preload href=/fonts/p/{page_files[k]} as=font type=font/woff2 crossorigin>'
+            for k in wanted if k in page_files
+        )
+        markup = PRELOAD_RE.sub("", markup)
+        markup = STYLE_RE.sub(lambda m: preload + m.group(1) + css + m.group(3), markup, count=1)
+        page.write_text(markup, encoding="utf-8")
         total_after += page_bytes
 
     print(f"Đã subset font riêng cho {len(pages)} trang.")
