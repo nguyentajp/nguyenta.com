@@ -39,8 +39,11 @@
     {{- if or (not $fallback) (le $r.Width 860) }}{{ $fallback = $r }}{{ end -}}
   {{- end -}}
 
-  {{- $img := printf `<img src="%s" srcset="%s" sizes="%s" width="%d" height="%d" alt="%s" loading="%s" decoding="async">`
-      $fallback.RelPermalink (delimit $srcset ", ") $sizes $res.Width $res.Height (htmlEscape $alt) $loading | safeHTML -}}
+  {{- /* Ảnh tải ngay (eager) thường là ảnh lớn nhất màn hình đầu (LCP): báo
+       trình duyệt tải nó trước các ảnh khác */ -}}
+  {{- $priority := cond (eq $loading "eager") ` fetchpriority="high"` "" -}}
+  {{- $img := printf `<img src="%s" srcset="%s" sizes="%s" width="%d" height="%d" alt="%s" loading="%s"%s decoding="async">`
+      $fallback.RelPermalink (delimit $srcset ", ") $sizes $res.Width $res.Height (htmlEscape $alt) $loading $priority | safeHTML -}}
 
   {{- if $zoom -}}
     {{- /* Ảnh cho lightbox: tối đa 1800px, ảnh nhỏ hơn thì giữ nguyên bề ngang

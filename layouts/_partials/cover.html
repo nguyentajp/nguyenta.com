@@ -16,7 +16,7 @@
     {{- end -}}
     <a class="cover" href="{{ $page.RelPermalink }}" tabindex="-1" aria-hidden="true">
       <img src="{{ $fallback.RelPermalink }}" srcset="{{ delimit $srcset ", " }}" sizes="{{ $.sizes | default "(min-width: 64rem) 44rem, 100vw" }}"
-           width="{{ $fallback.Width }}" height="{{ $fallback.Height }}" alt="" loading="{{ $.loading | default "lazy" }}" decoding="async">
+           width="{{ $fallback.Width }}" height="{{ $fallback.Height }}" alt="" loading="{{ $.loading | default "lazy" }}"{{ if eq $.loading "eager" }} fetchpriority="high"{{ end }} decoding="async">
     </a>
   {{- end -}}
 {{- end -}}
