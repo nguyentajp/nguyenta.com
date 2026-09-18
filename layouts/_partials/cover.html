@@ -1,9 +1,12 @@
 {{- /* Ảnh bìa của một bài trong danh sách, cắt về 3:2 cho các bài xếp đều nhau.
-     Ảnh được chọn theo thứ tự: file có tên chứa "cover" trong page bundle,
-     rồi tới ảnh đầu tiên của bài. Bài không có ảnh thì không in gì.
+     Ảnh được chọn theo thứ tự: ảnh ghi ở trường "cover" (chọn trong Decap
+     CMS), file có tên chứa "cover" trong page bundle, rồi tới ảnh đầu tiên
+     của bài. Bài không có ảnh thì không in gì.
      Tham số: page, sizes, loading ("lazy" mặc định, "eager" cho bài đầu trang). */ -}}
 {{- $page := .page -}}
-{{- $res := $page.Resources.GetMatch "{cover,*cover*}" -}}
+{{- $res := "" -}}
+{{- with $page.Params.cover }}{{ $res = $page.Resources.GetMatch . }}{{ end -}}
+{{- if not $res }}{{ $res = $page.Resources.GetMatch "{cover,*cover*}" }}{{ end -}}
 {{- if not $res }}{{ $res = index ($page.Resources.ByType "image") 0 }}{{ end -}}
 {{- with $res -}}
   {{- if in (slice "jpeg" "png" "webp" "tiff" "bmp") .MediaType.SubType -}}

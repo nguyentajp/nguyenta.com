@@ -47,9 +47,13 @@
 {{ with or .Description .Summary .Site.Params.description -}}
   <meta property="og:description" content="{{ . | plainify | truncate 180 }}">
 {{ end -}}
-{{/* Bài có ảnh tên "cover" thì dùng ảnh đó, không thì dùng ảnh mặc định theo ngôn ngữ */}}
+{{/* Ảnh chia sẻ: ảnh bìa ở trường "cover", rồi ảnh có tên "cover", không có
+     thì dùng ảnh mặc định theo ngôn ngữ */}}
 {{ $og := "" -}}
-{{ with .Resources.GetMatch "{cover,*cover*}" }}{{ $og = .Fill "1200x630 jpg Center" }}{{ end -}}
+{{ $coverRes := "" -}}
+{{ with .Params.cover }}{{ $coverRes = $.Resources.GetMatch . }}{{ end -}}
+{{ if not $coverRes }}{{ $coverRes = .Resources.GetMatch "{cover,*cover*}" }}{{ end -}}
+{{ with $coverRes }}{{ $og = .Fill "1200x630 jpg Center" }}{{ end -}}
 {{ if not $og }}{{ $og = resources.Get (printf "brand/og-%s.png" .Site.Language.Lang) }}{{ end -}}
 {{ with $og -}}
   <meta property="og:image" content="{{ .Permalink }}">
