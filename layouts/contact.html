@@ -1,0 +1,31 @@
+{{- /* Trang Liên hệ: chỉ email và mạng xã hội, không form gửi qua bên thứ ba.
+     Email và các tài khoản lấy từ [params] trong hugo.toml; tài khoản nào để
+     trống thì không hiện. */ -}}
+{{ define "main" }}
+  {{- $networks := slice
+    (dict "key" "github"    "label" "GitHub"    "url" "https://github.com/%s")
+    (dict "key" "instagram" "label" "Instagram" "url" "https://www.instagram.com/%s/")
+    (dict "key" "x"         "label" "X"         "url" "https://x.com/%s")
+    (dict "key" "youtube"   "label" "YouTube"   "url" "https://www.youtube.com/@%s")
+  -}}
+  <div class="page">
+    <div class="row">
+      <h1 class="label page-label">{{ .Title }}</h1>
+      <div class="col" data-pagefind-body>
+        {{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+        <dl class="contact">
+          {{- with site.Params.email }}
+            <dt>Email</dt>
+            <dd><a href="mailto:{{ . }}">{{ . }}</a></dd>
+          {{- end }}
+          {{- range $net := $networks }}
+            {{- with index site.Params.socials $net.key }}
+              <dt>{{ $net.label }}</dt>
+              <dd><a href="{{ printf $net.url . }}" rel="me">{{ . }}</a></dd>
+            {{- end }}
+          {{- end }}
+        </dl>
+      </div>
+    </div>
+  </div>
+{{ end }}

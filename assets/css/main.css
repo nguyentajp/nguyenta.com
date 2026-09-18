@@ -1488,3 +1488,21 @@ html:has(.lightbox[open]) {
   background: var(--band);
   color: var(--ink);
 }
+
+/* ── 15. Liên hệ ─────────────────────────────────────────────────────────── */
+.contact {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: var(--space-3) var(--space-4);
+  margin-block-start: var(--space-5);
+  align-items: baseline;
+}
+
+.contact dt {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.contact dd {
+  font-size: 1.125rem;
+}

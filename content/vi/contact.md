@@ -2,6 +2,6 @@
 title: Liên hệ
 translationKey: page-contact
 url: "/lien-he/"
-layout: ""
+layout: "contact"
 ---
-Email và liên kết mạng xã hội sẽ hiện ở đây.
+Góp ý về một bài viết, hay chỉ để chào, cứ viết thư.
