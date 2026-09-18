@@ -1,0 +1,57 @@
+{{- /* Bộ sinh ảnh responsive dùng chung cho render hook, gallery và trang Ảnh.
+     Tham số:
+       res     — resource ảnh trong page bundle (bắt buộc)
+       alt     — chữ thay ảnh
+       sizes   — thuộc tính sizes của <img>, mô tả ảnh rộng bao nhiêu trên màn hình
+       loading — "lazy" (mặc định) hoặc "eager" cho ảnh đầu trang
+       caption — chú thích, dùng làm nhãn cho ảnh phóng to
+       nozoom  — true thì không bọc link lightbox
+
+     Hugo sinh sẵn nhiều cỡ WebP lúc build; ảnh gốc không bao giờ gửi tới người
+     đọc, nên mọi EXIF (gồm cả toạ độ GPS) cũng bị bỏ lại cùng file gốc. */ -}}
+{{- $res := .res -}}
+{{- $alt := .alt | default "" -}}
+{{- $sizes := .sizes | default "100vw" -}}
+{{- $loading := .loading | default "lazy" -}}
+{{- $caption := .caption | default "" -}}
+{{- $zoom := not .nozoom -}}
+
+{{- /* SVG và ảnh động GIF đi thẳng, Hugo không xử lý được hoặc xử lý sẽ hỏng */ -}}
+{{- $processable := in (slice "jpeg" "png" "webp" "tiff" "bmp") $res.MediaType.SubType -}}
+
+{{- if not $processable -}}
+  <img src="{{ $res.RelPermalink }}" alt="{{ $alt }}" loading="{{ $loading }}" decoding="async">
+{{- else -}}
+  {{- /* Các bề ngang sinh sẵn: chỉ sinh cỡ nhỏ hơn hoặc bằng ảnh gốc, không
+       phóng to ảnh nhỏ lên cho mờ. */ -}}
+  {{- $widths := slice 420 640 860 1100 1400 1800 -}}
+  {{- $ws := slice -}}
+  {{- range $widths }}{{ if lt . $res.Width }}{{ $ws = $ws | append . }}{{ end }}{{ end }}
+  {{- /* Luôn có một bản đúng bề ngang gốc (tối đa 1800), để ảnh không mờ trên
+       màn hình Retina khi ảnh gốc nằm lọt giữa hai mốc */ -}}
+  {{- $ws = $ws | append (cond (gt $res.Width 1800) 1800 $res.Width) | uniq -}}
+
+  {{- $srcset := slice -}}
+  {{- $fallback := "" -}}
+  {{- range $ws -}}
+    {{- $r := $res.Resize (printf "%dx webp" .) -}}
+    {{- $srcset = $srcset | append (printf "%s %dw" $r.RelPermalink $r.Width) -}}
+    {{- if or (not $fallback) (le $r.Width 860) }}{{ $fallback = $r }}{{ end -}}
+  {{- end -}}
+
+  {{- $img := printf `<img src="%s" srcset="%s" sizes="%s" width="%d" height="%d" alt="%s" loading="%s" decoding="async">`
+      $fallback.RelPermalink (delimit $srcset ", ") $sizes $res.Width $res.Height (htmlEscape $alt) $loading | safeHTML -}}
+
+  {{- if $zoom -}}
+    {{- /* Ảnh cho lightbox: tối đa 1800px, ảnh nhỏ hơn thì giữ nguyên bề ngang
+         (cond sẽ tính cả hai nhánh nên phải viết if, tránh phóng to vô ích) */ -}}
+    {{- $big := "" -}}
+    {{- if gt $res.Width 1800 }}{{ $big = $res.Resize "1800x webp" }}{{ else }}{{ $big = $res.Resize (printf "%dx webp" $res.Width) }}{{ end -}}
+    <a class="zoom" href="{{ $big.RelPermalink }}"
+       data-w="{{ $big.Width }}" data-h="{{ $big.Height }}"
+       {{- with $caption }} data-caption="{{ . | markdownify | plainify }}"{{ end }}
+       aria-label="{{ i18n "photos_open" }}{{ with $alt }}: {{ . }}{{ end }}">{{ $img }}</a>
+  {{- else -}}
+    {{ $img }}
+  {{- end -}}
+{{- end -}}

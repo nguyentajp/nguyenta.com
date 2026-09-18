@@ -1,0 +1,56 @@
+{{- /* Lưới ảnh 2–3 cột, tự co về 1 cột trên điện thoại.
+
+     Cách 1 — liệt kê từng ảnh, mỗi dòng một file, chú thích sau dấu gạch đứng:
+
+       {{< gallery cols="3" >}}
+       minoo-1.jpg | Thác Minoo đầu tháng Mười
+       minoo-2.jpg
+       {{< /gallery >}}
+
+     Cách 2 — lấy hết ảnh khớp một mẫu tên trong page bundle. Viết một dòng
+     thì phải kết thúc bằng "/>", nếu không Hugo báo lỗi "must be closed":
+
+       {{< gallery cols="2" match="minoo-*.jpg" />}}
+
+     Thêm class="wide" để lưới lấn sang khoảng 間, class="full" để tràn khung. */ -}}
+{{- $page := .Page -}}
+{{- $cols := .Get "cols" | default "2" -}}
+{{- $class := .Get "class" | default "" -}}
+{{- $items := slice -}}
+
+{{- with .Get "match" -}}
+  {{- range $page.Resources.Match . -}}
+    {{- $items = $items | append (dict "res" . "caption" "") -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with .Inner -}}
+  {{- range (split (trim . "\n\r \t") "\n") -}}
+    {{- $line := trim . " \t\r" -}}
+    {{- if $line -}}
+      {{- $parts := split $line "|" -}}
+      {{- $file := trim (index $parts 0) " " -}}
+      {{- $caption := "" -}}
+      {{- if gt (len $parts) 1 }}{{ $caption = trim (index $parts 1) " " }}{{ end -}}
+      {{- with $page.Resources.GetMatch $file -}}
+        {{- $items = $items | append (dict "res" . "caption" $caption) -}}
+      {{- else -}}
+        {{- warnf "gallery: không tìm thấy ảnh %q trong bài %q" $file $page.Path -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if $items -}}
+  {{- /* Mỗi ô rộng khoảng (cột chữ ÷ số cột), dùng để trình duyệt chọn đúng cỡ ảnh */ -}}
+  {{- $each := div 560 (int $cols) -}}
+  {{- $sizes := printf "(min-width: 64rem) %dpx, (min-width: 48rem) %dvw, 100vw" $each (div 90 (int $cols)) -}}
+  <div class="gallery{{ with $class }} {{ . }}{{ end }}" data-cols="{{ $cols }}">
+    {{- range $items }}
+      <figure class="gallery-item">
+        {{ partial "picture.html" (dict "res" .res "alt" .caption "caption" .caption "sizes" $sizes) }}
+        {{- with .caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+      </figure>
+    {{- end }}
+  </div>
+{{- end -}}

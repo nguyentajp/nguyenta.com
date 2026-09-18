@@ -19,6 +19,7 @@
      8. Dưới mặt đất: thẻ, bài cùng rễ, chân trang
      9. Danh sách bài
     10. Chuyển động duy nhất
+    11. Ảnh rộng, gallery, video, lightbox
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ── 1. Token ─────────────────────────────────────────────────────────────── */
@@ -586,7 +587,7 @@ main .row:first-child {
 }
 
 /* Ảnh trong bài: mặc định rộng bằng cột chữ; ảnh đánh dấu "wide" lấn sang
-   khoảng 間 bên phải, còn "full" tràn hết khung. */
+   khoảng 間 bên phải, còn "full" tràn hết khung (xem mục 11). */
 .figure {
   margin-block: var(--space-6);
 }
@@ -919,5 +920,282 @@ main .row:first-child {
   .under {
     grid-template-columns: minmax(0, 1fr);
     row-gap: var(--space-4);
+  }
+}
+
+/* ── 11. Ảnh rộng, gallery, video, lightbox ───────────────────────────────── */
+/* Ảnh nằm bên trong cột chữ, nên muốn lấn ra ngoài thì tính theo bề rộng cột.
+   Cột chữ 50% khung, lề ghi chú 29,3%, khoảng 間 20,7%:
+     wide: (50 + 20,7) / 50 = 141,4% bề rộng cột, đúng √2 lần
+     full: 100 / 50 = 200%, dịch sang trái 29,3 / 50 = 58,6% */
+.figure.wide,
+.gallery.wide,
+.video.wide {
+  width: 141.4%;
+}
+
+.figure.full,
+.gallery.full,
+.video.full {
+  width: 200%;
+  margin-inline-start: -58.6%;
+}
+
+/* Lúc ảnh đang tải, khung giữ chỗ mang màu 白緑 thay vì để trống trơn */
+.figure img,
+.gallery-item img {
+  background: var(--band);
+}
+
+/* Mỗi ảnh là một link tới bản lớn: không gạch chân, con trỏ hình kính lúp */
+.zoom {
+  display: block;
+  text-decoration: none;
+  cursor: zoom-in;
+}
+
+.zoom:focus-visible {
+  outline-offset: 4px;
+}
+
+/* Gallery: lưới đều, ảnh cắt về cùng tỉ lệ 4:3 cho yên mắt. Bấm vào thì
+   lightbox hiện nguyên khung hình, không cắt. */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-block: var(--space-6);
+}
+
+.gallery[data-cols="3"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.gallery-item img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.gallery-item figcaption,
+.video figcaption {
+  margin-block-start: var(--space-2);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.video figcaption {
+  margin-block-start: var(--space-3);
+  font-size: 0.875rem;
+}
+
+/* Video: khung 16:9 giữ chỗ sẵn, nên khi iframe thay vào trang không bị giật */
+.video {
+  margin-block: var(--space-6);
+}
+
+.video-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--band);
+}
+
+.video-frame img,
+.video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+}
+
+.video-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.video-pill {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-3);
+  background: var(--bg);
+  box-shadow: 0 0 0 1px var(--rule);
+  color: var(--ink);
+  font-size: 0.9375rem;
+}
+
+.video-pill svg {
+  width: 1.1rem;
+  fill: currentColor;
+}
+
+.video-play:hover .video-pill {
+  color: var(--accent);
+}
+
+/* Lightbox: ảnh đặt trên nền giấy 障子 như một tấm ảnh in, không phải nền đen
+   của rạp chiếu. Dark mode thì nền tự thành rừng trúc ban đêm. */
+.lightbox {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: var(--space-5) clamp(3.5rem, 8vw, 6rem);
+  border: 0;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.lightbox[open] {
+  display: grid;
+  place-items: center;
+}
+
+.lightbox:focus {
+  outline: none;
+}
+
+.lightbox::backdrop {
+  background: var(--bg);
+}
+
+html:has(.lightbox[open]) {
+  overflow: hidden;
+}
+
+.lightbox-figure {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: center;
+  width: 100%;
+}
+
+/* Vừa khít màn hình theo cả hai chiều: --ratio do JS ghi từ kích thước ảnh */
+.lightbox-figure img {
+  width: min(100%, calc((100dvh - 9rem) * var(--ratio, 1.5)));
+  height: auto;
+}
+
+.lightbox-figure figcaption {
+  max-width: 40rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--muted);
+  text-align: center;
+  text-wrap: pretty;
+}
+
+.lightbox-button {
+  position: fixed;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.lightbox-button svg {
+  width: 1.5rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.25;
+}
+
+.lightbox-button:hover {
+  color: var(--accent);
+}
+
+.lightbox-prev,
+.lightbox-next {
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.lightbox-prev {
+  left: var(--space-2);
+}
+
+.lightbox-next {
+  right: var(--space-2);
+}
+
+.lightbox-close {
+  top: var(--space-2);
+  right: var(--space-2);
+}
+
+.lightbox.is-single .lightbox-prev,
+.lightbox.is-single .lightbox-next {
+  display: none;
+}
+
+@media (max-width: 63.999rem) {
+  .figure.wide,
+  .gallery.wide,
+  .video.wide {
+    width: auto;
+  }
+
+  .figure.full,
+  .gallery.full,
+  .video.full {
+    width: calc(100% + 11rem);
+    margin-inline-start: -11rem;
+  }
+}
+
+@media (max-width: 47.999rem) {
+  /* Mọi thứ tràn sát hai mép màn hình, giống ảnh đơn */
+  .figure.full,
+  .gallery,
+  .gallery.full,
+  .video,
+  .video.full {
+    width: auto;
+    margin-inline: calc(var(--gutter) * -1);
+  }
+
+  .gallery,
+  .gallery[data-cols="3"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Một cột thì không cần cắt ảnh cho đều hàng nữa */
+  .gallery-item img {
+    aspect-ratio: auto;
+  }
+
+  .gallery-item figcaption,
+  .video figcaption {
+    padding-inline: var(--gutter);
+  }
+
+  .lightbox {
+    padding: var(--space-6) 0;
+  }
+
+  .lightbox-figure figcaption {
+    padding-inline: var(--gutter);
+  }
+
+  .lightbox-prev,
+  .lightbox-next {
+    top: auto;
+    bottom: var(--space-2);
+    translate: none;
   }
 }

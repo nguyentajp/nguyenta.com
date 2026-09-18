@@ -1,0 +1,63 @@
+{{- /* Video YouTube tải lười: trang chỉ hiện ảnh thumbnail và nút phát. Iframe
+     của YouTube (vài trăm KB JavaScript) chỉ được tải khi người đọc bấm phát.
+
+       {{< youtube id="dQw4w9WgXcQ" title="Tiêu đề hiện dưới video" >}}
+       {{< youtube dQw4w9WgXcQ >}}                   ← viết gọn, không chú thích
+       {{< youtube id="..." start="90" >}}           ← bắt đầu từ giây thứ 90
+
+     Thumbnail được Hugo tải về lúc build rồi tự phục vụ từ nguyenta.com, nên
+     trước khi bấm phát, trình duyệt người đọc không gửi gì tới Google. Khi phát
+     thì dùng youtube-nocookie.com (chế độ tăng cường quyền riêng tư). */ -}}
+{{- $id := .Get "id" | default (.Get 0) -}}
+{{- $title := .Get "title" | default "" -}}
+{{- $start := .Get "start" | default "" -}}
+{{- $class := .Get "class" | default "" -}}
+
+{{- if not $id -}}
+  {{- errorf "youtube: thiếu id video trong bài %q" .Page.Path -}}
+{{- end -}}
+
+{{- /* Thử ảnh lớn trước; video cũ không có maxresdefault thì lùi về hqdefault.
+     Build không có mạng thì bỏ qua thumbnail, vẫn hiện khung và nút phát. */ -}}
+{{- $thumb := "" -}}
+{{- range slice "maxresdefault" "hqdefault" -}}
+  {{- if not $thumb -}}
+    {{- $url := printf "https://i.ytimg.com/vi/%s/%s.jpg" $id . -}}
+    {{- with try (resources.GetRemote $url) -}}
+      {{- with .Err -}}
+        {{- warnf "youtube: không tải được thumbnail %s" $url -}}
+      {{- else with .Value -}}
+        {{- /* Đặt tên theo id video, gom vào /video/ cho gọn */ -}}
+        {{- $thumb = resources.Copy (printf "video/%s.jpg" $id) . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $watch := printf "https://www.youtube.com/watch?v=%s" $id -}}
+<figure class="video{{ with $class }} {{ . }}{{ end }}">
+  <div class="video-frame" data-video="{{ $id }}"{{ with $start }} data-start="{{ . }}"{{ end }}{{ with $title }} data-title="{{ . }}"{{ end }}>
+    {{- with $thumb -}}
+      {{- /* Hai cỡ 640 và 1280, nhưng không bao giờ phóng to quá ảnh gốc */ -}}
+      {{- $srcset := slice -}}
+      {{- $largest := "" -}}
+      {{- range slice 640 1280 | append $thumb.Width | uniq -}}
+        {{- if le . $thumb.Width -}}
+          {{- $largest = $thumb.Resize (printf "%dx webp" .) -}}
+          {{- $srcset = $srcset | append (printf "%s %dw" $largest.RelPermalink $largest.Width) -}}
+        {{- end -}}
+      {{- end -}}
+      <img src="{{ $largest.RelPermalink }}" srcset="{{ delimit $srcset ", " }}"
+           sizes="(min-width: 64rem) 35rem, 100vw"
+           width="{{ $largest.Width }}" height="{{ $largest.Height }}"
+           alt="" loading="lazy" decoding="async">
+    {{- end }}
+    <a class="video-play" href="{{ $watch }}">
+      <span class="video-pill">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+        {{ i18n "video_play" }}{{ with $title }}<span class="visually-hidden">: {{ . }}</span>{{ end }}
+      </span>
+    </a>
+  </div>
+  {{- with $title }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+</figure>

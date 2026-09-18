@@ -1,0 +1,23 @@
+{{- /* Khung xem ảnh lớn. Dùng thẻ <dialog> có sẵn của HTML: phím Esc đóng,
+     focus bị giữ trong khung, trình đọc màn hình hiểu đây là hộp thoại.
+     Ẩn cho tới khi JS mở; không có JS thì bấm ảnh vẫn mở file ảnh lớn.
+     tabindex="-1" để JS đặt focus vào chính khung khi mở, thay vì nút "ảnh
+     trước", nên không hiện viền focus thừa lúc mở bằng chuột. */ -}}
+<dialog class="lightbox" aria-label="{{ i18n "photos_open" }}" tabindex="-1">
+  <figure class="lightbox-figure">
+    <img alt="">
+    <figcaption></figcaption>
+  </figure>
+  <button class="lightbox-button lightbox-prev" type="button" data-step="-1">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    <span class="visually-hidden">{{ i18n "lightbox_prev" }}</span>
+  </button>
+  <button class="lightbox-button lightbox-next" type="button" data-step="1">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    <span class="visually-hidden">{{ i18n "lightbox_next" }}</span>
+  </button>
+  <button class="lightbox-button lightbox-close" type="button" data-close>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    <span class="visually-hidden">{{ i18n "lightbox_close" }}</span>
+  </button>
+</dialog>

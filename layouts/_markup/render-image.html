@@ -1,0 +1,49 @@
+{{- /* Ảnh viết bằng cú pháp Markdown thường:
+
+       ![chữ thay ảnh](ten-file.jpg "Chú thích hiện dưới ảnh")
+
+     Muốn ảnh rộng hơn cột chữ thì thêm thuộc tính ở dòng ngay bên dưới:
+
+       ![...](anh.jpg "...")
+       {class="wide"}     → lấn sang khoảng 間 bên phải
+       {class="full"}     → tràn hết chiều ngang khung
+
+     Decap CMS chèn ảnh đúng bằng cú pháp Markdown này, nên mọi ảnh viết từ CMS
+     cũng tự động thành <figure> có srcset, WebP và lightbox. */ -}}
+{{- $page := .Page -}}
+{{- $src := .Destination -}}
+{{- $alt := .PlainText -}}
+{{- $caption := .Title -}}
+{{- $class := "" -}}
+{{- with .Attributes.class }}{{ $class = . }}{{ end -}}
+
+{{- /* Ảnh ở xa (dán link http) không qua Hugo image processing được */ -}}
+{{- if strings.HasPrefix $src "http" -}}
+  <figure class="figure{{ with $class }} {{ . }}{{ end }}">
+    <img src="{{ $src }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+    {{- with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+  </figure>
+{{- else -}}
+  {{- $res := $page.Resources.GetMatch $src -}}
+  {{- if not $res }}{{ $res = resources.Get $src }}{{ end -}}
+  {{- if not $res -}}
+    {{- warnf "Không tìm thấy ảnh %q trong bài %q" $src $page.Path -}}
+  {{- else -}}
+    {{- $sizes := "(min-width: 64rem) 35rem, (min-width: 48rem) 60vw, 100vw" -}}
+    {{- if eq $class "wide" }}{{ $sizes = "(min-width: 64rem) 49rem, (min-width: 48rem) 60vw, 100vw" }}{{ end -}}
+    {{- if eq $class "full" }}{{ $sizes = "(min-width: 64rem) 70rem, (min-width: 48rem) 85vw, 100vw" }}{{ end -}}
+    {{- /* Ảnh đầu tiên của bài thường nằm ngay dưới tiêu đề: tải ngay, không lazy */ -}}
+    {{- $loading := cond (eq .Ordinal 0) "eager" "lazy" -}}
+    {{- $picture := partial "picture.html" (dict
+          "res" $res "alt" $alt "caption" (or $caption $alt)
+          "sizes" $sizes "loading" $loading) -}}
+    {{- if .IsBlock -}}
+      <figure class="figure{{ with $class }} {{ . }}{{ end }}">
+        {{ $picture }}
+        {{- with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+      </figure>
+    {{- else -}}
+      {{ $picture }}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
