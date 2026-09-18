@@ -1,10 +1,8 @@
 {{ define "main" }}
-  <div class="page">
-    <article class="row">
-      <h1 class="label page-label">{{ .Title }}</h1>
-      <div class="col" data-pagefind-body>
-        <div class="prose">{{ .Content }}</div>
-      </div>
-    </article>
-  </div>
+  <article data-pagefind-body>
+    <header class="page-head">
+      <h1 class="page-title">{{ .Title }}</h1>
+    </header>
+    <div class="prose">{{ .Content }}</div>
+  </article>
 {{ end }}

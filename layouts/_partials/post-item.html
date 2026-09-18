@@ -1,0 +1,26 @@
+{{- /* Một bài trong danh sách: tiêu đề, dòng thông tin, ảnh bìa, đoạn trích.
+     Tham số:
+       page    — bài viết
+       variant — "lead" (bài mới nhất trên trang chủ), "list" (trang Bài viết,
+                 danh mục, thẻ) hoặc "grid" (các bài cũ hơn trên trang chủ)
+       loading — "eager" cho ảnh nằm ngay đầu trang */ -}}
+{{- $page := .page -}}
+{{- $variant := .variant | default "list" -}}
+{{- $sizes := cond (eq $variant "grid") "(min-width: 64rem) 21rem, (min-width: 40rem) 50vw, 100vw" "(min-width: 64rem) 44rem, 100vw" -}}
+{{- $excerptLen := cond (eq $variant "grid") 140 260 -}}
+<article class="post-item post-item--{{ $variant }}">
+  <header class="post-item-head">
+    {{- /* Trong lưới "Gần đây" đã có tiêu đề mục h2, nên tên bài là h3 */}}
+    {{- if eq $variant "grid" }}
+      <h3 class="post-item-title"><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h3>
+    {{- else }}
+      <h2 class="post-item-title"><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h2>
+    {{- end }}
+    {{ partial "post-meta.html" (dict "page" $page) }}
+  </header>
+  {{ partial "cover.html" (dict "page" $page "sizes" $sizes "loading" (.loading | default "lazy")) }}
+  {{- with or $page.Description $page.Summary }}
+    <p class="post-item-excerpt">{{ . | plainify | truncate $excerptLen }}</p>
+  {{- end }}
+  <p class="post-item-more"><a href="{{ $page.RelPermalink }}">{{ i18n "read_more" }}<span class="visually-hidden">: {{ $page.Title }}</span></a></p>
+</article>

@@ -3,23 +3,26 @@
    Không dùng CSS framework. Mọi giá trị màu, khoảng cách, cỡ chữ đều đi qua
    custom property khai báo ở :root, nên sửa một chỗ là đổi cả site.
 
-   Bố cục dựa trên 白銀比 (tỷ lệ 1 : √2), tỷ lệ truyền thống của kiến trúc Nhật:
-   lề ghi chú 29,3% | cột chữ 50% | khoảng 間 20,7%.
-   Con số 29,3% là 1 − 1/√2, nên ảnh rộng (cột chữ cộng khoảng 間) chiếm đúng
-   1/√2 chiều rộng khung.
+   Bố cục quen thuộc của blog cá nhân: đầu trang ở giữa, nội dung bên trái,
+   sidebar bên phải; trên mobile sidebar xuống dưới. Cỡ chữ tiêu đề đi theo
+   bước gần √2, tỷ lệ 白銀比 của kiến trúc Nhật.
 
    Mục lục:
      1. Token
      2. Nền tảng
      3. Typography theo từng ngôn ngữ
-     4. Lưới và khoảng 間
-     5. Header, menu, nút chuyển ngôn ngữ
-     6. Trang chủ
+     4. Khung trang: nội dung và sidebar
+     5. Đầu trang, menu, nút chuyển ngôn ngữ
+     6. Bài trong danh sách
      7. Bài viết
-     8. Dưới mặt đất: thẻ, bài cùng rễ, chân trang
-     9. Danh sách bài
+     8. Sidebar
+     9. Chân trang
     10. Chuyển động duy nhất
-    11. Ảnh rộng, gallery, video, lightbox
+    11. Ảnh, gallery, video, lightbox
+    12. Lưu trữ, danh mục, thẻ, ảnh
+    13. Trang 静
+    14. Tìm kiếm
+    15. Liên hệ
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ── 1. Token ─────────────────────────────────────────────────────────────── */
@@ -57,8 +60,18 @@
   --space-6: 3.25rem;
   --ma: clamp(4.5rem, 10vw, 8.5rem);
 
-  --page: 78rem;      /* 1248px */
-  --gutter: clamp(1.25rem, 5vw, 4.5rem);
+  /* Khung: cột nội dung + sidebar. Cột nội dung khoảng 44rem, tức chừng 75
+     ký tự một dòng ở cỡ chữ 18px. */
+  --shell: 64rem;
+  --sidebar: 16.5rem;
+  --col-gap: clamp(2.5rem, 5vw, 4rem);
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+
+  /* Thang cỡ chữ cho tiêu đề, bước gần √2 */
+  --size-brand: clamp(2.1rem, 4vw, 2.75rem);
+  --size-mark: 3.75rem;
+  --size-title: clamp(1.9rem, 3.4vw, 2.6rem);
+  --size-lead: clamp(1.75rem, 3vw, 2.25rem);
 
   color-scheme: light;
 }
@@ -125,7 +138,11 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Trang ngắn thì chân trang vẫn nằm sát đáy màn hình */
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
   margin: 0;
   background: var(--bg);
   color: var(--ink);
@@ -318,125 +335,194 @@ a:hover {
   border-top: 1px solid var(--rule);
 }
 
-/* ── 4. Lưới và khoảng 間 ─────────────────────────────────────────────────── */
-.page {
-  max-width: var(--page);
+/* ── 4. Khung trang: nội dung và sidebar ──────────────────────────────────── */
+/* Bố cục quen thuộc của một blog cá nhân: đầu trang ở giữa, nội dung bên trái
+   (khoảng 2/3), sidebar bên phải. Cột nội dung giữ độ dài dòng dưới 80 ký tự. */
+.shell {
+  max-width: calc(var(--shell) + 2 * var(--gutter));
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
-/* Một hàng của lưới: lề ghi chú | cột chữ | khoảng 間.
-   Mọi trang canh theo cùng một trục dọc ở 29,3%, nên chuyển trang chữ không nhảy. */
-.row {
+.layout {
+  flex: 1;
+  width: 100%;
   display: grid;
-  grid-template-columns: 29.3% 50% 1fr;
+  grid-template-columns: minmax(0, 1fr) var(--sidebar);
+  gap: var(--space-6) var(--col-gap);
+  align-items: start;
+  padding-block: var(--space-6) var(--ma);
 }
 
-.row + .row {
-  margin-block-start: var(--ma);
+.layout.is-wide {
+  grid-template-columns: minmax(0, 1fr);
 }
 
-/* Hàng đầu tiên của mỗi trang cũng cách header một khoảng 間 */
-main .row:first-child {
-  margin-block-start: var(--ma);
+main {
+  min-width: 0;
 }
 
-.marg {
-  grid-column: 1;
-  padding-inline-end: var(--space-5);
-  font-size: 0.875rem;
-  line-height: 1.7;
+/* Tiêu đề trang: to, rõ, căn giữa, là thứ đầu tiên mắt chạm vào */
+.page-head {
+  margin-block-end: var(--space-6);
+  text-align: center;
+}
+
+.page-title,
+.post-title {
+  font-family: var(--font-display);
+  font-size: var(--size-title);
+  font-weight: 450;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.page-title:lang(ja),
+.post-title:lang(ja) {
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  font-feature-settings: "palt";
+  word-break: auto-phrase;
+}
+
+.page-intro {
+  max-width: 34rem;
+  margin: var(--space-4) auto 0;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.page-parent,
+.page-count {
+  font-size: 0.9375rem;
   color: var(--muted);
 }
 
-.marg > * + * {
-  margin-block-start: 0.1rem;
+.page-parent {
+  margin-block-end: var(--space-2);
 }
 
-.col {
-  grid-column: 2;
-  min-width: 0;
+.page-count {
+  margin-block-start: var(--space-3);
 }
 
-/* Ảnh rộng lấn sang khoảng 間: đúng 1/√2 chiều rộng khung */
-.wide {
-  grid-column: 2 / 4;
-  min-width: 0;
-}
-
-.full {
-  grid-column: 1 / -1;
-  min-width: 0;
-}
-
-.label {
-  grid-column: 1;
-  padding-inline-end: var(--space-5);
-  padding-block-start: 0.3rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--muted);
-}
-
-/* ── 5. Header, menu, nút chuyển ngôn ngữ ─────────────────────────────────── */
-.masthead {
+/* Tiêu đề một mục trong trang (Gần đây, Cùng rễ, các năm ở Lưu trữ):
+   chữ ở giữa, hai đường mảnh hai bên, như đường ngăn giữa hai phần */
+.section-title {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4) var(--space-5);
-  align-items: baseline;
-  justify-content: space-between;
-  padding-block: var(--space-5) 0;
-}
-
-.masthead-name {
-  display: flex;
-  gap: var(--space-3);
+  gap: var(--space-4);
   align-items: center;
+  margin-block: var(--space-6) var(--space-5);
   font-size: 1.0625rem;
+  font-weight: 600;
   letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.section-title::before,
+.section-title::after {
+  content: "";
+  flex: 1;
+  border-block-start: 1px solid var(--rule);
+}
+
+.empty {
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ── 5. Đầu trang, menu, nút chuyển ngôn ngữ ─────────────────────────────── */
+.masthead-brand {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-6) var(--space-5);
+  text-align: center;
+}
+
+.brand {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
   text-decoration: none;
 }
 
-.masthead-name .kamon {
-  width: 1.75rem;
+.brand-mark {
+  width: var(--size-mark);
 }
 
-.masthead-name:hover {
+.brand-name {
+  font-family: var(--font-display);
+  font-size: var(--size-brand);
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.brand:hover {
   color: var(--ink);
 }
 
-.masthead-name:hover .kamon {
+.brand:hover .brand-mark {
   color: var(--accent);
 }
 
-.masthead nav {
+.brand-tagline {
+  font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+/* Hàng menu nằm giữa hai đường mảnh chạy hết bề ngang khung */
+.masthead-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.masthead-bar .shell {
+  border-block: 1px solid var(--rule);
+  padding-block: var(--space-3);
+}
+
+.nav {
+  grid-column: 2;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
-  align-items: baseline;
-  font-size: 0.9375rem;
+  justify-content: center;
+  gap: var(--space-2) var(--space-5);
+  font-size: 1rem;
 }
 
-.masthead nav a {
-  text-decoration-color: transparent;
+.nav a {
+  padding-block: var(--space-1);
+  text-decoration: none;
 }
 
-.masthead nav a:hover,
-.masthead nav a[aria-current="page"] {
-  text-decoration-color: var(--accent);
+.nav a[aria-current="page"] {
+  text-decoration: underline 1px var(--ink);
+  text-underline-offset: 0.4em;
 }
 
-.masthead nav a[aria-current="page"] {
-  color: var(--muted);
+.nav a:hover {
+  color: var(--accent);
 }
 
 .lang {
+  grid-column: 3;
+  justify-self: end;
   display: flex;
-  gap: var(--space-2);
+  gap: var(--space-3);
   align-items: baseline;
   font-size: 0.875rem;
   color: var(--muted);
+}
+
+.lang a {
+  text-decoration: none;
 }
 
 .lang [aria-current] {
@@ -455,15 +541,19 @@ main .row:first-child {
    phím Esc và bấm ra ngoài. */
 .menu-button {
   display: none;
+  grid-column: 1;
+  justify-self: start;
   font: inherit;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: inherit;
   background: none;
   border: 0;
-  padding: 0;
-  text-decoration: underline 1px var(--muted);
-  text-underline-offset: 0.22em;
+  padding: var(--space-1) 0;
   cursor: pointer;
+}
+
+.menu-button:hover {
+  color: var(--accent);
 }
 
 #menu {
@@ -491,7 +581,7 @@ main .row:first-child {
 }
 
 .menu-panel a {
-  text-decoration-color: transparent;
+  text-decoration: none;
 }
 
 .menu-close {
@@ -507,50 +597,135 @@ main .row:first-child {
   cursor: pointer;
 }
 
-/* ── 6. Trang chủ ─────────────────────────────────────────────────────────── */
-/* Trang chủ mở thẳng vào bài mới nhất, như mở cuốn nhật ký ra trang đang viết.
-   Kamon lớn nằm ở lề, cạnh tiêu đề. */
-.home-lead {
-  margin-block-start: var(--ma);
+/* ── 6. Bài trong danh sách ───────────────────────────────────────────────── */
+/* Mỗi bài: tiêu đề và dòng thông tin căn giữa, ảnh bìa, đoạn trích căn trái,
+   rồi link đọc tiếp. Ba cỡ: bài mới nhất (lead), danh sách, lưới hai cột. */
+.post-item-head {
+  text-align: center;
 }
 
-.home-lead .kamon-large {
-  width: clamp(4.5rem, 9vw, 8rem);
-  margin-block-end: var(--space-4);
-}
-
-.lead-title {
+.post-item-title {
   font-family: var(--font-display);
-  font-size: clamp(1.9rem, 3.6vw, 2.75rem);
+  font-size: 1.6rem;
   font-weight: 450;
-  line-height: 1.2;
-  letter-spacing: -0.005em;
+  line-height: 1.25;
   text-wrap: balance;
 }
 
-.lead-title:lang(ja) {
+.post-item--lead .post-item-title {
+  font-size: var(--size-lead);
+  line-height: 1.2;
+}
+
+.post-item--grid .post-item-title {
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.post-item-title:lang(ja) {
   font-weight: 600;
-  line-height: 1.45;
-  letter-spacing: 0.04em;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
   font-feature-settings: "palt";
   word-break: auto-phrase;
 }
 
-.lead-title a {
-  text-decoration-color: transparent;
+.post-item-title a {
+  text-decoration: none;
 }
 
-.lead-excerpt {
+.post-item-title a:hover {
+  color: var(--accent);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-1) var(--space-4);
+  margin-block-start: var(--space-3);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.meta a {
+  text-decoration: underline 1px var(--rule);
+  text-underline-offset: 0.25em;
+}
+
+.meta a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+.cover {
+  display: block;
+  margin-block-start: var(--space-5);
+}
+
+.cover img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  background: var(--band);
+}
+
+.post-item-excerpt {
+  margin-block-start: var(--space-4);
+  font-size: var(--text-size);
+  line-height: var(--text-leading);
+  letter-spacing: var(--text-tracking);
+  text-wrap: pretty;
+}
+
+.post-item--grid .post-item-excerpt {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+.post-item--grid .cover {
   margin-block-start: var(--space-4);
 }
 
-.more {
-  display: inline-block;
-  margin-block-start: var(--space-4);
+.post-item-more {
+  margin-block-start: var(--space-3);
   font-size: 0.9375rem;
 }
 
-/* Danh sách bài gần đây: hàng chữ, không phải card */
+.post-item-more a,
+.all-posts a {
+  text-decoration: underline 1px var(--ink);
+  text-underline-offset: 0.3em;
+}
+
+.post-item-more a:hover,
+.all-posts a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+/* Danh sách: các bài ngăn nhau bằng một đường mảnh và khoảng thở rộng */
+.post-list > .post-item + .post-item {
+  margin-block-start: var(--space-6);
+  padding-block-start: var(--space-6);
+  border-block-start: 1px solid var(--rule);
+}
+
+/* Trang chủ: các bài cũ hơn xếp lưới hai cột, căn theo đầu hàng */
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6) var(--space-5);
+  align-items: start;
+}
+
+.all-posts {
+  margin-block-start: var(--space-6);
+  text-align: center;
+}
+
+/* Danh sách hàng chữ gọn (kết quả tìm kiếm): ngày ở cột trái */
 .entries {
   list-style: none;
 }
@@ -588,7 +763,7 @@ main .row:first-child {
 }
 
 .entry-title a {
-  text-decoration-color: transparent;
+  text-decoration: none;
 }
 
 .entry-excerpt {
@@ -600,30 +775,23 @@ main .row:first-child {
   text-wrap: pretty;
 }
 
-/* ── 7. Bài viết ──────────────────────────────────────────────────────────── */
-.post-title {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 450;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  text-wrap: balance;
-}
-
-.post-title:lang(ja) {
-  font-weight: 600;
-  line-height: 1.4;
-  letter-spacing: 0.04em;
-  font-feature-settings: "palt";
-  word-break: auto-phrase;
-}
-
-.post-body {
+.pager {
+  display: flex;
+  gap: var(--space-5);
+  justify-content: space-between;
   margin-block-start: var(--space-6);
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid var(--rule);
+  font-size: 0.9375rem;
 }
 
-/* Ảnh trong bài: mặc định rộng bằng cột chữ; ảnh đánh dấu "wide" lấn sang
-   khoảng 間 bên phải, còn "full" tràn hết khung (xem mục 11). */
+/* ── 7. Bài viết ──────────────────────────────────────────────────────────── */
+.post-head {
+  margin-block-end: var(--space-6);
+  text-align: center;
+}
+
+/* Ảnh trong bài rộng bằng cột nội dung (xem mục 11 cho ảnh tràn trên mobile) */
 .figure {
   margin-block: var(--space-6);
 }
@@ -648,110 +816,247 @@ main .row:first-child {
   color: var(--seal);
 }
 
-/* ── 8. Dưới mặt đất ─────────────────────────────────────────────────────── */
-/* Nội dung nằm trên mặt đất; những gì nối các bài với nhau (thẻ, bài cùng rễ,
-   danh mục, lưu trữ) nằm dưới một đường mặt đất, trên dải 白緑. */
-.ground {
-  margin: var(--ma) 0 0;
-  border: 0;
-  border-block-start: 1px solid var(--rule);
+.seal svg {
+  width: 100%;
+  height: auto;
 }
 
-.under {
-  background: var(--band);
-  box-shadow: 0 0 0 100vmax var(--band);
-  clip-path: inset(0 -100vmax);
-  padding-block: var(--space-6);
+/* Cuối bài: thẻ, bài trước và sau, bài cùng rễ */
+.post-foot {
+  margin-block-start: var(--space-6);
 }
 
-.under + .under {
-  margin-block-start: 0;
-  padding-block-start: 0;
-}
-
-.under dt,
-.under .under-label {
-  grid-column: 1;
-  padding-inline-end: var(--space-5);
-  font-size: 0.875rem;
+.post-foot-label {
+  font-size: 0.8125rem;
   color: var(--muted);
 }
 
-.under dd {
-  grid-column: 2 / 4;
-  margin: 0;
-}
-
-.tags {
+.post-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-1) var(--space-4);
+  gap: var(--space-2) var(--space-4);
+  align-items: baseline;
+  padding-block: var(--space-4);
+  border-block-start: 1px solid var(--rule);
 }
 
-.roots {
+.post-tags a {
+  text-decoration: underline 1px var(--rule);
+  text-underline-offset: 0.25em;
+}
+
+.post-tags a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+.neighbours {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+  padding-block: var(--space-4);
+  border-block: 1px solid var(--rule);
+}
+
+.neighbour {
+  display: grid;
+  gap: var(--space-1);
+  text-decoration: none;
+}
+
+.neighbour-next {
+  grid-column: 2;
+  text-align: end;
+}
+
+.neighbour-title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  line-height: 1.4;
+  text-wrap: balance;
+}
+
+.neighbour:hover .neighbour-title {
+  color: var(--accent);
+}
+
+.related-list {
   list-style: none;
 }
 
-.roots li + li {
+.related-list li + li {
   margin-block-start: var(--space-3);
 }
 
-.roots .via {
+.related-list a {
+  font-size: 1.0625rem;
+  text-decoration: none;
+}
+
+.related-list a:hover {
+  color: var(--accent);
+}
+
+.related-list .via {
   display: block;
   font-size: 0.8125rem;
   color: var(--muted);
 }
 
-.neighbours {
+/* ── 8. Sidebar ───────────────────────────────────────────────────────────── */
+.sidebar {
   display: grid;
-  gap: var(--space-4);
-}
-
-.site-footer {
-  margin-block-start: var(--ma);
-  border-block-start: 1px solid var(--rule);   /* đường mặt đất */
-  background: var(--band);
-  box-shadow: 0 0 0 100vmax var(--band);
-  clip-path: inset(0 -100vmax);
-  padding-block: var(--space-6) var(--space-6);
+  gap: var(--space-6);
   font-size: 0.9375rem;
+  line-height: 1.7;
 }
 
-.site-footer nav {
+.widget-title {
+  padding-block-end: var(--space-2);
+  margin-block-end: var(--space-3);
+  border-block-end: 1px solid var(--rule);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.widget-title a {
+  text-decoration: none;
+}
+
+.widget-title a:hover {
+  color: var(--accent);
+}
+
+.avatar {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  margin-block-end: var(--space-3);
+  background: var(--band);
+}
+
+.bio {
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.widget-more {
+  margin-block-start: var(--space-2);
+}
+
+.widget-more a {
+  text-decoration: underline 1px var(--ink);
+  text-underline-offset: 0.3em;
+}
+
+.widget-more a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+.widget-list {
+  list-style: none;
+}
+
+.widget-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: 0.3rem;
+}
+
+.widget-list a {
+  text-decoration: none;
+}
+
+.widget-list a:hover {
+  color: var(--accent);
+}
+
+.widget-list .is-empty a {
+  color: var(--muted);
+}
+
+.count {
+  font-size: 0.8125rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.widget-search {
+  display: flex;
+}
+
+.widget-search input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--rule);
+  border-inline-end: 0;
+  border-radius: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.widget-search input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.widget-search input:focus-visible {
+  outline-offset: -2px;
+}
+
+.widget-search button {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: var(--ink);
+  color: var(--bg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.widget-search button:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+/* ── 9. Chân trang ────────────────────────────────────────────────────────── */
+.site-footer {
+  border-block-start: 1px solid var(--rule);
+  background: var(--band);
+  padding-block: var(--space-5);
+  font-size: 0.9375rem;
+  text-align: center;
+}
+
+.footer-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
+  justify-content: center;
+  gap: var(--space-2) var(--space-5);
+}
+
+.footer-nav a {
+  text-decoration: none;
+}
+
+.footer-nav a:hover {
+  color: var(--accent);
 }
 
 .colophon {
-  margin-block-start: var(--space-4);
+  margin-block-start: var(--space-3);
   font-size: 0.8125rem;
   color: var(--muted);
   text-wrap: pretty;
 }
 
-/* ── 9. Danh sách bài ─────────────────────────────────────────────────────── */
-.page-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.6rem, 2.8vw, 2.1rem);
-  font-weight: 450;
-  line-height: 1.25;
-  text-wrap: balance;
-}
-
-.page-intro {
-  margin-block-start: var(--space-4);
-  color: var(--muted);
-  text-wrap: pretty;
-}
-
-.pager {
-  display: flex;
-  gap: var(--space-5);
-  justify-content: space-between;
-  margin-block-start: var(--ma);
-  font-size: 0.9375rem;
-}
 
 /* ── 10. Chuyển động duy nhất ────────────────────────────────────────────── */
 /* Cả site chỉ có một khoảnh khắc chuyển động: kamon tự vẽ khi vào trang chủ
@@ -794,71 +1099,62 @@ main .row:first-child {
   }
 }
 
-/* ── Tablet: lưới hai cột, lề hẹp lại nhưng vẫn là lề ─────────────────────── */
-@media (max-width: 63.999rem) {
-  .row {
-    grid-template-columns: 11rem minmax(0, 1fr);
-  }
-
-  .col,
-  .wide {
-    grid-column: 2;
-  }
-
-  .under dd {
-    grid-column: 2;
-  }
-}
-
-/* ── Mobile: một cột, không phải bản co lại ───────────────────────────────── */
-@media (max-width: 47.999rem) {
-  :root {
-    --text-size: 1.0625rem;
-  }
-
-  .row {
+/* ── Tablet và mobile: một cột, sidebar xuống dưới nội dung ───────────────── */
+@media (max-width: 55.999rem) {
+  .layout {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .label,
-  .marg,
-  .col,
-  .wide,
-  .under dt,
-  .under dd,
-  .under .under-label {
-    grid-column: 1;
-    padding-inline-end: 0;
+  .sidebar {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--space-6) var(--space-5);
+    padding-block-start: var(--space-6);
+    border-block-start: 1px solid var(--rule);
+  }
+}
+
+@media (max-width: 47.999rem) {
+  :root {
+    --text-size: 1.0625rem;
+    --size-mark: 3rem;
+    --size-brand: 1.9rem;
   }
 
-  .label {
-    padding-block: 0 var(--space-3);
+  .masthead-brand {
+    padding-block: var(--space-5) var(--space-4);
   }
 
-  /* Ngày và tiết khí lên trên tiêu đề, xếp ngang */
-  .marg {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0 var(--space-4);
-    margin-block-end: var(--space-3);
-  }
-
-  .marg > * + * {
-    margin-block-start: 0;
-  }
-
-  /* Kamon giữ riêng một dòng, không chen ngang với ngày và tiết khí */
-  .marg > .kamon-large {
-    flex-basis: 100%;
-    margin-block-end: var(--space-3);
-  }
-
-  .masthead nav {
+  .nav {
     display: none;
   }
 
   .menu-button {
     display: inline-block;
+  }
+
+  .masthead-inner {
+    grid-template-columns: 1fr auto;
+  }
+
+  .lang {
+    grid-column: 2;
+  }
+
+  .post-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .post-item-title {
+    font-size: 1.4rem;
+  }
+
+  .neighbours {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .neighbour-next {
+    grid-column: 1;
+    text-align: start;
   }
 
   .entry {
@@ -870,7 +1166,8 @@ main .row:first-child {
   }
 
   /* Ảnh tràn sát hai mép màn hình */
-  .figure {
+  .figure,
+  .cover {
     margin-inline: calc(var(--gutter) * -1);
   }
 
@@ -884,10 +1181,9 @@ main .row:first-child {
 }
 
 @media print {
-  .masthead nav,
-  .lang,
-  .menu-button,
-  .under,
+  .masthead-bar,
+  .sidebar,
+  .post-foot,
   .site-footer {
     display: none;
   }
@@ -898,84 +1194,19 @@ main .row:first-child {
   }
 }
 
-/* ── Bổ sung: dải dưới mặt đất dùng chung lưới với nội dung ───────────────── */
-/* subgrid giữ cho nhãn ở dải này thẳng cùng một trục với lề ghi chú phía trên */
-.under {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: subgrid;
-  row-gap: var(--space-5);
-}
-
-.under > dd > * + * {
-  margin-block-start: var(--space-3);
-}
-
-.masthead-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-2);
-  text-align: end;
-}
-
-.count {
-  font-size: 0.8125rem;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.page-label {
-  font-size: 1.0625rem;
-  color: var(--ink);
-}
-
-.kamon svg,
-.kamon-large svg {
-  width: 100%;
-  height: auto;
-}
-
-.kamon,
-.kamon-large {
+.kamon {
   display: block;
 }
 
-.seal svg {
+.kamon svg {
   width: 100%;
   height: auto;
 }
 
-@media (max-width: 47.999rem) {
-  .masthead-right {
-    align-items: baseline;
-    flex-direction: row;
-    gap: var(--space-4);
-  }
 
-  .under {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: var(--space-4);
-  }
-}
-
-/* ── 11. Ảnh rộng, gallery, video, lightbox ───────────────────────────────── */
-/* Ảnh nằm bên trong cột chữ, nên muốn lấn ra ngoài thì tính theo bề rộng cột.
-   Cột chữ 50% khung, lề ghi chú 29,3%, khoảng 間 20,7%:
-     wide: (50 + 20,7) / 50 = 141,4% bề rộng cột, đúng √2 lần
-     full: 100 / 50 = 200%, dịch sang trái 29,3 / 50 = 58,6% */
-.figure.wide,
-.gallery.wide,
-.video.wide {
-  width: 141.4%;
-}
-
-.figure.full,
-.gallery.full,
-.video.full {
-  width: 200%;
-  margin-inline-start: -58.6%;
-}
+/* ── 11. Ảnh, gallery, video, lightbox ───────────────────────────────── */
+/* Bên phải cột nội dung là sidebar, nên ảnh "wide" và "full" trên desktop
+   rộng bằng cột. Trên mobile, mọi ảnh tràn sát hai mép màn hình. */
 
 /* Lúc ảnh đang tải, khung giữ chỗ mang màu 白緑 thay vì để trống trơn */
 .figure img,
@@ -1179,29 +1410,10 @@ html:has(.lightbox[open]) {
   display: none;
 }
 
-@media (max-width: 63.999rem) {
-  .figure.wide,
-  .gallery.wide,
-  .video.wide {
-    width: auto;
-  }
-
-  .figure.full,
-  .gallery.full,
-  .video.full {
-    width: calc(100% + 11rem);
-    margin-inline-start: -11rem;
-  }
-}
-
 @media (max-width: 47.999rem) {
   /* Mọi thứ tràn sát hai mép màn hình, giống ảnh đơn */
-  .figure.full,
   .gallery,
-  .gallery.full,
-  .video,
-  .video.full {
-    width: auto;
+  .video {
     margin-inline: calc(var(--gutter) * -1);
   }
 
@@ -1240,29 +1452,17 @@ html:has(.lightbox[open]) {
 .years {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: var(--space-2) var(--space-4);
-  font-variant-numeric: tabular-nums;
-}
-
-.archive-year + .archive-year {
-  margin-block-start: var(--space-6);
-}
-
-.archive-year-label {
-  font-size: 1.25rem;
-  font-weight: 450;
-  color: var(--ink);
+  margin-block-start: var(--space-4);
   font-variant-numeric: tabular-nums;
 }
 
 .archive-month {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--muted);
-}
-
-.archive-month:not(:first-child) {
   margin-block-start: var(--space-5);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--muted);
 }
 
 .archive-list {
@@ -1275,7 +1475,8 @@ html:has(.lightbox[open]) {
   grid-template-columns: 2.5rem minmax(0, 1fr);
   gap: var(--space-3);
   align-items: baseline;
-  padding-block: 0.35rem;
+  padding-block: 0.4rem;
+  border-block-end: 1px solid var(--rule);
 }
 
 .archive-list time {
@@ -1285,25 +1486,26 @@ html:has(.lightbox[open]) {
 }
 
 .archive-list a {
-  text-decoration-color: transparent;
+  font-size: 1.0625rem;
+  text-decoration: none;
 }
 
 .archive-list a:hover {
-  text-decoration-color: var(--accent);
+  color: var(--accent);
 }
 
-.category + .category {
-  margin-block-start: var(--space-6);
-}
-
-.category-count {
-  font-variant-numeric: tabular-nums;
-  padding-block-start: 0.7rem;
+.category {
+  padding-block: var(--space-5);
+  border-block-start: 1px solid var(--rule);
 }
 
 .category-name {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  align-items: baseline;
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+  font-size: 1.6rem;
   font-weight: 450;
   line-height: 1.25;
 }
@@ -1314,7 +1516,22 @@ html:has(.lightbox[open]) {
 }
 
 .category-name a {
-  text-decoration-color: transparent;
+  text-decoration: none;
+}
+
+.category-name a:hover {
+  color: var(--accent);
+}
+
+.category-name .count {
+  font-family: var(--font-text);
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.category.is-empty .category-name a {
+  color: var(--muted);
 }
 
 .category-desc {
@@ -1325,27 +1542,78 @@ html:has(.lightbox[open]) {
 
 .category-latest {
   list-style: none;
-  margin-block-start: var(--space-4);
-  font-size: 0.9375rem;
+  margin-block-start: var(--space-3);
 }
 
 .category-latest li + li {
   margin-block-start: var(--space-1);
 }
 
+.category-latest a {
+  text-decoration: underline 1px var(--rule);
+  text-underline-offset: 0.25em;
+}
+
+.category-latest a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
 .tag-cloud {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: var(--space-3) var(--space-5);
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
+}
+
+.tag-cloud a {
+  text-decoration: none;
+}
+
+.tag-cloud a:hover {
+  color: var(--accent);
 }
 
 /* Contact sheet: hàng ảnh giữ tỷ lệ gốc. Mỗi ảnh lớn lên theo tỷ lệ của
    chính nó (--r = rộng ÷ cao), nên cả hàng cao đều nhau mà không ảnh nào bị
    cắt. Không cần JavaScript. */
+.sheet {
+  padding-block-start: var(--space-5);
+  border-block-start: 1px solid var(--rule);
+}
+
 .sheet + .sheet {
   margin-block-start: var(--space-6);
+}
+
+.sheet-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  align-items: baseline;
+  justify-content: space-between;
+  margin-block-end: var(--space-4);
+}
+
+.sheet-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 450;
+}
+
+.sheet-title a {
+  text-decoration: none;
+}
+
+.sheet-title a:hover {
+  color: var(--accent);
+}
+
+.sheet-head time {
+  font-size: 0.875rem;
+  color: var(--muted);
 }
 
 .sheet-row {
@@ -1379,11 +1647,8 @@ html:has(.lightbox[open]) {
   .sheet-row li {
     flex-basis: calc(var(--r) * 7rem);
   }
-
-  .category-count {
-    padding-block-start: 0;
-  }
 }
+
 
 /* ── 13. Trang 静 ────────────────────────────────────────────────────────── */
 /* Không header, không footer, không chuyển động: chỉ một vòng mực và một dòng

@@ -1,40 +1,36 @@
-{{- /* Lưu trữ: toàn bộ lịch sử trên một trang, năm ở lề, rồi tới từng tháng.
-     Khác trang Bài viết: không có đoạn mở đầu, không phân trang, để lùi thật
-     sâu về quá khứ mà không phải bấm "trang sau" nhiều lần. */ -}}
+{{- /* Lưu trữ: toàn bộ lịch sử trên một trang, chia theo năm rồi tới tháng.
+     Khác trang Bài viết: không đoạn trích, không phân trang, để lùi thật sâu về
+     quá khứ mà không phải bấm "trang sau" nhiều lần. Mỗi tháng có id
+     "thang-YYYY-MM" để sidebar link thẳng tới. */ -}}
 {{ define "main" }}
   {{- $years := (where .Site.RegularPages "Section" "posts").GroupByDate "2006" -}}
-  <div class="page">
-    <div class="row">
-      <h1 class="label page-label">{{ .Title }}</h1>
-      <div class="col">
-        {{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
-        {{- if gt (len $years) 1 }}
-          <nav class="years" aria-label="{{ i18n "archive_jump" }}">
-            {{- range $years }}<a href="#nam-{{ .Key }}">{{ .Key }}</a>{{ end }}
-          </nav>
-        {{- end }}
-      </div>
-    </div>
-
-    {{- range $years }}
-      <section class="row archive-year" id="nam-{{ .Key }}" aria-labelledby="nam-{{ .Key }}-tieu-de">
-        <h2 class="label archive-year-label" id="nam-{{ .Key }}-tieu-de">{{ .Key }}</h2>
-        <div class="col">
-          {{- range .Pages.GroupByDate "1" }}
-            <h3 class="archive-month">{{ i18n "archive_month" (dict "Month" .Key) }}</h3>
-            <ul class="archive-list">
-              {{- range .Pages }}
-                <li>
-                  <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02" }}</time>
-                  <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-                </li>
-              {{- end }}
-            </ul>
-          {{- end }}
-        </div>
-      </section>
-    {{- else }}
-      <p class="row"><span class="col">{{ i18n "list_no_posts" }}</span></p>
+  <header class="page-head">
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{- with .Content }}<div class="page-intro">{{ . }}</div>{{ end }}
+    {{- if gt (len $years) 1 }}
+      <nav class="years" aria-label="{{ i18n "archive_jump" }}">
+        {{- range $years }}<a href="#nam-{{ .Key }}">{{ .Key }}</a>{{ end }}
+      </nav>
     {{- end }}
-  </div>
+  </header>
+
+  {{- range $years }}
+    <section class="archive-year" id="nam-{{ .Key }}" aria-labelledby="nam-{{ .Key }}-tieu-de">
+      <h2 class="section-title" id="nam-{{ .Key }}-tieu-de">{{ .Key }}</h2>
+      {{- range .Pages.GroupByDate "2006-01" }}
+        {{- $first := index .Pages 0 }}
+        <h3 class="archive-month" id="thang-{{ .Key }}">{{ i18n "archive_month" (dict "Month" (printf "%d" $first.Date.Month)) }}</h3>
+        <ul class="archive-list">
+          {{- range .Pages }}
+            <li>
+              <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02" }}</time>
+              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </li>
+          {{- end }}
+        </ul>
+      {{- end }}
+    </section>
+  {{- else }}
+    <p class="empty">{{ i18n "list_no_posts" }}</p>
+  {{- end }}
 {{ end }}

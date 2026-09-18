@@ -1,19 +1,16 @@
 {{ define "main" }}
-  <div class="page">
-    <div class="row">
-      <p class="label">
-        {{- with .Parent }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end -}}
-      </p>
-      <div class="col">
-        <h1 class="page-title">{{ .Title }}</h1>
-        {{- with .Description }}<p class="page-intro">{{ . }}</p>{{ end }}
-      </div>
-    </div>
-    <div class="row">
-      <p class="label">{{ i18n "list_count" (dict "Count" (len .Pages)) }}</p>
-      <div class="col">
-        {{ partial "entries.html" (dict "pages" .Pages "excerpt" true) }}
-      </div>
-    </div>
+  <header class="page-head">
+    {{- with .Parent }}<p class="page-parent"><a href="{{ .RelPermalink }}">{{ .Title }}</a></p>{{ end }}
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{- with .Description }}<p class="page-intro">{{ . }}</p>{{ end }}
+    <p class="page-count">{{ i18n "list_count" (dict "Count" (len .Pages)) }}</p>
+  </header>
+  <div class="post-list">
+    {{- range .Paginator.Pages }}
+      {{ partial "post-item.html" (dict "page" . "variant" "list") }}
+    {{- else }}
+      <p class="empty">{{ i18n "list_no_posts" }}</p>
+    {{- end }}
   </div>
+  {{ partial "pager.html" . }}
 {{ end }}

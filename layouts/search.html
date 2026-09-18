@@ -6,22 +6,20 @@
      trước, nên script subset font giữ đủ bộ ký tự cốt lõi cho trang này. */ -}}
 {{ define "main" }}
   {{- $count := i18n "search_results" (dict "Count" "__N__") -}}
-  <div class="page">
-    <div class="row">
-      <h1 class="label page-label">{{ .Title }}</h1>
-      <div class="col search" data-fonts="core"
-           data-results="{{ $count }}" data-none="{{ i18n "search_no_results" }}"
-           data-loading="{{ i18n "search_loading" }}">
-        <form class="search-form" role="search" action="{{ .RelPermalink }}" method="get">
-          <label class="visually-hidden" for="q">{{ i18n "search_placeholder" }}</label>
-          <input id="q" name="q" type="search" placeholder="{{ i18n "search_placeholder" }}"
-                 autocomplete="off" spellcheck="false" enterkeyhint="search">
-        </form>
-        <p class="search-status" role="status" aria-live="polite"></p>
-        <ul class="entries search-results"></ul>
-        <noscript><p class="page-intro">{{ i18n "search_noscript" }}</p></noscript>
-      </div>
-    </div>
+  <header class="page-head">
+    <h1 class="page-title">{{ .Title }}</h1>
+  </header>
+  <div class="search" data-fonts="core"
+       data-results="{{ $count }}" data-none="{{ i18n "search_no_results" }}"
+       data-loading="{{ i18n "search_loading" }}">
+    <form class="search-form" role="search" action="{{ .RelPermalink }}" method="get">
+      <label class="visually-hidden" for="q">{{ i18n "search_placeholder" }}</label>
+      <input id="q" name="q" type="search" placeholder="{{ i18n "search_placeholder" }}"
+             autocomplete="off" spellcheck="false" enterkeyhint="search">
+    </form>
+    <p class="search-status" role="status" aria-live="polite"></p>
+    <ul class="entries search-results"></ul>
+    <noscript><p class="page-intro">{{ i18n "search_noscript" }}</p></noscript>
   </div>
 {{ end }}
 

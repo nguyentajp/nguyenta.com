@@ -1,39 +1,11 @@
-{{- /* Chân trang là phần "dưới mặt đất": danh mục là các thân tre, thẻ là thân
-     rễ ngầm nối các bài với nhau, rồi tới lưu trữ và liên hệ. */ -}}
+{{- /* Chân trang gọn: các trang phụ, RSS và một dòng về site. Danh mục và lưu
+     trữ đã có ở sidebar nên không lặp lại ở đây. */ -}}
 <footer class="site-footer">
-  <div class="page">
-    <dl class="row">
-      <dt class="under-label">{{ i18n "nav_categories" }}</dt>
-      <dd>
-        <div class="tags">
-          {{- /* Năm danh mục luôn theo thứ tự cố định (weight), không theo số bài */}}
-          {{- with site.GetPage "/categories" }}
-            {{- range .Pages.ByWeight }}
-              <a href="{{ .RelPermalink }}">{{ .LinkTitle }} <span class="count">{{ len .Pages }}</span></a>
-            {{- end }}
-          {{- end }}
-        </div>
-      </dd>
-    </dl>
-    {{- with site.Taxonomies.tags }}
-      <dl class="row">
-        <dt class="under-label">{{ i18n "nav_tags" }}</dt>
-        <dd>
-          <div class="tags">
-            {{- range first 12 .ByCount }}<a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}</a>{{ end }}
-          </div>
-        </dd>
-      </dl>
-    {{- end }}
-    <dl class="row">
-      <dt class="under-label">{{ .Site.Title }}</dt>
-      <dd>
-        <nav>
-          {{- range .Site.Menus.under }}<a href="{{ .URL }}">{{ .Name }}</a>{{ end }}
-          {{- with .OutputFormats.Get "rss" }}<a href="{{ .RelPermalink }}">{{ i18n "footer_rss" }}</a>{{ end }}
-        </nav>
-        <p class="colophon">{{ i18n "footer_colophon" }}</p>
-      </dd>
-    </dl>
+  <div class="shell footer-inner">
+    <nav class="footer-nav" aria-label="{{ .Site.Title }}">
+      {{- range .Site.Menus.under }}<a href="{{ .URL }}">{{ .Name }}</a>{{ end }}
+      {{- with .OutputFormats.Get "rss" }}<a href="{{ .RelPermalink }}">{{ i18n "footer_rss" }}</a>{{ end }}
+    </nav>
+    <p class="colophon">{{ i18n "footer_colophon" }}</p>
   </div>
 </footer>

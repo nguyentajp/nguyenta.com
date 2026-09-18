@@ -1,20 +1,14 @@
 {{ define "main" }}
-  <div class="page">
-    <div class="row">
-      <h1 class="label">{{ .Title }}</h1>
-      <div class="col">
-        {{- with .Description }}<p class="page-intro">{{ . }}</p>{{ end }}
-        {{ partial "entries.html" (dict "pages" .Paginator.Pages "excerpt" true) }}
-        {{- with .Paginator }}
-          {{- if gt .TotalPages 1 }}
-            <nav class="pager" aria-label="{{ i18n "page_of" (dict "Current" .PageNumber "Total" .TotalPages) }}">
-              <span>{{- with .Next }}<a href="{{ .URL }}">{{ i18n "page_older" }}</a>{{ end }}</span>
-              <span>{{ i18n "page_of" (dict "Current" .PageNumber "Total" .TotalPages) }}</span>
-              <span>{{- with .Prev }}<a href="{{ .URL }}">{{ i18n "page_newer" }}</a>{{ end }}</span>
-            </nav>
-          {{- end }}
-        {{- end }}
-      </div>
-    </div>
+  <header class="page-head">
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{- with .Description }}<p class="page-intro">{{ . }}</p>{{ end }}
+  </header>
+  <div class="post-list">
+    {{- range $i, $p := .Paginator.Pages }}
+      {{ partial "post-item.html" (dict "page" $p "variant" "list" "loading" (cond (eq $i 0) "eager" "lazy")) }}
+    {{- else }}
+      <p class="empty">{{ i18n "list_no_posts" }}</p>
+    {{- end }}
   </div>
+  {{ partial "pager.html" . }}
 {{ end }}

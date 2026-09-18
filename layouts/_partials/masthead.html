@@ -1,20 +1,37 @@
-<header class="page masthead">
-  <a class="masthead-name" href="{{ "" | relLangURL }}">
-    {{ partial "kamon.html" (dict "class" "kamon" "simple" true) }}
-    <span>{{ .Site.Title }}</span>
-  </a>
-  <div class="masthead-right">
-    <nav aria-label="{{ i18n "nav_menu" }}">
-      {{- range .Site.Menus.main }}
-        {{- $current := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }}
-        <a href="{{ .URL }}"{{ if $current }} aria-current="page"{{ end }}>{{ .Name }}</a>
+{{- /* Đầu trang đặt giữa như bìa một cuốn sổ: kamon, tên blog, một dòng mô tả,
+     rồi hàng menu nằm giữa hai đường mảnh. Trên trang chủ, kamon là bản tự vẽ
+     (chuyển động duy nhất của site) và tên blog là <h1>. */ -}}
+<header class="masthead">
+  <div class="shell masthead-brand">
+    <a class="brand" href="{{ "" | relLangURL }}">
+      {{- if .IsHome }}
+        {{ partial "kamon.html" (dict "class" "kamon brand-mark" "animated" true) }}
+      {{- else }}
+        {{ partial "kamon.html" (dict "class" "kamon brand-mark") }}
       {{- end }}
-      {{- with site.GetPage "/search" }}
-        <a href="{{ .RelPermalink }}">{{ i18n "nav_search" }}</a>
+      {{- if .IsHome }}
+        <h1 class="brand-name">{{ .Site.Title }}</h1>
+      {{- else }}
+        <span class="brand-name">{{ .Site.Title }}</span>
       {{- end }}
-    </nav>
-    {{ partial "lang-switch.html" . }}
-    <button class="menu-button" type="button" popovertarget="menu">{{ i18n "nav_menu" }}</button>
+    </a>
+    {{- with site.Params.tagline }}<p class="brand-tagline">{{ . }}</p>{{ end }}
+  </div>
+
+  <div class="masthead-bar">
+    <div class="shell masthead-inner">
+      <nav class="nav" aria-label="{{ i18n "nav_menu" }}">
+        {{- range .Site.Menus.main }}
+          {{- $current := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }}
+          <a href="{{ .URL }}"{{ if $current }} aria-current="page"{{ end }}>{{ .Name }}</a>
+        {{- end }}
+        {{- with site.GetPage "/search" }}
+          <a href="{{ .RelPermalink }}"{{ if eq $.RelPermalink .RelPermalink }} aria-current="page"{{ end }}>{{ i18n "nav_search" }}</a>
+        {{- end }}
+      </nav>
+      <button class="menu-button" type="button" popovertarget="menu">{{ i18n "nav_menu" }}</button>
+      {{ partial "lang-switch.html" . }}
+    </div>
   </div>
 
   {{/* Menu mobile dùng Popover API: đóng được bằng Esc và bấm ra ngoài, không cần JS */}}

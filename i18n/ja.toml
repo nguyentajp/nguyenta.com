@@ -140,3 +140,15 @@ other = "戻る"
 other = "大阪にて。Hugo で作り、GitHub Pages に置いています。"
 [footer_rss]
 other = "RSS"
+
+# サイドバー
+[sidebar_about]
+other = "Gen について"
+[sidebar_about_more]
+other = "プロフィールを読む"
+[sidebar_search_button]
+other = "検索"
+[sidebar_archive_all]
+other = "アーカイブをすべて見る"
+[archive_month_year]
+other = "{{ .Year }}年{{ .Month }}月"

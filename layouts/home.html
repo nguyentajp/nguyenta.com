@@ -1,32 +1,20 @@
+{{- /* Trang chủ: bài mới nhất đầy đủ ở trên, các bài cũ hơn xếp lưới hai cột
+     bên dưới, cuối cùng là link tới toàn bộ bài viết. */ -}}
 {{ define "main" }}
   {{- $posts := where .Site.RegularPages "Section" "posts" -}}
-  <div class="page">
-    {{- with index $posts 0 }}
-      {{/* Trang chủ mở thẳng vào bài mới nhất, như mở cuốn nhật ký ra trang đang viết */}}
-      <article class="row home-lead">
-        <div class="marg">
-          {{ partial "kamon.html" (dict "class" "kamon-large" "animated" true) }}
-          {{ partial "post-marginalia.html" (dict "page" . "brief" true) }}
-        </div>
-        <div class="col">
-          <h1 class="lead-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h1>
-          {{- with or .Description .Summary }}
-            <p class="lead-excerpt prose">{{ . | plainify | truncate 260 }}</p>
-          {{- end }}
-          <a class="more" href="{{ .RelPermalink }}">{{ i18n "read_more" }}</a>
-        </div>
-      </article>
-    {{- end }}
+  {{- with index $posts 0 }}
+    {{ partial "post-item.html" (dict "page" . "variant" "lead" "loading" "eager") }}
+  {{- else }}
+    <p class="empty">{{ i18n "list_no_posts" }}</p>
+  {{- end }}
 
-    {{- $recent := $posts | after 1 | first (site.Params.homeRecentCount | default 4) }}
-    {{- with $recent }}
-      <section class="row">
-        <h2 class="label">{{ i18n "list_recent" }}</h2>
-        <div class="col">
-          {{ partial "entries.html" (dict "pages" .) }}
-          <p class="more"><a href="{{ (site.GetPage "/posts").RelPermalink }}">{{ i18n "list_all_posts" }}</a></p>
-        </div>
-      </section>
-    {{- end }}
-  </div>
+  {{- with $posts | after 1 | first (site.Params.homeRecentCount | default 4) }}
+    <section class="recent" aria-labelledby="gan-day">
+      <h2 class="section-title" id="gan-day">{{ i18n "list_recent" }}</h2>
+      <div class="post-grid">
+        {{- range . }}{{ partial "post-item.html" (dict "page" . "variant" "grid") }}{{ end }}
+      </div>
+    </section>
+    <p class="all-posts"><a href="{{ (site.GetPage "/posts").RelPermalink }}">{{ i18n "list_all_posts" }}</a></p>
+  {{- end }}
 {{ end }}

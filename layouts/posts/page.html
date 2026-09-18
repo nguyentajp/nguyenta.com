@@ -1,57 +1,60 @@
 {{ define "main" }}
-  <div class="page">
-    <article class="row">
-      <div class="marg">{{ partial "post-marginalia.html" (dict "page" .) }}</div>
-      {{- /* data-pagefind-body: Pagefind chỉ lập chỉ mục phần này, không lẫn menu hay chân trang */}}
-      <div class="col" data-pagefind-body data-pagefind-meta="date:{{ .Date.Format "2006-01-02" }}">
-        <h1 class="post-title">{{ .Title }}</h1>
-        <div class="post-body prose">{{ .Content }}</div>
-        {{ partial "hanko.html" . }}
-      </div>
-    </article>
+  {{- /* data-pagefind-body: Pagefind chỉ lập chỉ mục phần này, không lẫn menu hay sidebar */}}
+  <article class="post" data-pagefind-body data-pagefind-meta="date:{{ .Date.Format "2006-01-02" }}">
+    <header class="post-head">
+      <h1 class="post-title">{{ .Title }}</h1>
+      {{ partial "post-meta.html" (dict "page" . "full" true) }}
+    </header>
+    <div class="post-body prose">{{ .Content }}</div>
+    {{ partial "hanko.html" . }}
+  </article>
 
-    {{/* Mặt đất: bên dưới là những gì nối bài này với các bài khác */}}
-    <div class="row">
-      <hr class="ground full">
-      <dl class="under">
-        {{- with .GetTerms "tags" }}
-          <dt>{{ i18n "post_tags" }}</dt>
-          <dd>
-            <div class="tags">{{ range . }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</div>
-          </dd>
-        {{- end }}
+  {{- /* Cuối bài: thẻ, bài trước và sau, bài cùng rễ. Một khối gọn, không lặp dải màu. */}}
+  <footer class="post-foot" data-pagefind-ignore>
+    {{- with .GetTerms "tags" }}
+      <p class="post-tags">
+        <span class="post-foot-label">{{ i18n "post_tags" }}</span>
+        {{- range . }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}
+      </p>
+    {{- end }}
 
-        {{- $related := first (site.Params.relatedCount | default 3) (site.RegularPages.Related .) }}
-        {{- with $related }}
-          <dt>{{ i18n "post_related" }}</dt>
-          <dd>
-            <ul class="roots">
-              {{- $tagNames := slice }}
-              {{- range $.GetTerms "tags" }}{{ $tagNames = $tagNames | append .LinkTitle }}{{ end }}
-              {{- range . }}
-                {{- $shared := "" }}
-                {{- range .GetTerms "tags" }}
-                  {{- if and (eq $shared "") (in $tagNames .LinkTitle) }}{{ $shared = .LinkTitle }}{{ end }}
-                {{- end }}
-                <li>
-                  <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-                  {{- with $shared }}<span class="via">{{ i18n "post_related_via" (dict "Tag" .) }}</span>{{ end }}
-                </li>
-              {{- end }}
-            </ul>
-          </dd>
+    {{- if or .PrevInSection .NextInSection }}
+      {{- /* PrevInSection là bài CŨ hơn, NextInSection là bài MỚI hơn */}}
+      <nav class="neighbours" aria-label="{{ i18n "post_nearby" }}">
+        {{- with .PrevInSection }}
+          <a class="neighbour neighbour-prev" href="{{ .RelPermalink }}">
+            <span class="post-foot-label">{{ i18n "post_prev" }}</span>
+            <span class="neighbour-title">{{ .Title }}</span>
+          </a>
         {{- end }}
+        {{- with .NextInSection }}
+          <a class="neighbour neighbour-next" href="{{ .RelPermalink }}">
+            <span class="post-foot-label">{{ i18n "post_next" }}</span>
+            <span class="neighbour-title">{{ .Title }}</span>
+          </a>
+        {{- end }}
+      </nav>
+    {{- end }}
 
-        {{- if or .PrevInSection .NextInSection }}
-          <dt>{{ i18n "post_nearby" }}</dt>
-          <dd>
-            <div class="neighbours">
-              {{- with .NextInSection }}<span>{{ i18n "post_next" }}: <a href="{{ .RelPermalink }}">{{ .Title }}</a></span>{{ end }}
-              {{- with .PrevInSection }}<span>{{ i18n "post_prev" }}: <a href="{{ .RelPermalink }}">{{ .Title }}</a></span>{{ end }}
-            </div>
-          </dd>
-        {{- end }}
-      </dl>
-    </div>
-  </div>
+    {{- $related := first (site.Params.relatedCount | default 3) (site.RegularPages.Related .) }}
+    {{- with $related }}
+      <section class="related" aria-labelledby="cung-re">
+        <h2 class="section-title" id="cung-re">{{ i18n "post_related" }}</h2>
+        <ul class="related-list">
+          {{- $tagNames := slice }}
+          {{- range $.GetTerms "tags" }}{{ $tagNames = $tagNames | append .LinkTitle }}{{ end }}
+          {{- range . }}
+            {{- $shared := "" }}
+            {{- range .GetTerms "tags" }}
+              {{- if and (eq $shared "") (in $tagNames .LinkTitle) }}{{ $shared = .LinkTitle }}{{ end }}
+            {{- end }}
+            <li>
+              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+              {{- with $shared }}<span class="via">{{ i18n "post_related_via" (dict "Tag" .) }}</span>{{ end }}
+            </li>
+          {{- end }}
+        </ul>
+      </section>
+    {{- end }}
+  </footer>
 {{ end }}

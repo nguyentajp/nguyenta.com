@@ -1,0 +1,22 @@
+{{- /* Ảnh bìa của một bài trong danh sách, cắt về 3:2 cho các bài xếp đều nhau.
+     Ảnh được chọn theo thứ tự: file có tên chứa "cover" trong page bundle,
+     rồi tới ảnh đầu tiên của bài. Bài không có ảnh thì không in gì.
+     Tham số: page, sizes, loading ("lazy" mặc định, "eager" cho bài đầu trang). */ -}}
+{{- $page := .page -}}
+{{- $res := $page.Resources.GetMatch "{cover,*cover*}" -}}
+{{- if not $res }}{{ $res = index ($page.Resources.ByType "image") 0 }}{{ end -}}
+{{- with $res -}}
+  {{- if in (slice "jpeg" "png" "webp" "tiff" "bmp") .MediaType.SubType -}}
+    {{- $srcset := slice -}}
+    {{- $fallback := "" -}}
+    {{- range slice 480 800 1200 -}}
+      {{- $r := $res.Fill (printf "%dx%d webp Smart" . (div (mul . 2) 3)) -}}
+      {{- $srcset = $srcset | append (printf "%s %dw" $r.RelPermalink $r.Width) -}}
+      {{- if eq . 800 }}{{ $fallback = $r }}{{ end -}}
+    {{- end -}}
+    <a class="cover" href="{{ $page.RelPermalink }}" tabindex="-1" aria-hidden="true">
+      <img src="{{ $fallback.RelPermalink }}" srcset="{{ delimit $srcset ", " }}" sizes="{{ $.sizes | default "(min-width: 64rem) 44rem, 100vw" }}"
+           width="{{ $fallback.Width }}" height="{{ $fallback.Height }}" alt="" loading="{{ $.loading | default "lazy" }}" decoding="async">
+    </a>
+  {{- end -}}
+{{- end -}}

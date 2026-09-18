@@ -8,24 +8,22 @@
     (dict "key" "x"         "label" "X"         "url" "https://x.com/%s")
     (dict "key" "youtube"   "label" "YouTube"   "url" "https://www.youtube.com/@%s")
   -}}
-  <div class="page">
-    <div class="row">
-      <h1 class="label page-label">{{ .Title }}</h1>
-      <div class="col" data-pagefind-body>
-        {{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
-        <dl class="contact">
-          {{- with site.Params.email }}
-            <dt>Email</dt>
-            <dd><a href="mailto:{{ . }}">{{ . }}</a></dd>
-          {{- end }}
-          {{- range $net := $networks }}
-            {{- with index site.Params.socials $net.key }}
-              <dt>{{ $net.label }}</dt>
-              <dd><a href="{{ printf $net.url . }}" rel="me">{{ . }}</a></dd>
-            {{- end }}
-          {{- end }}
-        </dl>
-      </div>
-    </div>
-  </div>
+  <article data-pagefind-body>
+    <header class="page-head">
+      <h1 class="page-title">{{ .Title }}</h1>
+    </header>
+    {{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+    <dl class="contact">
+      {{- with site.Params.email }}
+        <dt>Email</dt>
+        <dd><a href="mailto:{{ . }}">{{ . }}</a></dd>
+      {{- end }}
+      {{- range $net := $networks }}
+        {{- with index site.Params.socials $net.key }}
+          <dt>{{ $net.label }}</dt>
+          <dd><a href="{{ printf $net.url . }}" rel="me">{{ . }}</a></dd>
+        {{- end }}
+      {{- end }}
+    </dl>
+  </article>
 {{ end }}

@@ -7,13 +7,24 @@
 </head>
 <body>
   <a class="skip" href="#noi-dung">{{ i18n "skip_to_content" }}</a>
-  {{- /* Trang có "bare: true" trong front matter (trang 静) không có header và
-       footer. Dùng cờ thay vì block rỗng: Go template bỏ qua define có thân rỗng. */}}
-  {{ if not .Params.bare }}{{ partial "masthead.html" . }}{{ end }}
-  <main id="noi-dung">
-    {{ block "main" . }}{{ end }}
-  </main>
-  {{ if not .Params.bare }}{{ partial "footer.html" . }}{{ end }}
+  {{- /* Trang có "bare: true" trong front matter (trang 静) không có header,
+       sidebar và footer. Dùng cờ thay vì block rỗng: Go template bỏ qua define
+       có thân rỗng. */}}
+  {{- if .Params.bare }}
+    <main id="noi-dung">{{ block "main" . }}{{ end }}</main>
+  {{- else }}
+    {{ partial "masthead.html" . }}
+    {{- /* Hai cột như một blog quen thuộc: nội dung bên trái, sidebar bên phải.
+         Trang nào cần cả bề ngang (trang Ảnh) đặt "sidebar: false". */}}
+    {{- $sidebar := ne .Params.sidebar false }}
+    <div class="shell layout{{ if not $sidebar }} is-wide{{ end }}">
+      <main id="noi-dung">
+        {{ block "main" . }}{{ end }}
+      </main>
+      {{- if $sidebar }}{{ partial "sidebar.html" . }}{{ end }}
+    </div>
+    {{ partial "footer.html" . }}
+  {{- end }}
   {{ partial "lightbox.html" . }}
   {{ partial "scripts.html" . }}
   {{- /* Trang nào cần thêm JS riêng (ví dụ Tìm kiếm) thì định nghĩa block này */}}

@@ -1,0 +1,10 @@
+{{- /* Phân trang: bài cũ hơn bên trái, số trang ở giữa, bài mới hơn bên phải */ -}}
+{{- with .Paginator }}
+  {{- if gt .TotalPages 1 }}
+    <nav class="pager" aria-label="{{ i18n "page_of" (dict "Current" .PageNumber "Total" .TotalPages) }}">
+      <span>{{- with .Next }}<a href="{{ .URL }}">{{ i18n "page_older" }}</a>{{ end }}</span>
+      <span>{{ i18n "page_of" (dict "Current" .PageNumber "Total" .TotalPages) }}</span>
+      <span>{{- with .Prev }}<a href="{{ .URL }}">{{ i18n "page_newer" }}</a>{{ end }}</span>
+    </nav>
+  {{- end }}
+{{- end }}

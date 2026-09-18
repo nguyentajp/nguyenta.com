@@ -140,3 +140,15 @@ other = "Quay lại"
 other = "Viết tại Osaka. Dựng bằng Hugo, đặt trên GitHub Pages."
 [footer_rss]
 other = "RSS"
+
+# Sidebar
+[sidebar_about]
+other = "Về Nguyên"
+[sidebar_about_more]
+other = "Đọc thêm về Nguyên"
+[sidebar_search_button]
+other = "Tìm"
+[sidebar_archive_all]
+other = "Toàn bộ lưu trữ"
+[archive_month_year]
+other = "Tháng {{ .Month }}, {{ .Year }}"

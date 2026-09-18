@@ -51,6 +51,10 @@ defaultContentLanguageInSubdir = false
 
     [languages.vi.params]
       description = "Ghi chép của Gen từ Osaka: học tập, đời sống, du lịch, suy nghĩ và nhật ký."
+      # Dòng nhỏ dưới tên blog ở đầu trang
+      tagline = "Ghi chép từ Osaka"
+      # Đoạn giới thiệu ngắn trong khung "Về Nguyên" ở sidebar. Anh sửa tuỳ ý.
+      bio = "Nguyên, bút danh Gen (元), sống và làm việc ở Osaka. Nơi đây ghi lại chuyện học tiếng Nhật, đời sống và những chuyến đi, bằng tiếng Việt và tiếng Nhật."
 
     [languages.vi.permalinks.page]
       posts = "/bai-viet/:slug/"
@@ -108,6 +112,8 @@ defaultContentLanguageInSubdir = false
 
     [languages.ja.params]
       description = "大阪から、学びと暮らしと旅の記録。Gen の個人ブログです。"
+      tagline = "大阪からの記録"
+      bio = "大阪で暮らし、働いている Gen（元）です。日本語の勉強や暮らし、旅のことを、ベトナム語と日本語で書いています。"
 
     [languages.ja.permalinks.page]
       posts = "/kiji/:slug/"
