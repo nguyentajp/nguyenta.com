@@ -8,6 +8,7 @@ categories: ["du-lich"]
 tags: ["osaka", "minoo", "đi bộ"]
 cover: cover.jpg
 demo: true
+spotlight: true
 draft: false
 ---
 

@@ -8,6 +8,7 @@ categories: ["tabi"]
 tags: ["大阪", "箕面", "散歩"]
 cover: cover.jpg
 demo: true
+spotlight: true
 draft: false
 ---
 

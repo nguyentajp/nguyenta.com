@@ -92,6 +92,8 @@ other = "次の記事"
 [post_seal_alt]
 other = "Gen の落款"
 
+[spotlight_label]
+other = "注目の記事"
 [list_recent]
 other = "最近の記事"
 [list_all_posts]

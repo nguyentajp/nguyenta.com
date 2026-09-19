@@ -7,9 +7,10 @@
        link     — true (mặc định, trong danh sách): ảnh là link tới bài;
                   false (trong trang bài viết): chỉ là ảnh
        fallback — false thì chỉ dùng ảnh bìa đã chọn, không lấy ảnh đầu bài
-                  (trang bài viết: ảnh đầu bài đã nằm trong thân bài rồi) */ -}}
+                  (trang bài viết: ảnh đầu bài đã nằm trong thân bài rồi)
+       image    — ảnh chọn sẵn (ảnh Spotlight), dùng thay cho ảnh bìa */ -}}
 {{- $page := .page -}}
-{{- with partial "cover-resource.html" (dict "page" $page "fallback" .fallback) -}}
+{{- with or .image (partial "cover-resource.html" (dict "page" $page "fallback" .fallback)) -}}
   {{- $res := . -}}
   {{- $srcset := slice -}}
   {{- $fallback := "" -}}

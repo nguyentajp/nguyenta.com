@@ -326,6 +326,7 @@ như bản tiếng Việt.
 | Lời giới thiệu ở sidebar | `hugo.toml` → `[languages.vi.params]` → `bio` (bản tiếng Nhật: `[languages.ja.params]`) |
 | Tagline dưới tên blog và ở chân trang | `hugo.toml` → `tagline` (hai ngôn ngữ) |
 | Email, mạng xã hội ở trang Liên hệ | `hugo.toml` → `[params]` → `email`, `[params.socials]` |
+| Bài lớn ở đầu trang chủ (Spotlight) | Trong CMS bật ô **Spotlight** ở bài muốn đưa lên (trường `spotlight: true`), ảnh riêng ở ô **Ảnh Spotlight** (`spotlight_image`, để trống thì dùng ảnh bìa). Nhiều bài cùng bật thì bài mới nhất được chọn; không bài nào bật thì là bài mới nhất. Mỗi ngôn ngữ bật riêng |
 | Số bài ở trang chủ | `hugo.toml` → `homeRecentCount` |
 | Lời giải thích 24 tiết khí (khung hiện khi rê chuột vào tên tiết khí) | CMS → **Dữ liệu** → **Giải thích 24 tiết khí**, hoặc `data/sekki_notes.yaml` |
 | Chữ trên giao diện (nút, nhãn) | `i18n/vi.toml`, `i18n/ja.toml` |

@@ -1,14 +1,25 @@
-{{- /* Trang chủ: bài mới nhất đầy đủ ở trên, các bài cũ hơn xếp lưới hai cột
-     bên dưới, cuối cùng là link tới toàn bộ bài viết. */ -}}
+{{- /* Trang chủ: bài Spotlight đầy đủ ở trên, các bài khác xếp lưới hai cột bên
+     dưới, cuối cùng là link tới toàn bộ bài viết.
+     Spotlight: bài mới nhất có "spotlight: true" (ô Spotlight trong CMS); không
+     bài nào bật thì là bài mới nhất. Ảnh: "spotlight_image" nếu có, không thì
+     ảnh bìa. Bài Spotlight không lặp lại ở mục Gần đây. */ -}}
 {{ define "main" }}
   {{- $posts := where .Site.RegularPages "Section" "posts" -}}
-  {{- with index $posts 0 }}
-    {{ partial "post-item.html" (dict "page" . "variant" "lead" "loading" "eager") }}
+  {{- $spot := first 1 (where $posts "Params.spotlight" true) -}}
+  {{- $label := i18n "spotlight_label" -}}
+  {{- if not $spot }}{{ $spot = first 1 $posts }}{{ $label = "" }}{{ end -}}
+  {{- range $spot }}
+    {{- $p := . }}
+    {{- $image := "" }}
+    {{- with $p.Params.spotlight_image }}{{ $image = $p.Resources.GetMatch . }}{{ end }}
+    {{- /* Chỉ ảnh chụp mới cắt khung được; SVG hay file lạ thì dùng ảnh bìa */}}
+    {{- with $image }}{{ if not (in (slice "jpeg" "png" "webp") .MediaType.SubType) }}{{ $image = "" }}{{ end }}{{ end }}
+    {{ partial "post-item.html" (dict "page" $p "variant" "lead" "loading" "eager" "label" $label "image" $image) }}
   {{- else }}
     <p class="empty">{{ i18n "list_no_posts" }}</p>
   {{- end }}
 
-  {{- with $posts | after 1 | first (site.Params.homeRecentCount | default 4) }}
+  {{- with $posts | complement $spot | first (site.Params.homeRecentCount | default 4) }}
     <section class="recent" aria-labelledby="gan-day">
       <h2 class="section-title" id="gan-day">{{ i18n "list_recent" }}</h2>
       <div class="post-grid">
