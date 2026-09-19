@@ -22,6 +22,8 @@ other = "Trang chủ"
 other = "Menu"
 [nav_menu_close]
 other = "Đóng"
+[nav_breadcrumb]
+other = "Vị trí của bài"
 [skip_to_content]
 other = "Sang phần nội dung"
 
@@ -147,6 +149,8 @@ other = "Viết tại Osaka. Dựng bằng Hugo, đặt trên GitHub Pages."
 other = "RSS"
 
 # Sidebar
+[sidebar_label]
+other = "Thanh bên"
 [sidebar_about]
 other = "Về Nguyên"
 [sidebar_about_more]
@@ -157,3 +161,13 @@ other = "Tìm"
 other = "Toàn bộ lưu trữ"
 [archive_month_year]
 other = "Tháng {{ .Month }}, {{ .Year }}"
+
+# Furigana (nút chọn dưới dòng thông tin của bài)
+[furigana_label]
+other = "Furigana"
+[furigana_show]
+other = "Hiện"
+[furigana_tap]
+other = "Chạm để xem"
+[furigana_off]
+other = "Tắt"

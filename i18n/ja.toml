@@ -22,6 +22,8 @@ other = "ホーム"
 other = "メニュー"
 [nav_menu_close]
 other = "閉じる"
+[nav_breadcrumb]
+other = "現在地"
 [skip_to_content]
 other = "本文へ移動"
 
@@ -157,3 +159,15 @@ other = "検索"
 other = "アーカイブをすべて見る"
 [archive_month_year]
 other = "{{ .Year }}年{{ .Month }}月"
+[sidebar_label]
+other = "サイドバー"
+
+# ふりがな（記事の日付の下の切り替え）
+[furigana_label]
+other = "ふりがな"
+[furigana_show]
+other = "表示"
+[furigana_tap]
+other = "タップで表示"
+[furigana_off]
+other = "非表示"

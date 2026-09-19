@@ -72,6 +72,11 @@
   --shell: 64rem;
   --sidebar: 16.5rem;
   --col-gap: clamp(2.5rem, 5vw, 4rem);
+  /* Trang bài viết không có sidebar bên cạnh: cột chữ 40rem, khoảng 75 ký tự
+     tiếng Việt hay 36 chữ tiếng Nhật một dòng. Ảnh "wide" và "full" lấn ra
+     hai bên tới 52rem và hết khung. */
+  --measure: 40rem;
+  --measure-wide: 52rem;
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
 
   /* Bo góc khung ảnh: bìa bài, gallery, video, ảnh chân dung */
@@ -350,6 +355,47 @@ a:hover {
   border-top: 1px solid var(--rule);
 }
 
+/* Furigana. Chữ nhỏ bằng nửa chữ thân bài, màu chữ phụ, không giãn chữ, để
+   nằm gọn trong khoảng cách dòng sẵn có mà không đẩy dòng trên lên nhiều.
+   Cách đọc dài hơn chữ Hán (学習 がくしゅう) thì căn giữa: khoảng dư dồn ra hai
+   bên từ, không chen vào giữa hai chữ Hán thành 学 習. */
+.prose ruby {
+  ruby-align: center;
+}
+
+.prose rt {
+  font-size: 0.5em;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+/* Chạm để xem: cách đọc ẩn nhưng vẫn giữ chỗ (visibility, không phải display),
+   nên hiện hay ẩn thì chữ cũng không xê dịch. Gạch chân chấm báo chỗ chạm được. */
+:root[data-furigana="tap"] .prose ruby {
+  cursor: pointer;
+  text-decoration: underline dotted 1px var(--field);
+  text-underline-offset: 0.3em;
+}
+
+:root[data-furigana="tap"] .prose rt {
+  visibility: hidden;
+}
+
+:root[data-furigana="tap"] .prose ruby.is-shown rt {
+  visibility: visible;
+}
+
+@media (hover: hover) {
+  :root[data-furigana="tap"] .prose ruby:hover rt {
+    visibility: visible;
+  }
+}
+
+:root[data-furigana="off"] .prose rt {
+  display: none;
+}
+
 /* ── 4. Khung trang: nội dung và sidebar ──────────────────────────────────── */
 /* Bố cục quen thuộc của một blog cá nhân: đầu trang ở giữa, nội dung bên trái
    (khoảng 2/3), sidebar bên phải. Cột nội dung giữ độ dài dòng dưới 80 ký tự. */
@@ -369,8 +415,21 @@ a:hover {
   padding-block: var(--space-6) var(--ma);
 }
 
-.layout.is-wide {
+.layout.is-wide,
+.layout.is-post {
   grid-template-columns: minmax(0, 1fr);
+}
+
+/* Trang bài viết: cột chữ ở giữa, khoảng trống hai bên là 間 của bài. Sidebar
+   xuống dưới bài (xem mục 8), cách bài một khoảng rộng. */
+.layout.is-post > main {
+  width: 100%;
+  max-width: var(--measure);
+  margin-inline: auto;
+}
+
+.layout.is-post {
+  row-gap: var(--ma);
 }
 
 main {
@@ -817,6 +876,80 @@ main {
   text-align: center;
 }
 
+/* Đường dẫn trên tiêu đề: Bài viết / Nhật ký. Chữ nhỏ, màu phụ, chữ thường,
+   để là lối quay về chứ không thành nhãn trang trí trên đầu tiêu đề. */
+.crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-block-end: var(--space-3);
+  list-style: none;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.crumbs li + li::before {
+  content: "/";
+  margin-inline-end: var(--space-2);
+  color: var(--rule);
+}
+
+.crumbs a {
+  text-decoration: none;
+}
+
+.crumbs a:hover {
+  color: var(--accent);
+}
+
+/* Nút chọn furigana: cùng kiểu với nút chuyển ngôn ngữ ở đầu trang. Chữ nhỏ,
+   ba lựa chọn ngăn bằng đường mảnh, lựa chọn đang dùng đậm màu và gạch chân. */
+.furigana-switch {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  margin-block-start: var(--space-3);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+/* Không có JS thì không chọn được: furigana luôn hiện, nút ẩn đi */
+:root:not([data-furigana]) .furigana-switch {
+  display: none;
+}
+
+.furigana-switch-label {
+  margin-inline-end: var(--space-2);
+}
+
+.furigana-switch button {
+  padding: var(--space-1) var(--space-3);
+  border: 0;
+  border-inline-start: 1px solid var(--rule);
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.furigana-switch-label + button {
+  border-inline-start: 0;
+}
+
+.furigana-switch button:hover {
+  color: var(--accent);
+}
+
+:root[data-furigana="show"] [data-furigana-mode="show"],
+:root[data-furigana="tap"] [data-furigana-mode="tap"],
+:root[data-furigana="off"] [data-furigana-mode="off"] {
+  color: var(--ink);
+  text-decoration: underline 1px var(--ink);
+  text-underline-offset: 0.3em;
+}
+
 /* Ảnh trong bài rộng bằng cột nội dung (xem mục 11 cho ảnh tràn trên mobile) */
 .figure {
   margin-block: var(--space-6);
@@ -931,11 +1064,55 @@ main {
 }
 
 /* ── 8. Sidebar ───────────────────────────────────────────────────────────── */
+/* Sidebar là một container: các luật bên dưới dựa vào bề rộng thật của nó,
+   không dựa vào bề rộng màn hình. Nằm cột bên phải thì là một cột dọc; nằm
+   dưới nội dung (mobile, trang bài viết) thì rộng ra và xếp thành hàng. */
 .sidebar {
-  display: grid;
-  gap: var(--space-6);
+  container: sidebar / inline-size;
   font-size: 0.9375rem;
   line-height: 1.7;
+}
+
+.sidebar-inner {
+  display: grid;
+  gap: var(--space-6);
+}
+
+/* Rộng hơn cột bên phải (16.5rem) nghĩa là sidebar đang nằm dưới nội dung:
+   các khối xếp hàng ngang, ngăn với phần trên bằng một đường mảnh. */
+@container sidebar (min-width: 17rem) {
+  .sidebar-inner {
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: var(--space-6) var(--space-5);
+    padding-block-start: var(--space-6);
+    border-block-start: 1px solid var(--rule);
+  }
+
+  /* Ảnh chân dung không cần to bằng cả khối: thành ảnh nhỏ nằm cạnh lời
+     giới thiệu, như chữ ký cuối thư */
+  .widget-about:has(.avatar) {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 0 var(--space-4);
+    align-content: start;
+  }
+
+  .widget-about .widget-title {
+    grid-column: 1 / -1;
+  }
+
+  .widget-about .avatar {
+    grid-row: span 2;
+    margin: 0;
+  }
+}
+
+/* Đủ chỗ cho cả bốn khối trên một hàng (trang bài viết trên máy tính): khối
+   giới thiệu rộng gấp đôi, để lời giới thiệu không bị bẻ vụn thành dòng ngắn. */
+@container sidebar (min-width: 56rem) {
+  .sidebar-inner {
+    grid-template-columns: 2fr repeat(3, 1fr);
+  }
 }
 
 .widget-title {
@@ -1172,35 +1349,10 @@ main {
   }
 }
 
-/* ── Tablet và mobile: một cột, sidebar xuống dưới nội dung ───────────────── */
+/* ── Tablet và mobile: một cột, sidebar xuống dưới nội dung (mục 8) ───────── */
 @media (max-width: 55.999rem) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .sidebar {
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-    gap: var(--space-6) var(--space-5);
-    padding-block-start: var(--space-6);
-    border-block-start: 1px solid var(--rule);
-  }
-
-  /* Sidebar xuống cuối trang thì ảnh chân dung không cần to bằng cả cột:
-     thành ảnh nhỏ nằm cạnh lời giới thiệu, như chữ ký cuối thư */
-  .widget-about:has(.avatar) {
-    display: grid;
-    grid-template-columns: 5.5rem minmax(0, 1fr);
-    gap: 0 var(--space-4);
-    align-content: start;
-  }
-
-  .widget-about .widget-title {
-    grid-column: 1 / -1;
-  }
-
-  .widget-about .avatar {
-    grid-row: span 2;
-    margin: 0;
   }
 }
 
@@ -1304,8 +1456,21 @@ main {
 
 
 /* ── 11. Ảnh, gallery, video, lightbox ───────────────────────────────── */
-/* Bên phải cột nội dung là sidebar, nên ảnh "wide" và "full" trên desktop
-   rộng bằng cột. Trên mobile, mọi ảnh tràn sát hai mép màn hình. */
+/* Trang có sidebar bên phải: ảnh "wide" và "full" rộng bằng cột. Trang bài
+   viết (cột chữ ở giữa): "wide" lấn ra hai bên tới 52rem, "full" rộng hết
+   khung. Trên mobile, mọi ảnh tràn sát hai mép màn hình. */
+@media (min-width: 48rem) {
+  .is-post .figure.wide,
+  .is-post .figure.full {
+    width: min(var(--measure-wide), 100vw - 2 * var(--gutter));
+    margin-inline-start: 50%;
+    translate: -50% 0;
+  }
+
+  .is-post .figure.full {
+    width: min(var(--shell), 100vw - 2 * var(--gutter));
+  }
+}
 
 /* Lúc ảnh đang tải, khung giữ chỗ mang màu 白緑 thay vì để trống trơn */
 .figure img,

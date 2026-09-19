@@ -9,6 +9,12 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f6f7f2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#171915" media="(prefers-color-scheme: dark)">
+{{- /* Bài có furigana: đặt chế độ người đọc đã chọn lên <html> ngay từ đầu, trước
+     khi vẽ trang. Để tới site.js mới đặt thì furigana hiện ra rồi mới ẩn, cả
+     đoạn văn nhảy lên (Lighthouse tính là CLS). Xem _partials/furigana.html. */}}
+{{- if and .IsPage (findRE `[（(][ぁ-ゖァ-ヺー]+[）)]` .RawContent 1) }}
+<script>try{document.documentElement.dataset.furigana=localStorage.getItem("gen-furigana")||"show"}catch(e){document.documentElement.dataset.furigana="show"}</script>
+{{- end }}
 <title>{{ if or .IsHome (and hugo.IsProduction site.Params.maintenance (not .Params.maintenance_exempt)) }}{{ .Site.Title }}{{ else }}{{ .Title }} — {{ .Site.Title }}{{ end }}</title>
 {{ with or .Description .Summary .Site.Params.description -}}
   <meta name="description" content="{{ . | plainify | truncate 180 }}">

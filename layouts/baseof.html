@@ -22,9 +22,12 @@
   {{- else }}
     {{ partial "masthead.html" . }}
     {{- /* Hai cột như một blog quen thuộc: nội dung bên trái, sidebar bên phải.
-         Trang nào cần cả bề ngang (trang Ảnh) đặt "sidebar: false". */}}
+         Trang nào cần cả bề ngang (trang Ảnh) đặt "sidebar: false".
+         Trang bài viết (is-post): cột chữ ở giữa, hai bên là khoảng trống, sidebar
+         xuống dưới bài thành một hàng, để người đọc chỉ thấy bài khi đang đọc. */}}
     {{- $sidebar := ne .Params.sidebar false }}
-    <div class="shell layout{{ if not $sidebar }} is-wide{{ end }}">
+    {{- $post := and .IsPage (eq .Section "posts") }}
+    <div class="shell layout{{ if not $sidebar }} is-wide{{ end }}{{ if $post }} is-post{{ end }}">
       <main id="noi-dung">
         {{ block "main" . }}{{ end }}
       </main>

@@ -1,0 +1,11 @@
+{{- /* Nút chọn furigana dưới dòng thông tin của bài, chỉ có ở bài có furigana.
+     Ba chế độ: hiện, chạm để xem, tắt. Chế độ đang dùng nằm ở
+     <html data-furigana>, do đoạn script nhỏ trong head.html đặt sẵn trước khi
+     vẽ trang, nên nút và chữ không nhảy khi tải. Không có JS thì furigana luôn
+     hiện và nút này ẩn đi. */ -}}
+<div class="furigana-switch" role="group" aria-label="{{ i18n "furigana_label" }}" data-pagefind-ignore>
+  <span class="furigana-switch-label" aria-hidden="true">{{ i18n "furigana_label" }}</span>
+  {{- range slice "show" "tap" "off" }}
+    <button type="button" data-furigana-mode="{{ . }}">{{ i18n (printf "furigana_%s" .) }}</button>
+  {{- end }}
+</div>

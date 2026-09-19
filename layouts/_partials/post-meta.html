@@ -1,12 +1,15 @@
 {{- /* Dòng thông tin dưới tiêu đề bài: ngày, tiết khí, danh mục, thời gian đọc.
      Các mục cách nhau bằng khoảng trắng, không nối bằng dấu chấm giữa.
-     full = true (trang bài viết) thì thêm thời gian đọc và link bản dịch. */ -}}
+     full = true (trang bài viết) thì thêm tiết khí, thời gian đọc và link bản
+     dịch; danh mục khi đó đã nằm ở dòng đường dẫn phía trên tiêu đề. */ -}}
 {{- $page := .page -}}
 <p class="meta">
   <time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ $page.Date.Format (i18n "date_full") }}</time>
   {{- if .full }}<span>{{ partial "sekki.html" (dict "date" $page.Date) }}</span>{{ end }}
-  {{- with $page.GetTerms "categories" }}
-    <span>{{ range . }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</span>
+  {{- if not .full }}
+    {{- with $page.GetTerms "categories" }}
+      <span>{{ range . }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</span>
+    {{- end }}
   {{- end }}
   {{- if .full }}
     <span>{{ i18n "reading_time" (dict "Count" $page.ReadingTime) }}</span>

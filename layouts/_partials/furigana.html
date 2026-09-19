@@ -1,0 +1,31 @@
+{{- /* Furigana: đổi cách đọc viết trong ngoặc thành thẻ <ruby>, lúc build.
+
+       元（げん）                  chữ Hán liền trước ngoặc nhận cách đọc
+       日本語｜学習（がくしゅう）  ｜ đánh dấu chỗ bắt đầu phần nhận cách đọc
+
+     Chỉ đổi khi trong ngoặc toàn hiragana hoặc katakana, nên ngoặc giải thích
+     thường (có chữ Hán, chữ Latin, dấu cách) giữ nguyên. Ngoặc toàn góc hay
+     nửa góc đều được. Ở chỗ không qua partial này (RSS, tiêu đề, đoạn trích),
+     người đọc vẫn thấy 元（げん）, cách ghi cách đọc quen thuộc của người Nhật.
+
+     Nhận HTML của bài (.Content), trả về HTML đã đổi. Chỉ đổi phần chữ nằm
+     giữa các thẻ, không đụng thuộc tính (như alt của ảnh), và bỏ qua code. */ -}}
+{{- $html := string . -}}
+{{- $kana := `[ぁ-ゖァ-ヺー]+` -}}
+{{- if findRE (printf `[（(]%s[）)]` $kana) $html 1 -}}
+  {{- $explicit := printf `[｜|]([^\s｜|（()）<>]+)[（(](%s)[）)]` $kana -}}
+  {{- $implicit := printf `([\p{Han}々〆ヶ]+)[（(](%s)[）)]` $kana -}}
+  {{- $ruby := `<ruby>$1<rp>（</rp><rt>$2</rt><rp>）</rp></ruby>` -}}
+
+  {{- /* Tạm thay các khối code bằng mốc, đổi xong thì trả lại nguyên vẹn */ -}}
+  {{- $codes := findRE `(?s)<pre[ >].*?</pre>|<code>.*?</code>` $html -}}
+  {{- range $i, $code := $codes }}{{ $html = replace $html $code (printf "\x00code%d\x00" $i) 1 }}{{ end -}}
+
+  {{- range findRE `>[^<]+<` $html | uniq -}}
+    {{- $new := . | replaceRE $explicit $ruby | replaceRE $implicit $ruby -}}
+    {{- if ne $new . }}{{ $html = replace $html . $new }}{{ end -}}
+  {{- end -}}
+
+  {{- range $i, $code := $codes }}{{ $html = replace $html (printf "\x00code%d\x00" $i) $code 1 }}{{ end -}}
+{{- end -}}
+{{- return (safeHTML $html) -}}

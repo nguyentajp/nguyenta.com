@@ -1,9 +1,10 @@
-// JavaScript của cả site. Chỉ bốn việc, việc nào không có phần tử tương ứng
+// JavaScript của cả site. Chỉ năm việc, việc nào không có phần tử tương ứng
 // trên trang thì bỏ qua:
 //   1. Kamon tự vẽ khi vào trang chủ lần đầu trong phiên
 //   2. Lightbox: bấm ảnh để xem lớn, Esc hoặc bấm nền để đóng, ← → để chuyển
 //   3. Video YouTube: chỉ tải iframe khi người đọc bấm phát
 //   4. Trang 静: Esc hoặc chạm vào đâu cũng quay lại trang trước
+//   5. Furigana: nút chọn hiện, chạm để xem, tắt
 
 // ── 1. Kamon ────────────────────────────────────────────────────────────────
 // Lần thứ hai trở đi trong cùng phiên, kamon hiện sẵn. Người đọc bật
@@ -144,5 +145,43 @@
   sei.addEventListener("click", (event) => {
     event.preventDefault();
     leave();
+  });
+})();
+
+// ── 5. Furigana ─────────────────────────────────────────────────────────────
+// Chế độ nằm ở <html data-furigana>, CSS dựa vào đó để hiện hoặc ẩn. Đoạn
+// script trong head.html đã đặt sẵn lựa chọn cũ; ở đây chỉ đổi và lưu lại
+// cho các bài sau.
+(() => {
+  const root = document.documentElement;
+  const buttons = [...document.querySelectorAll("[data-furigana-mode]")];
+  if (buttons.length === 0) return;
+
+  const KEY = "gen-furigana";
+  const sync = () => {
+    buttons.forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.furiganaMode === root.dataset.furigana));
+    });
+  };
+  sync();
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      root.dataset.furigana = button.dataset.furiganaMode;
+      try {
+        localStorage.setItem(KEY, button.dataset.furiganaMode);
+      } catch {
+        // Không lưu được (cửa sổ riêng tư): chế độ vẫn đúng trong bài này.
+      }
+      document.querySelectorAll("ruby.is-shown").forEach((ruby) => ruby.classList.remove("is-shown"));
+      sync();
+    });
+  });
+
+  // Chế độ "chạm để xem": chạm vào một chữ để hiện hoặc ẩn cách đọc của chữ đó.
+  // Trên máy tính, rê chuột là hiện (CSS lo).
+  document.querySelector(".post-body")?.addEventListener("click", (event) => {
+    if (root.dataset.furigana !== "tap") return;
+    event.target.closest("ruby")?.classList.toggle("is-shown");
   });
 })();

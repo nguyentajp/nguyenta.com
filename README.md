@@ -147,6 +147,31 @@ Hai rạng sáng thứ Ba, hoặc sớm hơn nếu trong khoảng đó có commi
 Muốn bài hiện đúng giờ thì vào tab **Actions** trên GitHub, chọn **Deploy** →
 **Run workflow** sau giờ đó.
 
+### 2.5 Furigana (cách đọc trên chữ Hán)
+
+Viết cách đọc trong ngoặc ngay sau chữ Hán, như viết tay. Lúc build, Hugo tự
+đổi thành furigana nhỏ nằm trên chữ:
+
+```
+元（げん）という字には、始（はじ）まりという意味（いみ）がある。
+```
+
+- Chỉ đổi khi **trong ngoặc toàn hiragana hoặc katakana** và ngoặc đứng **sát
+  ngay sau chữ Hán**. Ngoặc toàn góc `（）` (bộ gõ tiếng Nhật ra sẵn) hay nửa
+  góc `()` đều được.
+- Chữ có okurigana thì chỉ gắn cho phần chữ Hán: `食（た）べる`, không viết
+  `食べる（たべる）` (cách này giữ nguyên ngoặc).
+- Cụm chữ Hán dài mà chỉ muốn gắn cho một phần: đặt `｜` trước phần đó (gõ
+  phím `|` khi đang bật bộ gõ tiếng Nhật): `日本語｜学習（がくしゅう）`.
+- Ngoặc giải thích thường, có chữ Hán, chữ Latin hay dấu cách bên trong, như
+  `東京（Tokyo）`, giữ nguyên.
+- Dùng được trong cả bài tiếng Việt lẫn tiếng Nhật, và trang Giới thiệu. Trong
+  tiêu đề, đoạn trích và RSS, ngoặc giữ nguyên dạng `元（げん）`.
+
+Bài nào có furigana thì dưới dòng ngày đăng tự có nút chọn cho người đọc:
+**Hiện**, **Chạm để xem** (ẩn cách đọc, chạm hoặc rê chuột vào chữ mới hiện, để
+tự kiểm tra) và **Tắt**. Trình duyệt nhớ lựa chọn cho các bài sau.
+
 ---
 
 ## 3. Ảnh và video

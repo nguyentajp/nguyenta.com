@@ -136,7 +136,7 @@ collections:
         modes: [rich_text, raw]
         buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
         editor_components: [image, gallery, youtube]
-        hint: "Dùng nút + để chèn Ảnh, Bộ ảnh hoặc Video YouTube."
+        hint: "Dùng nút + để chèn Ảnh, Bộ ảnh hoặc Video YouTube. Furigana: viết cách đọc trong ngoặc sát sau chữ Hán, ví dụ 元（げん）, 食（た）べる."
 
   # ── Bài viết tiếng Nhật ──────────────────────────────────────────────────
   # Thường tạo bằng lệnh /dich trong Claude Code; ở đây để sửa và xuất bản.

@@ -1,66 +1,69 @@
 {{- /* Sidebar: mọi lối đi trong site nằm sẵn trên màn hình, như các blog quen
      thuộc. Bốn khối: người viết, tìm kiếm, danh mục, lưu trữ theo tháng.
-     Trên mobile, sidebar xuống dưới nội dung. */ -}}
+     Trên mobile và ở trang bài viết, sidebar nằm dưới nội dung và tự xếp thành
+     hàng ngang (CSS dựa vào bề rộng thật của sidebar, không dựa vào màn hình). */ -}}
 {{- $posts := where site.RegularPages "Section" "posts" -}}
-<aside class="sidebar" aria-label="Sidebar" data-pagefind-ignore>
-  <section class="widget widget-about">
-    <h2 class="widget-title">{{ i18n "sidebar_about" }}</h2>
-    {{- /* Ảnh chân dung: đặt file assets/brand/avatar.jpg (ảnh vuông) là tự hiện */}}
-    {{- with resources.Get "brand/avatar.jpg" }}
-      {{- $img := .Fill "480x480 webp Center" }}
-      <img class="avatar" src="{{ $img.RelPermalink }}" width="240" height="240" alt="" loading="lazy" decoding="async">
-    {{- end }}
-    {{- with site.Params.bio }}<p class="bio">{{ . }}</p>{{ end }}
-    {{- with site.GetPage "/about" }}
-      <p class="widget-more"><a href="{{ .RelPermalink }}">{{ i18n "sidebar_about_more" }}</a></p>
-    {{- end }}
-  </section>
+<aside class="sidebar" aria-label="{{ i18n "sidebar_label" }}" data-pagefind-ignore>
+  <div class="sidebar-inner">
+    <section class="widget widget-about">
+      <h2 class="widget-title">{{ i18n "sidebar_about" }}</h2>
+      {{- /* Ảnh chân dung: đặt file assets/brand/avatar.jpg (ảnh vuông) là tự hiện */}}
+      {{- with resources.Get "brand/avatar.jpg" }}
+        {{- $img := .Fill "480x480 webp Center" }}
+        <img class="avatar" src="{{ $img.RelPermalink }}" width="240" height="240" alt="" loading="lazy" decoding="async">
+      {{- end }}
+      {{- with site.Params.bio }}<p class="bio">{{ . }}</p>{{ end }}
+      {{- with site.GetPage "/about" }}
+        <p class="widget-more"><a href="{{ .RelPermalink }}">{{ i18n "sidebar_about_more" }}</a></p>
+      {{- end }}
+    </section>
 
-  {{- /* Không lặp ô tìm kiếm trên chính trang Tìm kiếm */}}
-  {{- with site.GetPage "/search" }}
-    {{- if ne $.RelPermalink .RelPermalink }}
+    {{- /* Không lặp ô tìm kiếm trên chính trang Tìm kiếm */}}
+    {{- with site.GetPage "/search" }}
+      {{- if ne $.RelPermalink .RelPermalink }}
+        <section class="widget">
+          <h2 class="widget-title">{{ i18n "nav_search" }}</h2>
+          <form class="widget-search" role="search" action="{{ .RelPermalink }}" method="get">
+            <label class="visually-hidden" for="sidebar-q">{{ i18n "search_placeholder" }}</label>
+            <input id="sidebar-q" name="q" type="search" placeholder="{{ i18n "search_placeholder" }}" autocomplete="off" enterkeyhint="search">
+            <button type="submit">{{ i18n "sidebar_search_button" }}</button>
+          </form>
+        </section>
+      {{- end }}
+    {{- end }}
+
+    {{- with site.GetPage "/categories" }}
       <section class="widget">
-        <h2 class="widget-title">{{ i18n "nav_search" }}</h2>
-        <form class="widget-search" role="search" action="{{ .RelPermalink }}" method="get">
-          <label class="visually-hidden" for="sidebar-q">{{ i18n "search_placeholder" }}</label>
-          <input id="sidebar-q" name="q" type="search" placeholder="{{ i18n "search_placeholder" }}" autocomplete="off" enterkeyhint="search">
-          <button type="submit">{{ i18n "sidebar_search_button" }}</button>
-        </form>
+        <h2 class="widget-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+        <ul class="widget-list">
+          {{- /* Năm danh mục luôn theo thứ tự cố định (weight), không theo số bài */}}
+          {{- range .Pages.ByWeight }}
+            {{- $n := len .Pages }}
+            <li{{ if eq $n 0 }} class="is-empty"{{ end }}>
+              <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+              {{- if gt $n 0 }}<span class="count">{{ $n }}</span>{{ end }}
+            </li>
+          {{- end }}
+        </ul>
       </section>
     {{- end }}
-  {{- end }}
 
-  {{- with site.GetPage "/categories" }}
-    <section class="widget">
-      <h2 class="widget-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-      <ul class="widget-list">
-        {{- /* Năm danh mục luôn theo thứ tự cố định (weight), không theo số bài */}}
-        {{- range .Pages.ByWeight }}
-          {{- $n := len .Pages }}
-          <li{{ if eq $n 0 }} class="is-empty"{{ end }}>
-            <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
-            {{- if gt $n 0 }}<span class="count">{{ $n }}</span>{{ end }}
-          </li>
-        {{- end }}
-      </ul>
-    </section>
-  {{- end }}
-
-  {{- with $posts }}
-    {{- $archive := site.GetPage "/archive" }}
-    <section class="widget">
-      <h2 class="widget-title">{{ with $archive }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ else }}{{ i18n "nav_archive" }}{{ end }}</h2>
-      <ul class="widget-list">
-        {{- range first 12 ($posts.GroupByDate "2006-01") }}
-          {{- $first := index .Pages 0 }}
-          <li>
-            <a href="{{ with $archive }}{{ .RelPermalink }}{{ end }}#thang-{{ .Key }}">
-              {{- i18n "archive_month_year" (dict "Month" (printf "%d" $first.Date.Month) "Year" $first.Date.Year) -}}
-            </a>
-            <span class="count">{{ len .Pages }}</span>
-          </li>
-        {{- end }}
-      </ul>
-    </section>
-  {{- end }}
+    {{- with $posts }}
+      {{- $archive := site.GetPage "/archive" }}
+      <section class="widget">
+        <h2 class="widget-title">{{ with $archive }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ else }}{{ i18n "nav_archive" }}{{ end }}</h2>
+        <ul class="widget-list">
+          {{- range first 12 ($posts.GroupByDate "2006-01") }}
+            {{- $first := index .Pages 0 }}
+            <li>
+              <a href="{{ with $archive }}{{ .RelPermalink }}{{ end }}#thang-{{ .Key }}">
+                {{- i18n "archive_month_year" (dict "Month" (printf "%d" $first.Date.Month) "Year" $first.Date.Year) -}}
+              </a>
+              <span class="count">{{ len .Pages }}</span>
+            </li>
+          {{- end }}
+        </ul>
+      </section>
+    {{- end }}
+  </div>
 </aside>
