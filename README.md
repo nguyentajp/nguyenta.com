@@ -637,6 +637,10 @@ HUGO_PARAMS_MAINTENANCE=false HUGO_ENVIRONMENT=production hugo --minify --baseUR
 ```
 
 ```bash
+rm -rf preview-public/admin
+```
+
+```bash
 npx wrangler@4 deploy --config tools/preview/wrangler.toml
 ```
 
