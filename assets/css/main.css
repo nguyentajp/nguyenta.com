@@ -1970,7 +1970,6 @@ a.lang:hover .icon {
   a,
   button,
   .neighbour-title,
-  .brand-mark,
   .video-pill {
     transition-property: color, text-decoration-color, background-color, border-color;
     transition-duration: var(--ink-out);
@@ -1980,7 +1979,6 @@ a.lang:hover .icon {
   a:hover,
   button:hover,
   .neighbour:hover .neighbour-title,
-  .brand:hover .brand-mark,
   .video-play:hover .video-pill {
     transition-duration: var(--ink-in);
   }
@@ -2163,6 +2161,16 @@ a.lang:hover .icon {
 .kamon svg {
   width: 100%;
   height: auto;
+}
+
+/* Kamon hai màu: vòng tre xanh 竹, lá vàng bạch quả. Hai màu tách vòng và lá ra
+   khỏi nhau, để ba lá trong vòng tròn không bị nhìn thành biểu tượng phóng xạ. */
+.kamon .ring {
+  fill: var(--bamboo);
+}
+
+.kamon .leaf {
+  fill: var(--leaf);
 }
 
 

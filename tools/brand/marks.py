@@ -245,13 +245,29 @@ def svg(body: str, label: str, classes: str = "") -> str:
     )
 
 
+# Màu của kamon: vòng tre xanh 竹, lá vàng bạch quả. Hai màu tách vòng và lá
+# ra khỏi nhau, để ba lá trong vòng tròn không còn giống biểu tượng phóng xạ.
+# Trên site, màu do CSS tô (main.css: --bamboo, --leaf); favicon không đọc được
+# CSS của trang nên mang màu sẵn, kèm bản cho thanh tab tối.
+KAMON_COLORS = {"light": ("#3f6a47", "#a67c14"), "dark": ("#8fbf95", "#e3c05e")}
+
+
+def favicon() -> str:
+    """Cỡ favicon: gân lá và khe đốt nhỏ hơn một pixel nên bỏ đi cho nét sạch."""
+    (ring_l, leaf_l), (ring_d, leaf_d) = KAMON_COLORS["light"], KAMON_COLORS["dark"]
+    style = (
+        f"<style>.ring{{fill:{ring_l}}}.leaf{{fill:{leaf_l}}}"
+        f"@media (prefers-color-scheme:dark){{.ring{{fill:{ring_d}}}.leaf{{fill:{leaf_d}}}}}</style>"
+    )
+    return kamon(veins=False, gap=1.4).replace("<g ", style + "<g ", 1)
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     files = {
         "kamon.svg": kamon(),
         "kamon-draw.svg": kamon(animated=True),
-        # Cỡ favicon: gân lá và khe đốt nhỏ hơn một pixel nên bỏ đi cho nét sạch.
-        "favicon.svg": kamon(veins=False, gap=1.4),
+        "favicon.svg": favicon(),
         "hanko.svg": hanko(),
     }
     for name, content in files.items():

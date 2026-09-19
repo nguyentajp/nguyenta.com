@@ -140,18 +140,28 @@ def paint_svg(svg: str, size: int, ink: str, paper: str | None = None, supersamp
     return Image.alpha_composite(base, ink_layer)
 
 
+def paint_kamon(svg: str, size: int, supersample: int = 4) -> Image.Image:
+    """Kamon hai màu: vòng tre và lá vẽ riêng, mỗi phần một màu (marks.KAMON_COLORS)."""
+    ring_color, leaf_color = marks.KAMON_COLORS["light"]
+    ring = "".join(re.findall(r'<path class="ring"[^>]*/>', svg))
+    leaves = "".join(re.findall(r'<path class="leaf"[^>]*/>', svg))
+    image = paint_svg(ring, size, ring_color, supersample=supersample)
+    image.alpha_composite(paint_svg(leaves, size, leaf_color, supersample=supersample))
+    return image
+
+
 # ── Các file xuất ra ─────────────────────────────────────────────────────────
 def apple_touch_icon() -> None:
     size, pad = 180, 22
     icon = Image.new("RGBA", (size, size), SHOJI)
-    kamon = paint_svg(marks.kamon(veins=False, gap=1.8), size - 2 * pad, SUMI)
+    kamon = paint_kamon(marks.kamon(veins=False, gap=1.8), size - 2 * pad)
     icon.alpha_composite(kamon, (pad, pad))
     icon.convert("RGB").save(ROOT / "static/apple-touch-icon.png", optimize=True)
 
 
 def favicon_ico() -> None:
     svg = marks.kamon(veins=False, gap=1.4)
-    frames = [paint_svg(svg, s, SUMI, supersample=8) for s in (32, 16)]
+    frames = [paint_kamon(svg, s, supersample=8) for s in (32, 16)]
     frames[0].save(ROOT / "static/favicon.ico", sizes=[(32, 32), (16, 16)], append_images=frames[1:])
 
 
@@ -163,7 +173,7 @@ def og_image(lang: str) -> None:
 
     margin_x = int(width * 0.293)
     kamon_size = 210
-    kamon = paint_svg(marks.kamon(), kamon_size, SUMI)
+    kamon = paint_kamon(marks.kamon(), kamon_size)
     image.alpha_composite(kamon, ((margin_x - kamon_size) // 2 + 20, (height - kamon_size) // 2))
 
     latin = ImageFont.truetype(str(FONT_SRC / "Literata[opsz,wght].ttf"), 96)
@@ -174,11 +184,12 @@ def og_image(lang: str) -> None:
     if lang == "vi":
         body = ImageFont.truetype(str(FONT_SRC / "Literata[opsz,wght].ttf"), 34)
         body.set_variation_by_axes([20, 400])
-        lines = ["Ghi chép từ Osaka:", "học tập, đời sống, du lịch,", "suy nghĩ và nhật ký."]
+        # Tagline, như dưới tên blog ở đầu trang (hugo.toml)
+        lines = ["Từ Osaka, một người Việt", "chép lại hành trình của mình."]
         leading = 50
     else:
         body = ImageFont.truetype(str(FONT_SRC / "ShipporiMincho-Medium.ttf"), 34)
-        lines = ["大阪から、", "学びと暮らしと旅の記録。"]
+        lines = ["大阪より、ベトナム人として、", "自分の旅を綴る。"]
         leading = 58
     for index, line in enumerate(lines):
         draw.text((margin_x + 42, title_y + 140 + index * leading), line, font=body, fill=CHIKUEI)
