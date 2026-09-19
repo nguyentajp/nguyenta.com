@@ -28,7 +28,9 @@ import re
 import sys
 
 from fontTools import subset
+from fontTools.otlLib import builder as otl
 from fontTools.ttLib import TTFont
+from fontTools.ttLib.tables import otTables as ot
 from fontTools.varLib import instancer
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
@@ -134,6 +136,7 @@ FACES = [
         "style": "normal",
         "weight": "500",
         "scope": "ja",
+        "halt": True,
     },
     {
         "key": "shippori-display",
@@ -142,38 +145,94 @@ FACES = [
         "style": "normal",
         "weight": "600",
         "scope": "ja-display",
+        "halt": True,
     },
 ]
 
-# Giữ lại các feature cần dùng: kern, chữ ghép, và palt cho tiêu đề tiếng Nhật.
-LAYOUT_FEATURES = ["kern", "liga", "clig", "calt", "palt", "ccmp", "locl", "mark", "mkmk"]
+# Giữ lại các feature cần dùng: kern, chữ ghép, palt cho tiêu đề tiếng Nhật và
+# halt để trình duyệt thu gọn dấu câu tiếng Nhật đứng liền nhau.
+LAYOUT_FEATURES = ["kern", "liga", "clig", "calt", "palt", "halt", "ccmp", "locl", "mark", "mkmk"]
+
+# 約物の半角詰め. Shippori Mincho không có feature halt, nên khi hai dấu câu
+# đứng liền nhau (」「, 。」) mỗi dấu vẫn chiếm trọn một ô, nhìn hở như chữ sắp
+# vụng. Chrome dùng halt cho text-spacing-trim (mặc định bật), nên thêm halt với
+# giá trị chuẩn theo JIS X 4051: dấu mở và dấu đóng chỉ còn nửa ô, dấu ở giữa
+# ô (・：；) bỏ mỗi bên một phần tư.
+HALT_OPENING = "「『（【〈《〔［｛〘〖"
+HALT_CLOSING = "」』）】〉》〕］｝〙〗、。，．"
+HALT_MIDDLE = "・：；"
 
 
-# Bản font đã thu hẹp trục được dựng một lần rồi dùng lại cho mọi trang.
-_narrowed: dict[str, pathlib.Path] = {}
+def add_halt(font: TTFont) -> None:
+    """Thêm feature halt vào bảng GPOS, giữ nguyên các feature đang có."""
+    cmap = font.getBestCmap()
+    half = font["head"].unitsPerEm // 2
+    values = {}
+    for chars, shift in ((HALT_OPENING, -half), (HALT_CLOSING, 0), (HALT_MIDDLE, -half // 2)):
+        for char in chars:
+            if glyph := cmap.get(ord(char)):
+                values[glyph] = otl.buildValue({"XPlacement": shift, "XAdvance": -half})
+
+    gpos = font["GPOS"].table
+    assert getattr(gpos, "FeatureVariations", None) is None, "chưa hỗ trợ FeatureVariations"
+    lookups = gpos.LookupList.Lookup
+    lookups.append(otl.buildLookup(otl.buildSinglePos(values, font.getReverseGlyphMap())))
+    gpos.LookupList.LookupCount = len(lookups)
+
+    feature = ot.Feature()
+    feature.FeatureParams = None
+    feature.LookupListIndex = [len(lookups) - 1]
+    feature.LookupCount = 1
+    record = ot.FeatureRecord()
+    record.FeatureTag = "halt"
+    record.Feature = feature
+
+    # Danh sách feature phải xếp theo tên (HarfBuzz tìm bằng tìm kiếm nhị phân),
+    # nên chèn halt vào đúng chỗ rồi đánh lại số cho mọi LangSys trỏ tới.
+    records = gpos.FeatureList.FeatureRecord + [record]
+    order = sorted(range(len(records)), key=lambda i: records[i].FeatureTag)
+    new_index = {old: new for new, old in enumerate(order)}
+    gpos.FeatureList.FeatureRecord = [records[i] for i in order]
+    gpos.FeatureList.FeatureCount = len(records)
+    halt_index = new_index[len(records) - 1]
+    for script in gpos.ScriptList.ScriptRecord:
+        langsyses = [script.Script.DefaultLangSys] + [r.LangSys for r in script.Script.LangSysRecord]
+        for langsys in filter(None, langsyses):
+            langsys.FeatureIndex = sorted([new_index[i] for i in langsys.FeatureIndex] + [halt_index])
+            langsys.FeatureCount = len(langsys.FeatureIndex)
+            if langsys.ReqFeatureIndex != 0xFFFF:
+                langsys.ReqFeatureIndex = new_index[langsys.ReqFeatureIndex]
 
 
-def narrowed_source(face: dict) -> pathlib.Path:
-    """Thu hẹp và ghim các trục của variable font trước khi subset."""
+# Bản font đã chuẩn bị (thu hẹp trục, thêm halt) được dựng một lần rồi dùng lại
+# cho mọi trang.
+_prepared: dict[str, pathlib.Path] = {}
+
+
+def prepared_source(face: dict) -> pathlib.Path:
+    """Thu hẹp, ghim trục của variable font và thêm halt nếu cần, trước khi subset."""
     source = SRC / face["src"]
-    if not face.get("limit") and not face.get("pin"):
+    if not face.get("limit") and not face.get("pin") and not face.get("halt"):
         return source
-    if face["key"] in _narrowed:
-        return _narrowed[face["key"]]
+    if face["key"] in _prepared:
+        return _prepared[face["key"]]
 
-    axes = dict(face.get("limit") or {})
-    axes.update(face.get("pin") or {})
     # recalcTimestamp=False: giữ nguyên ngày trong bảng head của font gốc. Mặc
     # định fontTools ghi giờ lúc build vào đó, nên mỗi lần build ra file khác
     # byte dù cùng nội dung, và build ở máy với build trên GitHub không khớp.
     font = TTFont(str(source), recalcTimestamp=False)
-    instancer.instantiateVariableFont(font, axes, inplace=True, updateFontNames=False)
-    cache_dir = SRC / ".narrowed"
+    if face.get("limit") or face.get("pin"):
+        axes = dict(face.get("limit") or {})
+        axes.update(face.get("pin") or {})
+        instancer.instantiateVariableFont(font, axes, inplace=True, updateFontNames=False)
+    if face.get("halt"):
+        add_halt(font)
+    cache_dir = SRC / ".prepared"
     cache_dir.mkdir(exist_ok=True)
     target = cache_dir / f"{face['key']}.ttf"
     font.save(str(target))
     font.close()
-    _narrowed[face["key"]] = target
+    _prepared[face["key"]] = target
     return target
 
 
@@ -255,7 +314,7 @@ def build_dev() -> None:
     report = []
     for face in FACES:
         chars = chars_for(face["scope"], all_text, display_text)
-        size = subset_font(narrowed_source(face), chars, out_dir / f"{face['key']}.woff2")
+        size = subset_font(prepared_source(face), chars, out_dir / f"{face['key']}.woff2")
         report.append((face["key"], len(chars), size))
 
     print("Subset cho toàn site (dùng khi chạy hugo server ở máy):")
@@ -321,7 +380,7 @@ def build_pages(public: pathlib.Path) -> None:
             key = (face["key"], digest)
             if key not in cache:
                 name = f"{face['key']}.{digest}.woff2"
-                size = subset_font(narrowed_source(face), chars, font_dir / name)
+                size = subset_font(prepared_source(face), chars, font_dir / name)
                 cache[key] = name
             name = cache[key]
             page_files[face["key"]] = name
