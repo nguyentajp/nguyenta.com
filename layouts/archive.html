@@ -1,6 +1,6 @@
 {{- /* Mục lục: mọi lối vào kho bài trên một trang, bốn cách tìm:
        1. theo từ khoá   ô tìm kiếm, gửi sang trang Tìm kiếm
-       2. theo danh mục  năm ô, mỗi ô một chữ Hán đại diện và số bài
+       2. theo danh mục  mỗi danh mục một ô: hình minh hoạ, tên, số bài
        3. theo thẻ       mọi thẻ, kèm số bài
        4. theo ngày đăng toàn bộ bài theo năm và tháng, không đoạn trích, không
                          phân trang, để lùi thật sâu về quá khứ mà không phải
@@ -41,7 +41,7 @@
             {{- $n := len .Pages }}
             <li{{ if eq $n 0 }} class="is-empty"{{ end }}>
               <a href="{{ .RelPermalink }}">
-                {{- with .Params.kanji }}<span class="index-cat-kanji" lang="ja" aria-hidden="true">{{ . }}</span>{{ end }}
+                {{- partial "category-art.html" (dict "page" . "sizes" "9rem") }}
                 <span class="index-cat-name">{{ .LinkTitle }}</span>
                 <span class="count">{{ i18n "list_count" (dict "Count" $n) }}</span>
               </a>

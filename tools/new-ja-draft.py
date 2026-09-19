@@ -19,11 +19,12 @@ import re
 import sys
 
 CATEGORIES = {
-    "hoc-tap": "manabi",
+    "nhat-ky": "nikki",
+    "so-thich": "shumi",
     "doi-song": "kurashi",
     "du-lich": "tabi",
     "suy-nghi": "shisaku",
-    "nhat-ky": "nikki",
+    "hoc-tap": "manabi",
 }
 
 

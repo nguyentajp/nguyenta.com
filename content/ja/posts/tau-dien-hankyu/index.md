@@ -4,7 +4,7 @@ date: 2026-07-04T20:15:00+09:00
 translationKey: tau-dien-hankyu
 slug: hankyu-maroon
 description: 大阪の人なら、ひと目でわかる色があります。毎日乗るうちに、車内の小さなところにも目が行くようになりました。
-categories: ["kurashi"]
+categories: ["shumi"]
 tags: ["大阪", "電車", "暮らし"]
 cover: cover.jpg
 demo: true

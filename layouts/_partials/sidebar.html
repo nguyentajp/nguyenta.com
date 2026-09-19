@@ -35,7 +35,7 @@
       <section class="widget">
         <h2 class="widget-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
         <ul class="widget-list">
-          {{- /* Năm danh mục luôn theo thứ tự cố định (weight), không theo số bài */}}
+          {{- /* Các danh mục luôn theo thứ tự cố định (weight), không theo số bài */}}
           {{- range .Pages.ByWeight }}
             {{- $n := len .Pages }}
             <li{{ if eq $n 0 }} class="is-empty"{{ end }}>

@@ -49,8 +49,9 @@
             {{- /* Submenu: mục con khai trong hugo.toml (parent), riêng Danh mục thì
                  tự liệt kê các danh mục đang có, theo thứ tự weight */}}
             {{- $children := slice }}
+            {{- $isCategories := and $categories (eq .URL $categories.RelPermalink) }}
             {{- range .Children }}{{ $children = $children | append (dict "url" .URL "name" .Name) }}{{ end }}
-            {{- if and $categories (eq .URL $categories.RelPermalink) }}
+            {{- if $isCategories }}
               {{- range $categories.Pages.ByWeight }}{{ $children = $children | append (dict "url" .RelPermalink "name" .LinkTitle) }}{{ end }}
               {{- $current = or $current (eq $.Kind "term") }}
             {{- end }}
@@ -59,7 +60,7 @@
                 {{- .Name }}{{ with $children }}{{ partial "icon.html" "chevron" }}{{ end -}}
               </a>
               {{- with $children }}
-                <div class="nav-sub">
+                <div class="nav-sub{{ if $isCategories }} nav-sub--grid{{ end }}">
                   <ul>
                     {{- range . }}<li><a href="{{ .url }}"{{ if eq .url $.RelPermalink }} aria-current="page"{{ end }}>{{ .name }}</a></li>{{ end }}
                   </ul>

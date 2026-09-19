@@ -44,6 +44,9 @@ other = "Chuyển sang giao diện sáng"
 # Định dạng ngày theo cú pháp layout của Go, mỗi ngôn ngữ một kiểu riêng
 [date_full]
 other = "2 tháng 1, 2006"
+# Ngày ngắn đứng trước tên bài ở trang Danh mục
+[date_short]
+other = "02/01/2006"
 [date_compact]
 other = "02.01"
 # Ngày kèm thứ trong tuần (_partials/date.html): "Thứ bảy, 19 tháng 9, 2026"
@@ -147,6 +150,10 @@ other = "Nhảy tới năm"
 other = "Ảnh trong các bài viết, mới nhất ở trên. Bấm vào ảnh để xem lớn."
 [photos_none]
 other = "Chưa có ảnh nào."
+[categories_none]
+other = "Chưa có bài nào trong mục này."
+[categories_all]
+other = "Xem cả {{ .Count }} bài"
 [categories_latest]
 other = "Mới nhất"
 

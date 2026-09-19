@@ -64,11 +64,12 @@ Các chuỗi giao diện thật nằm trong `i18n/vi.toml` và `i18n/ja.toml`. B
 
 | Slug tiếng Việt | Tên hiển thị | Slug tiếng Nhật | Tên hiển thị |
 |---|---|---|---|
-| `hoc-tap` | Học tập | `manabi` | 学び |
+| `nhat-ky` | Nhật ký | `nikki` | 日記 |
+| `so-thich` | Sở thích | `shumi` | 趣味 |
 | `doi-song` | Đời sống | `kurashi` | 暮らし |
 | `du-lich` | Du lịch | `tabi` | 旅 |
 | `suy-nghi` | Suy nghĩ | `shisaku` | 思索 |
-| `nhat-ky` | Nhật ký | `nikki` | 日記 |
+| `hoc-tap` | Học tập | `manabi` | 学び |
 
 Ranh giới giữa hai mục dễ lẫn: **Nhật ký** là ghi chép gắn với một ngày cụ thể;
 **Đời sống** là bài theo chủ đề, không gắn ngày.

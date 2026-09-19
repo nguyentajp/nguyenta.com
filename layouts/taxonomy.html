@@ -1,7 +1,7 @@
 {{- /* Hai hệ thống khác nhau dùng chung template này:
-     - Danh mục: 5 mục cố định theo weight, xếp lưới hai cột. Mỗi mục là một
-       khung, cả khung là một link: chữ Hán đại diện, tên, số bài, mô tả một
-       dòng (khoảng 20 ký tự) và tên bài mới nhất.
+     - Danh mục: các mục cố định theo weight, mỗi mục một hàng có khung: hình
+       minh hoạ bên trái (_partials/category-art.html); bên phải là tên, số
+       bài, mô tả một dòng và ba bài mới nhất, ngày viết đứng trước tên bài.
      - Thẻ: nhiều và tự do, xếp thành một dòng chữ chảy liền. */ -}}
 {{ define "main" }}
   <header class="page-head">
@@ -10,16 +10,33 @@
   </header>
 
   {{- if eq .Data.Plural "categories" }}
-    <ul class="category-grid">
+    <ul class="category-list">
       {{- range .Pages.ByWeight }}
         {{- $n := len .Pages }}
-        <li>
-          <a class="category-card{{ if eq $n 0 }} is-empty{{ end }}" href="{{ .RelPermalink }}">
-            {{- with .Params.kanji }}<span class="category-kanji" lang="ja" aria-hidden="true">{{ . }}</span>{{ end }}
-            <span class="category-name">{{ .LinkTitle }}<span class="count">{{ i18n "list_count" (dict "Count" $n) }}</span></span>
-            {{- with .Description }}<span class="category-desc">{{ . }}</span>{{ end }}
-            {{- with index .Pages 0 }}<span class="category-latest">{{ i18n "categories_latest" }} · {{ .Title }}</span>{{ end }}
-          </a>
+        <li class="category-card{{ if eq $n 0 }} is-empty{{ end }}">
+          <a class="category-art" href="{{ .RelPermalink }}" tabindex="-1" aria-hidden="true">{{ partial "category-art.html" (dict "page" . "sizes" "10rem") }}</a>
+          <div class="category-body">
+            <h2 class="category-name">
+              <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+              <span class="count">{{ i18n "list_count" (dict "Count" $n) }}</span>
+            </h2>
+            {{- with .Description }}<p class="category-desc">{{ . }}</p>{{ end }}
+            {{- with first 3 .Pages }}
+              <ul class="category-posts" aria-label="{{ i18n "categories_latest" }}">
+                {{- range . }}
+                  <li>
+                    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (i18n "date_short") }}</time>
+                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                  </li>
+                {{- end }}
+              </ul>
+            {{- else }}
+              <p class="category-none">{{ i18n "categories_none" }}</p>
+            {{- end }}
+            {{- if gt $n 3 }}
+              <p class="category-all"><a href="{{ .RelPermalink }}">{{ i18n "categories_all" (dict "Count" $n) }}</a></p>
+            {{- end }}
+          </div>
         </li>
       {{- end }}
     </ul>

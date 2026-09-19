@@ -191,7 +191,7 @@ defaultContentLanguageInSubdir = false
       weight = 3
 
 # ── Danh mục và thẻ ──────────────────────────────────────────────────────────
-# categories: 5 mục cố định, là xương sống điều hướng.
+# categories: 6 mục cố định (thứ tự theo weight), là xương sống điều hướng.
 # tags: tự do, dùng để liên kết chéo giữa các bài (mục "Bài viết liên quan").
 [taxonomies]
   category = "categories"

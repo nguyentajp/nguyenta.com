@@ -4,7 +4,7 @@ date: 2026-07-04T20:15:00+09:00
 translationKey: tau-dien-hankyu
 slug: tau-dien-hankyu
 description: Tàu Hankyu có một màu riêng mà người Osaka nhìn là nhận ra. Đi mỗi ngày, Nguyên bắt đầu để ý những chi tiết nhỏ bên trong toa.
-categories: ["doi-song"]
+categories: ["so-thich"]
 tags: ["osaka", "tàu điện", "đời sống"]
 cover: cover.jpg
 demo: true

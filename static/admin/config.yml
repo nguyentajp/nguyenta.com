@@ -112,11 +112,12 @@ collections:
         min: 1
         max: 1
         options:
-          - { label: "Học tập", value: hoc-tap }
+          - { label: "Nhật ký", value: nhat-ky }
+          - { label: "Sở thích", value: so-thich }
           - { label: "Đời sống", value: doi-song }
           - { label: "Du lịch", value: du-lich }
           - { label: "Suy nghĩ", value: suy-nghi }
-          - { label: "Nhật ký", value: nhat-ky }
+          - { label: "Học tập", value: hoc-tap }
       - label: "Thẻ"
         name: tags
         widget: list
@@ -212,11 +213,12 @@ collections:
         min: 1
         max: 1
         options:
-          - { label: "学び · Học tập", value: manabi }
+          - { label: "日記 · Nhật ký", value: nikki }
+          - { label: "趣味 · Sở thích", value: shumi }
           - { label: "暮らし · Đời sống", value: kurashi }
           - { label: "旅 · Du lịch", value: tabi }
           - { label: "思索 · Suy nghĩ", value: shisaku }
-          - { label: "日記 · Nhật ký", value: nikki }
+          - { label: "学び · Học tập", value: manabi }
       - label: "Thẻ"
         name: tags
         widget: list

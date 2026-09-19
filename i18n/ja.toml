@@ -44,6 +44,9 @@ other = "ライトモードにする"
 # Định dạng ngày theo cú pháp layout của Go, mỗi ngôn ngữ một kiểu riêng
 [date_full]
 other = "2006年1月2日"
+# Ngày ngắn đứng trước tên bài ở trang Danh mục
+[date_short]
+other = "2006.01.02"
 [date_compact]
 other = "1月2日"
 # 曜日は日付の後ろに括弧で: "2026年9月19日（土）"
@@ -147,6 +150,10 @@ other = "年ごとに見る"
 other = "記事に載せた写真です。新しい順に並んでいます。写真を押すと大きく表示されます。"
 [photos_none]
 other = "まだ写真がありません。"
+[categories_none]
+other = "まだ記事がありません。"
+[categories_all]
+other = "{{ .Count }} 件をすべて見る"
 [categories_latest]
 other = "最新の記事"
 

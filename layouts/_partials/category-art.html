@@ -1,0 +1,20 @@
+{{- /* Hình minh hoạ của một danh mục, khung 3:2 trên nền 白緑.
+     - Có ảnh tên cover (cover.jpg, cover.png…) trong thư mục danh mục
+       (content/<ngôn ngữ>/categories/<slug>/): dùng ảnh đó.
+     - Không có: hình vẽ nét ở assets/illustrations/<tên>.svg, tên lấy từ
+       translationKey bỏ "cat-" (cat-diary → diary.svg). Hình vẽ nhúng thẳng
+       vào trang, tô màu bằng CSS (main.css mục 12), sáng tối đều đúng.
+     Tham số: page (trang danh mục), sizes. */ -}}
+{{- $cat := .page -}}
+{{- with $cat.Resources.GetMatch "{cover,*cover*}" -}}
+  {{- $small := .Fill "360x240 webp Smart" -}}
+  {{- $large := .Fill "540x360 webp Smart" -}}
+  <span class="art"><img src="{{ $small.RelPermalink }}" srcset="{{ $small.RelPermalink }} 360w, {{ $large.RelPermalink }} 540w" sizes="{{ $.sizes | default "10rem" }}" width="{{ $small.Width }}" height="{{ $small.Height }}" alt="" loading="lazy" decoding="async"></span>
+{{- else -}}
+  {{- $key := strings.TrimPrefix "cat-" ($cat.Params.translationKey | default "") -}}
+  {{- with resources.Get (printf "illustrations/%s.svg" $key) -}}
+    <span class="art">{{ .Content | safeHTML }}</span>
+  {{- else -}}
+    <span class="art"></span>
+  {{- end -}}
+{{- end -}}
