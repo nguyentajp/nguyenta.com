@@ -99,6 +99,35 @@ jobs:
       - name: Bỏ trang CMS
         run: rm -rf public/admin
 
+      # ── Bản xem trước riêng (README mục 11.4) ──────────────────────────────
+      # Site đầy đủ, không bảo trì, đẩy lên Worker nguyenta-preview có
+      # Cloudflare Access chắn trước. Chưa có secret CLOUDFLARE_API_TOKEN thì
+      # bỏ qua. Lỗi ở đây không chặn việc deploy nguyenta.com.
+      - name: Kiểm tra token Cloudflare
+        id: cf
+        run: echo "ok=${{ secrets.CLOUDFLARE_API_TOKEN != '' }}" >> "$GITHUB_OUTPUT"
+
+      - name: Build bản xem trước
+        if: steps.cf.outputs.ok == 'true'
+        continue-on-error: true
+        id: preview_build
+        env:
+          HUGO_ENVIRONMENT: production
+          HUGO_PARAMS_MAINTENANCE: "false"
+        run: |
+          hugo --minify --baseURL https://nguyenta-preview.genblog.workers.dev/ -d preview-public
+          python tools/fonts/build.py --pages preview-public
+          npx --yes "pagefind@${PAGEFIND_VERSION}" --site preview-public
+          rm -rf preview-public/admin
+
+      - name: Đẩy bản xem trước lên Cloudflare
+        if: steps.cf.outputs.ok == 'true' && steps.preview_build.outcome == 'success'
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 0340bc4b927d2034ec40001b42e97009
+        run: npx --yes wrangler@4 deploy --config tools/preview/wrangler.toml
+
       # Bật params.maintenance trong hugo.toml thì trang nào cũng là trang
       # "đang dựng", nhưng file bài viết, ảnh, RSS, sitemap, chỉ mục tìm kiếm
       # vẫn nằm trong public/. Bước này chỉ giữ lại những gì trang bảo trì và

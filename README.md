@@ -518,7 +518,7 @@ trước khi định thay đổi một mảnh nào đó.
                           │ GitHub Pages: phục vụ file tĩnh ───────┼──► https://nguyenta.com
                           └────────────────────────────────────────┘       ▲
                                    │ cùng lúc, build bản đầy đủ             │ DNS (Hostinger):
-                                   ▼ (hiện đang đẩy tay từ máy)             │ tên miền trỏ về GitHub
+                                   ▼ (secret CLOUDFLARE_API_TOKEN)          │ tên miền trỏ về GitHub
                           ┌────────────── Cloudflare ──────────────┐
                           │ Worker nguyenta-preview                │
                           │   site đầy đủ, có Cloudflare Access ───┼──► chỉ Gen xem được
@@ -630,7 +630,9 @@ gì để hỏng. Code Worker cũ vẫn còn trong lịch sử Git, ở commit `
 Bản xem trước là Worker `nguyenta-preview` chỉ chứa file tĩnh
 ([tools/preview/wrangler.toml](tools/preview/wrangler.toml)). Nó được build
 riêng với `maintenance = false` và địa chỉ gốc của chính nó, vào thư mục
-`preview-public/` (không commit). Hiện đang đẩy tay từ máy:
+`preview-public/` (không commit). Workflow tự làm việc này mỗi lần chạy, nhờ
+secret `CLOUDFLARE_API_TOKEN` (mục 11.6); thiếu secret thì bước đó tự bỏ qua,
+Cloudflare lỗi cũng không chặn nguyenta.com. Khi cần đẩy tay từ máy:
 
 ```bash
 HUGO_PARAMS_MAINTENANCE=false HUGO_ENVIRONMENT=production hugo --minify --baseURL https://nguyenta-preview.genblog.workers.dev/ -d preview-public
@@ -657,7 +659,7 @@ chuột trên web.
 | Git qua HTTPS (`github.com`) | Lệnh `git push` / `git pull` trên máy | Đẩy bài lên repo, lấy thay đổi về |
 | API cục bộ của `decap-server` (`localhost:8081`) | CMS ở máy | Đọc và ghi file bài viết trong thư mục repo |
 | GitHub Pages API (qua lệnh `gh api`) | Dùng một lần khi dựng | Bật Pages với nguồn Actions, đặt tên miền, bật HTTPS |
-| Cloudflare API (qua `wrangler`) | Từ máy anh | Deploy Worker bản xem trước |
+| Cloudflare API (qua `wrangler`) | GitHub Actions, hoặc từ máy anh | Deploy Worker bản xem trước |
 | YouTube (`youtube-nocookie.com`) | Trình duyệt người đọc, chỉ khi bấm phát | Phát video nhúng trong bài |
 
 ### 11.6 Tài khoản và bí mật nằm ở đâu
@@ -666,6 +668,7 @@ chuột trên web.
 |---|---|---|
 | Tài khoản GitHub `nguyentajp` | — | Giữ bật xác thực hai lớp (2FA): tài khoản này ghi được cả site |
 | Tài khoản Cloudflare | Email `nguyentajp1403@gmail.com` | Cũng là chìa khoá của bản xem trước (Access), nên giữ mật khẩu mạnh và 2FA |
+| Cloudflare API token | GitHub › Settings › Secrets › `CLOUDFLARE_API_TOKEN` (chỉ quyền Workers Scripts: Edit) | Xoá token ở Cloudflare › My Profile › API Tokens, tạo token mới, `gh secret set CLOUDFLARE_API_TOKEN` |
 | Quyền wrangler trên máy | `~/Library/Preferences/.wrangler/` | Thu hồi: `npx wrangler logout` |
 | Tên miền | Hostinger | Nhớ gia hạn hằng năm; hết hạn là site mất |
 
@@ -692,7 +695,6 @@ chuột trên web.
 
 ### 11.8 Đang làm dở
 
-- [ ] Cho workflow tự đẩy bản xem trước mỗi lần push: cần một Cloudflare API
-      token chỉ có quyền deploy Worker, cất trong GitHub › Settings › Secrets.
-- [ ] Xoá bài thử `content/vi/posts/zz-thu-nghiem-anh/` (chỉ có ở máy).
+- [x] Workflow tự đẩy bản xem trước mỗi lần push (cần secret `CLOUDFLARE_API_TOKEN`).
+- [x] Xoá bài thử `zz-thu-nghiem-anh`.
 - [ ] Mở blog: `maintenance = false` trong `hugo.toml`.
