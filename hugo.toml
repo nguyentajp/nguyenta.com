@@ -55,7 +55,7 @@ defaultContentLanguageInSubdir = false
       # ngôn ngắn, ứng với câu tiếng Nhật 大阪より、ベトナム人として、自分の旅を綴る。
       tagline = "Từ Osaka, một người Việt chép lại hành trình của mình."
       # Đoạn giới thiệu ngắn trong khung "Về Nguyên" ở sidebar. Anh sửa tuỳ ý.
-      bio = "Nguyên, bút danh Gen (元), sống và làm việc ở Osaka. Nơi đây ghi lại chuyện học tiếng Nhật, đời sống và những chuyến đi, bằng tiếng Việt và tiếng Nhật."
+      bio = "Nguyên, bút danh Gen, sống và làm việc ở Osaka. Nơi đây ghi lại chuyện học tiếng Nhật, đời sống và những chuyến đi, bằng tiếng Việt và tiếng Nhật."
       # Trang 404 dùng chung cho hai ngôn ngữ: trang nào cũng hiện cả hai thứ
       # tiếng, ngôn ngữ đang đọc đứng trước (layouts/404.html)
       notFoundTitle = "Trang này chưa mọc lên"

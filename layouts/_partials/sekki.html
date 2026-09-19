@@ -24,10 +24,15 @@
   <button class="sekki" type="button" popovertarget="sekki-note" data-sekki>{{ $label }}</button>
   <span class="sekki-note" id="sekki-note" popover role="dialog" aria-labelledby="sekki-note-title" data-pagefind-ignore="all">
     <span class="sekki-note-head">
+      {{- /* Trang tiếng Việt chỉ hiện tên Việt, không chữ Hán; trang tiếng Nhật
+           hiện chữ Hán kèm cách đọc */}}
       <span class="sekki-note-title" id="sekki-note-title">
-        <span lang="ja">{{ $found.ja }}</span>
-        <span class="sekki-note-kana" lang="ja">{{ $found.kana }}</span>
-        {{- if not $ja }}<span class="sekki-note-vi">{{ $found.vi }}</span>{{ end }}
+        {{- if $ja }}
+          <span>{{ $found.ja }}</span>
+          <span class="sekki-note-kana">{{ $found.kana }}</span>
+        {{- else }}
+          <span>{{ i18n "sekki_label" (dict "Name" $found.vi) }}</span>
+        {{- end }}
       </span>
       <button class="sekki-note-close" type="button" popovertarget="sekki-note" popovertargetaction="hide" aria-label="{{ i18n "nav_menu_close" }}">{{ partial "icon.html" "close" }}</button>
     </span>

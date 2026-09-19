@@ -93,7 +93,7 @@ other = "Bài trước"
 [post_next]
 other = "Bài sau"
 [post_seal_alt]
-other = "Dấu 元 của Gen"
+other = "Con dấu của Gen"
 
 [spotlight_label]
 other = "Spotlight"
@@ -224,13 +224,13 @@ other = "{{ .Day }} · {{ .Weekday }}"
 [blog_colors]
 other = "Màu sắc"
 [blog_colors_text]
-other = "Cả bảng màu lấy từ một rừng tre nhìn qua cửa giấy 障子: giấy, mực, bóng tre. Ban đêm là rừng trúc về đêm, nền xanh rất tối. Ô trái là giao diện sáng, ô phải là giao diện tối."
+other = "Cả bảng màu lấy từ một rừng tre nhìn qua khung cửa dán giấy kiểu Nhật: giấy, mực, bóng tre. Ban đêm là rừng trúc về đêm, nền xanh rất tối. Ô trái là giao diện sáng, ô phải là giao diện tối."
 [blog_marks]
-other = "Kamon và con dấu"
+other = "Gia huy và con dấu"
 [blog_kamon_text]
-other = "Kamon 竹輪に三つ銀杏: ba lá bạch quả vàng trong một vòng tre xanh. Bạch quả là cây của Osaka, nơi blog được viết; vòng tre là bộ rễ nối mọi bài về một gốc."
+other = "Gia huy kiểu Nhật (kamon): ba lá bạch quả trong một vòng tre. Bạch quả là cây của Osaka, nơi blog được viết; vòng tre là bộ rễ nối mọi bài về một gốc."
 [blog_hanko_text]
-other = "Con dấu 元 đóng ở cuối mỗi bài, như người viết thư pháp đóng dấu cuối tác phẩm."
+other = "Con dấu chữ Nguyên đóng ở cuối mỗi bài, như người viết thư pháp đóng dấu cuối tác phẩm."
 
 # Chân trang: bản tin (giao diện mẫu, chưa gửi đi đâu)
 [news_title]

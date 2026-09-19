@@ -26,7 +26,12 @@
             <span style="{{ printf "background:%s" .light | safeCSS }}"></span>
             <span style="{{ printf "background:%s" .dark | safeCSS }}"></span>
           </span>
-          <span class="swatch-name"><span lang="ja">{{ .ja }}</span> {{ .romaji }}</span>
+          {{- /* Trang tiếng Việt: tên Việt kèm romaji, không chữ Hán */}}
+          {{- if eq $lang "ja" }}
+            <span class="swatch-name"><span>{{ .ja }}</span> <span class="swatch-romaji">{{ .romaji }}</span></span>
+          {{- else }}
+            <span class="swatch-name"><span>{{ .vi_name }}</span> <span class="swatch-romaji">{{ .romaji }}</span></span>
+          {{- end }}
           <span class="swatch-role">{{ cond (eq $lang "ja") .ja_role .vi }}</span>
         </li>
       {{- end }}

@@ -22,10 +22,10 @@ Blog không đặt quảng cáo, không chạy theo lượt xem. Chỉ mong mỗ
 
 ## Ý tưởng
 
-Chữ 元 (Gen) trong tên nghĩa là gốc. Tre mọc thành cả rừng, nhưng mọi thân đều nối về một bộ rễ chung dưới đất. Các bài viết ở đây cũng vậy: mỗi bài một thân, cùng một gốc.
+Gen là cách người Nhật đọc chữ Nguyên trong tên mình, một chữ nghĩa là gốc. Tre mọc thành cả rừng, nhưng mọi thân đều nối về một bộ rễ chung dưới đất. Các bài viết ở đây cũng vậy: mỗi bài một thân, cùng một gốc.
 
 Blog dựng theo ba nguyên tắc của thẩm mỹ Nhật:
 
-- **間 (ma)**: khoảng trắng có chủ đích, để mắt được nghỉ.
-- **簡素 (kanso)**: giản lược tới mức cần thiết, bỏ mọi thứ không phục vụ việc đọc.
-- **渋み (shibumi)**: vẻ đẹp kiềm chế, màu dịu, không phô trương.
+- **Ma**: khoảng trắng có chủ đích, để mắt được nghỉ.
+- **Kanso**: giản lược tới mức cần thiết, bỏ mọi thứ không phục vụ việc đọc.
+- **Shibumi**: vẻ đẹp kiềm chế, màu dịu, không phô trương.
