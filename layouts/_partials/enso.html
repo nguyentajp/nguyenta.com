@@ -1,0 +1,5 @@
+{{- /* Vòng ensō dùng chung cho trang 凪, trang 404 và trang bảo trì */ -}}
+{{- with resources.Get "brand/enso.webp" -}}
+  <div class="enso" role="img" aria-label="{{ i18n "nagi_enso_alt" }}"
+       style="{{ printf "--enso: url(%s)" .RelPermalink | safeCSS }}"></div>
+{{- end -}}

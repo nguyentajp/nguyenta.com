@@ -147,18 +147,11 @@ other = "まだ写真がありません。"
 [categories_latest]
 other = "最新の記事"
 
-[error_404_title]
-other = "このページはまだ芽を出していません"
-[error_404_text]
-other = "お探しのページはありません。URL が変わったか、下書きのままかもしれません。"
-[error_404_home]
-other = "ホームへ"
-
-[sei_line]
+[nagi_line]
 other = "ここでは読むものがありません。少し休んでいきませんか。"
-[sei_enso_alt]
+[nagi_enso_alt]
 other = "一筆で描いた円相"
-[sei_back]
+[nagi_back]
 other = "戻る"
 
 [maint_line]

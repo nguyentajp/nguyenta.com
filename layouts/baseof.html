@@ -14,10 +14,10 @@
   <main id="noi-dung">{{ partial "maintenance.html" . }}</main>
   {{- else }}
   <a class="skip" href="#noi-dung">{{ i18n "skip_to_content" }}</a>
-  {{- /* Trang có "bare: true" trong front matter (trang 静) không có header,
-       sidebar và footer. Dùng cờ thay vì block rỗng: Go template bỏ qua define
-       có thân rỗng. */}}
-  {{- if .Params.bare }}
+  {{- /* Trang có "bare: true" trong front matter (trang 凪) và trang 404 không có
+       header, sidebar và footer. Dùng cờ thay vì block rỗng: Go template bỏ
+       qua define có thân rỗng. */}}
+  {{- if or .Params.bare (eq .Kind "404") }}
     <main id="noi-dung">{{ block "main" . }}{{ end }}</main>
   {{- else }}
     {{ partial "masthead.html" . }}

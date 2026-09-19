@@ -386,7 +386,7 @@ Build tay: tab **Actions** → **Deploy** → **Run workflow**.
 ### Chế độ bảo trì
 
 Khi `maintenance = true` trong mục `[params]` của [hugo.toml](hugo.toml),
-nguyenta.com chỉ hiện vòng ensō của trang 静 với dòng "Nơi này đang được
+nguyenta.com chỉ hiện vòng ensō của trang 凪 với dòng "Nơi này đang được
 dựng", có link sang bản tiếng Nhật. Workflow chỉ đưa lên trang đó, file CSS
 và font, nên bài viết, ảnh, RSS, sitemap và chỉ mục tìm kiếm không
 có trên mạng, đoán URL cũng không mở được. Máy tìm kiếm được báo là không

@@ -3,7 +3,7 @@
 //   1. Kamon tự vẽ khi vào trang chủ lần đầu trong phiên
 //   2. Lightbox: bấm ảnh để xem lớn, Esc hoặc bấm nền để đóng, ← → để chuyển
 //   3. Video YouTube: chỉ tải iframe khi người đọc bấm phát
-//   4. Trang 静: Esc hoặc chạm vào đâu cũng quay lại trang trước
+//   4. Trang 凪: Esc hoặc chạm vào đâu cũng quay lại trang trước
 //   5. Furigana: nút chọn hiện, chạm để xem, tắt
 //   6. Nút giao diện sáng tối
 
@@ -120,13 +120,13 @@
   });
 })();
 
-// ── 4. Trang 静 ─────────────────────────────────────────────────────────────
+// ── 4. Trang 凪 ─────────────────────────────────────────────────────────────
 // Link "Quay lại" trỏ về trang chủ, nên không có JS vẫn ra được. Có JS thì
-// quay lại đúng bài người đọc vừa rời đi, nếu họ tới từ chính site này.
+// quay lại đúng bài người đọc vừa rời đi, nếu họ tới từ chính site này. Trang
+// bảo trì và trang 404 mượn giao diện 凪 nhưng không có data-leave, nên bỏ qua.
 (() => {
-  const sei = document.querySelector(".sei");
-  // Trang bảo trì mượn giao diện 静 nhưng không có chỗ nào để quay lại
-  if (!sei || "maintenance" in sei.dataset) return;
+  const nagi = document.querySelector(".nagi[data-leave]");
+  if (!nagi) return;
 
   const leave = () => {
     let cameFromHere = false;
@@ -136,14 +136,14 @@
       // Không có referrer (mở thẳng link): về trang chủ.
     }
     if (cameFromHere && history.length > 1) history.back();
-    else location.href = sei.dataset.home;
+    else location.href = nagi.dataset.leave;
   };
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") leave();
   });
 
-  sei.addEventListener("click", (event) => {
+  nagi.addEventListener("click", (event) => {
     event.preventDefault();
     leave();
   });

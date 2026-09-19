@@ -1,0 +1,21 @@
+{{- /* Trang 凪 (Nagi: mặt biển lặng sau cơn bão): một căn phòng nghỉ, không có
+     gì để đọc. Chỉ vòng ensō và một dòng chữ; front matter đặt bare: true nên
+     không có header và footer. Lối vào là chữ "Nagi" (凪) ở chân trang. Bấm Esc
+     hoặc chạm vào đâu cũng quay lại trang trước (site.js mục 4, dựa vào
+     data-leave).
+
+     Ensō là ảnh mặt nạ: phần có mực nằm ở kênh alpha, màu do CSS tô bằng
+     var(--ink), nên dark mode dùng lại đúng một file. */ -}}
+{{ define "head" }}
+  {{- with resources.Get "brand/enso.webp" }}
+    <link rel="preload" as="image" href="{{ .RelPermalink }}" type="image/webp">
+  {{- end }}
+{{ end }}
+
+{{ define "main" }}
+  <div class="nagi" data-leave="{{ "" | relLangURL }}">
+    {{ partial "enso.html" . }}
+    <p class="nagi-line">{{ i18n "nagi_line" }}</p>
+    <a class="nagi-back" href="{{ "" | relLangURL }}">{{ i18n "nagi_back" }}</a>
+  </div>
+{{ end }}

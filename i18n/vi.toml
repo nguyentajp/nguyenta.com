@@ -147,18 +147,11 @@ other = "Chưa có ảnh nào."
 [categories_latest]
 other = "Mới nhất"
 
-[error_404_title]
-other = "Trang này chưa mọc lên"
-[error_404_text]
-other = "Đường dẫn anh vừa mở không có gì cả. Có thể bài đã đổi đường dẫn, hoặc bản nháp chưa đăng."
-[error_404_home]
-other = "Về trang chủ"
-
-[sei_line]
+[nagi_line]
 other = "Ở đây không có gì để đọc. Nghỉ một chút."
-[sei_enso_alt]
+[nagi_enso_alt]
 other = "Vòng ensō vẽ bằng một nét bút lông"
-[sei_back]
+[nagi_back]
 other = "Quay lại"
 
 [maint_line]

@@ -55,6 +55,11 @@ defaultContentLanguageInSubdir = false
       tagline = "Ghi chép từ Osaka"
       # Đoạn giới thiệu ngắn trong khung "Về Nguyên" ở sidebar. Anh sửa tuỳ ý.
       bio = "Nguyên, bút danh Gen (元), sống và làm việc ở Osaka. Nơi đây ghi lại chuyện học tiếng Nhật, đời sống và những chuyến đi, bằng tiếng Việt và tiếng Nhật."
+      # Trang 404 dùng chung cho hai ngôn ngữ: trang nào cũng hiện cả hai thứ
+      # tiếng, ngôn ngữ đang đọc đứng trước (layouts/404.html)
+      notFoundTitle = "Trang này chưa mọc lên"
+      notFoundText = "Đường dẫn vừa mở không có gì cả. Có thể bài đã đổi đường dẫn, hoặc chưa được đăng."
+      notFoundHome = "Về trang chủ"
 
     # URL bài viết: lấy "slug" trong front matter; không có slug thì lấy tên
     # thư mục của bài (Decap CMS tự đặt tên thư mục không dấu theo tiêu đề).
@@ -101,8 +106,8 @@ defaultContentLanguageInSubdir = false
       pageRef = "/contact"
       weight = 3
     [[languages.vi.menus.under]]
-      name = "Tĩnh"
-      pageRef = "/sei"
+      name = "Nagi"
+      pageRef = "/nagi"
       weight = 4
 
   [languages.ja]
@@ -117,6 +122,9 @@ defaultContentLanguageInSubdir = false
       description = "大阪から、学びと暮らしと旅の記録。Gen の個人ブログです。"
       tagline = "大阪からの記録"
       bio = "大阪で暮らし、働いている Gen（元）です。日本語の勉強や暮らし、旅のことを、ベトナム語と日本語で書いています。"
+      notFoundTitle = "このページはまだ芽を出していません"
+      notFoundText = "お探しのページはありません。URL が変わったか、まだ公開されていないのかもしれません。"
+      notFoundHome = "ホームへ"
 
     [languages.ja.permalinks.page]
       posts = "/kiji/:slugorcontentbasename/"
@@ -159,8 +167,8 @@ defaultContentLanguageInSubdir = false
       pageRef = "/contact"
       weight = 3
     [[languages.ja.menus.under]]
-      name = "静"
-      pageRef = "/sei"
+      name = "凪"
+      pageRef = "/nagi"
       weight = 4
 
 # ── Danh mục và thẻ ──────────────────────────────────────────────────────────
@@ -238,7 +246,7 @@ defaultContentLanguageInSubdir = false
 # ── Thông số dùng chung cho cả hai ngôn ngữ ──────────────────────────────────
 [params]
   # Chế độ bảo trì: true thì nguyenta.com chỉ hiện một trang "đang dựng" (vòng
-  # ensō của trang 静), mọi bài viết, RSS, sitemap và chỉ mục tìm kiếm đều
+  # ensō của trang 凪), mọi bài viết, RSS, sitemap và chỉ mục tìm kiếm đều
   # không được đưa lên. Chỉ có tác dụng khi build thật (GitHub Actions);
   # `hugo server` ở máy vẫn hiện site đầy đủ. Mở blog: đổi thành false, commit.
   maintenance = true
