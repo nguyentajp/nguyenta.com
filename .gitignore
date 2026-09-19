@@ -1,5 +1,7 @@
 # Thư mục Hugo tự sinh khi build, không đưa vào repo
 /public/
+# Bản build đầy đủ cho bản xem trước riêng (tools/preview)
+/preview-public/
 /resources/_gen/
 .hugo_build.lock
 
@@ -28,3 +30,6 @@ assets/fonts/*.woff2
 
 # Bản brief cá nhân: repo này sẽ là public, nên không đẩy file này lên
 Yêu cầu.md
+
+# Cache của wrangler (Cloudflare) khi deploy từ máy
+.wrangler/

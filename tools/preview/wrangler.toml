@@ -1,0 +1,11 @@
+# Bản xem trước riêng: site đầy đủ (không bảo trì, không bài nháp) tại
+# https://nguyenta-preview.genblog.workers.dev, có Cloudflare Access chắn
+# phía trước nên chỉ email của Gen mở được. Workflow deploy tự đẩy lên mỗi
+# lần push; đẩy tay từ máy (sau khi build vào preview-public/):
+#   npx wrangler@4 deploy --config tools/preview/wrangler.toml
+name = "nguyenta-preview"
+compatibility_date = "2026-09-01"
+
+[assets]
+directory = "../../preview-public"
+not_found_handling = "404-page"

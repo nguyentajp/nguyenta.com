@@ -16,8 +16,11 @@ backend:
   repo: nguyentajp/nguyenta.com
   branch: main
   # Địa chỉ máy chủ OAuth (đổi mã đăng nhập GitHub thành token). GitHub Pages
-  # chỉ phục vụ file tĩnh nên không tự làm được việc này. Điền ở Bước 7.
-  # base_url: https://...
+  # chỉ phục vụ file tĩnh nên không tự làm được việc này; việc đó do Worker
+  # trong tools/cms-auth/ chạy trên Cloudflare làm.
+  base_url: https://nguyenta-cms-auth.genblog.workers.dev
+  # Repo public nên chỉ cần quyền public_repo, không xin quyền mọi repo private
+  auth_scope: public_repo
   commit_messages:
     create: "Viết {{collection}}: {{slug}}"
     update: "Sửa {{collection}}: {{slug}}"
