@@ -159,6 +159,12 @@ other = "検索"
 other = "アーカイブをすべて見る"
 [archive_month_year]
 other = "{{ .Year }}年{{ .Month }}月"
+[sidebar_recent]
+other = "新着記事"
+[sidebar_support_text]
+other = "広告のないブログです。記事が役に立ったら、お茶を一杯ごちそうしていただけるとうれしいです。"
+[sidebar_support_link]
+other = "応援する"
 [sidebar_label]
 other = "サイドバー"
 

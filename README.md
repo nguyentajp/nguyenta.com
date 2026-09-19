@@ -290,7 +290,8 @@ như bản tiếng Việt.
 | Muốn sửa | Ở đâu |
 |---|---|
 | Trang Giới thiệu | CMS → **Trang**, hoặc `content/vi/about.md`, `content/ja/about.md` |
-| Ảnh chân dung ở sidebar | Thay file `assets/brand/avatar.jpg` (ảnh gì cũng được, site tự cắt vuông) |
+| Ảnh chân dung ở sidebar | Thay file `assets/brand/avatar.jpg` (site tự cắt khung dọc 4:5 lấy phần giữa, nên dùng ảnh dọc, mặt ở giữa) |
+| Trang Ủng hộ và khối Ủng hộ ở sidebar | `content/vi/support.md`, `content/ja/support.md`; lời trong khung sidebar ở `i18n` (`sidebar_support_text`). Xoá file thì khối tự ẩn |
 | Lời giới thiệu ở sidebar | `hugo.toml` → `[languages.vi.params]` → `bio` (bản tiếng Nhật: `[languages.ja.params]`) |
 | Dòng nhỏ dưới tên blog | `hugo.toml` → `tagline` (hai ngôn ngữ) |
 | Email, mạng xã hội ở trang Liên hệ | `hugo.toml` → `[params]` → `email`, `[params.socials]` |
@@ -722,4 +723,6 @@ chuột trên web.
 
 - [x] Workflow tự đẩy bản xem trước mỗi lần push (cần secret `CLOUDFLARE_API_TOKEN`).
 - [x] Xoá bài thử `zz-thu-nghiem-anh`.
+- [ ] Điền thông tin chuyển khoản vào trang Ủng hộ (`content/vi/support.md`, `content/ja/support.md`), hiện đang là dòng chờ.
+- [ ] Thay ảnh chân dung (`assets/brand/avatar.jpg`) và thêm ảnh bìa cho các bài.
 - [ ] Mở blog: `maintenance = false` trong `hugo.toml`.

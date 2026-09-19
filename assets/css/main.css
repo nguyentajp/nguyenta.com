@@ -45,6 +45,9 @@
   --rule: var(--fushi);
   --field: var(--kabe);
   --accent: var(--icho);
+  /* Đường gạch chân mang màu nhấn: pha nhạt với nền, vì màu nhấn đã được làm
+     đậm cho đủ tương phản khi là chữ, để làm gạch chân thì gần như màu mực */
+  --accent-line: color-mix(in oklab, var(--accent) 60%, var(--bg));
   --seal: var(--shu);
 
   /* Chữ. "Gen Latin" là Literata, "Gen Latin Display" là Literata bản cắt cho
@@ -1078,49 +1081,29 @@ main {
   gap: var(--space-6);
 }
 
-/* Rộng hơn cột bên phải (16.5rem) nghĩa là sidebar đang nằm dưới nội dung:
-   các khối xếp hàng ngang, ngăn với phần trên bằng một đường mảnh. */
-@container sidebar (min-width: 17rem) {
-  .sidebar-inner {
-    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-    gap: var(--space-6) var(--space-5);
-    padding-block-start: var(--space-6);
-    border-block-start: 1px solid var(--rule);
-  }
-
-  /* Ảnh chân dung không cần to bằng cả khối: thành ảnh nhỏ nằm cạnh lời
-     giới thiệu, như chữ ký cuối thư */
-  .widget-about:has(.avatar) {
-    display: grid;
-    grid-template-columns: 5.5rem minmax(0, 1fr);
-    gap: 0 var(--space-4);
-    align-content: start;
-  }
-
-  .widget-about .widget-title {
-    grid-column: 1 / -1;
-  }
-
-  .widget-about .avatar {
-    grid-row: span 2;
-    margin: 0;
-  }
-}
-
-/* Đủ chỗ cho cả bốn khối trên một hàng (trang bài viết trên máy tính): khối
-   giới thiệu rộng gấp đôi, để lời giới thiệu không bị bẻ vụn thành dòng ngắn. */
-@container sidebar (min-width: 56rem) {
-  .sidebar-inner {
-    grid-template-columns: 2fr repeat(3, 1fr);
-  }
+/* Mỗi khối là một khung mảnh màu mực, bo góc như ảnh. Tên khối là một nhãn
+   nhỏ có viền riêng, đặt lệch trái đè lên đường khung, như mảnh giấy đề tên
+   (題簽) dán trên bìa sách đóng chỉ. Không đổ bóng: khung giấy, không phải card. */
+.widget {
+  position: relative;
+  padding: var(--space-5) var(--space-4) var(--space-4);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
 }
 
 .widget-title {
-  padding-block-end: var(--space-2);
-  margin-block-end: var(--space-3);
-  border-block-end: 1px solid var(--rule);
-  font-size: 1rem;
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: var(--space-3);
+  translate: 0 -50%;
+  max-width: calc(100% - 2 * var(--space-3));
+  padding: 0.1rem var(--space-3);
+  border: 1px solid var(--ink);
+  border-radius: calc(var(--radius) / 2);
+  background: var(--bg);
+  font-size: 0.9375rem;
   font-weight: 600;
+  line-height: 1.6;
   letter-spacing: 0.02em;
 }
 
@@ -1132,13 +1115,44 @@ main {
   color: var(--accent);
 }
 
+/* Rộng hơn cột bên phải (16.5rem) nghĩa là sidebar đang nằm dưới nội dung:
+   các khối xếp hàng ngang. */
+@container sidebar (min-width: 17rem) {
+  .sidebar-inner {
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: var(--space-6) var(--space-5);
+  }
+
+  /* Ảnh chân dung không cần to bằng cả khối: thành ảnh nhỏ nằm cạnh lời
+     giới thiệu, như chữ ký cuối thư */
+  .widget-about:has(.avatar) {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 0 var(--space-4);
+    align-content: start;
+  }
+
+  .widget-about .avatar {
+    grid-row: span 2;
+    margin: 0;
+  }
+}
+
+/* Trang bài viết trên máy tính: sáu khối thành hai hàng ba cột đều nhau,
+   mỗi khối đủ rộng để chữ không bị bẻ vụn thành dòng ngắn. */
+@container sidebar (min-width: 56rem) {
+  .sidebar-inner {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 .avatar {
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   margin-block-end: var(--space-3);
   background: var(--band);
-  border-radius: var(--radius);
+  border-radius: calc(var(--radius) / 2);
 }
 
 .bio {
@@ -1146,18 +1160,33 @@ main {
   text-wrap: pretty;
 }
 
-.widget-more {
+.widget p + p {
   margin-block-start: var(--space-2);
 }
 
-.widget-more a {
-  text-decoration: underline 1px var(--ink);
+/* Link mời bấm trong khung (đọc thêm, ủng hộ, bài viết mới) gạch chân bằng
+   màu nhấn, để mắt thấy ngay đâu là lối đi tiếp */
+.widget-more a,
+.widget-posts a {
+  text-decoration: underline 0.09em var(--accent-line);
   text-underline-offset: 0.3em;
 }
 
-.widget-more a:hover {
+.widget-more a:hover,
+.widget-posts a:hover {
   color: var(--accent);
-  text-decoration-color: var(--accent);
+}
+
+.widget-posts {
+  display: grid;
+  gap: var(--space-3);
+  list-style: none;
+}
+
+.widget-posts a {
+  font-family: var(--font-display);
+  line-height: 1.5;
+  text-wrap: pretty;
 }
 
 .widget-list {
@@ -1189,6 +1218,7 @@ main {
   font-variant-numeric: tabular-nums;
 }
 
+/* Ô tìm kiếm và nút liền nhau thành một khối, bo hai góc ngoài như khung */
 .widget-search {
   display: flex;
 }
@@ -1199,7 +1229,10 @@ main {
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--field);
   border-inline-end: 0;
-  border-radius: 0;
+  border-start-start-radius: calc(var(--radius) / 2);
+  border-end-start-radius: calc(var(--radius) / 2);
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
   background: var(--bg);
   color: var(--ink);
   font: inherit;
@@ -1220,6 +1253,8 @@ main {
   padding: 0.5rem 1rem;
   border: 1px solid var(--ink);
   border-radius: 0;
+  border-start-end-radius: calc(var(--radius) / 2);
+  border-end-end-radius: calc(var(--radius) / 2);
   background: var(--ink);
   color: var(--bg);
   font: inherit;

@@ -149,6 +149,12 @@ other = "Viết tại Osaka. Dựng bằng Hugo, đặt trên GitHub Pages."
 other = "RSS"
 
 # Sidebar
+[sidebar_recent]
+other = "Bài viết mới"
+[sidebar_support_text]
+other = "Blog không đặt quảng cáo. Nếu bài viết có ích, anh chị có thể mời Nguyên một tách trà."
+[sidebar_support_link]
+other = "Ủng hộ blog"
 [sidebar_label]
 other = "Thanh bên"
 [sidebar_about]

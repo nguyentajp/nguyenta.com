@@ -1,5 +1,6 @@
 {{- /* Sidebar: mọi lối đi trong site nằm sẵn trên màn hình, như các blog quen
-     thuộc. Bốn khối: người viết, tìm kiếm, danh mục, lưu trữ theo tháng.
+     thuộc. Các khối: người viết, tìm kiếm, bài viết mới, danh mục, ủng hộ,
+     lưu trữ theo tháng. Mỗi khối là một khung có nhãn đề (xem main.css mục 8).
      Trên mobile và ở trang bài viết, sidebar nằm dưới nội dung và tự xếp thành
      hàng ngang (CSS dựa vào bề rộng thật của sidebar, không dựa vào màn hình). */ -}}
 {{- $posts := where site.RegularPages "Section" "posts" -}}
@@ -7,10 +8,11 @@
   <div class="sidebar-inner">
     <section class="widget widget-about">
       <h2 class="widget-title">{{ i18n "sidebar_about" }}</h2>
-      {{- /* Ảnh chân dung: đặt file assets/brand/avatar.jpg (ảnh vuông) là tự hiện */}}
+      {{- /* Ảnh chân dung: đặt file assets/brand/avatar.jpg là tự hiện, cắt về khung
+           dọc 4:5 lấy phần giữa ảnh */}}
       {{- with resources.Get "brand/avatar.jpg" }}
-        {{- $img := .Fill "480x480 webp Center" }}
-        <img class="avatar" src="{{ $img.RelPermalink }}" width="240" height="240" alt="" loading="lazy" decoding="async">
+        {{- $img := .Fill "480x600 webp Center" }}
+        <img class="avatar" src="{{ $img.RelPermalink }}" width="240" height="300" alt="" loading="lazy" decoding="async">
       {{- end }}
       {{- with site.Params.bio }}<p class="bio">{{ . }}</p>{{ end }}
       {{- with site.GetPage "/about" }}
@@ -32,6 +34,16 @@
       {{- end }}
     {{- end }}
 
+    {{- /* Năm bài mới nhất, không tính bài đang đọc */}}
+    {{- with first 5 (where $posts "RelPermalink" "!=" $.RelPermalink) }}
+      <section class="widget">
+        <h2 class="widget-title">{{ i18n "sidebar_recent" }}</h2>
+        <ul class="widget-posts">
+          {{- range . }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}
+        </ul>
+      </section>
+    {{- end }}
+
     {{- with site.GetPage "/categories" }}
       <section class="widget">
         <h2 class="widget-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
@@ -46,6 +58,18 @@
           {{- end }}
         </ul>
       </section>
+    {{- end }}
+
+    {{- /* Chỉ hiện khi có trang Ủng hộ (content/<ngôn ngữ>/support.md) và người
+         đọc không đang ở chính trang đó */}}
+    {{- with site.GetPage "/support" }}
+      {{- if ne $.RelPermalink .RelPermalink }}
+        <section class="widget">
+          <h2 class="widget-title">{{ .Title }}</h2>
+          <p>{{ i18n "sidebar_support_text" }}</p>
+          <p class="widget-more"><a href="{{ .RelPermalink }}">{{ i18n "sidebar_support_link" }}</a></p>
+        </section>
+      {{- end }}
     {{- end }}
 
     {{- with $posts }}
