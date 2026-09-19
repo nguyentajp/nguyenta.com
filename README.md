@@ -3,8 +3,9 @@
 Blog song ngữ Việt/Nhật của Gen (Trần Anh Nguyên, 英元), viết từ Osaka.
 
 Site dựng bằng [Hugo](https://gohugo.io/), không dùng theme có sẵn. Bài viết
-soạn qua [Decap CMS](https://decapcms.org/) tại `/admin`, GitHub Actions tự
-build và đưa lên GitHub Pages.
+soạn ở máy bằng [Decap CMS](https://decapcms.org/) (giao diện `/admin` chạy
+cùng `hugo server`), `git push` lên GitHub, GitHub Actions tự build và đưa lên
+GitHub Pages.
 
 ---
 
@@ -31,13 +32,12 @@ văn bản (Markdown) nằm trong repo. Hugo đọc các file đó và sinh ra t
 thành HTML tĩnh.
 
 ```
-Viết bài ở /admin ──┐
-                    ├──► commit lên GitHub ──► GitHub Actions build ──► nguyenta.com
-Sửa file ở máy ─────┘        (repo)              (khoảng 2 phút)        (GitHub Pages)
+Viết bằng CMS ở máy ──┐
+                      ├──► git push lên GitHub ──► GitHub Actions build ──► nguyenta.com
+Sửa file bằng editor ─┘        (repo)              (khoảng 2 phút)        (GitHub Pages)
 ```
 
-- Viết trên `nguyenta.com/admin`: CMS tự commit, bạn không cần làm gì thêm.
-- Viết ở máy: sửa file rồi tự `git push` (xem [mục 2.2](#22-viết-ở-máy-không-cần-mạng)).
+- Mọi cách viết đều ghi file vào máy; bài lên site sau khi `git push` (xem [mục 2.2](#22-đưa-bài-lên-site)).
 - Mỗi lần có commit mới trên nhánh `main`, site tự build lại. Ngoài ra site còn
   tự build mỗi ngày lúc **0:05 giờ Nhật**, để bài hẹn giờ tự hiện.
 
@@ -47,9 +47,25 @@ Từng mảnh trong sơ đồ trên là gì và vì sao cần, xem [mục 11](#1
 
 ## 2. Viết bài
 
-### 2.1 Viết trên nguyenta.com/admin
+### 2.1 Viết bằng CMS (ở máy)
 
-1. Mở <https://nguyenta.com/admin/>, bấm **Đăng nhập bằng GitHub**.
+CMS là giao diện có form để viết bài, chạy ngay trên máy, không cần đăng nhập
+GitHub và không cần mạng. Mở **hai tab terminal** (⌘T) trong thư mục repo:
+
+Tab 1, chạy site:
+
+```bash
+hugo server -D
+```
+
+Tab 2, chạy cầu nối để CMS ghi được file:
+
+```bash
+npx decap-server
+```
+
+1. Mở <http://localhost:1313/admin/> và bấm **Đăng nhập**. Nếu quên chạy
+   `decap-server`, trang sẽ hiện một dòng nhắc ở trên cùng.
 2. Chọn **Bài viết · Tiếng Việt** ở cột trái, bấm **＋ bài viết tiếng Việt**.
 3. Điền form:
 
@@ -64,40 +80,23 @@ Từng mảnh trong sơ đồ trên là gì và vì sao cần, xem [mục 11](#1
    | Ảnh bìa | Không bắt buộc. Để trống thì lấy ảnh đầu tiên trong bài |
    | Nội dung | Thân bài. Nút **＋** để chèn Ảnh, Bộ ảnh, Video YouTube |
 
-4. Bấm **Công bố** → **Công bố ngay**.
+4. Bấm **Công bố** → **Công bố ngay**. Xem thử ngay ở <http://localhost:1313/>.
+5. Đưa bài lên site theo [mục 2.2](#22-đưa-bài-lên-site).
 
-> ⚠️ **Nút "Công bố" chỉ có nghĩa là lưu.** Chữ "Đã công bố" ở góc trên chỉ
-> cho biết bài đã được lưu vào repo. Bài có hiện trên site hay không là do ô
-> **Bản nháp** quyết định. Muốn đăng bài: tắt Bản nháp rồi bấm Công bố. Khoảng
-> hai phút sau bài lên site.
+> ⚠️ **Nút "Công bố" chỉ có nghĩa là lưu file vào máy.** Bài chưa lên mạng cho
+> tới khi `git push`, và chỉ hiện trên site khi ô **Bản nháp** đã tắt.
 
 Lọc bài theo trạng thái bằng nút **Lọc theo → Bản nháp / Đã đăng** phía trên
-danh sách.
+danh sách. Viết xong thì tắt cả hai tab terminal bằng **Ctrl + C** (phím
+Control, không phải ⌘).
 
-### 2.2 Viết ở máy (không cần mạng)
+`/admin` chỉ có ở máy: bản trên nguyenta.com không có trang này (lý do ở
+[mục 11.7](#117-những-quyết-định-đã-chọn-và-lý-do)).
 
-Dùng chính giao diện CMS, nhưng ghi thẳng vào file trên máy. Mở **hai tab
-terminal** (⌘T) trong thư mục repo:
+### 2.2 Đưa bài lên site
 
-Tab 1, chạy site:
-
-```bash
-hugo server -D
-```
-
-Tab 2, chạy cầu nối để CMS ghi được file:
-
-```bash
-npx decap-server
-```
-
-Rồi mở <http://localhost:1313/admin/> và bấm **Đăng nhập**. Nếu quên chạy
-`decap-server`, trang sẽ hiện một dòng nhắc ở trên cùng.
-
-Viết xong thì tắt cả hai bằng **Ctrl + C** (phím Control, không phải ⌘) trong
-từng tab.
-
-Viết ở máy thì CMS chỉ ghi file, **không** commit. Đưa bài lên site bằng:
+Dù viết bằng CMS hay bằng editor, bài chỉ nằm trong máy cho tới khi đẩy lên
+GitHub:
 
 ```bash
 git pull --rebase
@@ -115,8 +114,9 @@ git commit -m "Viết bài: đường về nhà"
 git push
 ```
 
-`git pull --rebase` ở đầu là để lấy về những bài bạn đã viết trên
-nguyenta.com/admin, tránh bị GitHub từ chối lúc push (xem [mục 8](#8-xử-lý-lỗi-thường-gặp)).
+`git pull --rebase` ở đầu là để lấy về những thay đổi đã có trên GitHub (ví
+dụ sửa từ máy khác), tránh bị từ chối lúc push (xem [mục 8](#8-xử-lý-lỗi-thường-gặp)).
+Khoảng hai phút sau bài lên site.
 
 ### 2.3 Viết bằng tay trong editor
 
@@ -135,7 +135,7 @@ mẫu đều có ghi chú. Lưu ý:
 - `draft: true` là bản nháp. Đổi thành `false` để đăng.
 
 Xem thử ở máy bằng `hugo server -D` (cờ `-D` để hiện cả bài nháp) rồi mở
-<http://localhost:1313/>.
+<http://localhost:1313/>. Đưa lên site theo [mục 2.2](#22-đưa-bài-lên-site).
 
 ### 2.4 Hẹn giờ đăng
 
@@ -334,14 +334,15 @@ Build tay: tab **Actions** → **Deploy** → **Run workflow**.
 
 Khi `maintenance = true` trong mục `[params]` của [hugo.toml](hugo.toml),
 nguyenta.com chỉ hiện vòng ensō của trang 静 với dòng "Nơi này đang được
-dựng", có link sang bản tiếng Nhật. Workflow chỉ đưa lên trang đó, file CSS,
-font và `/admin`, nên bài viết, ảnh, RSS, sitemap và chỉ mục tìm kiếm không
+dựng", có link sang bản tiếng Nhật. Workflow chỉ đưa lên trang đó, file CSS
+và font, nên bài viết, ảnh, RSS, sitemap và chỉ mục tìm kiếm không
 có trên mạng, đoán URL cũng không mở được. Máy tìm kiếm được báo là không
 ghi nhận trang.
 
 - **Mở blog:** đổi thành `maintenance = false`, commit. Vài phút sau site hiện đầy đủ.
-- **Viết bài trong lúc bảo trì:** CMS ở `/admin` vẫn dùng được. Bài được lưu
-  vào repo nhưng chưa ai đọc được, cho tới khi mở blog.
+- **Viết bài trong lúc bảo trì:** viết và push như thường. Bài nằm trong repo
+  và xem được ở [bản xem trước](#114-bảo-trì-và-bản-xem-trước-ai-thấy-gì),
+  nhưng người ngoài chưa đọc được cho tới khi mở blog.
 - Trang [nguyenta.com/concept/](https://nguyenta.com/concept/) (bản mẫu thiết
   kế, `layouts/concept.html`) vẫn mở cho mọi người, nhờ dòng
   `maintenance_exempt: true` trong `content/vi/concept.md`.
@@ -427,7 +428,7 @@ bài không khớp file nào trong thư mục bài. Kiểm tra chính tả và �
 ### Git
 
 **`git push` bị từ chối: `! [rejected] main -> main (fetch first)`**
-Trên GitHub có commit mà máy chưa có, thường là bài viết từ nguyenta.com/admin.
+Trên GitHub có commit mà máy chưa có, thường là thay đổi đẩy lên từ máy khác.
 Lấy về trước rồi push lại:
 
 ```bash
@@ -465,14 +466,13 @@ layouts/                   Template HTML của Hugo
 assets/css/main.css        Toàn bộ CSS, một file duy nhất
 assets/js/                 JavaScript: lightbox, video, tìm kiếm, kamon
 assets/brand/              Kamon, con dấu 元, ảnh chân dung, ảnh chia sẻ
-static/admin/              Decap CMS: config.yml (form), cms.js (nút chèn ảnh/video)
+static/admin/              Decap CMS, chỉ dùng ở máy: config.yml (form), cms.js (nút chèn ảnh/video)
 i18n/                      Chữ trên giao diện, theo ngôn ngữ
 data/sekki.toml            24 tiết khí, hiện trong dòng thông tin của bài
 archetypes/posts.md        Mẫu cho bài mới tạo bằng hugo new
 tools/fonts/               Tải và subset font (Literata, Shippori Mincho)
 tools/brand/               Script vẽ kamon, favicon, con dấu, vòng ensō
 tools/new-ja-draft.py      Tạo khung bản dịch tiếng Nhật (lệnh /dich gọi script này)
-tools/cms-auth/            Worker Cloudflare cho đăng nhập CMS (xem mục 11.3)
 tools/preview/             Cấu hình Worker bản xem trước riêng (xem mục 11.4)
 .github/workflows/         Build và deploy tự động
 hugo.toml                  Cấu hình site, có ghi chú từng mục
@@ -509,28 +509,25 @@ trước khi định thay đổi một mảnh nào đó.
 
 ```
                           ┌──────────────── GitHub ────────────────┐
- Viết ở /admin ──────────►│ repo nguyentajp/nguyenta.com (mã nguồn) │
-   (Decap CMS)            │        │ mỗi commit lên main           │
-       ▲                  │        ▼                               │
-       │ đăng nhập        │ GitHub Actions: build bằng Hugo        │
-       │                  │        │                               │
-       │                  │        ▼                               │
-       │                  │ GitHub Pages: phục vụ file tĩnh ───────┼──► https://nguyenta.com
-       │                  └────────────────────────────────────────┘       ▲
-       │                                                                   │ DNS (Hostinger):
-       │                  ┌────────────── Cloudflare ──────────────┐       │ tên miền trỏ về GitHub
-       └──────────────────┤ Worker nguyenta-cms-auth (công khai)   │
-                          │   đổi mã GitHub lấy token cho CMS      │
-                          │                                        │
+ Viết ở máy, git push ───►│ repo nguyentajp/nguyenta.com (mã nguồn) │
+                          │        │ mỗi commit lên main           │
+                          │        ▼                               │
+                          │ GitHub Actions: build bằng Hugo        │
+                          │        │                               │
+                          │        ▼                               │
+                          │ GitHub Pages: phục vụ file tĩnh ───────┼──► https://nguyenta.com
+                          └────────────────────────────────────────┘       ▲
+                                   │ cùng lúc, build bản đầy đủ             │ DNS (Hostinger):
+                                   ▼ (hiện đang đẩy tay từ máy)             │ tên miền trỏ về GitHub
+                          ┌────────────── Cloudflare ──────────────┐
                           │ Worker nguyenta-preview                │
                           │   site đầy đủ, có Cloudflare Access ───┼──► chỉ Gen xem được
                           └────────────────────────────────────────┘
 ```
 
 Hai nửa độc lập với nhau: **GitHub** giữ mã nguồn và phục vụ site công khai;
-**Cloudflare** chỉ làm hai việc phụ mà GitHub Pages không làm được (đăng nhập
-CMS và bản xem trước có khoá). Cloudflare hỏng thì nguyenta.com vẫn chạy, chỉ
-không đăng nhập CMS được.
+**Cloudflare** chỉ giữ bản xem trước có khoá, việc GitHub Pages không làm
+được. Cloudflare hỏng thì nguyenta.com vẫn chạy bình thường.
 
 ### 11.2 Từng mảnh là gì, vì sao cần
 
@@ -548,8 +545,8 @@ nhật bảo mật, tải rất nhanh và lưu trữ miễn phí.
 **GitHub Actions.** Máy ảo miễn phí của GitHub, tự chạy mỗi khi có commit lên
 `main` và mỗi ngày lúc 0:05 giờ Nhật. Nó làm đúng các bước như ở máy: tải
 font, chạy Hugo, cắt font theo từng trang, lập chỉ mục tìm kiếm, rồi giao kết
-quả cho GitHub Pages. Nhờ vậy viết trên điện thoại qua `/admin` là đủ, không
-cần mở máy tính. Cấu hình: [.github/workflows/deploy.yml](.github/workflows/deploy.yml).
+quả cho GitHub Pages. Nhờ vậy chỉ cần `git push`, không phải tự build hay tự
+upload gì. Cấu hình: [.github/workflows/deploy.yml](.github/workflows/deploy.yml).
 
 **GitHub Pages.** Dịch vụ phục vụ file tĩnh miễn phí của GitHub, đặt ở nhiều
 máy chủ khắp thế giới. Nguồn build đặt là **GitHub Actions** (Settings › Pages),
@@ -580,18 +577,13 @@ Google Fonts, nên trình duyệt người đọc không phải kết nối tớ
 trang chỉ chứa đúng những chữ nó dùng (khoảng 35 KB tiếng Việt, 66 KB tiếng
 Nhật) thay vì cả bộ font vài MB.
 
-**Decap CMS** (`static/admin/`). Giao diện viết bài ở `/admin`. Nó không có
-máy chủ riêng: chạy trong trình duyệt, đọc và ghi file thẳng vào repo qua
-GitHub API bằng tài khoản GitHub của anh. "Công bố" trong CMS thực chất là
-một commit.
-
-**GitHub OAuth App** (`nguyenta.com CMS`, trong GitHub › Settings › Developer
-settings › OAuth Apps). Là "giấy phép" để Decap xin GitHub cho phép ghi vào
-repo thay anh. App có hai giá trị: **Client ID** (công khai) và **Client
-secret** (bí mật tuyệt đối, ai có nó có thể giả làm app này).
+**Decap CMS** (`static/admin/`). Giao diện có form để viết bài ở `/admin`,
+dùng ở máy. `npx decap-server` là cầu nối cho CMS ghi thẳng file vào thư mục
+repo; "Công bố" trong CMS chỉ là lưu file. Trang `/admin` không được đưa lên
+nguyenta.com (workflow xoá nó khi build), xem lý do ở mục 11.7.
 
 **Cloudflare.** Công ty vận hành mạng máy chủ khắp thế giới. Ở đây chỉ dùng
-hai dịch vụ miễn phí: **Workers** và **Access**. Tài khoản đăng ký bằng
+hai dịch vụ miễn phí, **Workers** và **Access**, cho bản xem trước. Tài khoản đăng ký bằng
 `nguyentajp1403@gmail.com`.
 
 **Cloudflare Workers.** Đoạn code nhỏ chạy trên máy chủ Cloudflare, gọi tới là
@@ -606,39 +598,25 @@ account members**: chỉ người đăng nhập được tài khoản Cloudflare
 anh.
 
 **wrangler.** Công cụ dòng lệnh của Cloudflare để deploy Worker từ máy. Luôn
-gọi bằng `npx wrangler@4` (ghim bản 4). Đăng nhập một lần bằng
+gọi bằng `npx wrangler@4` (ghim bản 4), và chạy **trong thư mục blog** vì
+đường dẫn `--config` tính từ đó. Đăng nhập một lần bằng
 `npx wrangler login`; quyền được lưu trong máy ở
 `~/Library/Preferences/.wrangler/`.
 
-### 11.3 Vì sao CMS cần một Worker để đăng nhập
+### 11.3 Vì sao chỉ viết bài ở máy
 
-GitHub chỉ đưa quyền ghi repo (token) cho ai chứng minh được mình là app hợp
-lệ, bằng cách gửi kèm **Client secret**. Secret không được nằm trong trình
-duyệt hay trong repo public, vì ai xem mã nguồn trang cũng thấy. GitHub Pages
-chỉ phục vụ file tĩnh, không có chỗ nào chạy code phía máy chủ để giữ secret.
-Worker `nguyenta-cms-auth` chính là chỗ đó: nó giữ secret, và chỉ làm đúng
-một việc là đổi mã đăng nhập lấy token.
+Muốn CMS chạy trên web (`nguyenta.com/admin`), CMS phải được GitHub cho phép
+ghi vào repo thay anh. GitHub chỉ cấp quyền đó qua một **GitHub OAuth App**,
+và app phải chứng minh mình là thật bằng một **Client secret** (một mật khẩu
+của app). Secret không được nằm trong trình duyệt hay repo public, mà GitHub
+Pages lại chỉ phục vụ file tĩnh, nên cần thêm một máy chủ nhỏ giữ secret
+(ví dụ một Cloudflare Worker) chỉ để làm bước đăng nhập.
 
-Một lần đăng nhập diễn ra như sau:
-
-1. Anh bấm **Đăng nhập bằng GitHub** ở `nguyenta.com/admin`. CMS mở một cửa sổ
-   nhỏ tới `nguyenta-cms-auth.genblog.workers.dev/auth`.
-2. Worker tạo một chuỗi ngẫu nhiên (`state`), cất vào cookie, rồi chuyển cửa sổ
-   sang trang "Authorize" của GitHub.
-3. Anh đồng ý. GitHub quay lại `/callback` của Worker, kèm một mã dùng một lần
-   (`code`) và chuỗi `state`.
-4. Worker so `state` với cookie (chống trang lạ giả mạo lượt đăng nhập), rồi
-   gửi `code` + Client ID + Client secret cho GitHub, nhận về token.
-5. Worker trao token cho cửa sổ `/admin`, và chỉ trao cho đúng
-   `https://nguyenta.com` (biến `ALLOWED_ORIGINS`). Cửa sổ nhỏ đóng lại.
-6. Từ đó CMS dùng token gọi GitHub API để đọc và commit bài.
-
-Worker không lưu token, không ghi log. Token nằm trong trình duyệt của anh.
-Quyền xin là `public_repo`: chỉ ghi được repo public, không đụng tới repo
-private nào của anh. Mã nguồn: [tools/cms-auth/worker.js](tools/cms-auth/worker.js),
-khoảng 60 dòng, tự viết để đọc hiểu được hết thay vì dùng code của người khác.
-
-Deploy lại sau khi sửa: `npx wrangler@4 deploy --config tools/cms-auth/wrangler.toml`.
+Đã thử dựng phần này (tháng 9/2026) rồi bỏ: thêm một OAuth App, một secret
+phải cất và thay khi lộ, một Worker phải giữ chạy, chỉ để đổi lấy việc viết
+được từ điện thoại. Viết ở máy rồi `git push` đơn giản hơn nhiều và không có
+gì để hỏng. Code Worker cũ vẫn còn trong lịch sử Git, ở commit `4f35d2c`
+(thư mục `tools/cms-auth/`), nếu sau này muốn dựng lại.
 
 ### 11.4 Bảo trì và bản xem trước: ai thấy gì
 
@@ -646,9 +624,8 @@ Deploy lại sau khi sửa: `npx wrangler@4 deploy --config tools/cms-auth/wrang
 |---|---|---|
 | `nguyenta.com` và mọi trang con | Mọi người | Lúc bảo trì: chỉ trang ensō "đang dựng" (xem [mục 7](#7-build-và-deploy)) |
 | `nguyenta.com/concept/` | Mọi người | Bản mẫu thiết kế, mở cả khi bảo trì |
-| `nguyenta.com/admin/` | Mọi người mở được, chỉ anh đăng nhập được | CMS |
 | `nguyenta-preview.genblog.workers.dev` | Chỉ anh (Cloudflare Access) | Site đầy đủ, không bảo trì, không bài nháp |
-| `nguyenta-cms-auth.genblog.workers.dev` | Công khai, **không được** bật Access | Máy chủ đăng nhập CMS |
+| `localhost:1313/admin/` | Chỉ trên máy anh | CMS để viết bài |
 
 Bản xem trước là Worker `nguyenta-preview` chỉ chứa file tĩnh
 ([tools/preview/wrangler.toml](tools/preview/wrangler.toml)). Nó được build
@@ -673,11 +650,10 @@ chuột trên web.
 
 | API | Ai gọi | Để làm gì |
 |---|---|---|
-| GitHub REST API (`api.github.com`) | Decap CMS, trong trình duyệt | Đọc danh sách bài, commit bài mới, tải ảnh lên repo |
-| GitHub OAuth (`github.com/login/oauth/authorize`, `/access_token`) | Worker `nguyenta-cms-auth` | Xin anh đồng ý, rồi đổi mã một lần lấy token |
-| `window.postMessage` | Cửa sổ đăng nhập ↔ trang `/admin` | Trao token giữa hai cửa sổ trình duyệt, chỉ cho origin `nguyenta.com` |
+| Git qua HTTPS (`github.com`) | Lệnh `git push` / `git pull` trên máy | Đẩy bài lên repo, lấy thay đổi về |
+| API cục bộ của `decap-server` (`localhost:8081`) | CMS ở máy | Đọc và ghi file bài viết trong thư mục repo |
 | GitHub Pages API (qua lệnh `gh api`) | Dùng một lần khi dựng | Bật Pages với nguồn Actions, đặt tên miền, bật HTTPS |
-| Cloudflare API (qua `wrangler`) | Từ máy anh | Deploy hai Worker, cất Client secret |
+| Cloudflare API (qua `wrangler`) | Từ máy anh | Deploy Worker bản xem trước |
 | YouTube (`youtube-nocookie.com`) | Trình duyệt người đọc, chỉ khi bấm phát | Phát video nhúng trong bài |
 
 ### 11.6 Tài khoản và bí mật nằm ở đâu
@@ -685,21 +661,22 @@ chuột trên web.
 | Thứ | Nằm ở | Lộ hoặc mất thì làm gì |
 |---|---|---|
 | Tài khoản GitHub `nguyentajp` | — | Giữ bật xác thực hai lớp (2FA): tài khoản này ghi được cả site |
-| Client secret của OAuth App | Secret của Worker `nguyenta-cms-auth` trên Cloudflare, **không** có trong repo | GitHub › OAuth App › Generate a new client secret, xoá secret cũ, chạy lại `npx wrangler@4 secret put GITHUB_CLIENT_SECRET --config tools/cms-auth/wrangler.toml` |
-| Client ID | `tools/cms-auth/wrangler.toml` | Công khai, không sao |
 | Tài khoản Cloudflare | Email `nguyentajp1403@gmail.com` | Cũng là chìa khoá của bản xem trước (Access), nên giữ mật khẩu mạnh và 2FA |
 | Quyền wrangler trên máy | `~/Library/Preferences/.wrangler/` | Thu hồi: `npx wrangler logout` |
 | Tên miền | Hostinger | Nhớ gia hạn hằng năm; hết hạn là site mất |
 
 ### 11.7 Những quyết định đã chọn và lý do
 
-- **Cloudflare Worker cho đăng nhập CMS**, không dùng Netlify: Worker miễn
-  phí, không bắt chuyển site hay DNS, và code đủ ngắn để tự đọc hiểu.
-- **Tự viết Worker** thay vì dùng bản có sẵn trên mạng: không phải tin code
-  của người lạ trong khâu cầm token ghi repo.
+- **Chỉ viết bài ở máy, không có CMS trên web**: CMS trên web cần OAuth App,
+  Client secret và một máy chủ đăng nhập riêng (mục 11.3). Đổi lại chỉ được
+  viết từ điện thoại, không đáng với số thứ phải giữ. `/admin` cũng bị gỡ khỏi
+  nguyenta.com, vì để một trang đăng nhập không dùng được chỉ gây rối.
+- **Nếu sau này muốn viết trên web**: dựng lại Worker trong commit `4f35d2c`,
+  tạo OAuth App, thêm `base_url` vào `static/admin/config.yml`, và bỏ bước
+  "Bỏ trang CMS" trong workflow.
 - **Repo public**: bắt buộc để dùng GitHub Pages miễn phí. Muốn repo private
   thì phải trả GitHub Pro.
-- **DNS để ở Hostinger**: Cloudflare chỉ cần cho Worker, không cần giữ tên miền.
+- **DNS để ở Hostinger**: Cloudflare chỉ cần cho bản xem trước, không cần giữ tên miền.
 - **Bảo trì bằng cách lọc file khi deploy**, không chỉ đổi giao diện: đổi giao
   diện thôi thì đoán đúng URL, RSS hay sitemap vẫn đọc được bài.
 - **Bản xem trước có Access** thay cho đường dẫn bí mật: đường dẫn bí mật thì
@@ -711,8 +688,6 @@ chuột trên web.
 
 ### 11.8 Đang làm dở
 
-- [ ] Điền Client ID vào `tools/cms-auth/wrangler.toml`, cất Client secret,
-      deploy lại Worker, thử đăng nhập `nguyenta.com/admin`.
 - [ ] Cho workflow tự đẩy bản xem trước mỗi lần push: cần một Cloudflare API
       token chỉ có quyền deploy Worker, cất trong GitHub › Settings › Secrets.
 - [ ] Xoá bài thử `content/vi/posts/zz-thu-nghiem-anh/` (chỉ có ở máy).

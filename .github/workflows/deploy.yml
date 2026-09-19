@@ -94,11 +94,15 @@ jobs:
       - name: Lập chỉ mục tìm kiếm
         run: npx --yes "pagefind@${PAGEFIND_VERSION}" --site public
 
+      # CMS chỉ dùng ở máy (xem README mục 2.1), trên mạng /admin không đăng
+      # nhập được nên không đưa lên.
+      - name: Bỏ trang CMS
+        run: rm -rf public/admin
+
       # Bật params.maintenance trong hugo.toml thì trang nào cũng là trang
       # "đang dựng", nhưng file bài viết, ảnh, RSS, sitemap, chỉ mục tìm kiếm
-      # vẫn nằm trong public/. Bước này chỉ giữ lại những gì trang bảo trì,
-      # trang /concept/ và CMS (/admin) cần, để không ai mở được nội dung bằng
-      # cách đoán URL.
+      # vẫn nằm trong public/. Bước này chỉ giữ lại những gì trang bảo trì và
+      # trang /concept/ cần, để không ai mở được nội dung bằng cách đoán URL.
       - name: Chế độ bảo trì
         run: |
           if ! grep -q 'data-maintenance' public/index.html; then
@@ -107,7 +111,7 @@ jobs:
           fi
           mkdir kept
           for p in index.html ja/index.html 404.html robots.txt favicon.ico \
-                   apple-touch-icon.png css js fonts brand admin concept; do
+                   apple-touch-icon.png css js fonts brand concept; do
             if [ -e "public/$p" ]; then
               mkdir -p "kept/$(dirname "$p")"
               cp -R "public/$p" "kept/$p"
