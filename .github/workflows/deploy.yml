@@ -135,6 +135,13 @@ jobs:
       - name: Chế độ bảo trì
         run: |
           if ! grep -q 'data-maintenance' public/index.html; then
+            # Bài demo (demo: true trong front matter) chỉ để xem thử giao diện
+            # trên bản xem trước, không bao giờ được lên nguyenta.com.
+            if demo=$(grep -rl '^demo: true' content); then
+              echo "::error::Còn bài demo, xoá trước khi mở blog:"
+              echo "$demo"
+              exit 1
+            fi
             echo "Không bảo trì: đưa lên toàn bộ site."
             exit 0
           fi
