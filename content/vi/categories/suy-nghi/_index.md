@@ -5,5 +5,5 @@ slug: suy-nghi
 kanji: 思
 weight: 4
 translationKey: cat-thought
-description: Nghĩ chậm về một chuyện gì đó.
+description: "Nghĩ chậm về một điều"
 ---

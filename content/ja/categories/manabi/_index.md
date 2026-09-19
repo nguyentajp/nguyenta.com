@@ -5,5 +5,5 @@ slug: manabi
 kanji: 学
 weight: 1
 translationKey: cat-learning
-description: 日本語、本、仕事から学んだこと。
+description: "日本語と本、仕事から学んだこと"
 ---

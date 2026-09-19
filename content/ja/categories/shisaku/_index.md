@@ -5,5 +5,5 @@ slug: shisaku
 kanji: 思
 weight: 4
 translationKey: cat-thought
-description: ゆっくり考えたこと。
+description: "ひとつのことを、ゆっくり考える"
 ---

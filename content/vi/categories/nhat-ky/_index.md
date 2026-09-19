@@ -5,5 +5,5 @@ slug: nhat-ky
 kanji: 記
 weight: 5
 translationKey: cat-diary
-description: "Ghi chép gắn với một ngày cụ thể."
+description: "Chuyện của từng ngày"
 ---

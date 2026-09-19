@@ -1,5 +1,7 @@
 {{- /* Hai hệ thống khác nhau dùng chung template này:
-     - Danh mục: 5 mục cố định theo weight, mỗi mục kèm mô tả và 3 bài mới nhất.
+     - Danh mục: 5 mục cố định theo weight, xếp lưới hai cột. Mỗi mục là một
+       khung, cả khung là một link: chữ Hán đại diện, tên, số bài, mô tả một
+       dòng (khoảng 20 ký tự) và tên bài mới nhất.
      - Thẻ: nhiều và tự do, xếp thành một dòng chữ chảy liền. */ -}}
 {{ define "main" }}
   <header class="page-head">
@@ -8,23 +10,19 @@
   </header>
 
   {{- if eq .Data.Plural "categories" }}
-    <div class="category-list">
+    <ul class="category-grid">
       {{- range .Pages.ByWeight }}
         {{- $n := len .Pages }}
-        <section class="category{{ if eq $n 0 }} is-empty{{ end }}">
-          <h2 class="category-name">
-            <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
-            {{- if gt $n 0 }}<span class="count">{{ i18n "list_count" (dict "Count" $n) }}</span>{{ end }}
-          </h2>
-          {{- with .Description }}<p class="category-desc">{{ . }}</p>{{ end }}
-          {{- with first 3 .Pages }}
-            <ul class="category-latest" aria-label="{{ i18n "categories_latest" }}">
-              {{- range . }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}
-            </ul>
-          {{- end }}
-        </section>
+        <li>
+          <a class="category-card{{ if eq $n 0 }} is-empty{{ end }}" href="{{ .RelPermalink }}">
+            {{- with .Params.kanji }}<span class="category-kanji" lang="ja" aria-hidden="true">{{ . }}</span>{{ end }}
+            <span class="category-name">{{ .LinkTitle }}<span class="count">{{ i18n "list_count" (dict "Count" $n) }}</span></span>
+            {{- with .Description }}<span class="category-desc">{{ . }}</span>{{ end }}
+            {{- with index .Pages 0 }}<span class="category-latest">{{ i18n "categories_latest" }} · {{ .Title }}</span>{{ end }}
+          </a>
+        </li>
       {{- end }}
-    </div>
+    </ul>
   {{- else }}
     <ul class="tag-cloud">
       {{- range .Data.Terms.Alphabetical }}

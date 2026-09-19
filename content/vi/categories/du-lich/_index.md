@@ -5,5 +5,5 @@ slug: du-lich
 kanji: 旅
 weight: 3
 translationKey: cat-travel
-description: Những nơi đã đi qua, phần nhiều là chỗ vắng.
+description: "Những chỗ vắng đã qua"
 ---

@@ -5,5 +5,5 @@ slug: nikki
 kanji: 記
 weight: 5
 translationKey: cat-diary
-description: "その日のことを書いた記録。日付と結びついた文章です。"
+description: "その日のことを書いた記録"
 ---
