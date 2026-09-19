@@ -7,6 +7,7 @@
 //   5. Furigana: nút chọn hiện, chạm để xem, tắt
 //   6. Nút giao diện sáng tối
 //   7. Hàng ngang cuộn (Bài viết liên quan): nút ‹ ›
+//   8. Ô đăng ký bản tin ở chân trang (giao diện mẫu, chưa gửi đi đâu)
 
 // ── 1. Kamon ────────────────────────────────────────────────────────────────
 // Lần thứ hai trở đi trong cùng phiên, kamon hiện sẵn. Người đọc bật
@@ -270,5 +271,20 @@
     track.addEventListener("scroll", update, { passive: true });
     new ResizeObserver(update).observe(track);
     update();
+  });
+})();
+
+// ── 8. Bản tin ──────────────────────────────────────────────────────────────
+// Chưa có dịch vụ bản tin: form chỉ để xem giao diện. Có JS thì mở khoá ô
+// nhập; bấm Đăng ký chỉ hiện dòng "chưa mở", email không được gửi hay lưu ở
+// đâu cả. Không có JS thì form vẫn khoá (footer.html).
+(() => {
+  const form = document.querySelector("[data-news]");
+  if (!form) return;
+  const status = form.querySelector(".news-status");
+  form.querySelector("fieldset").disabled = false;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    status.hidden = false;
   });
 })();

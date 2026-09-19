@@ -158,8 +158,6 @@ other = "Nơi này đang được dựng. Mời anh chị ghé lại sau, khi m�
 [maint_other_lang]
 other = "日本語"
 
-[footer_colophon]
-other = "Viết tại Osaka. Dựng bằng Hugo, đặt trên GitHub Pages."
 [footer_rss]
 other = "RSS"
 
@@ -222,3 +220,19 @@ other = "Kamon và con dấu"
 other = "Kamon 竹輪に三つ銀杏: ba lá bạch quả trong một vòng tre. Bạch quả là cây của Osaka, nơi blog được viết; vòng tre là bộ rễ nối mọi bài về một gốc."
 [blog_hanko_text]
 other = "Con dấu 元 đóng ở cuối mỗi bài, như người viết thư pháp đóng dấu cuối tác phẩm."
+
+# Chân trang: bản tin (giao diện mẫu, chưa gửi đi đâu)
+[news_title]
+other = "Bản tin"
+[news_text]
+other = "Nhận bài mới qua email, không quảng cáo."
+[news_label]
+other = "Địa chỉ email"
+[news_placeholder]
+other = "email@vidu.com"
+[news_button]
+other = "Đăng ký"
+[news_not_open]
+other = "Bản tin đang được chuẩn bị, chưa nhận đăng ký. Trong lúc chờ, anh chị có thể theo dõi blog qua RSS."
+[footer_nav]
+other = "Trang phụ"

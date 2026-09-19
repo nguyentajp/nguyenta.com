@@ -761,4 +761,7 @@ chuột trên web.
       front matter (ảnh bìa của chúng là ảnh vẽ tạm). Tìm bằng
       `grep -rl '^demo: true' content`. Chưa xoá thì workflow không cho mở blog.
 - [ ] Thay ảnh chân dung (`assets/brand/avatar.jpg`) và thêm ảnh bìa cho các bài.
+- [ ] Bản tin ở chân trang mới là giao diện mẫu (bấm Đăng ký chỉ báo "chưa
+      mở", không gửi email đi đâu). Nối với một dịch vụ bản tin thật, hoặc xoá
+      khối `footer-news` trong `layouts/_partials/footer.html`.
 - [ ] Mở blog: `maintenance = false` trong `hugo.toml`.

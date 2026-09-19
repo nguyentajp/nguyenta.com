@@ -1638,18 +1638,148 @@ a.lang:hover .icon {
 }
 
 /* ── 9. Chân trang ────────────────────────────────────────────────────────── */
+/* Dải 白緑 ba cột: tên blog và tagline, bản tin, khung Ủng hộ ở góc phải.
+   Hàng cuối là menu nhỏ và dòng bản quyền, ngăn bằng một đường mảnh. */
 .site-footer {
   border-block-start: 1px solid var(--rule);
   background: var(--band);
-  padding-block: var(--space-5);
+  padding-block: var(--space-6) var(--space-4);
   font-size: 0.9375rem;
-  text-align: center;
+  line-height: 1.7;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) var(--sidebar);
+  gap: var(--space-6) var(--col-gap);
+  align-items: start;
+}
+
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-headline);
+  font-size: 1.6rem;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.footer-mark {
+  width: 2.25rem;
+}
+
+.footer-tagline {
+  max-width: 22rem;
+  margin-block-start: var(--space-3);
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.footer-tagline:lang(ja) {
+  word-break: keep-all;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin-block-start: var(--space-4);
+}
+
+.footer-links a {
+  text-decoration: underline 0.09em var(--accent-line);
+  text-underline-offset: 0.3em;
+}
+
+.footer-title {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.footer-news > p {
+  margin-block-start: var(--space-2);
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* Ô email và nút liền nhau như ô tìm kiếm ở Mục lục */
+.news-form {
+  margin-block-start: var(--space-3);
+}
+
+.news-form fieldset {
+  display: flex;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.news-form input {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--field);
+  border-inline-end: 0;
+  border-radius: calc(var(--radius) / 2) 0 0 calc(var(--radius) / 2);
+  background: var(--bg);
+  color: inherit;
+  font: inherit;
+}
+
+.news-form input:focus-visible {
+  outline-offset: -2px;
+}
+
+.news-form button {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--ink);
+  border-radius: 0 calc(var(--radius) / 2) calc(var(--radius) / 2) 0;
+  background: var(--ink);
+  color: var(--bg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.news-form button:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.news-status {
+  margin-block-start: var(--space-2);
+  font-size: 0.875rem;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+/* Khung Ủng hộ: nền giấy trên dải 白緑, để khung nổi lên như một tấm thẻ */
+.footer-support {
+  margin-block-start: var(--space-3);
+  background: var(--bg);
+}
+
+.footer-support p {
+  text-wrap: pretty;
+}
+
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-5);
+  margin-block-start: var(--space-6);
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid var(--rule);
 }
 
 .footer-nav {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: var(--space-2) var(--space-5);
 }
 
@@ -1662,12 +1792,28 @@ a.lang:hover .icon {
 }
 
 .colophon {
-  margin-block-start: var(--space-3);
   font-size: 0.8125rem;
   color: var(--muted);
-  text-wrap: pretty;
+  font-variant-numeric: lining-nums;
 }
 
+/* Máy tính bảng: tên blog hết một hàng, bản tin và Ủng hộ chia đôi hàng dưới.
+   Điện thoại: một cột. */
+@media (max-width: 55.999rem) {
+  .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footer-about {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 35.999rem) {
+  .footer-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 
 /* ── 10. Chuyển động ─────────────────────────────────────────────────────── */
 /* Chuyển động chỉ ở mức thì thầm, không có hiệu ứng khi cuộn:

@@ -158,8 +158,6 @@ other = "ただいま、場を整えています。整いましたら、また�
 [maint_other_lang]
 other = "Tiếng Việt"
 
-[footer_colophon]
-other = "大阪にて。Hugo で作り、GitHub Pages に置いています。"
 [footer_rss]
 other = "RSS"
 
@@ -222,3 +220,19 @@ other = "家紋と印"
 other = "家紋は「竹輪に三つ銀杏」。竹の輪に、三枚の銀杏の葉。銀杏はこのブログを書いている大阪の木、竹の輪はすべての記事をひとつの元につなぐ根です。"
 [blog_hanko_text]
 other = "記事の最後には「元」の印を押します。書の作品に落款を押すように。"
+
+# フッター: ニュースレター（見本のみ、まだ送信しない）
+[news_title]
+other = "ニュースレター"
+[news_text]
+other = "新しい記事をメールでお届けします。広告はありません。"
+[news_label]
+other = "メールアドレス"
+[news_placeholder]
+other = "mail@example.com"
+[news_button]
+other = "登録"
+[news_not_open]
+other = "ニュースレターは準備中で、まだ登録を受け付けていません。それまでは RSS でお読みいただけます。"
+[footer_nav]
+other = "その他のページ"

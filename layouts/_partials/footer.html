@@ -1,11 +1,55 @@
-{{- /* Chân trang gọn: các trang phụ, RSS và một dòng về site. Danh mục và lưu
-     trữ đã có ở sidebar nên không lặp lại ở đây. */ -}}
+{{- /* Chân trang trên dải 白緑, ba cột (điện thoại: xếp chồng):
+       1. Kamon nhỏ, tên blog, tagline; Facebook và RSS.
+       2. Bản tin: ô email và nút đăng ký. HIỆN CHỈ LÀ GIAO DIỆN MẪU, chưa gửi
+          đi đâu cả (site.js mục 8 báo "chưa mở"). Trước khi mở blog: nối với
+          một dịch vụ bản tin thật hoặc xoá khối này (README mục 11.8).
+       3. Khung Ủng hộ ở góc phải, cùng kiểu khung có nhãn đề với sidebar.
+     Hàng cuối: menu nhỏ (Thẻ, Liên hệ, Nagi) và dòng bản quyền. */ -}}
+{{- $fb := site.Params.socials.facebook -}}
 <footer class="site-footer">
-  <div class="shell footer-inner">
-    <nav class="footer-nav" aria-label="{{ .Site.Title }}">
+  <div class="shell footer-grid">
+    <section class="footer-about" aria-label="{{ .Site.Title }}">
+      <a class="footer-brand" href="{{ "" | relLangURL }}">
+        {{- partial "kamon.html" (dict "class" "kamon footer-mark") }}
+        <span>{{ .Site.Title }}</span>
+      </a>
+      {{- with site.Params.tagline }}<p class="footer-tagline">{{ replace (htmlEscape .) "、" "、<wbr>" | safeHTML }}</p>{{ end }}
+      <p class="footer-links">
+        {{- with $fb }}<a href="{{ . }}" rel="me">Facebook</a>{{ end }}
+        {{- with site.Home.OutputFormats.Get "rss" }}<a href="{{ .RelPermalink }}">{{ i18n "footer_rss" }}</a>{{ end }}
+      </p>
+    </section>
+
+    <section class="footer-news" aria-labelledby="ban-tin">
+      <h2 class="footer-title" id="ban-tin">{{ i18n "news_title" }}</h2>
+      <p>{{ i18n "news_text" }}</p>
+      {{- /* fieldset disabled: không có JS thì không gửi được, để email của người
+           đọc không bao giờ bị gắn vào URL của trang */}}
+      <form class="news-form" data-news>
+        <fieldset disabled>
+          <label class="visually-hidden" for="news-email">{{ i18n "news_label" }}</label>
+          <input id="news-email" name="email" type="email" placeholder="{{ i18n "news_placeholder" }}" autocomplete="email" required>
+          <button type="submit">{{ i18n "news_button" }}</button>
+        </fieldset>
+        <p class="news-status" role="status" aria-live="polite" hidden>{{ i18n "news_not_open" }}</p>
+      </form>
+    </section>
+
+    {{- with site.GetPage "/support" }}
+      <section class="widget footer-support" aria-labelledby="ung-ho">
+        <h2 class="widget-title" id="ung-ho">{{ .Title }}</h2>
+        <p>{{ i18n "sidebar_support_text" }}</p>
+        {{- if ne $.RelPermalink .RelPermalink }}
+          <p class="widget-more"><a href="{{ .RelPermalink }}">{{ i18n "sidebar_support_link" }}</a></p>
+        {{- end }}
+      </section>
+    {{- end }}
+  </div>
+
+  <div class="shell footer-bottom">
+    <nav class="footer-nav" aria-label="{{ i18n "footer_nav" }}">
       {{- range .Site.Menus.under }}<a href="{{ .URL }}">{{ .Name }}</a>{{ end }}
-      {{- with .OutputFormats.Get "rss" }}<a href="{{ .RelPermalink }}">{{ i18n "footer_rss" }}</a>{{ end }}
     </nav>
-    <p class="colophon">{{ i18n "footer_colophon" }}</p>
+    <p class="colophon">© {{ now.Year }} {{ site.Params.author }}</p>
   </div>
 </footer>
