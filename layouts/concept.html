@@ -37,6 +37,11 @@
   .cx-stack > * + * { margin-block-start: var(--space-4); }
   .cx-note { font-size: 0.875rem; line-height: 1.7; color: var(--muted); max-width: 36em; text-wrap: pretty; }
   .cx-num { font-variant-numeric: tabular-nums lining-nums; }
+  /* Mỗi ý một dòng, nhãn nhỏ ở trước: Ý tưởng, Lý do, Cách làm */
+  .cx-points { max-width: 40rem; }
+  .cx-points li { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 1rem; padding-block: 0.55rem; list-style: none; font-size: 0.9375rem; line-height: 1.65; text-wrap: pretty; }
+  .cx-points li + li { border-top: 1px solid var(--rule); }
+  .cx-points b { padding-top: 0.15rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.02em; color: var(--muted); }
 
   .cx-mast { margin-block-start: clamp(3rem, 8vw, 6.5rem); align-items: start; }
   .cx-mast .kamon { width: clamp(5.5rem, 11vw, 8.5rem); color: var(--ink); }
@@ -79,8 +84,6 @@
   .cx-sw-hex, .cx-sw-ratio { display: block; font-size: 0.8125rem; line-height: 1.5; color: var(--muted); font-weight: 400; font-variant-numeric: tabular-nums lining-nums; }
   .cx-sw-hex { margin-block-start: 0.15rem; }
   .cx-sw-role { font-size: 0.9375rem; line-height: 1.6; text-wrap: pretty; }
-  .cx-avoid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-block-start: 2rem; font-size: 0.8125rem; }
-  .cx-avoid div { display: flex; align-items: end; min-height: 5.5rem; padding: 1.25rem 1rem 1rem; }
 
   .cx-accent { margin-block-start: 1.5rem; }
   .cx-accent li { display: grid; grid-template-columns: 3.5rem minmax(0, 1fr); gap: 1rem; align-items: baseline; padding-block: 0.6rem; list-style: none; }
@@ -143,7 +146,7 @@
   .cx-sei .enso { width: min(60%, 16rem); }
   .cx-sei p { font-size: 0.9375rem; letter-spacing: 0.14em; color: var(--muted); }
 
-  .cx-frame, .cx-legend { max-width: 34rem; }
+  .cx-frame { max-width: 34rem; }
   .cx-frame { display: grid; gap: 0.9rem; padding: 1.5rem 1.5rem 0; border: 1px solid var(--rule); }
   .cx-frame i, .cx-frame b, .cx-frame span { display: block; background: var(--rule); }
   .cx-f-head { display: grid; justify-items: center; gap: 0.6rem; }
@@ -158,7 +161,6 @@
   .cx-f-img { aspect-ratio: 3 / 2; margin-block: 0.3rem; border-radius: 0.25rem; }
   .cx-f-side i { aspect-ratio: 1; width: 40%; border-radius: 50%; margin-block-end: 0.3rem; }
   .cx-f-under { height: 2.5rem; margin: 0.5rem -1.5rem 0; background: var(--band); }
-  .cx-legend { display: grid; grid-template-columns: minmax(0, 1fr) 26%; gap: 1.5rem; margin-block-start: 0.75rem; font-size: 0.75rem; line-height: 1.45; color: var(--muted); }
 
   .cx-foot { margin-block-start: var(--ma); font-size: 0.875rem; color: var(--muted); }
 
@@ -181,9 +183,9 @@
     .cx-sw-ratio { grid-column: 2; grid-row: auto; }
     .cx-stress { font-size: 1.3rem; }
     .cx-read-ja { text-align: start; }
-    .cx-f-body, .cx-legend { grid-template-columns: minmax(0, 1fr); }
+    .cx-f-body { grid-template-columns: minmax(0, 1fr); }
+    .cx-points li { grid-template-columns: minmax(0, 1fr); gap: 0; }
     .cx-f-side { display: none; }
-    .cx-legend span + span { display: none; }
   }
 </style>
 {{ end }}
@@ -192,12 +194,12 @@
 {{- /* Bảng màu: sáng / tối, vai trò, tỷ lệ tương phản đo trên nền cùng chế độ
      (#F6F7F2 và #171915). Tính lại khi đổi token trong main.css. */ -}}
 {{- $swatches := slice
-  (dict "ja" "障子" "name" "Shōji" "light" "#F6F7F2" "dark" "#171915" "role" "Nền. Ánh sáng lọt qua giấy dán cửa, hơi ngả xanh vì bóng tre bên ngoài; không vàng như giấy kem." "ratio" "nền")
-  (dict "ja" "墨" "name" "Sumi" "light" "#22251F" "dark" "#DADDD3" "role" "Chữ chính, tiêu đề, viền focus. Đen có chút xanh rêu, không phải #000." "ratio" "14,4 : 1")
+  (dict "ja" "障子" "name" "Shōji" "light" "#F6F7F2" "dark" "#171915" "role" "Nền. Ánh sáng lọt qua giấy dán cửa, hơi ngả xanh vì bóng tre bên ngoài." "ratio" "nền")
+  (dict "ja" "墨" "name" "Sumi" "light" "#22251F" "dark" "#DADDD3" "role" "Chữ chính, tiêu đề, viền focus. Đen có chút xanh rêu, như mực mài từ thỏi." "ratio" "14,4 : 1")
   (dict "ja" "竹影" "name" "Chikuei" "light" "#5A6055" "dark" "#9CA296" "role" "Chữ phụ: ngày tháng, tiết khí, chú thích ảnh, nhãn ở lề." "ratio" "6,0 : 1")
   (dict "ja" "白緑" "name" "Byakuroku" "light" "#DCE3D6" "dark" "#222720" "role" "Màu pastel duy nhất. Chỉ dùng cho dải dưới mặt đất (thẻ, bài cùng rễ, chân trang) và nền khi bôi đen chữ." "ratio" "4,9 : 1 chữ phụ")
   (dict "ja" "節" "name" "Fushi" "light" "#C5CBBF" "dark" "#363B33" "role" "Đường mảnh: mặt đất, đốt tre, khung ảnh chưa tải." "ratio" "trang trí")
-  (dict "ja" "壁" "name" "Kabe" "light" "#858B7F" "dark" "#646960" "role" "Viền ô nhập liệu. Đậm hơn 節 vừa đủ để người đọc nhận ra chỗ gõ được." "ratio" "3,3 : 1")
+  (dict "ja" "壁" "name" "Kabe" "light" "#858B7F" "dark" "#646960" "role" "Viền ô nhập liệu. Đậm hơn 節 vừa đủ để thấy ngay chỗ gõ được." "ratio" "3,3 : 1")
   (dict "ja" "銀杏" "name" "Ichō" "light" "#6B4F0D" "dark" "#E3C05E" "role" "Màu nhấn duy nhất, chỉ hiện khi người đọc chạm vào: rê chuột lên link hoặc tiêu đề bài. Vàng lá bạch quả mùa thu, lấy từ chính kamon." "ratio" "7,1 : 1")
   (dict "ja" "朱" "name" "Shu" "light" "#A8402E" "dark" "#C4493D" "role" "Mực dấu. Thuộc bộ nhận diện chứ không thuộc giao diện: chỉ con dấu 元 cuối bài mang màu này." "ratio" "5,7 : 1")
 -}}
@@ -226,18 +228,24 @@
         </li>
         {{- end }}
       </ul>
-      <p class="cx-note" style="margin-block-start:1.5rem">Ô trái là chế độ sáng, ô phải là chế độ tối; site tự theo cài đặt máy người đọc, không có nút bật tắt. Tỷ lệ tương phản đo theo WCAG trên nền sáng. Lúc yên tĩnh, trang không có màu nhấn: thứ bậc tạo bằng độ đậm nhạt và cỡ chữ. Dark mode không phải đảo màu mà là rừng trúc ban đêm, nền xanh rất tối.</p>
-      <div class="cx-avoid" aria-label="So sánh với màu kem">
-        <div style="background:#F4F1EA;color:#5A5249">#F4F1EA, kem ấm, màu nền của rất nhiều blog</div>
-        <div style="background:#F6F7F2;color:#5A6055">#F6F7F2, 障子 của Gen</div>
-      </div>
+      <ul class="cx-points" style="margin-block-start:1.5rem">
+        <li><b>Ý tưởng</b><span>Một rừng tre nhìn qua cửa giấy 障子: giấy, mực, bóng tre.</span></li>
+        <li><b>Lý do</b><span>Chữ 元 là gốc. Tre mọc từ một bộ rễ chung, nên cả bảng màu lấy từ tre.</span></li>
+        <li><b>Cách làm</b><span>Lúc yên tĩnh trang chỉ có mực trên giấy; thứ bậc tạo bằng độ đậm nhạt và cỡ chữ.</span></li>
+        <li><b>Cách làm</b><span>Ban đêm là rừng trúc về đêm, nền xanh rất tối. Trang tự theo cài đặt máy, không có nút bật tắt.</span></li>
+        <li><b>Ghi chú</b><span>Ô trái là chế độ sáng, ô phải là chế độ tối. Tỷ lệ tương phản đo theo WCAG trên nền sáng.</span></li>
+      </ul>
     </div>
   </section>
 
   <section class="cx-row" aria-labelledby="cx-accent">
     <h2 class="cx-label" id="cx-accent">Màu nhấn<span lang="ja">触れたときだけ</span></h2>
     <div class="cx-body">
-      <p class="cx-note">Rê chuột, hoặc bấm Tab bằng bàn phím, lên các tiêu đề dưới đây. Màu 銀杏 chỉ xuất hiện khi người đọc chạm vào, như chiếc lá chỉ vàng khi mùa đổi.</p>
+      <ul class="cx-points" style="margin-block-start:0">
+        <li><b>Ý tưởng</b><span>Chiếc lá bạch quả chỉ vàng khi mùa đổi.</span></li>
+        <li><b>Lý do</b><span>Màu nhấn lấy từ chính lá 銀杏 trong kamon.</span></li>
+        <li><b>Cách làm</b><span>Màu chỉ hiện khi người đọc chạm vào. Thử rê chuột, hoặc bấm Tab, lên các tiêu đề dưới đây.</span></li>
+      </ul>
       <ul class="cx-accent">
         <li><span class="cx-num">02.09</span><a href="#cx-accent">Một buổi chiều ở rừng trúc Arashiyama</a></li>
         <li><span class="cx-num">21.08</span><a href="#cx-accent">Hai mươi bốn tiết khí, hai cách gọi tên</a></li>
@@ -248,7 +256,12 @@
 
   <section class="cx-row" aria-labelledby="cx-vi">
     <h2 class="cx-label" id="cx-vi">Chữ tiếng Việt<span>Literata</span></h2>
-    <div class="cx-body"><p class="cx-note">Một đầu bài mẫu. Thân bài 18 px, dòng cao 1,8. Tiêu đề lớn dùng Literata ở trục cỡ quang học 60, nét thanh hơn chữ thân.</p></div>
+    <div class="cx-body"><ul class="cx-points" style="margin-block-start:0">
+        <li><b>Ý tưởng</b><span>Đọc chậm, như một cuốn sổ tay viết tay rồi đem in.</span></li>
+        <li><b>Lý do</b><span>Literata có dấu tiếng Việt vẽ riêng cho từng chữ, dấu chồng không va vào nhau.</span></li>
+        <li><b>Cách làm</b><span>Thân bài 18 px, dòng cao 1,8, để bài dài đọc không mỏi.</span></li>
+        <li><b>Cách làm</b><span>Tiêu đề lớn dùng Literata ở cỡ quang học 60, nét thanh hơn chữ thân.</span></li>
+      </ul></div>
   </section>
   <article class="cx-row cx-article" lang="vi">
     <div class="cx-marg cx-num"><p>18 tháng 9, 2026</p><p>Tiết Bạch lộ</p><p><a href="#cx-vi">Đời sống</a></p></div>
@@ -259,13 +272,19 @@
         <p>Chữ <span lang="ja">元</span> trong tên tôi nghĩa là gốc, là khởi đầu. Mỗi thân tre nhìn thấy trên mặt đất đều nối về cùng một bộ rễ ở bên dưới. Viết, có lẽ, cũng giống như thế.</p>
       </div>
       <p class="cx-stress" aria-label="Kiểm tra dấu chồng">Khuỷu tay ướt sũng, quở trách, nghiêng ngửa, ưỡn ẹo. Nguyễn Ngọc Ẩn ở Đồng Hới.</p>
-      <p class="cx-note">Dòng trên cố ý đặt dòng cao 1,22 để thử dấu chồng (ẩ, ưỡ, ở) của hai dòng liền nhau có va vào nhau không.</p>
+      <p class="cx-note">Dòng trên cố ý đặt dòng cao 1,22 để thử dấu chồng (ẩ, ưỡ, ở) của hai dòng liền nhau.</p>
     </div>
   </article>
 
   <section class="cx-row" aria-labelledby="cx-ja">
     <h2 class="cx-label" id="cx-ja">Chữ tiếng Nhật<span lang="ja">しっぽり明朝</span></h2>
-    <div class="cx-body"><p class="cx-note">Văn mẫu viết thể です/ます. Thân bài Shippori Mincho 500, 17 px, dòng cao 2,0; tiêu đề Shippori Mincho B1 600, bản có mực đọng ở góc nét, gợi chữ in typo trên giấy. Chữ Latin và số trong câu tiếng Nhật vẫn là Literata để hai ngôn ngữ chung một giọng.</p></div>
+    <div class="cx-body"><ul class="cx-points" style="margin-block-start:0">
+        <li><b>Ý tưởng</b><span>Giọng nhỏ nhẹ của nhật ký, viết thể です/ます.</span></li>
+        <li><b>Lý do</b><span>Shippori Mincho dựa trên Mincho số 5 của xưởng Tsukiji, vốn làm cho tiểu thuyết.</span></li>
+        <li><b>Cách làm</b><span>Thân bài Shippori Mincho 500, 17 px, dòng cao 2,0.</span></li>
+        <li><b>Cách làm</b><span>Tiêu đề Shippori Mincho B1 600: mực đọng ở góc nét, gợi chữ in typo trên giấy.</span></li>
+        <li><b>Cách làm</b><span>Chữ Latin và số trong câu tiếng Nhật vẫn là Literata, để hai ngôn ngữ chung một giọng.</span></li>
+      </ul></div>
   </section>
   <article class="cx-row cx-article" lang="ja">
     <div class="cx-marg cx-num"><p>2026年9月18日</p><p>白露</p><p><a href="#cx-ja">暮らし</a></p></div>
@@ -291,19 +310,23 @@
   </section>
 
   <section class="cx-row" aria-labelledby="cx-why">
-    <h2 class="cx-label" id="cx-why">Vì sao chọn<span lang="ja">比較</span></h2>
+    <h2 class="cx-label" id="cx-why">Font<span lang="ja">書体</span></h2>
     <div class="cx-body">
       <ul class="cx-cmp">
         <li>
           <p class="cx-cmp-sample">Người ướt sũng nghiêng ngửa bên khuỷu sông</p>
-          <p class="cx-cmp-note"><b>Literata.</b> Dấu tiếng Việt do TypeTogether vẽ riêng, không chồng dấu tự động. Trục cỡ quang học giúp chữ thân chắc khi nhỏ, tiêu đề thanh khi lớn. Đã so với Newsreader (tương phản cao, dễ ra vẻ tạp chí) và Piazzolla (đậm và hẹp, hợp sách in hơn màn hình).</p>
+          <p class="cx-cmp-note"><b>Literata.</b> Dấu tiếng Việt do TypeTogether vẽ riêng, không chồng dấu tự động. Trục cỡ quang học giúp chữ thân chắc khi nhỏ, tiêu đề thanh khi lớn.</p>
         </li>
         <li>
           <p class="cx-cmp-sample" lang="ja">竹の葉が鳴る部屋で、元を思う。</p>
-          <p class="cx-cmp-note"><b>Shippori Mincho.</b> Dựa trên Mincho số 5 của xưởng Tsukiji, vốn làm cho tiểu thuyết. Có bản B1 mực đọng cho tiêu đề, nên tiêu đề và thân bài cùng một gốc. Đã so với Zen Old Mincho (không có bản mực đọng) và Noto Serif JP (an toàn nhưng là lựa chọn mặc định của hầu hết template Nhật).</p>
+          <p class="cx-cmp-note"><b>Shippori Mincho.</b> Dựa trên Mincho số 5 của xưởng Tsukiji, vốn làm cho tiểu thuyết. Có bản B1 mực đọng cho tiêu đề, nên tiêu đề và thân bài cùng một gốc.</p>
         </li>
       </ul>
-      <p class="cx-note" style="margin-block-start:1rem">Font tự host, không gọi Google Fonts. Mỗi trang chỉ tải đúng những chữ nó dùng: khoảng 35 KB cho một trang tiếng Việt, 66 KB cho một trang tiếng Nhật.</p>
+      <ul class="cx-points" style="margin-block-start:1rem">
+        <li><b>Ý tưởng</b><span>Hai thứ chữ, một giọng: Literata cho tiếng Việt, Shippori Mincho cho tiếng Nhật.</span></li>
+        <li><b>Lý do</b><span>Trang nhẹ thì mở nhanh, cả khi đọc bằng điện thoại trên tàu.</span></li>
+        <li><b>Cách làm</b><span>Font đặt ngay trên nguyenta.com. Mỗi trang chỉ tải đúng những chữ nó dùng: khoảng 35 KB tiếng Việt, 66 KB tiếng Nhật.</span></li>
+      </ul>
     </div>
   </section>
 
@@ -320,7 +343,12 @@
         <figure><div style="width:96px">{{ partial "kamon.html" (dict) }}</div><figcaption>Nền đảo</figcaption></figure>
         <figure><div style="width:32px">{{ partial "kamon.html" (dict "simple" true) }}</div><figcaption>32 px</figcaption></figure>
       </div>
-      <p class="cx-note" style="margin-block-start:1.5rem">Vòng 竹輪 ba đốt là thân rễ tre chạy ngầm; ba lá bạch quả, "hóa thạch sống" và cây biểu tượng của Osaka, mọc từ một điểm chung ở tâm. Ở cỡ nhỏ, kamon bỏ gân lá và thu hẹp khe đốt để không nhòe.</p>
+      <ul class="cx-points" style="margin-block-start:1.5rem">
+        <li><b>Ý tưởng</b><span>竹輪に三つ銀杏: ba lá bạch quả trong một vòng tre.</span></li>
+        <li><b>Lý do</b><span>Vòng tre ba đốt là thân rễ chạy ngầm, nối mọi bài viết về một gốc 元.</span></li>
+        <li><b>Lý do</b><span>Bạch quả là cây của Osaka, nơi blog được viết. Ba lá mọc từ một điểm chung ở tâm.</span></li>
+        <li><b>Cách làm</b><span>Ở cỡ nhỏ, kamon bỏ gân lá và nới khe đốt để không nhòe.</span></li>
+      </ul>
     </div>
   </section>
 
@@ -331,7 +359,13 @@
         <figure><div style="width:128px">{{ partial "hanko.html" . }}</div><figcaption>Phóng to</figcaption></figure>
         <figure><div style="width:44px">{{ partial "hanko.html" . }}</div><figcaption>44 px, cỡ đóng cuối bài</figcaption></figure>
       </div>
-      <p class="cx-note" style="margin-block-start:1.5rem">Dấu vuông bo góc nhẹ kiểu 朱文 (nét đỏ trên nền giấy), đúng loại 雅号印 người viết thư pháp đóng cạnh bút hiệu. Chữ 元 viết theo lối 古印体: đầu nét đậm như mực vừa chạm giấy, cuối nét nhẹ dần. Đây là kiểu chữ con dấu gốc Nhật, mềm hơn lối 篆書 vuông vức của Trung Quốc. Ngoài đời dấu này rộng khoảng 1,5 cm; trên màn hình, 44 px là tương đương.</p>
+      <ul class="cx-points" style="margin-block-start:1.5rem">
+        <li><b>Ý tưởng</b><span>Mỗi bài viết xong được đóng một con dấu, như tác phẩm thư pháp.</span></li>
+        <li><b>Lý do</b><span>元 là tên chữ Hán của Gen, là chữ gốc của cả blog.</span></li>
+        <li><b>Cách làm</b><span>Dấu vuông bo góc nhẹ kiểu 朱文: nét đỏ trên nền giấy.</span></li>
+        <li><b>Cách làm</b><span>Chữ viết theo lối 古印体: đầu nét đậm như mực vừa chạm giấy, cuối nét nhẹ dần.</span></li>
+        <li><b>Cách làm</b><span>44 px trên màn hình, tương đương con dấu rộng 1,5 cm ngoài đời.</span></li>
+      </ul>
     </div>
   </section>
 
@@ -340,6 +374,11 @@
     <div class="cx-body cx-ending">
       <p>Tối nay gió vẫn chưa lặng. Có lẽ mai tôi sẽ đi bộ lên phía Minoo, xem lá đã bắt đầu đổi màu chưa.</p>
       {{ partial "hanko.html" . }}
+      <ul class="cx-points" style="margin-block-start:2rem">
+        <li><b>Ý tưởng</b><span>Đường kẻ là mặt đất. Bài viết ở trên, rễ ở dưới.</span></li>
+        <li><b>Lý do</b><span>Các bài nối với nhau qua thẻ chung, như những thân tre nối qua một bộ rễ.</span></li>
+        <li><b>Cách làm</b><span>Dưới mặt đất là dải 白緑 cho thẻ, bài cùng rễ và bản dịch.</span></li>
+      </ul>
     </div>
     <hr class="cx-ground">
     <dl class="cx-under">
@@ -364,7 +403,13 @@
         {{- end }}
         <p>ここでは読むものがありません。</p>
       </div>
-      <p class="cx-note" style="margin-block-start:1.5rem">Một trang không có gì để đọc: chỉ một vòng ensō vẽ bằng một nét bút lông lớn, đầu nét ấn đậm, mực cạn dần thành vệt xơ (掠れ), và một dòng chữ. Không header, không footer; bấm Esc hoặc chạm vào đâu cũng quay lại bài đang đọc. Lối vào duy nhất là chữ "Tĩnh" nằm dưới mặt đất ở cuối mỗi trang, một chỗ nghỉ giữa những bài dày chữ.</p>
+      <ul class="cx-points" style="margin-block-start:1.5rem">
+        <li><b>Ý tưởng</b><span>Một trang không có gì để đọc: chỗ nghỉ giữa những bài dày chữ.</span></li>
+        <li><b>Lý do</b><span>間 (ma), khoảng lặng giữa hai nốt nhạc, cũng là một phần của bản nhạc.</span></li>
+        <li><b>Cách làm</b><span>Chỉ một vòng ensō vẽ bằng một nét bút lông: đầu nét ấn đậm, mực cạn dần thành vệt xơ 掠れ.</span></li>
+        <li><b>Cách làm</b><span>Không header, không footer. Bấm Esc hoặc chạm vào đâu cũng quay lại bài đang đọc.</span></li>
+        <li><b>Cách làm</b><span>Lối vào duy nhất là chữ “Tĩnh” nằm dưới mặt đất ở cuối mỗi trang.</span></li>
+      </ul>
     </div>
   </section>
 
@@ -380,8 +425,13 @@
         </div>
         <div class="cx-f-under"></div>
       </div>
-      <div class="cx-legend"><span>Cột chữ, khoảng 68 ký tự tiếng Việt hoặc 35 chữ tiếng Nhật một dòng. Ảnh bìa tỷ lệ 3 : 2.</span><span>Sidebar 16,5rem: giới thiệu, tìm kiếm, danh mục, lưu trữ.</span></div>
-      <p class="cx-note" style="margin-block-start:1.5rem">Như một blog quen thuộc: tên blog và kamon ở giữa, thanh menu nằm giữa hai đường kẻ, nội dung bên trái, sidebar bên phải, cả khung rộng 64rem. Dưới mặt đất là dải 白緑 cho thẻ, bài cùng rễ và chân trang. Trên điện thoại chỉ còn một cột, ảnh tràn sát mép màn hình, sidebar xuống dưới nội dung.</p>
+      <ul class="cx-points" style="margin-block-start:1.5rem">
+        <li><b>Ý tưởng</b><span>Một căn phòng gọn: tên và kamon ở giữa, menu nằm giữa hai đường kẻ.</span></li>
+        <li><b>Lý do</b><span>Người đọc luôn biết mình đang ở đâu và đi tiếp được ngay.</span></li>
+        <li><b>Cách làm</b><span>Nội dung bên trái, sidebar 16,5rem bên phải: giới thiệu, tìm kiếm, danh mục, lưu trữ.</span></li>
+        <li><b>Cách làm</b><span>Cột chữ khoảng 68 ký tự tiếng Việt hoặc 35 chữ tiếng Nhật một dòng; ảnh bìa 3 : 2.</span></li>
+        <li><b>Cách làm</b><span>Trên điện thoại chỉ còn một cột, ảnh tràn sát mép, sidebar xuống dưới nội dung.</span></li>
+      </ul>
     </div>
   </section>
 
