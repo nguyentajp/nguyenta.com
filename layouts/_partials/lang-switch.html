@@ -1,21 +1,24 @@
-{{- /* Nút chuyển ngôn ngữ: quả địa cầu (biểu tượng ngôn ngữ ai cũng hiểu) và tên
-     ngôn ngữ CÒN LẠI, viết bằng chính ngôn ngữ đó. Không nhắc tên ngôn ngữ
-     đang đọc: người đọc đã biết mình đang đọc gì, nút chỉ cần chỉ lối sang
-     bên kia. Không dùng lá cờ: cờ là quốc gia chứ không phải ngôn ngữ.
-     - Trang có bản dịch: link thẳng tới đúng trang đó ở ngôn ngữ kia.
-     - Trang chưa có bản dịch: tên ngôn ngữ gạch ngang, nói rõ lý do, không đưa
+{{- /* Chọn ngôn ngữ: quả địa cầu và hai tên ngôn ngữ, mỗi tên viết bằng chính
+     ngôn ngữ đó, trong một khung như công tắc hai nấc. Thứ tự luôn cố định
+     (Tiếng Việt | 日本語), ngôn ngữ đang đọc có nền 白緑. Không dùng lá cờ: cờ
+     là quốc gia chứ không phải ngôn ngữ.
+     - Trang có bản dịch: nấc kia link thẳng tới đúng trang đó ở ngôn ngữ kia.
+     - Trang chưa có bản dịch: nấc kia gạch ngang, nói rõ lý do, không đưa
        người đọc về trang chủ. */ -}}
-{{- range hugo.Sites }}
-  {{- $other := .Language }}
-  {{- if ne $other.Lang $.Site.Language.Lang }}
-    {{- with index (where $.Translations "Lang" $other.Lang) 0 }}
-      <a class="lang" href="{{ .RelPermalink }}" lang="{{ $other.Lang }}" hreflang="{{ $other.Lang }}">
-        {{- partial "icon.html" "globe" }}<span>{{ $other.Label }}</span>
-      </a>
-    {{- else }}
-      <span class="lang" lang="{{ $other.Lang }}" aria-disabled="true" title="{{ i18n "lang_no_translation" }}">
-        {{- partial "icon.html" "globe" }}<span>{{ $other.Label }}</span><span class="visually-hidden"> ({{ i18n "lang_no_translation_short" }})</span>
-      </span>
+<nav class="lang" aria-label="{{ i18n "lang_label" }}">
+  {{ partial "icon.html" "globe" }}
+  <span class="lang-options">
+    {{- range hugo.Sites }}
+      {{- $l := .Language }}
+      {{- if eq $l.Lang $.Site.Language.Lang }}
+        <span aria-current="true" lang="{{ $l.Lang }}">{{ $l.Label }}</span>
+      {{- else }}
+        {{- with index (where $.Translations "Lang" $l.Lang) 0 }}
+          <a href="{{ .RelPermalink }}" lang="{{ $l.Lang }}" hreflang="{{ $l.Lang }}">{{ $l.Label }}</a>
+        {{- else }}
+          <span lang="{{ $l.Lang }}" aria-disabled="true" title="{{ i18n "lang_no_translation" }}">{{ $l.Label }}<span class="visually-hidden"> ({{ i18n "lang_no_translation_short" }})</span></span>
+        {{- end }}
+      {{- end }}
     {{- end }}
-  {{- end }}
-{{- end }}
+  </span>
+</nav>

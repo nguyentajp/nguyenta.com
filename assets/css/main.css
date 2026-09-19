@@ -37,7 +37,9 @@
   --kabe: #858b7f;       /* 壁 — viền ô nhập liệu, đủ 3:1 theo WCAG 1.4.11 */
   --icho: #6b4f0d;       /* 銀杏 — vàng lá bạch quả, chỉ khi tương tác */
   --take: #3f6a47;       /* 竹 — xanh thân tre: vòng tre của kamon, tên tiết khí bấm được */
-  --ginnan: #a67c14;     /* lá bạch quả trong kamon: vàng tươi hơn 銀杏, chỉ làm hình */
+  --ginnan: #a67c14;     /* vàng bạch quả tươi hơn 銀杏, chỉ làm hình (hình minh hoạ) */
+  --karetake: #9c8352;   /* 枯竹 — tre khô: vòng tre của kamon */
+  --tokiwa: #2e5538;     /* 常磐 — xanh đậm của lá: ba lá của kamon */
   --shu: #a8402e;        /* 朱 — mực dấu, chỉ con dấu 元 */
 
   /* Mỗi vai trò có hai màu: sáng và tối. Tối không phải đảo màu mà là rừng
@@ -56,7 +58,8 @@
   --bamboo: light-dark(var(--take), #8fbf95);
   /* Vàng bạch quả tươi, chỉ làm hình (điểm màu trong hình minh hoạ) */
   --gold: light-dark(var(--ginnan), #d9b24a);
-  --leaf: light-dark(var(--ginnan), #e3c05e);
+  --kamon-ring: light-dark(var(--karetake), #c8b07a);
+  --kamon-leaf: light-dark(var(--tokiwa), #8fbf95);
   /* Đường gạch chân mang màu nhấn: pha nhạt với nền, vì màu nhấn đã được làm
      đậm cho đủ tương phản khi là chữ, để làm gạch chân thì gần như màu mực */
   --accent-line: color-mix(in oklab, var(--accent) 60%, var(--bg));
@@ -94,7 +97,7 @@
 
   /* Thang cỡ chữ cho tiêu đề, bước gần √2 */
   --size-brand: clamp(2.1rem, 4vw, 2.75rem);
-  --size-mark: 3.75rem;
+  --size-mark: 3.25rem;
   --size-title: clamp(1.9rem, 3.4vw, 2.6rem);
   --size-lead: clamp(1.75rem, 3vw, 2.25rem);
 }
@@ -120,7 +123,8 @@
     --accent: var(--icho);
     --bamboo: var(--take);
     --gold: var(--ginnan);
-    --leaf: var(--ginnan);
+    --kamon-ring: var(--karetake);
+    --kamon-leaf: var(--tokiwa);
     --seal: var(--shu);
   }
 
@@ -602,57 +606,80 @@ main {
   stroke-linejoin: round;
 }
 
-/* Chọn ngôn ngữ: một nút, quả địa cầu và tên ngôn ngữ còn lại */
+/* Chọn ngôn ngữ: công tắc hai nấc, nấc đang đọc có nền 白緑 */
 .lang {
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.lang-options {
+  display: flex;
+}
+
+.lang-options > * {
+  display: flex;
+  align-items: center;
   min-height: 2rem;
   padding-inline: 0.7rem;
   border: 1px solid var(--field);
-  border-radius: calc(var(--radius) / 2);
-  font-size: 0.875rem;
-  color: var(--ink);
   text-decoration: none;
   white-space: nowrap;
 }
 
-.lang .icon {
-  color: var(--muted);
+.lang-options > :first-child {
+  border-start-start-radius: calc(var(--radius) / 2);
+  border-end-start-radius: calc(var(--radius) / 2);
 }
 
-a.lang:hover,
-a.lang:hover .icon {
-  border-color: var(--accent);
+.lang-options > :last-child {
+  border-start-end-radius: calc(var(--radius) / 2);
+  border-end-end-radius: calc(var(--radius) / 2);
+}
+
+.lang-options > * + * {
+  border-inline-start: 0;
+}
+
+.lang-options [aria-current] {
+  background: var(--band);
+  color: var(--ink);
+}
+
+.lang-options a:hover {
   color: var(--accent);
 }
 
-.lang[aria-disabled] {
-  color: var(--muted);
+.lang-options a:focus-visible {
+  outline-offset: -3px;
+}
+
+.lang-options [aria-disabled] {
+  text-decoration: line-through 1px var(--rule);
   cursor: not-allowed;
 }
 
-.lang[aria-disabled] > span:first-of-type {
-  text-decoration: line-through 1px var(--rule);
-}
-
-/* Tầng 2: kamon, tên blog, tagline. Một cỡ duy nhất ở mọi trang. */
+/* Tầng 2: logo là một khối ngang, kamon bên trái, chữ Gen bên phải; tagline
+   nằm dưới. Một cỡ duy nhất ở mọi trang. */
 .masthead-brand {
   display: grid;
   justify-items: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
   padding-block: var(--space-4) var(--space-5);
   text-align: center;
 }
 
 .brand {
-  display: grid;
-  justify-items: center;
-  gap: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
   text-decoration: none;
 }
 
 .brand-mark {
+  flex: none;
   width: var(--size-mark);
 }
 
@@ -1734,12 +1761,6 @@ a.lang:hover .icon {
   margin-block-start: var(--space-2);
 }
 
-.widget-more {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-1) var(--space-4);
-}
-
 /* Link mời bấm trong khung (đọc thêm, ủng hộ, bài viết mới) gạch chân bằng
    màu nhấn, để mắt thấy ngay đâu là lối đi tiếp */
 .widget-more a,
@@ -1961,10 +1982,14 @@ a.lang:hover .icon {
   text-wrap: pretty;
 }
 
-/* Khung Ủng hộ: nền giấy trên dải 白緑, để khung nổi lên như một tấm thẻ */
+/* Khung Ủng hộ: trong suốt trên dải 白緑, khác nền giấy của đầu trang; nhãn
+   đề đậm hơn dải một bậc để không chìm vào nền chân trang */
 .footer-support {
   margin-block-start: var(--space-3);
-  background: var(--bg);
+}
+
+.footer-support .widget-title {
+  background: color-mix(in oklab, var(--band), var(--ink) 14%);
 }
 
 .footer-support p {
@@ -2125,8 +2150,8 @@ a.lang:hover .icon {
 @media (max-width: 47.999rem) {
   :root {
     --text-size: 1.0625rem;
-    --size-mark: 3rem;
-    --size-brand: 1.9rem;
+    --size-mark: 2.75rem;
+    --size-brand: 2.1rem;
   }
 
   .masthead-brand {
@@ -2231,14 +2256,14 @@ a.lang:hover .icon {
   height: auto;
 }
 
-/* Kamon hai màu: vòng tre xanh 竹, lá vàng bạch quả. Hai màu tách vòng và lá ra
-   khỏi nhau, để ba lá trong vòng tròn không bị nhìn thành biểu tượng phóng xạ. */
+/* Kamon hai màu: vòng tre khô, lá xanh đậm. Hai màu tách vòng và lá ra khỏi
+   nhau, để ba lá trong vòng tròn không bị nhìn thành biểu tượng phóng xạ. */
 .kamon .ring {
-  fill: var(--bamboo);
+  fill: var(--kamon-ring);
 }
 
 .kamon .leaf {
-  fill: var(--leaf);
+  fill: var(--kamon-leaf);
 }
 
 
@@ -2636,10 +2661,11 @@ html:has(.lightbox[open]) {
   font-variant-numeric: lining-nums;
 }
 
+/* Ngày đứng sát tên tháng, tiêu đề bài có phần lớn bề ngang */
 .index-month {
   display: grid;
-  grid-template-columns: 7rem minmax(0, 1fr);
-  gap: var(--space-3) var(--space-5);
+  grid-template-columns: 4.75rem minmax(0, 1fr);
+  gap: var(--space-3) var(--space-3);
   align-items: baseline;
   padding-block: var(--space-4);
   border-block-end: 1px solid var(--rule);
@@ -2660,7 +2686,7 @@ html:has(.lightbox[open]) {
 
 .index-posts li {
   display: grid;
-  grid-template-columns: 8rem minmax(0, 1fr) auto;
+  grid-template-columns: 6.25rem minmax(0, 1fr) auto;
   gap: var(--space-1) var(--space-4);
   align-items: baseline;
 }

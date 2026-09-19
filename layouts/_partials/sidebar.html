@@ -15,10 +15,9 @@
         <img class="avatar" src="{{ $img.RelPermalink }}" width="240" height="300" alt="" loading="lazy" decoding="async">
       {{- end }}
       {{- with site.Params.bio }}<p class="bio">{{ . }}</p>{{ end }}
-      <p class="widget-more">
-        {{- with site.GetPage "/about" }}<a href="{{ .RelPermalink }}">{{ i18n "sidebar_about_more" }}</a>{{ end }}
-        {{- with site.Params.socials.facebook }}<a href="{{ . }}" rel="me">Facebook</a>{{ end -}}
-      </p>
+      {{- with site.GetPage "/about" }}
+        <p class="widget-more"><a href="{{ .RelPermalink }}">{{ i18n "sidebar_about_more" }}</a></p>
+      {{- end }}
     </section>
 
     {{- /* Năm bài mới nhất, không tính bài đang đọc */}}

@@ -280,10 +280,9 @@ defaultContentLanguageInSubdir = false
 
   [params.socials]
     # Để trống nghĩa là không hiện. Điền dần khi anh muốn.
-    # Facebook ghi cả đường dẫn; hiện ở chân trang, khung Về Nguyên ở sidebar
-    # và trang Liên hệ.
+    # Facebook ghi cả đường dẫn; hiện ở chân trang và trang Liên hệ.
     facebook = "https://www.facebook.com/nguyentajp/"
-    github = "nguyentajp"
+    github = ""
     instagram = ""
     x = ""
     youtube = ""

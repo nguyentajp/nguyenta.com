@@ -45,8 +45,8 @@
   vi_name = "Tre"
   light = "#3f6a47"
   dark = "#8fbf95"
-  vi = "Xanh thân tre: vòng tre của kamon, và tên tiết khí bấm được để đọc giải thích."
-  ja_role = "竹の幹の緑。家紋の竹の輪と、説明が開く節気の名前に。"
+  vi = "Xanh thân tre: tên tiết khí bấm được để đọc giải thích."
+  ja_role = "竹の幹の緑。説明が開く節気の名前に。"
 
 [[colors]]
   ja = "銀杏"
