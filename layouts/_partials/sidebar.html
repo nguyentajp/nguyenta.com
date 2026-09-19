@@ -60,7 +60,7 @@
       </section>
     {{- end }}
 
-    {{- /* Chỉ hiện khi có trang Ủng hộ (content/<ngôn ngữ>/support.md) và người
+    {{- /* Chỉ hiện khi có trang Ủng hộ (content/<ngôn ngữ>/support/index.md) và người
          đọc không đang ở chính trang đó */}}
     {{- with site.GetPage "/support" }}
       {{- if ne $.RelPermalink .RelPermalink }}
