@@ -26,7 +26,7 @@
       {{- /* fieldset disabled: không có JS thì không gửi được, để email của người
            đọc không bao giờ bị gắn vào URL của trang */}}
       <form class="news-form" data-news>
-        <fieldset disabled>
+        <fieldset class="joined" disabled>
           <label class="visually-hidden" for="news-email">{{ i18n "news_label" }}</label>
           <input id="news-email" name="email" type="email" placeholder="{{ i18n "news_placeholder" }}" autocomplete="email" required>
           <button type="submit">{{ i18n "news_button" }}</button>

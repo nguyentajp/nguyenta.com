@@ -1,23 +1,7 @@
 # Mọi chuỗi giao diện tiếng Việt nằm ở đây, không hardcode trong layout.
 
-[nav_posts]
-other = "Bài viết"
-[nav_categories]
-other = "Danh mục"
-[nav_tags]
-other = "Thẻ"
-[nav_photos]
-other = "Ảnh"
-[nav_about]
-other = "Giới thiệu"
-[nav_contact]
-other = "Liên hệ"
 [nav_archive]
 other = "Lưu trữ"
-[nav_search]
-other = "Tìm kiếm"
-[nav_home]
-other = "Trang chủ"
 [nav_menu]
 other = "Menu"
 [nav_menu_close]
@@ -47,8 +31,6 @@ other = "2 tháng 1, 2006"
 # Ngày ngắn đứng trước tên bài ở trang Danh mục
 [date_short]
 other = "02/01/2006"
-[date_compact]
-other = "02.01"
 # Ngày kèm thứ trong tuần (_partials/date.html): "Thứ bảy, 19 tháng 9, 2026"
 [date_weekday]
 other = "{{ .Weekday }}, {{ .Date }}"
@@ -75,8 +57,6 @@ other = "{{ .Count }} phút đọc"
 other = "Tiết {{ .Name }}"
 [sekki_starts]
 other = "Bắt đầu khoảng ngày {{ .Day }}/{{ .Month }}"
-[updated_on]
-other = "Sửa lần cuối {{ .Date }}"
 
 [post_tags]
 other = "Thẻ"
@@ -110,8 +90,6 @@ other = "Bài mới hơn"
 [page_of]
 other = "Trang {{ .Current }} trên {{ .Total }}"
 
-[photos_from_post]
-other = "Trong bài"
 [photos_open]
 other = "Xem ảnh lớn"
 [lightbox_close]
@@ -131,14 +109,9 @@ other = "{{ .Count }} kết quả"
 other = "Không tìm thấy gì cho từ khoá này."
 [search_loading]
 other = "Đang tìm"
-[search_clear]
-other = "Xoá"
 
 [search_noscript]
 other = "Trang tìm kiếm cần bật JavaScript. Anh có thể xem toàn bộ bài ở trang Lưu trữ."
-
-[archive_year]
-other = "Năm {{ .Year }}"
 
 [archive_month]
 other = "Tháng {{ .Month }}"
@@ -185,8 +158,6 @@ other = "Về Nguyên"
 other = "Đọc thêm về Nguyên"
 [sidebar_search_button]
 other = "Tìm"
-[sidebar_archive_all]
-other = "Toàn bộ lưu trữ"
 [archive_month_year]
 other = "Tháng {{ .Month }}, {{ .Year }}"
 

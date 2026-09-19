@@ -1815,54 +1815,6 @@ main {
   font-variant-numeric: tabular-nums;
 }
 
-/* Ô tìm kiếm và nút liền nhau thành một khối, bo hai góc ngoài như khung */
-.widget-search {
-  display: flex;
-}
-
-.widget-search input {
-  flex: 1;
-  min-width: 0;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--field);
-  border-inline-end: 0;
-  border-start-start-radius: calc(var(--radius) / 2);
-  border-end-start-radius: calc(var(--radius) / 2);
-  border-start-end-radius: 0;
-  border-end-end-radius: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font: inherit;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.widget-search input::placeholder {
-  color: var(--muted);
-  opacity: 1;
-}
-
-.widget-search input:focus-visible {
-  outline-offset: -2px;
-}
-
-.widget-search button {
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--ink);
-  border-radius: 0;
-  border-start-end-radius: calc(var(--radius) / 2);
-  border-end-end-radius: calc(var(--radius) / 2);
-  background: var(--ink);
-  color: var(--bg);
-  font: inherit;
-  cursor: pointer;
-}
-
-.widget-search button:hover {
-  border-color: var(--accent);
-  background: var(--accent);
-}
-
 /* ── 9. Chân trang ────────────────────────────────────────────────────────── */
 /* Dải 白緑 ba cột: tên blog và tagline, bản tin, khung Ủng hộ ở góc phải.
    Hàng cuối là menu nhỏ và dòng bản quyền, ngăn bằng một đường mảnh. */
@@ -1931,12 +1883,9 @@ main {
   text-wrap: pretty;
 }
 
-/* Ô email và nút liền nhau như ô tìm kiếm ở Mục lục */
-.news-form {
-  margin-block-start: var(--space-3);
-}
-
-.news-form fieldset {
+/* Ô chữ và nút liền nhau thành một khối, bo hai góc ngoài (ô tìm ở Mục lục,
+   ô email bản tin) */
+.joined {
   display: flex;
   min-width: 0;
   margin: 0;
@@ -1944,7 +1893,7 @@ main {
   border: 0;
 }
 
-.news-form input {
+.joined input {
   flex: 1;
   min-width: 0;
   padding: var(--space-2) var(--space-3);
@@ -1956,11 +1905,11 @@ main {
   font: inherit;
 }
 
-.news-form input:focus-visible {
+.joined input:focus-visible {
   outline-offset: -2px;
 }
 
-.news-form button {
+.joined button {
   padding: var(--space-2) var(--space-4);
   border: 1px solid var(--ink);
   border-radius: 0 calc(var(--radius) / 2) calc(var(--radius) / 2) 0;
@@ -1970,9 +1919,13 @@ main {
   cursor: pointer;
 }
 
-.news-form button:hover {
+.joined button:hover {
   border-color: var(--accent);
   background: var(--accent);
+}
+
+.news-form {
+  margin-block-start: var(--space-3);
 }
 
 .news-status {
@@ -2566,46 +2519,13 @@ html:has(.lightbox[open]) {
   margin-block-start: 0;
 }
 
-/* Ô tìm: cùng kiểu với ô ở sidebar, nhưng dài hơn và nằm giữa */
+/* Ô tìm ở Mục lục: kiểu ô liền nút (.joined, mục 9), dài hơn và nằm giữa */
 .index-search {
-  display: flex;
   max-width: 32rem;
   margin-inline: auto;
 }
 
-.index-search input {
-  flex: 1;
-  min-width: 0;
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--field);
-  border-inline-end: 0;
-  border-radius: calc(var(--radius) / 2) 0 0 calc(var(--radius) / 2);
-  background: none;
-  color: inherit;
-  font: inherit;
-}
-
-.index-search input:focus-visible {
-  outline-offset: -2px;
-}
-
-.index-search button {
-  padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--ink);
-  border-radius: 0 calc(var(--radius) / 2) calc(var(--radius) / 2) 0;
-  background: var(--ink);
-  color: var(--bg);
-  font: inherit;
-  cursor: pointer;
-}
-
-.index-search button:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--bg);
-}
-
-/* Năm danh mục một hàng: chữ Hán lớn, tên, số bài */
+/* Các danh mục một hàng: hình minh hoạ, tên, số bài */
 .index-cats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));

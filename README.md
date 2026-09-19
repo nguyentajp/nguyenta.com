@@ -322,7 +322,7 @@ như bản tiếng Việt.
 | Menu nhỏ ở chân trang | `hugo.toml` → `menus.under` |
 | Trang 404 | `hugo.toml` → `notFoundTitle`, `notFoundText`, `notFoundHome` (mỗi ngôn ngữ một bộ) |
 | Ảnh chân dung ở sidebar | Thay file `assets/brand/avatar.jpg` (site tự cắt khung dọc 4:5 lấy phần giữa, nên dùng ảnh dọc, mặt ở giữa) |
-| Trang Ủng hộ và khối Ủng hộ ở sidebar | `content/vi/support/index.md` (kèm ảnh mã QR), `content/ja/support/index.md`; lời trong khung sidebar ở `i18n` (`sidebar_support_text`). Xoá file thì khối tự ẩn |
+| Trang Ủng hộ và khung Ủng hộ ở chân trang | `content/vi/support/index.md` (kèm ảnh mã QR), `content/ja/support/index.md`; lời trong khung ở `i18n` (`sidebar_support_text`). Xoá file thì khung tự ẩn |
 | Lời giới thiệu ở sidebar | `hugo.toml` → `[languages.vi.params]` → `bio` (bản tiếng Nhật: `[languages.ja.params]`) |
 | Tagline dưới tên blog và ở chân trang | `hugo.toml` → `tagline` (hai ngôn ngữ) |
 | Email, mạng xã hội ở trang Liên hệ | `hugo.toml` → `[params]` → `email`, `[params.socials]` |

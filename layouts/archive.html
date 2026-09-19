@@ -25,7 +25,7 @@
     {{- with site.GetPage "/search" }}
       <section class="index-block" aria-labelledby="tim">
         <h2 class="section-title" id="tim">{{ i18n "index_search" }}</h2>
-        <form class="index-search" role="search" action="{{ .RelPermalink }}" method="get">
+        <form class="index-search joined" role="search" action="{{ .RelPermalink }}" method="get">
           <label class="visually-hidden" for="index-q">{{ i18n "search_placeholder" }}</label>
           <input id="index-q" name="q" type="search" placeholder="{{ i18n "search_placeholder" }}" autocomplete="off" enterkeyhint="search">
           <button type="submit">{{ i18n "sidebar_search_button" }}</button>
