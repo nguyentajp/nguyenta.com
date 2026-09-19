@@ -77,8 +77,10 @@ other = "Sửa lần cuối {{ .Date }}"
 other = "Thẻ"
 [post_related]
 other = "Bài viết liên quan"
-[post_related_via]
-other = "chung thẻ {{ .Tag }}"
+[rail_prev]
+other = "Các bài trước"
+[rail_next]
+other = "Các bài tiếp"
 [post_nearby]
 other = "Trước và sau"
 [post_prev]

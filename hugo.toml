@@ -274,8 +274,9 @@ defaultContentLanguageInSubdir = false
   email = "info@nguyenta.com"
   # Số bài hiện trên trang chủ, không tính bài mới nhất đã hiện đầy đủ
   homeRecentCount = 4
-  # Số bài trong mục "Bài viết liên quan" (chung thẻ hoặc danh mục) ở cuối mỗi bài
-  relatedCount = 3
+  # Số bài tối đa trong hàng "Bài viết liên quan" (chung thẻ hoặc danh mục) ở
+  # cuối mỗi bài. Hàng hiện khoảng ba bài một lượt, nhiều hơn thì cuộn ngang.
+  relatedCount = 6
 
   [params.socials]
     # Để trống nghĩa là không hiện. Điền dần khi anh muốn.

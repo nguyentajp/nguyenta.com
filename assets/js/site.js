@@ -1,11 +1,12 @@
-// JavaScript của cả site. Chỉ sáu việc, việc nào không có phần tử tương ứng
-// trên trang thì bỏ qua:
+// JavaScript của cả site. Mỗi việc một khối, việc nào không có phần tử tương
+// ứng trên trang thì bỏ qua:
 //   1. Kamon tự vẽ khi vào trang chủ lần đầu trong phiên
 //   2. Lightbox: bấm ảnh để xem lớn, Esc hoặc bấm nền để đóng, ← → để chuyển
 //   3. Video YouTube: chỉ tải iframe khi người đọc bấm phát
 //   4. Trang 凪: Esc hoặc chạm vào đâu cũng quay lại trang trước
 //   5. Furigana: nút chọn hiện, chạm để xem, tắt
 //   6. Nút giao diện sáng tối
+//   7. Hàng ngang cuộn (Bài viết liên quan): nút ‹ ›
 
 // ── 1. Kamon ────────────────────────────────────────────────────────────────
 // Lần thứ hai trở đi trong cùng phiên, kamon hiện sẵn. Người đọc bật
@@ -236,4 +237,38 @@
 
   system.addEventListener("change", render);
   render();
+})();
+
+// ── 7. Hàng ngang cuộn ──────────────────────────────────────────────────────
+// Hàng vẫn cuộn được bằng vuốt, bàn di chuột hay Shift + lăn chuột khi không
+// có JS. JS chỉ thêm hai nút ‹ ›, hiện khi hàng dài hơn khung, mỗi lần bấm
+// trượt đúng một khung.
+(() => {
+  document.querySelectorAll("[data-rail]").forEach((rail) => {
+    const track = rail.querySelector(".rail-track");
+    const nav = rail.querySelector(".rail-nav");
+    if (!track || !nav) return;
+    const [prev, next] = nav.querySelectorAll("button");
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+
+    const update = () => {
+      const max = track.scrollWidth - track.clientWidth;
+      nav.hidden = max <= 1;
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft >= max - 1;
+    };
+
+    nav.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-step]");
+      if (!button) return;
+      track.scrollBy({
+        left: Number(button.dataset.step) * track.clientWidth,
+        behavior: reduce.matches ? "auto" : "smooth",
+      });
+    });
+
+    track.addEventListener("scroll", update, { passive: true });
+    new ResizeObserver(update).observe(track);
+    update();
+  });
 })();

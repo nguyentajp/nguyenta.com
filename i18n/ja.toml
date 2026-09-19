@@ -77,8 +77,10 @@ other = "最終更新 {{ .Date }}"
 other = "タグ"
 [post_related]
 other = "関連記事"
-[post_related_via]
-other = "共通のタグ「{{ .Tag }}」"
+[rail_prev]
+other = "前の記事へ"
+[rail_next]
+other = "次の記事へ"
 [post_nearby]
 other = "前後の記事"
 [post_prev]

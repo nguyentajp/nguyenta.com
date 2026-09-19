@@ -1,0 +1,15 @@
+{{- /* Ảnh nhỏ 3:2 cho các thẻ bài (Bài viết liên quan). Chỉ hai cỡ nhỏ, 320 và
+     480 px, dạng WebP, tải khi cuộn tới (lazy), nên gần như không làm nặng
+     trang. Bài không có ảnh thì là một ô 白緑 mang chữ Hán của danh mục.
+     Tham số: page, sizes. */ -}}
+{{- $page := .page -}}
+{{- with partial "cover-resource.html" (dict "page" $page) -}}
+  {{- $small := .Fill "320x213 webp Smart" -}}
+  {{- $large := .Fill "480x320 webp Smart" -}}
+  <img class="thumb" src="{{ $small.RelPermalink }}" srcset="{{ $small.RelPermalink }} 320w, {{ $large.RelPermalink }} 480w"
+       sizes="{{ $.sizes | default "14rem" }}" width="{{ $small.Width }}" height="{{ $small.Height }}" alt="" loading="lazy" decoding="async">
+{{- else -}}
+  <span class="thumb thumb--empty" aria-hidden="true">
+    {{- range first 1 ($page.GetTerms "categories") }}<span lang="ja">{{ .Params.kanji }}</span>{{ end -}}
+  </span>
+{{- end -}}

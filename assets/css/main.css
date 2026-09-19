@@ -1320,27 +1320,113 @@ a.lang:hover .icon {
   color: var(--accent);
 }
 
-.related-list {
+/* Bài viết liên quan: hàng ngang cuộn được, dừng đúng mép từng bài */
+.rail-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 2 * var(--space-4)) / 3);
+  gap: var(--space-4);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+  padding-block-end: var(--space-3);
   list-style: none;
 }
 
-.related-list li + li {
-  margin-block-start: var(--space-3);
+.rail-track > li {
+  scroll-snap-align: start;
 }
 
-.related-list a {
-  font-size: 1.0625rem;
+.related-card {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
   text-decoration: none;
 }
 
-.related-list a:hover {
+.thumb {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  background: var(--band);
+  border-radius: var(--radius);
+}
+
+.thumb--empty {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.related-title {
+  margin-block-start: var(--space-1);
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.related-title:lang(ja) {
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.related-card:hover .related-title {
   color: var(--accent);
 }
 
-.related-list .via {
-  display: block;
+.related-date {
   font-size: 0.8125rem;
   color: var(--muted);
+}
+
+/* Nút ‹ › chỉ hiện khi hàng dài hơn khung (site.js mục 7) */
+.rail-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+}
+
+.rail-nav[hidden] {
+  display: none;
+}
+
+.rail-nav button {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid var(--field);
+  border-radius: calc(var(--radius) / 2);
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.rail-nav button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.rail-nav button:disabled {
+  color: var(--rule);
+  border-color: var(--rule);
+  cursor: default;
+}
+
+/* Điện thoại: mỗi bài rộng hơn nửa màn hình, bài kế thò ra mép để biết là
+   vuốt được */
+@media (max-width: 35.999rem) {
+  .rail-track {
+    grid-auto-columns: 62%;
+  }
 }
 
 /* ── 8. Sidebar ───────────────────────────────────────────────────────────── */

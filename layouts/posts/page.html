@@ -67,24 +67,30 @@
       </nav>
     {{- end }}
 
-    {{- $related := first (site.Params.relatedCount | default 3) (site.RegularPages.Related .) }}
+    {{- /* Bài viết liên quan: một hàng ngang, khoảng ba bài một lượt; nhiều hơn
+         thì cuộn ngang (vuốt trên điện thoại, nút ‹ › trên máy tính, site.js
+         mục 7). Mỗi bài một ảnh nhỏ tải khi cuộn tới, tiêu đề và ngày. */}}
+    {{- $related := first (site.Params.relatedCount | default 6) (site.RegularPages.Related .) }}
     {{- with $related }}
       <section class="related" aria-labelledby="lien-quan">
         <h2 class="section-title" id="lien-quan">{{ i18n "post_related" }}</h2>
-        <ul class="related-list">
-          {{- $tagNames := slice }}
-          {{- range $.GetTerms "tags" }}{{ $tagNames = $tagNames | append .LinkTitle }}{{ end }}
-          {{- range . }}
-            {{- $shared := "" }}
-            {{- range .GetTerms "tags" }}
-              {{- if and (eq $shared "") (in $tagNames .LinkTitle) }}{{ $shared = .LinkTitle }}{{ end }}
+        <div class="rail" data-rail>
+          <ul class="rail-track">
+            {{- range . }}
+              <li>
+                <a class="related-card" href="{{ .RelPermalink }}">
+                  {{ partial "thumb.html" (dict "page" . "sizes" "(min-width: 64rem) 14rem, (min-width: 36rem) 30vw, 62vw") }}
+                  <span class="related-title">{{ .Title }}</span>
+                  <time class="related-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (i18n "date_full") }}</time>
+                </a>
+              </li>
             {{- end }}
-            <li>
-              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-              {{- with $shared }}<span class="via">{{ i18n "post_related_via" (dict "Tag" .) }}</span>{{ end }}
-            </li>
-          {{- end }}
-        </ul>
+          </ul>
+          <div class="rail-nav" hidden>
+            <button type="button" data-step="-1" aria-label="{{ i18n "rail_prev" }}">{{ partial "icon.html" "arrow-left" }}</button>
+            <button type="button" data-step="1" aria-label="{{ i18n "rail_next" }}">{{ partial "icon.html" "arrow-right" }}</button>
+          </div>
+        </div>
       </section>
     {{- end }}
   </footer>
