@@ -1,0 +1,51 @@
+# Bảng màu hiện ở trang "Về blog này" (layouts/about-blog.html).
+# Mã màu phải khớp token ở đầu assets/css/main.css (light / dark); sửa token
+# ở đó thì nhớ sửa ở đây. vi và ja là một câu mô tả vai trò của màu.
+
+[[colors]]
+  ja = "障子"
+  romaji = "Shōji"
+  light = "#f6f7f2"
+  dark = "#171915"
+  vi = "Nền. Ánh sáng lọt qua giấy dán cửa, hơi ngả xanh vì bóng tre."
+  ja_role = "地の色。障子越しの光で、竹の影がほんのり緑を落としています。"
+
+[[colors]]
+  ja = "墨"
+  romaji = "Sumi"
+  light = "#22251f"
+  dark = "#daddd3"
+  vi = "Chữ. Mực mài từ thỏi, đen có chút xanh rêu."
+  ja_role = "文字の色。固形墨をすったような、苔の緑を含む黒。"
+
+[[colors]]
+  ja = "竹影"
+  romaji = "Chikuei"
+  light = "#5a6055"
+  dark = "#9ca296"
+  vi = "Chữ phụ: ngày tháng, tiết khí, chú thích ảnh."
+  ja_role = "補助の文字。日付、節気、写真の説明に。"
+
+[[colors]]
+  ja = "白緑"
+  romaji = "Byakuroku"
+  light = "#dce3d6"
+  dark = "#222720"
+  vi = "Màu pastel duy nhất, cho nhãn khung và những dải nền nhạt."
+  ja_role = "唯一の淡い色。枠の題簽や、控えめな帯に。"
+
+[[colors]]
+  ja = "銀杏"
+  romaji = "Ichō"
+  light = "#6b4f0d"
+  dark = "#e3c05e"
+  vi = "Màu nhấn, chỉ hiện khi người đọc chạm vào. Vàng lá bạch quả mùa thu."
+  ja_role = "アクセント。触れたときだけ現れる、秋の銀杏の黄。"
+
+[[colors]]
+  ja = "朱"
+  romaji = "Shu"
+  light = "#a8402e"
+  dark = "#c4493d"
+  vi = "Mực dấu. Chỉ con dấu 元 cuối mỗi bài mang màu này."
+  ja_role = "朱肉の色。記事の最後に押す「元」の印だけに。"

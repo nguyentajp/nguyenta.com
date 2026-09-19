@@ -316,11 +316,15 @@ như bản tiếng Việt.
 
 | Muốn sửa | Ở đâu |
 |---|---|
-| Trang Giới thiệu | CMS → **Trang**, hoặc `content/vi/about.md`, `content/ja/about.md` |
+| Trang Về Nguyên (Gen) | CMS → **Trang**, hoặc `content/vi/about.md`, `content/ja/about.md` |
+| Trang Về blog này | Mục đích, ý tưởng: `content/vi/blog.md`, `content/ja/blog.md`. Bảng màu: `data/palette.toml`. Lời dưới kamon, con dấu: `i18n` (`blog_*`) |
+| Menu đầu trang, submenu Giới thiệu | `hugo.toml` → `menus.main` (mục con có `parent`). Submenu Danh mục tự liệt kê các danh mục |
+| Menu nhỏ ở chân trang | `hugo.toml` → `menus.under` |
+| Trang 404 | `hugo.toml` → `notFoundTitle`, `notFoundText`, `notFoundHome` (mỗi ngôn ngữ một bộ) |
 | Ảnh chân dung ở sidebar | Thay file `assets/brand/avatar.jpg` (site tự cắt khung dọc 4:5 lấy phần giữa, nên dùng ảnh dọc, mặt ở giữa) |
 | Trang Ủng hộ và khối Ủng hộ ở sidebar | `content/vi/support/index.md` (kèm ảnh mã QR), `content/ja/support/index.md`; lời trong khung sidebar ở `i18n` (`sidebar_support_text`). Xoá file thì khối tự ẩn |
 | Lời giới thiệu ở sidebar | `hugo.toml` → `[languages.vi.params]` → `bio` (bản tiếng Nhật: `[languages.ja.params]`) |
-| Dòng nhỏ dưới tên blog | `hugo.toml` → `tagline` (hai ngôn ngữ) |
+| Tagline dưới tên blog và ở chân trang | `hugo.toml` → `tagline` (hai ngôn ngữ) |
 | Email, mạng xã hội ở trang Liên hệ | `hugo.toml` → `[params]` → `email`, `[params.socials]` |
 | Số bài ở trang chủ | `hugo.toml` → `homeRecentCount` |
 | Chữ trên giao diện (nút, nhãn) | `i18n/vi.toml`, `i18n/ja.toml` |
@@ -396,9 +400,11 @@ ghi nhận trang.
 - **Viết bài trong lúc bảo trì:** viết và push như thường. Bài nằm trong repo
   và xem được ở [bản xem trước](#114-bảo-trì-và-bản-xem-trước-ai-thấy-gì),
   nhưng người ngoài chưa đọc được cho tới khi mở blog.
-- Trang [nguyenta.com/concept/](https://nguyenta.com/concept/) (bản mẫu thiết
-  kế, `layouts/concept.html`) vẫn mở cho mọi người, nhờ dòng
-  `maintenance_exempt: true` trong `content/vi/concept.md`.
+- Trang **Về blog này** ([nguyenta.com/ve-blog/](https://nguyenta.com/ve-blog/),
+  bản tiếng Nhật `/ja/about-blog/`, đường dẫn cũ `/concept/` tự chuyển sang)
+  vẫn mở cho mọi người, nhờ dòng `maintenance_exempt: true` trong
+  `content/vi/blog.md` và `content/ja/blog.md`. Lúc bảo trì trang này không có
+  header và footer, vì menu khi đó dẫn tới các trang chưa mở.
 - `hugo server` ở máy luôn hiện site đầy đủ. Lời nhắn nằm ở `maint_line`
   trong `i18n/vi.toml` và `i18n/ja.toml`.
 
@@ -676,7 +682,7 @@ gì để hỏng. Code Worker cũ vẫn còn trong lịch sử Git, ở commit `
 | Địa chỉ | Ai xem được | Nội dung |
 |---|---|---|
 | `nguyenta.com` và mọi trang con | Mọi người | Lúc bảo trì: chỉ trang ensō "đang dựng" (xem [mục 7](#7-build-và-deploy)) |
-| `nguyenta.com/concept/` | Mọi người | Bản mẫu thiết kế, mở cả khi bảo trì |
+| `nguyenta.com/ve-blog/` | Mọi người | Trang Về blog này (mục đích, ý tưởng, màu sắc), mở cả khi bảo trì |
 | `nguyenta-preview.genblog.workers.dev` | Chỉ anh (Cloudflare Access) | Site đầy đủ, không bảo trì, không bài nháp |
 | `localhost:1313/admin/` | Chỉ trên máy anh | CMS để viết bài |
 

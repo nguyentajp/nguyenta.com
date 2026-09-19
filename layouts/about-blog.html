@@ -1,0 +1,49 @@
+{{- /* Trang "Về blog này" / このブログについて: một trang, hai phần.
+       1. Mục đích và ý tưởng: chữ viết trong file nội dung (content/<ngôn
+          ngữ>/blog.md), anh sửa như một bài viết.
+       2. Màu sắc, kamon và con dấu: dựng bằng màu thật và file thật của site.
+          Màu đọc từ data/palette.toml, lời trong i18n (blog_*).
+     Trang không có sidebar. Khi site đang bảo trì, trang vẫn mở được
+     (maintenance_exempt) và khi đó không có header, footer (baseof.html). */ -}}
+{{ define "main" }}
+  {{- $lang := site.Language.Lang }}
+  <article class="about" data-pagefind-body>
+    <header class="page-head">
+      <h1 class="page-title">{{ .Title }}</h1>
+      {{- with .Description }}<p class="page-intro">{{ . }}</p>{{ end }}
+    </header>
+
+    <div class="prose">
+      {{ partial "furigana.html" .Content }}
+
+      <h2 id="mau-sac">{{ i18n "blog_colors" }}</h2>
+      <p>{{ i18n "blog_colors_text" }}</p>
+    </div>
+    <ul class="swatches">
+      {{- range hugo.Data.palette.colors }}
+        <li>
+          <span class="swatch-chips" aria-hidden="true">
+            <span style="{{ printf "background:%s" .light | safeCSS }}"></span>
+            <span style="{{ printf "background:%s" .dark | safeCSS }}"></span>
+          </span>
+          <span class="swatch-name"><span lang="ja">{{ .ja }}</span> {{ .romaji }}</span>
+          <span class="swatch-role">{{ cond (eq $lang "ja") .ja_role .vi }}</span>
+        </li>
+      {{- end }}
+    </ul>
+
+    <div class="prose">
+      <h2 id="kamon">{{ i18n "blog_marks" }}</h2>
+    </div>
+    <div class="marks">
+      <figure>
+        <div class="marks-art">{{ partial "kamon.html" (dict "class" "kamon") }}</div>
+        <figcaption>{{ i18n "blog_kamon_text" }}</figcaption>
+      </figure>
+      <figure>
+        <div class="marks-art marks-seal">{{ partial "hanko.html" . }}</div>
+        <figcaption>{{ i18n "blog_hanko_text" }}</figcaption>
+      </figure>
+    </div>
+  </article>
+{{ end }}

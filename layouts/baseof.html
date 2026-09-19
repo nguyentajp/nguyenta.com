@@ -9,7 +9,7 @@
   {{- /* Chế độ bảo trì (params.maintenance trong hugo.toml, chỉ khi build thật):
        mọi trang đều chỉ là vòng ensō và một dòng chữ. Bước cuối của
        workflow deploy còn xoá hết các trang khác trước khi đưa lên. Trang có
-       maintenance_exempt: true (trang /concept/) vẫn hiện bình thường. */}}
+       maintenance_exempt: true (trang Về blog này) vẫn hiện, không header, footer. */}}
   {{- if and hugo.IsProduction site.Params.maintenance (not .Params.maintenance_exempt) }}
   <main id="noi-dung">{{ partial "maintenance.html" . }}</main>
   {{- else }}
@@ -19,6 +19,11 @@
        qua define có thân rỗng. */}}
   {{- if or .Params.bare (eq .Kind "404") }}
     <main id="noi-dung">{{ block "main" . }}{{ end }}</main>
+  {{- /* Trang được mở khi bảo trì (maintenance_exempt) thì lúc bảo trì không có
+       header, sidebar, footer: link trong menu khi đó đều dẫn tới trang đã bị
+       xoá. Nội dung vẫn nằm trong khung như thường. */}}
+  {{- else if and hugo.IsProduction site.Params.maintenance }}
+    <div class="shell layout is-wide"><main id="noi-dung">{{ block "main" . }}{{ end }}</main></div>
   {{- else }}
     {{ partial "masthead.html" . }}
     {{- /* Hai cột như một blog quen thuộc: nội dung bên trái, sidebar bên phải.

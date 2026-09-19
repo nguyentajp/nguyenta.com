@@ -88,9 +88,6 @@
   /* Thang cỡ chữ cho tiêu đề, bước gần √2 */
   --size-brand: clamp(2.1rem, 4vw, 2.75rem);
   --size-mark: 3.75rem;
-  /* Tên blog ở trang con: nhỏ hơn tiêu đề bài một bậc rõ rệt */
-  --size-brand-sub: clamp(1.75rem, 2.8vw, 2rem);
-  --size-mark-sub: 3rem;
   --size-title: clamp(1.9rem, 3.4vw, 2.6rem);
   --size-lead: clamp(1.75rem, 3vw, 2.25rem);
 }
@@ -435,6 +432,15 @@ main {
   min-width: 0;
 }
 
+/* Trang không có sidebar (Giới thiệu, Về blog này): cột chữ vẫn giữ độ dài
+   dòng như trang bài viết, đặt giữa khung */
+.is-wide .prose,
+.is-wide .swatches,
+.is-wide .marks {
+  max-width: 44rem;
+  margin-inline: auto;
+}
+
 /* Tiêu đề trang: to, rõ, căn giữa, là thứ đầu tiên mắt chạm vào */
 .page-head {
   margin-block-end: var(--space-6);
@@ -507,11 +513,125 @@ main {
 }
 
 /* ── 5. Đầu trang, menu, ngôn ngữ, sáng tối ───────────────────────────────── */
+/* Tầng 1: hàng công cụ mảnh ở trên cùng. Ô tìm kiếm bên trái, chọn ngôn ngữ
+   và nút sáng tối bên phải, cùng chiều cao 2rem. */
+.masthead-top-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-block: var(--space-3);
+}
+
+/* Ô tìm kiếm nhỏ: một dòng gạch chân như ô lớn ở trang Tìm kiếm, không khung.
+   Kính lúp ở cuối là nút tìm. Focus: gạch chân đậm thành 2px. */
+.head-search {
+  display: flex;
+  align-items: center;
+  width: min(100%, 16rem);
+  border-block-end: 1px solid var(--field);
+}
+
+.head-search:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 1px 0 var(--ink);
+}
+
+.head-search input {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-1) 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.head-search input:focus {
+  outline: none;
+}
+
+.head-search input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.head-search button {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.head-search button:hover {
+  color: var(--accent);
+}
+
+.masthead-tools {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-3);
+  margin-inline-start: auto;
+}
+
+.icon {
+  display: block;
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Chọn ngôn ngữ: một nút, quả địa cầu và tên ngôn ngữ còn lại */
+.lang {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2rem;
+  padding-inline: 0.7rem;
+  border: 1px solid var(--field);
+  border-radius: calc(var(--radius) / 2);
+  font-size: 0.875rem;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.lang .icon {
+  color: var(--muted);
+}
+
+a.lang:hover,
+a.lang:hover .icon {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.lang[aria-disabled] {
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.lang[aria-disabled] > span:first-of-type {
+  text-decoration: line-through 1px var(--rule);
+}
+
+/* Tầng 2: kamon, tên blog, tagline. Một cỡ duy nhất ở mọi trang. */
 .masthead-brand {
   display: grid;
   justify-items: center;
   gap: var(--space-2);
-  padding-block: var(--space-6) var(--space-5);
+  padding-block: var(--space-4) var(--space-5);
   text-align: center;
 }
 
@@ -534,53 +654,63 @@ main {
   letter-spacing: 0.02em;
 }
 
-.masthead:not(.is-home) .brand-name {
-  font-size: var(--size-brand-sub);
-}
-
-.masthead:not(.is-home) .brand-mark {
-  width: var(--size-mark-sub);
-}
-
 .brand:hover {
   color: var(--ink);
 }
 
-.brand:hover .brand-mark {
-  color: var(--accent);
-}
-
+/* Tagline là một câu tuyên ngôn ngắn: chữ phụ, giãn nhẹ, ngắt dòng cân */
 .brand-tagline {
+  max-width: 30rem;
   font-size: 0.9375rem;
-  letter-spacing: 0.04em;
+  line-height: 1.7;
+  letter-spacing: 0.03em;
   color: var(--muted);
+  text-wrap: balance;
 }
 
-/* Hàng menu nằm giữa hai đường mảnh chạy hết bề ngang khung */
-.masthead-inner {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: var(--space-4);
+/* Tiếng Nhật chỉ xuống dòng sau dấu 、 (masthead.html chèn <wbr>), không bao
+   giờ tách đôi một cụm như ベトナム人と／して */
+.brand-tagline:lang(ja) {
+  letter-spacing: 0.1em;
+  word-break: keep-all;
 }
 
+/* Tầng 3: hàng menu nằm giữa hai đường mảnh chạy hết bề ngang khung */
 .masthead-bar .shell {
   border-block: 1px solid var(--rule);
   padding-block: var(--space-3);
 }
 
-.nav {
-  grid-column: 2;
+.masthead-inner {
+  display: flex;
+  justify-content: center;
+}
+
+.nav > ul {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--space-2) var(--space-5);
+  list-style: none;
   font-size: 1rem;
 }
 
-.nav a {
+.nav-item {
+  position: relative;
+}
+
+.nav-item > a {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
   padding-block: var(--space-1);
   text-decoration: none;
+}
+
+.nav-item > a .icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  color: var(--muted);
 }
 
 .nav a[aria-current="page"] {
@@ -588,84 +718,55 @@ main {
   text-underline-offset: 0.4em;
 }
 
-.nav a:hover {
+.nav a:hover,
+.nav-item > a:hover .icon {
   color: var(--accent);
 }
 
-/* Bên phải hàng menu: chọn ngôn ngữ và nút sáng tối, cùng chiều cao 2rem,
-   cùng viền và độ bo, để đọc như một cụm công cụ */
-.masthead-tools {
-  grid-column: 3;
-  justify-self: end;
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
+/* Submenu: khung mảnh màu mực như các khung ở sidebar, mở ngay dưới mục cha
+   khi rê chuột hoặc Tab tới (không cần JS). Phần đệm phía trên trong suốt là
+   cầu nối, để chuột đi từ mục cha xuống không làm submenu tắt giữa chừng. */
+.nav-sub {
+  position: absolute;
+  z-index: 20;
+  top: 100%;
+  left: 50%;
+  translate: -50% 0;
+  padding-block-start: var(--space-2);
+  visibility: hidden;
+  opacity: 0;
 }
 
-.icon {
+.has-sub:hover > .nav-sub,
+.has-sub:focus-within > .nav-sub {
+  visibility: visible;
+  opacity: 1;
+}
+
+.nav-sub ul {
+  min-width: 11rem;
+  padding-block: var(--space-2);
+  list-style: none;
+  background: var(--bg);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  font-size: 0.9375rem;
+  text-align: start;
+}
+
+.nav-sub a {
   display: block;
-  width: 1.125rem;
-  height: 1.125rem;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* Chọn ngôn ngữ: công tắc hai nấc, nấc đang đọc có nền 白緑 */
-.lang {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: 0.875rem;
-  color: var(--muted);
-}
-
-.lang-options {
-  display: flex;
-}
-
-.lang-options > * {
-  display: flex;
-  align-items: center;
-  min-height: 2rem;
-  padding-inline: 0.7rem;
-  border: 1px solid var(--field);
+  padding: var(--space-2) var(--space-4);
   text-decoration: none;
   white-space: nowrap;
 }
 
-.lang-options > :first-child {
-  border-start-start-radius: calc(var(--radius) / 2);
-  border-end-start-radius: calc(var(--radius) / 2);
-}
-
-.lang-options > :last-child {
-  border-start-end-radius: calc(var(--radius) / 2);
-  border-end-end-radius: calc(var(--radius) / 2);
-}
-
-.lang-options > * + * {
-  border-inline-start: 0;
-}
-
-.lang-options [aria-current] {
-  background: var(--band);
-  color: var(--ink);
-}
-
-.lang-options a:hover {
-  color: var(--accent);
-}
-
-.lang-options a:focus-visible {
+.nav-sub a:focus-visible {
   outline-offset: -3px;
 }
 
-.lang-options [aria-disabled] {
-  text-decoration: line-through 1px var(--rule);
-  cursor: not-allowed;
+.nav-sub a[aria-current="page"] {
+  text-underline-offset: 0.3em;
 }
 
 /* Lúc bấm đổi sáng tối (site.js thêm lớp này trong hai khung hình): không
@@ -710,8 +811,6 @@ main {
    phím Esc và bấm ra ngoài. */
 .menu-button {
   display: none;
-  grid-column: 1;
-  justify-self: start;
   white-space: nowrap;
   font: inherit;
   font-size: 1rem;
@@ -730,10 +829,12 @@ main {
   position: fixed;
   inset: 0;
   width: 100%;
+  height: 100%;
   max-width: none;
   max-height: none;
   margin: 0;
   padding: var(--gutter);
+  overflow-y: auto;
   border: 0;
   background: var(--bg);
   color: var(--ink);
@@ -744,14 +845,44 @@ main {
 }
 
 .menu-panel {
+  padding-block: 4rem var(--space-5);
+}
+
+.menu-panel ul {
+  list-style: none;
+}
+
+.menu-panel > ul:first-child {
   display: grid;
   gap: var(--space-4);
-  padding-block-start: 4rem;
   font-size: 1.5rem;
 }
 
 .menu-panel a {
   text-decoration: none;
+}
+
+/* Mục con (danh mục, các trang giới thiệu): chữ nhỏ hơn, thụt vào sau một
+   đường mảnh dọc */
+.menu-sub {
+  display: grid;
+  gap: var(--space-2);
+  margin-block-start: var(--space-3);
+  padding-inline-start: var(--space-4);
+  border-inline-start: 1px solid var(--rule);
+  font-size: 1.0625rem;
+  color: var(--muted);
+}
+
+.menu-under {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin-block-start: var(--space-6);
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid var(--rule);
+  font-size: 1rem;
+  color: var(--muted);
 }
 
 .menu-close {
@@ -1485,6 +1616,17 @@ main {
     transition-duration: var(--ink-in);
   }
 
+  /* Submenu hiện nhanh, tắt chậm; visibility đổi sau cùng để link trong
+     submenu vẫn bấm được cho tới khi mờ hẳn */
+  .nav-sub {
+    transition: opacity var(--ink-out) ease, visibility 0s linear var(--ink-out);
+  }
+
+  .has-sub:hover > .nav-sub,
+  .has-sub:focus-within > .nav-sub {
+    transition: opacity var(--ink-in) ease, visibility 0s;
+  }
+
   /* Chuyển trang: trang cũ mờ đi, trang mới hiện lên (View Transitions, không
      cần JS). Phần giống nhau giữa hai trang như đầu trang, sidebar trông như
      đứng yên. Không đặt view-transition-name riêng cho đầu trang: đang cuộn
@@ -1550,12 +1692,10 @@ main {
     --text-size: 1.0625rem;
     --size-mark: 3rem;
     --size-brand: 1.9rem;
-    --size-mark-sub: 2.5rem;
-    --size-brand-sub: 1.6rem;
   }
 
   .masthead-brand {
-    padding-block: var(--space-5) var(--space-4);
+    padding-block: var(--space-3) var(--space-4);
   }
 
   .nav {
@@ -1566,21 +1706,22 @@ main {
     display: inline-block;
   }
 
-  .masthead-inner {
-    grid-template-columns: 1fr auto;
+  /* Ô tìm kiếm chiếm hết chỗ còn lại của hàng công cụ, và co lại được khi
+     tên ngôn ngữ dài (Tiếng Việt) */
+  .head-search {
+    flex: 1;
+    width: auto;
+    min-width: 0;
   }
 
-  .masthead-tools {
-    grid-column: 2;
-  }
-
-  /* Điện thoại rất hẹp (320px): bỏ quả địa cầu cho đủ chỗ, hai tên ngôn ngữ
-     trong khung vẫn đủ rõ đây là chỗ chọn ngôn ngữ */
+  /* Điện thoại rất hẹp (320px): bỏ quả địa cầu cho đủ chỗ, tên ngôn ngữ trong
+     khung vẫn đủ rõ đây là chỗ chọn ngôn ngữ */
   @media (max-width: 22.999rem) {
     .lang .icon {
       display: none;
     }
 
+    .masthead-top-inner,
     .masthead-tools {
       gap: var(--space-2);
     }
@@ -1927,39 +2068,176 @@ html:has(.lightbox[open]) {
   font-variant-numeric: tabular-nums;
 }
 
-.archive-month {
-  margin-block-start: var(--space-5);
+/* Mục lục: bốn khối ngăn nhau bằng tiêu đề mục có hai đường mảnh */
+.index-jump {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2) var(--space-5);
+  margin-block-start: var(--space-4);
+  font-size: 0.9375rem;
+}
+
+.index-jump a {
+  text-decoration: underline 1px var(--rule);
+  text-underline-offset: 0.3em;
+}
+
+.index-jump a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+.index-block {
+  scroll-margin-block-start: var(--space-5);
+}
+
+.index-block:first-child .section-title {
+  margin-block-start: 0;
+}
+
+/* Ô tìm: cùng kiểu với ô ở sidebar, nhưng dài hơn và nằm giữa */
+.index-search {
+  display: flex;
+  max-width: 32rem;
+  margin-inline: auto;
+}
+
+.index-search input {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--field);
+  border-inline-end: 0;
+  border-radius: calc(var(--radius) / 2) 0 0 calc(var(--radius) / 2);
+  background: none;
+  color: inherit;
+  font: inherit;
+}
+
+.index-search input:focus-visible {
+  outline-offset: -2px;
+}
+
+.index-search button {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--ink);
+  border-radius: 0 calc(var(--radius) / 2) calc(var(--radius) / 2) 0;
+  background: var(--ink);
+  color: var(--bg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.index-search button:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+
+/* Năm danh mục một hàng: chữ Hán lớn, tên, số bài */
+.index-cats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--space-3);
+  list-style: none;
+}
+
+.index-cats a {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-1);
+  height: 100%;
+  padding: var(--space-4) var(--space-3);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  text-align: center;
+  text-decoration: none;
+}
+
+.index-cats a:hover {
+  border-color: var(--accent);
+}
+
+.index-cat-kanji {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.index-cat-name {
+  font-size: 1.0625rem;
+}
+
+.index-cats .count {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.index-cats .is-empty a {
+  color: var(--muted);
+}
+
+/* Theo ngày đăng: năm là một dòng lớn; mỗi tháng một hàng, tên tháng ở cột
+   trái, các bài ở cột phải: ngày kèm thứ, tiêu đề, danh mục */
+.index-year + .index-year {
+  margin-block-start: var(--space-6);
+}
+
+.index-year-title {
+  font-family: var(--font-headline);
+  font-size: 1.75rem;
+  font-weight: 450;
+  line-height: 1.2;
+  font-variant-numeric: lining-nums;
+}
+
+.index-month {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: var(--space-3) var(--space-5);
+  align-items: baseline;
+  padding-block: var(--space-4);
+  border-block-end: 1px solid var(--rule);
+  scroll-margin-block-start: var(--space-5);
+}
+
+.index-month-title {
   font-size: 0.9375rem;
   font-weight: 600;
   color: var(--muted);
 }
 
-.archive-list {
-  list-style: none;
-  margin-block-start: var(--space-2);
-}
-
-.archive-list li {
+.index-posts {
   display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1fr);
-  gap: var(--space-3);
-  align-items: baseline;
-  padding-block: 0.4rem;
-  border-block-end: 1px solid var(--rule);
+  gap: var(--space-2);
+  list-style: none;
 }
 
-.archive-list time {
+.index-posts li {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr) auto;
+  gap: var(--space-1) var(--space-4);
+  align-items: baseline;
+}
+
+.index-posts time,
+.index-post-cat {
   font-size: 0.875rem;
   color: var(--muted);
-  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
-.archive-list a {
+.index-posts a {
   font-size: 1.0625rem;
+  line-height: 1.5;
   text-decoration: none;
+  text-wrap: pretty;
 }
 
-.archive-list a:hover {
+.index-posts a:hover {
   color: var(--accent);
 }
 
@@ -2118,6 +2396,109 @@ html:has(.lightbox[open]) {
   }
 }
 
+
+/* Trang Về blog này: bảng màu thật và kamon, con dấu */
+.swatches {
+  display: grid;
+  margin-block: var(--space-4) var(--space-6);
+  list-style: none;
+}
+
+.swatches li {
+  display: grid;
+  grid-template-columns: 4.5rem 9rem minmax(0, 1fr);
+  gap: var(--space-1) var(--space-4);
+  align-items: center;
+  padding-block: var(--space-3);
+  border-block-end: 1px solid var(--rule);
+}
+
+.swatch-chips {
+  display: flex;
+}
+
+.swatch-chips span {
+  width: 2.25rem;
+  height: 2.25rem;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ink) 15%, transparent);
+}
+
+.swatch-chips span:first-child {
+  border-radius: calc(var(--radius) / 2) 0 0 calc(var(--radius) / 2);
+}
+
+.swatch-chips span:last-child {
+  border-radius: 0 calc(var(--radius) / 2) calc(var(--radius) / 2) 0;
+}
+
+.swatch-name {
+  font-size: 1rem;
+}
+
+.swatch-name [lang="ja"] {
+  font-weight: 600;
+}
+
+.swatch-role {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.marks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+  margin-block-start: var(--space-4);
+}
+
+.marks figure {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-4);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.marks-art {
+  display: grid;
+  place-items: center;
+  width: 7rem;
+  height: 7rem;
+}
+
+.marks-art .kamon {
+  width: 100%;
+}
+
+.marks-seal .seal {
+  width: 4.5rem;
+  margin: 0;
+}
+
+.marks figcaption {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+@media (max-width: 47.999rem) {
+  .swatches li {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+  }
+
+  .swatch-role {
+    grid-column: 2;
+  }
+
+  .marks {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 
 /* ── 13. Trang 凪 và trang 404 ───────────────────────────────────────────── */
 /* Không header, không footer, không chuyển động: chỉ một vòng mực và một dòng

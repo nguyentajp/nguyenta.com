@@ -1,6 +1,6 @@
 {{- /* Sidebar: mọi lối đi trong site nằm sẵn trên màn hình, như các blog quen
-     thuộc. Các khối: người viết, tìm kiếm, bài viết mới, danh mục, ủng hộ,
-     lưu trữ theo tháng. Mỗi khối là một khung có nhãn đề (xem main.css mục 8).
+     thuộc. Các khối: người viết, bài viết mới, danh mục, ủng hộ, lưu trữ theo
+     tháng (link tới trang Mục lục). Ô tìm kiếm nằm ở đầu trang. Mỗi khối là một khung có nhãn đề (xem main.css mục 8).
      Trên tablet và mobile, sidebar nằm dưới nội dung và tự xếp thành hàng
      ngang (CSS dựa vào bề rộng thật của sidebar, không dựa vào màn hình). */ -}}
 {{- $posts := where site.RegularPages "Section" "posts" -}}
@@ -19,20 +19,6 @@
         <p class="widget-more"><a href="{{ .RelPermalink }}">{{ i18n "sidebar_about_more" }}</a></p>
       {{- end }}
     </section>
-
-    {{- /* Không lặp ô tìm kiếm trên chính trang Tìm kiếm */}}
-    {{- with site.GetPage "/search" }}
-      {{- if ne $.RelPermalink .RelPermalink }}
-        <section class="widget">
-          <h2 class="widget-title">{{ i18n "nav_search" }}</h2>
-          <form class="widget-search" role="search" action="{{ .RelPermalink }}" method="get">
-            <label class="visually-hidden" for="sidebar-q">{{ i18n "search_placeholder" }}</label>
-            <input id="sidebar-q" name="q" type="search" placeholder="{{ i18n "search_placeholder" }}" autocomplete="off" enterkeyhint="search">
-            <button type="submit">{{ i18n "sidebar_search_button" }}</button>
-          </form>
-        </section>
-      {{- end }}
-    {{- end }}
 
     {{- /* Năm bài mới nhất, không tính bài đang đọc */}}
     {{- with first 5 (where $posts "RelPermalink" "!=" $.RelPermalink) }}
@@ -75,7 +61,7 @@
     {{- with $posts }}
       {{- $archive := site.GetPage "/archive" }}
       <section class="widget">
-        <h2 class="widget-title">{{ with $archive }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ else }}{{ i18n "nav_archive" }}{{ end }}</h2>
+        <h2 class="widget-title">{{ with $archive }}<a href="{{ .RelPermalink }}#ngay-dang">{{ i18n "nav_archive" }}</a>{{ else }}{{ i18n "nav_archive" }}{{ end }}</h2>
         <ul class="widget-list">
           {{- range first 12 ($posts.GroupByDate "2006-01") }}
             {{- $first := index .Pages 0 }}

@@ -1,37 +1,26 @@
-{{- /* Đầu trang đặt giữa như bìa một cuốn sổ: kamon, tên blog, một dòng mô tả,
-     rồi hàng menu nằm giữa hai đường mảnh. Trên trang chủ, kamon là bản tự vẽ
-     (nét vẽ duy nhất của site) và tên blog là <h1>. */ -}}
-{{- /* Ở trang chủ, tên blog là thứ lớn nhất trang. Ở các trang khác, tên blog
-     nhỏ lại để tiêu đề bài viết là điểm nhìn đầu tiên. */}}
-<header class="masthead{{ if .IsHome }} is-home{{ end }}">
-  <div class="shell masthead-brand">
-    <a class="brand" href="{{ "" | relLangURL }}">
-      {{- if .IsHome }}
-        {{ partial "kamon.html" (dict "class" "kamon brand-mark" "animated" true) }}
-      {{- else }}
-        {{ partial "kamon.html" (dict "class" "kamon brand-mark") }}
-      {{- end }}
-      {{- if .IsHome }}
-        <h1 class="brand-name">{{ .Site.Title }}</h1>
-      {{- else }}
-        <span class="brand-name">{{ .Site.Title }}</span>
-      {{- end }}
-    </a>
-    {{- with site.Params.tagline }}<p class="brand-tagline">{{ . }}</p>{{ end }}
-  </div>
-
-  <div class="masthead-bar">
-    <div class="shell masthead-inner">
-      <nav class="nav" aria-label="{{ i18n "nav_menu" }}">
-        {{- range .Site.Menus.main }}
-          {{- $current := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }}
-          <a href="{{ .URL }}"{{ if $current }} aria-current="page"{{ end }}>{{ .Name }}</a>
+{{- /* Đầu trang, ba tầng, đặt giữa như bìa một cuốn sổ:
+       1. Hàng công cụ mảnh: ô tìm kiếm bên trái; chọn ngôn ngữ và nút sáng tối
+          bên phải.
+       2. Kamon, tên blog, tagline. Cùng một cỡ ở mọi trang, để chuyển trang
+          không thấy đầu trang co giãn. Trang chủ: kamon tự vẽ, tên blog là <h1>.
+       3. Hàng menu giữa hai đường mảnh. Mục có submenu (Danh mục, Giới thiệu)
+          mở khi rê chuột hoặc Tab tới; trên điện thoại mọi mục nằm trong bảng
+          Menu (Popover API, không cần JS). */ -}}
+{{- $search := site.GetPage "/search" -}}
+{{- $categories := site.GetPage "/categories" -}}
+<header class="masthead">
+  <div class="masthead-top">
+    <div class="shell masthead-top-inner">
+      {{- /* Trang Tìm kiếm đã có ô lớn của nó, không lặp ô nhỏ ở đây */}}
+      {{- with $search }}
+        {{- if ne $.RelPermalink .RelPermalink }}
+          <form class="head-search" role="search" action="{{ .RelPermalink }}" method="get">
+            <label class="visually-hidden" for="head-q">{{ i18n "search_placeholder" }}</label>
+            <input id="head-q" name="q" type="search" placeholder="{{ i18n "search_placeholder" }}" autocomplete="off" enterkeyhint="search">
+            <button type="submit" aria-label="{{ i18n "sidebar_search_button" }}">{{ partial "icon.html" "search" }}</button>
+          </form>
         {{- end }}
-        {{- with site.GetPage "/search" }}
-          <a href="{{ .RelPermalink }}"{{ if eq $.RelPermalink .RelPermalink }} aria-current="page"{{ end }}>{{ i18n "nav_search" }}</a>
-        {{- end }}
-      </nav>
-      <button class="menu-button" type="button" popovertarget="menu">{{ i18n "nav_menu" }}</button>
+      {{- end }}
       <div class="masthead-tools">
         {{ partial "lang-switch.html" . }}
         {{ partial "theme-toggle.html" . }}
@@ -39,13 +28,72 @@
     </div>
   </div>
 
+  <div class="shell masthead-brand">
+    <a class="brand" href="{{ "" | relLangURL }}">
+      {{- partial "kamon.html" (dict "class" "kamon brand-mark" "animated" .IsHome) }}
+      {{- if .IsHome }}
+        <h1 class="brand-name">{{ .Site.Title }}</h1>
+      {{- else }}
+        <span class="brand-name">{{ .Site.Title }}</span>
+      {{- end }}
+    </a>
+    {{- with site.Params.tagline }}<p class="brand-tagline">{{ replace (htmlEscape .) "、" "、<wbr>" | safeHTML }}</p>{{ end }}
+  </div>
+
+  <div class="masthead-bar">
+    <div class="shell masthead-inner">
+      <nav class="nav" aria-label="{{ i18n "nav_menu" }}">
+        <ul>
+          {{- range .Site.Menus.main }}
+            {{- $current := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }}
+            {{- /* Submenu: mục con khai trong hugo.toml (parent), riêng Danh mục thì
+                 tự liệt kê các danh mục đang có, theo thứ tự weight */}}
+            {{- $children := slice }}
+            {{- range .Children }}{{ $children = $children | append (dict "url" .URL "name" .Name) }}{{ end }}
+            {{- if and $categories (eq .URL $categories.RelPermalink) }}
+              {{- range $categories.Pages.ByWeight }}{{ $children = $children | append (dict "url" .RelPermalink "name" .LinkTitle) }}{{ end }}
+              {{- $current = or $current (eq $.Kind "term") }}
+            {{- end }}
+            <li class="nav-item{{ with $children }} has-sub{{ end }}">
+              <a href="{{ .URL }}"{{ if $current }} aria-current="page"{{ end }}>
+                {{- .Name }}{{ with $children }}{{ partial "icon.html" "chevron" }}{{ end -}}
+              </a>
+              {{- with $children }}
+                <div class="nav-sub">
+                  <ul>
+                    {{- range . }}<li><a href="{{ .url }}"{{ if eq .url $.RelPermalink }} aria-current="page"{{ end }}>{{ .name }}</a></li>{{ end }}
+                  </ul>
+                </div>
+              {{- end }}
+            </li>
+          {{- end }}
+        </ul>
+      </nav>
+      <button class="menu-button" type="button" popovertarget="menu">{{ i18n "nav_menu" }}</button>
+    </div>
+  </div>
+
   {{/* Menu mobile dùng Popover API: đóng được bằng Esc và bấm ra ngoài, không cần JS */}}
   <div id="menu" popover>
     <button class="menu-close" type="button" popovertarget="menu" popovertargetaction="hide">{{ i18n "nav_menu_close" }}</button>
     <nav class="menu-panel" aria-label="{{ i18n "nav_menu" }}">
-      {{- range .Site.Menus.main }}<a href="{{ .URL }}">{{ .Name }}</a>{{ end }}
-      {{- with site.GetPage "/search" }}<a href="{{ .RelPermalink }}">{{ i18n "nav_search" }}</a>{{ end }}
-      {{- range .Site.Menus.under }}<a href="{{ .URL }}">{{ .Name }}</a>{{ end }}
+      <ul>
+        {{- range .Site.Menus.main }}
+          <li>
+            <a href="{{ .URL }}">{{ .Name }}</a>
+            {{- $isCategories := and $categories (eq .URL $categories.RelPermalink) }}
+            {{- if or .HasChildren $isCategories }}
+              <ul class="menu-sub">
+                {{- range .Children }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
+                {{- if $isCategories }}{{ range $categories.Pages.ByWeight }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>{{ end }}{{ end }}
+              </ul>
+            {{- end }}
+          </li>
+        {{- end }}
+      </ul>
+      <ul class="menu-under">
+        {{- range .Site.Menus.under }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
+      </ul>
     </nav>
   </div>
 </header>

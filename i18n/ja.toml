@@ -27,12 +27,9 @@ other = "現在地"
 [skip_to_content]
 other = "本文へ移動"
 
-[lang_current]
-other = "日本語"
-[lang_other]
-other = "Tiếng Việt"
-[lang_read_in]
-other = "他の言語で読む"
+# Link sang bản dịch ở dòng thông tin của bài: viết bằng ngôn ngữ ĐÍCH
+[lang_read_other]
+other = "Đọc bằng tiếng Việt"
 [lang_no_translation]
 other = "この記事のベトナム語版はまだありません"
 [lang_no_translation_short]
@@ -199,3 +196,27 @@ other = "非表示"
 other = "この記事の内容"
 [vocab_title]
 other = "語彙"
+
+# 目次 (layouts/archive.html)
+[index_search]
+other = "キーワードで探す"
+[index_categories]
+other = "カテゴリーから"
+[index_tags]
+other = "タグから"
+[index_time]
+other = "日付から"
+[index_day]
+other = "{{ .Day }}日（{{ .Weekday }}）"
+
+# このブログについて (layouts/about-blog.html)
+[blog_colors]
+other = "色"
+[blog_colors_text]
+other = "色はすべて、障子越しに眺める竹林から。紙と墨と竹の影です。夜は夜の竹林で、ごく暗い緑を地にしています。左がライトモード、右がダークモードの色です。"
+[blog_marks]
+other = "家紋と印"
+[blog_kamon_text]
+other = "家紋は「竹輪に三つ銀杏」。竹の輪に、三枚の銀杏の葉。銀杏はこのブログを書いている大阪の木、竹の輪はすべての記事をひとつの元につなぐ根です。"
+[blog_hanko_text]
+other = "記事の最後には「元」の印を押します。書の作品に落款を押すように。"

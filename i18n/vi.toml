@@ -27,12 +27,9 @@ other = "Vị trí của bài"
 [skip_to_content]
 other = "Sang phần nội dung"
 
-[lang_current]
-other = "Tiếng Việt"
-[lang_other]
-other = "日本語"
-[lang_read_in]
-other = "Đọc bằng"
+# Link sang bản dịch ở dòng thông tin của bài: viết bằng ngôn ngữ ĐÍCH
+[lang_read_other]
+other = "日本語で読む"
 [lang_no_translation]
 other = "Bài này chưa có bản tiếng Nhật"
 [lang_no_translation_short]
@@ -199,3 +196,27 @@ other = "Tắt"
 other = "Trong bài này"
 [vocab_title]
 other = "Từ vựng"
+
+# Mục lục (layouts/archive.html)
+[index_search]
+other = "Tìm theo từ khoá"
+[index_categories]
+other = "Theo danh mục"
+[index_tags]
+other = "Theo thẻ"
+[index_time]
+other = "Theo ngày đăng"
+[index_day]
+other = "{{ .Day }} · {{ .Weekday }}"
+
+# Về blog này (layouts/about-blog.html)
+[blog_colors]
+other = "Màu sắc"
+[blog_colors_text]
+other = "Cả bảng màu lấy từ một rừng tre nhìn qua cửa giấy 障子: giấy, mực, bóng tre. Ban đêm là rừng trúc về đêm, nền xanh rất tối. Ô trái là giao diện sáng, ô phải là giao diện tối."
+[blog_marks]
+other = "Kamon và con dấu"
+[blog_kamon_text]
+other = "Kamon 竹輪に三つ銀杏: ba lá bạch quả trong một vòng tre. Bạch quả là cây của Osaka, nơi blog được viết; vòng tre là bộ rễ nối mọi bài về một gốc."
+[blog_hanko_text]
+other = "Con dấu 元 đóng ở cuối mỗi bài, như người viết thư pháp đóng dấu cuối tác phẩm."

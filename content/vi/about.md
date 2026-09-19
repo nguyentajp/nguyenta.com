@@ -1,8 +1,10 @@
 ---
-title: Giới thiệu
+title: Về Nguyên (Gen)
 translationKey: page-about
 url: "/gioi-thieu/"
 layout: ""
+# Trang giới thiệu không có sidebar
+sidebar: false
 ---
 Trần Anh Nguyên, bút danh Gen (元). Sống và làm việc ở Osaka.
 

@@ -1,36 +1,96 @@
-{{- /* Lưu trữ: toàn bộ lịch sử trên một trang, chia theo năm rồi tới tháng.
-     Khác trang Bài viết: không đoạn trích, không phân trang, để lùi thật sâu về
-     quá khứ mà không phải bấm "trang sau" nhiều lần. Mỗi tháng có id
-     "thang-YYYY-MM" để sidebar link thẳng tới. */ -}}
+{{- /* Mục lục: mọi lối vào kho bài trên một trang, bốn cách tìm:
+       1. theo từ khoá   ô tìm kiếm, gửi sang trang Tìm kiếm
+       2. theo danh mục  năm ô, mỗi ô một chữ Hán đại diện và số bài
+       3. theo thẻ       mọi thẻ, kèm số bài
+       4. theo ngày đăng toàn bộ bài theo năm và tháng, không đoạn trích, không
+                         phân trang, để lùi thật sâu về quá khứ mà không phải
+                         bấm "trang sau". Mỗi tháng có id "thang-YYYY-MM" để
+                         sidebar link thẳng tới.
+     Trang không có sidebar (sidebar: false) để các cột có đủ chỗ. */ -}}
 {{ define "main" }}
-  {{- $years := (where .Site.RegularPages "Section" "posts").GroupByDate "2006" -}}
+  {{- $posts := where .Site.RegularPages "Section" "posts" -}}
+  {{- $years := $posts.GroupByDate "2006" -}}
   <header class="page-head">
     <h1 class="page-title">{{ .Title }}</h1>
-    {{- with .Content }}<div class="page-intro">{{ . }}</div>{{ end }}
-    {{- if gt (len $years) 1 }}
-      <nav class="years" aria-label="{{ i18n "archive_jump" }}">
-        {{- range $years }}<a href="#nam-{{ .Key }}">{{ .Key }}</a>{{ end }}
-      </nav>
-    {{- end }}
+    {{- with .Description }}<p class="page-intro">{{ . }}</p>{{ end }}
+    <nav class="index-jump" aria-label="{{ .Title }}">
+      <a href="#tim">{{ i18n "index_search" }}</a>
+      <a href="#danh-muc">{{ i18n "index_categories" }}</a>
+      <a href="#the">{{ i18n "index_tags" }}</a>
+      <a href="#ngay-dang">{{ i18n "index_time" }}</a>
+    </nav>
   </header>
 
-  {{- range $years }}
-    <section class="archive-year" id="nam-{{ .Key }}" aria-labelledby="nam-{{ .Key }}-tieu-de">
-      <h2 class="section-title" id="nam-{{ .Key }}-tieu-de">{{ .Key }}</h2>
-      {{- range .Pages.GroupByDate "2006-01" }}
-        {{- $first := index .Pages 0 }}
-        <h3 class="archive-month" id="thang-{{ .Key }}">{{ i18n "archive_month" (dict "Month" (printf "%d" $first.Date.Month)) }}</h3>
-        <ul class="archive-list">
-          {{- range .Pages }}
-            <li>
-              <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02" }}</time>
-              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+  <div class="index">
+    {{- with site.GetPage "/search" }}
+      <section class="index-block" aria-labelledby="tim">
+        <h2 class="section-title" id="tim">{{ i18n "index_search" }}</h2>
+        <form class="index-search" role="search" action="{{ .RelPermalink }}" method="get">
+          <label class="visually-hidden" for="index-q">{{ i18n "search_placeholder" }}</label>
+          <input id="index-q" name="q" type="search" placeholder="{{ i18n "search_placeholder" }}" autocomplete="off" enterkeyhint="search">
+          <button type="submit">{{ i18n "sidebar_search_button" }}</button>
+        </form>
+      </section>
+    {{- end }}
+
+    {{- with site.GetPage "/categories" }}
+      <section class="index-block" aria-labelledby="danh-muc">
+        <h2 class="section-title" id="danh-muc">{{ i18n "index_categories" }}</h2>
+        <ul class="index-cats">
+          {{- range .Pages.ByWeight }}
+            {{- $n := len .Pages }}
+            <li{{ if eq $n 0 }} class="is-empty"{{ end }}>
+              <a href="{{ .RelPermalink }}">
+                {{- with .Params.kanji }}<span class="index-cat-kanji" lang="ja" aria-hidden="true">{{ . }}</span>{{ end }}
+                <span class="index-cat-name">{{ .LinkTitle }}</span>
+                <span class="count">{{ i18n "list_count" (dict "Count" $n) }}</span>
+              </a>
             </li>
           {{- end }}
         </ul>
+      </section>
+    {{- end }}
+
+    {{- with site.Taxonomies.tags }}
+      <section class="index-block" aria-labelledby="the">
+        <h2 class="section-title" id="the">{{ i18n "index_tags" }}</h2>
+        <ul class="tag-cloud">
+          {{- range .Alphabetical }}
+            <li><a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}</a> <span class="count">{{ .Count }}</span></li>
+          {{- end }}
+        </ul>
+      </section>
+    {{- end }}
+
+    <section class="index-block" aria-labelledby="ngay-dang">
+      <h2 class="section-title" id="ngay-dang">{{ i18n "index_time" }}</h2>
+      {{- if gt (len $years) 1 }}
+        <nav class="years" aria-label="{{ i18n "archive_jump" }}">
+          {{- range $years }}<a href="#nam-{{ .Key }}">{{ .Key }}</a>{{ end }}
+        </nav>
+      {{- end }}
+      {{- range $years }}
+        <section class="index-year" id="nam-{{ .Key }}" aria-labelledby="nam-{{ .Key }}-tieu-de">
+          <h3 class="index-year-title" id="nam-{{ .Key }}-tieu-de">{{ .Key }}</h3>
+          {{- range .Pages.GroupByDate "2006-01" }}
+            {{- $first := index .Pages 0 }}
+            <div class="index-month" id="thang-{{ .Key }}">
+              <h4 class="index-month-title">{{ i18n "archive_month" (dict "Month" (printf "%d" $first.Date.Month)) }}</h4>
+              <ul class="index-posts">
+                {{- range .Pages }}
+                  <li>
+                    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ i18n "index_day" (dict "Day" .Date.Day "Weekday" (i18n (printf "weekday_%d" .Date.Weekday))) }}</time>
+                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                    {{- range first 1 (.GetTerms "categories") }}<span class="index-post-cat">{{ .LinkTitle }}</span>{{ end }}
+                  </li>
+                {{- end }}
+              </ul>
+            </div>
+          {{- end }}
+        </section>
+      {{- else }}
+        <p class="empty">{{ i18n "list_no_posts" }}</p>
       {{- end }}
     </section>
-  {{- else }}
-    <p class="empty">{{ i18n "list_no_posts" }}</p>
-  {{- end }}
+  </div>
 {{ end }}

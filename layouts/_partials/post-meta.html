@@ -1,7 +1,9 @@
 {{- /* Dòng thông tin dưới tiêu đề bài: ngày, tiết khí, danh mục, thời gian đọc.
      Các mục cách nhau bằng khoảng trắng, không nối bằng dấu chấm giữa.
      full = true (trang bài viết) thì thêm tiết khí, thời gian đọc và link bản
-     dịch; danh mục khi đó đã nằm ở dòng đường dẫn phía trên tiêu đề. */ -}}
+     dịch; danh mục khi đó đã nằm ở dòng đường dẫn phía trên tiêu đề. Link bản
+     dịch viết bằng ngôn ngữ của bản dịch ("日本語で読む" ở bài tiếng Việt), vì
+     người bấm vào là người đọc ngôn ngữ đó. */ -}}
 {{- $page := .page -}}
 <p class="meta">
   <time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ partial "date.html" $page.Date }}</time>
@@ -14,7 +16,7 @@
   {{- if .full }}
     <span>{{ i18n "reading_time" (dict "Count" $page.ReadingTime) }}</span>
     {{- with index (where $page.Translations "Lang" (cond (eq site.Language.Lang "vi") "ja" "vi")) 0 }}
-      <span><a href="{{ .RelPermalink }}" lang="{{ .Language.Lang }}" hreflang="{{ .Language.Lang }}">{{ i18n "lang_read_in" }} {{ .Language.Label }}</a></span>
+      <span><a href="{{ .RelPermalink }}" lang="{{ .Language.Lang }}" hreflang="{{ .Language.Lang }}">{{ i18n "lang_read_other" }}</a></span>
     {{- end }}
   {{- end }}
 </p>

@@ -51,8 +51,9 @@ defaultContentLanguageInSubdir = false
 
     [languages.vi.params]
       description = "Ghi chép của Gen từ Osaka: học tập, đời sống, du lịch, suy nghĩ và nhật ký."
-      # Dòng nhỏ dưới tên blog ở đầu trang
-      tagline = "Ghi chép từ Osaka"
+      # Tagline dưới tên blog ở đầu trang và ở chân trang. Là một câu tuyên
+      # ngôn ngắn, ứng với câu tiếng Nhật 大阪より、ベトナム人として、自分の旅を綴る。
+      tagline = "Từ Osaka, một người Việt chép lại hành trình của mình."
       # Đoạn giới thiệu ngắn trong khung "Về Nguyên" ở sidebar. Anh sửa tuỳ ý.
       bio = "Nguyên, bút danh Gen (元), sống và làm việc ở Osaka. Nơi đây ghi lại chuyện học tiếng Nhật, đời sống và những chuyến đi, bằng tiếng Việt và tiếng Nhật."
       # Trang 404 dùng chung cho hai ngôn ngữ: trang nào cũng hiện cả hai thứ
@@ -75,6 +76,9 @@ defaultContentLanguageInSubdir = false
       categories = "/danh-muc/"
       tags = "/the/"
 
+    # Menu chính. Mục có "parent" là mục con, hiện trong submenu của mục cha
+    # (identifier). Submenu của Danh mục không khai ở đây: masthead.html tự
+    # liệt kê các danh mục đang có, thêm danh mục mới là tự hiện.
     [[languages.vi.menus.main]]
       name = "Bài viết"
       pageRef = "/posts"
@@ -84,31 +88,38 @@ defaultContentLanguageInSubdir = false
       pageRef = "/categories"
       weight = 2
     [[languages.vi.menus.main]]
-      name = "Ảnh"
-      pageRef = "/photos"
+      name = "Mục lục"
+      pageRef = "/archive"
       weight = 3
     [[languages.vi.menus.main]]
       name = "Giới thiệu"
+      identifier = "gioi-thieu"
       pageRef = "/about"
       weight = 4
-
-    # Menu "dưới mặt đất" ở chân trang
-    [[languages.vi.menus.under]]
-      name = "Lưu trữ"
-      pageRef = "/archive"
+    [[languages.vi.menus.main]]
+      name = "Về Nguyên (Gen)"
+      parent = "gioi-thieu"
+      pageRef = "/about"
       weight = 1
+    [[languages.vi.menus.main]]
+      name = "Về blog này"
+      parent = "gioi-thieu"
+      pageRef = "/blog"
+      weight = 2
+
+    # Menu nhỏ ở chân trang
     [[languages.vi.menus.under]]
       name = "Thẻ"
       pageRef = "/tags"
-      weight = 2
+      weight = 1
     [[languages.vi.menus.under]]
       name = "Liên hệ"
       pageRef = "/contact"
-      weight = 3
+      weight = 2
     [[languages.vi.menus.under]]
       name = "Nagi"
       pageRef = "/nagi"
-      weight = 4
+      weight = 3
 
   [languages.ja]
     label = "日本語"          # tên ngôn ngữ hiển thị cho người đọc
@@ -120,7 +131,8 @@ defaultContentLanguageInSubdir = false
 
     [languages.ja.params]
       description = "大阪から、学びと暮らしと旅の記録。Gen の個人ブログです。"
-      tagline = "大阪からの記録"
+      # キャッチコピーは宣言なので常体（綴る）。記事本文の です・ます とは別の文体。
+      tagline = "大阪より、ベトナム人として、自分の旅を綴る。"
       bio = "大阪で暮らし、働いている Gen（元）です。日本語の勉強や暮らし、旅のことを、ベトナム語と日本語で書いています。"
       notFoundTitle = "このページはまだ芽を出していません"
       notFoundText = "お探しのページはありません。URL が変わったか、まだ公開されていないのかもしれません。"
@@ -146,30 +158,37 @@ defaultContentLanguageInSubdir = false
       pageRef = "/categories"
       weight = 2
     [[languages.ja.menus.main]]
-      name = "写真"
-      pageRef = "/photos"
+      name = "目次"
+      pageRef = "/archive"
       weight = 3
     [[languages.ja.menus.main]]
-      name = "プロフィール"
+      name = "紹介"
+      identifier = "shokai"
       pageRef = "/about"
       weight = 4
-
-    [[languages.ja.menus.under]]
-      name = "アーカイブ"
-      pageRef = "/archive"
+    [[languages.ja.menus.main]]
+      name = "プロフィール"
+      parent = "shokai"
+      pageRef = "/about"
       weight = 1
+    [[languages.ja.menus.main]]
+      name = "このブログについて"
+      parent = "shokai"
+      pageRef = "/blog"
+      weight = 2
+
     [[languages.ja.menus.under]]
       name = "タグ"
       pageRef = "/tags"
-      weight = 2
+      weight = 1
     [[languages.ja.menus.under]]
       name = "お問い合わせ"
       pageRef = "/contact"
-      weight = 3
+      weight = 2
     [[languages.ja.menus.under]]
       name = "凪"
       pageRef = "/nagi"
-      weight = 4
+      weight = 3
 
 # ── Danh mục và thẻ ──────────────────────────────────────────────────────────
 # categories: 5 mục cố định, là xương sống điều hướng.
