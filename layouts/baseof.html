@@ -8,8 +8,9 @@
 <body>
   {{- /* Chế độ bảo trì (params.maintenance trong hugo.toml, chỉ khi build thật):
        mọi trang đều chỉ là vòng ensō và một dòng chữ. Bước cuối của
-       workflow deploy còn xoá hết các trang khác trước khi đưa lên. */}}
-  {{- if and hugo.IsProduction site.Params.maintenance }}
+       workflow deploy còn xoá hết các trang khác trước khi đưa lên. Trang có
+       maintenance_exempt: true (trang /concept/) vẫn hiện bình thường. */}}
+  {{- if and hugo.IsProduction site.Params.maintenance (not .Params.maintenance_exempt) }}
   <main id="noi-dung">{{ partial "maintenance.html" . }}</main>
   {{- else }}
   <a class="skip" href="#noi-dung">{{ i18n "skip_to_content" }}</a>

@@ -9,7 +9,7 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f6f7f2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#171915" media="(prefers-color-scheme: dark)">
-<title>{{ if or .IsHome (and hugo.IsProduction site.Params.maintenance) }}{{ .Site.Title }}{{ else }}{{ .Title }} — {{ .Site.Title }}{{ end }}</title>
+<title>{{ if or .IsHome (and hugo.IsProduction site.Params.maintenance (not .Params.maintenance_exempt)) }}{{ .Site.Title }}{{ else }}{{ .Title }} — {{ .Site.Title }}{{ end }}</title>
 {{ with or .Description .Summary .Site.Params.description -}}
   <meta name="description" content="{{ . | plainify | truncate 180 }}">
 {{ end -}}

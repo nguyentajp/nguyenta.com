@@ -339,6 +339,9 @@ ghi nhận trang.
 - **Mở blog:** đổi thành `maintenance = false`, commit. Vài phút sau site hiện đầy đủ.
 - **Viết bài trong lúc bảo trì:** CMS ở `/admin` vẫn dùng được. Bài được lưu
   vào repo nhưng chưa ai đọc được, cho tới khi mở blog.
+- Trang [nguyenta.com/concept/](https://nguyenta.com/concept/) (bản mẫu thiết
+  kế, `layouts/concept.html`) vẫn mở cho mọi người, nhờ dòng
+  `maintenance_exempt: true` trong `content/vi/concept.md`.
 - `hugo server` ở máy luôn hiện site đầy đủ. Lời nhắn nằm ở `maint_line`
   trong `i18n/vi.toml` và `i18n/ja.toml`.
 
