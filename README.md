@@ -212,8 +212,6 @@ Trong CMS: nút **＋ → Ảnh**, chọn ảnh, điền mô tả, chú thích, 
 |---|---|
 | Rộng bằng cột chữ | Mặc định |
 | Nhỏ, ở giữa cột | Tối đa 20rem, cho mã QR hay hình nhỏ (`{class="narrow"}`) |
-| Rộng | Lấn ra hai bên cột chữ (`{class="wide"}`) |
-| Tràn hết khung | Rộng hết chiều ngang khung trang (`{class="full"}`) |
 
 Trên điện thoại, ảnh nào cũng tràn sát hai mép màn hình, trừ cỡ nhỏ.
 
@@ -222,7 +220,7 @@ Viết bằng tay thì dùng cú pháp Markdown. Chú thích đặt trong dấu 
 
 ```markdown
 ![Cầu Yodo lúc hoàng hôn](cau-yodo.jpg "Cầu Yodo, cuối tháng Chín")
-{class="wide"}
+{class="narrow"}
 ```
 
 ### Bộ ảnh (gallery)
@@ -725,5 +723,8 @@ chuột trên web.
 - [x] Workflow tự đẩy bản xem trước mỗi lần push (cần secret `CLOUDFLARE_API_TOKEN`).
 - [x] Xoá bài thử `zz-thu-nghiem-anh`.
 - [x] Thông tin chuyển khoản và mã VietQR ở trang Ủng hộ.
+- [ ] Xoá bài demo: các thư mục trong `content/*/posts/` có `demo: true` trong
+      front matter (ảnh bìa của chúng là ảnh vẽ tạm). Tìm bằng
+      `grep -rl '^demo: true' content`. Chưa xoá thì workflow không cho mở blog.
 - [ ] Thay ảnh chân dung (`assets/brand/avatar.jpg`) và thêm ảnh bìa cho các bài.
 - [ ] Mở blog: `maintenance = false` trong `hugo.toml`.

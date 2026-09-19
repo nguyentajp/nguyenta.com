@@ -41,23 +41,17 @@ const readAttrs = (text) => {
   return attrs;
 };
 
-const SIZES = [
-  { label: "Rộng bằng cột chữ", value: "normal" },
-  { label: "Rộng: lấn ra hai bên cột chữ", value: "wide" },
-  { label: "Tràn hết khung", value: "full" },
-];
-
-// Ảnh lẻ có thêm cỡ nhỏ đặt giữa cột, cho mã QR hay hình nhỏ; bộ ảnh thì không
+// Cột chữ có sidebar bên cạnh, nên ảnh chỉ có hai cỡ: bằng cột chữ, hoặc nhỏ
+// ở giữa cột cho mã QR hay hình nhỏ
 const IMAGE_SIZES = [
-  SIZES[0],
+  { label: "Rộng bằng cột chữ", value: "normal" },
   { label: "Nhỏ, ở giữa cột (mã QR, hình nhỏ)", value: "narrow" },
-  ...SIZES.slice(1),
 ];
 
 // ── Ảnh ────────────────────────────────────────────────────────────────────
 // Thay nút Ảnh mặc định của Decap (cùng id "image") để có thêm ô chọn cỡ ảnh.
 //   ![mô tả](anh.jpg "chú thích")
-//   {class="wide"}
+//   {class="narrow"}
 CMS.registerEditorComponent({
   id: "image",
   label: "Ảnh",
@@ -73,7 +67,7 @@ CMS.registerEditorComponent({
     { name: "caption", label: "Chú thích dưới ảnh", widget: "string", required: false },
     { name: "size", label: "Cỡ ảnh", widget: "select", default: "normal", options: IMAGE_SIZES },
   ],
-  pattern: /^!\[([^\]\n]*)\]\(([^\s)]+)(?:\s+"((?:[^"\\\n]|\\.)*)")?\)(?:\n\{class="(narrow|wide|full)"\})?$/,
+  pattern: /^!\[([^\]\n]*)\]\(([^\s)]+)(?:\s+"((?:[^"\\\n]|\\.)*)")?\)(?:\n\{class="(narrow)"\})?$/,
   fromBlock: (match) => ({
     alt: match[1],
     src: match[2],
@@ -108,7 +102,6 @@ CMS.registerEditorComponent({
       ],
       hint: "Trên điện thoại luôn là một cột.",
     },
-    { name: "size", label: "Độ rộng", widget: "select", default: "normal", options: SIZES },
     {
       name: "images",
       label: "Các ảnh",
@@ -132,11 +125,10 @@ CMS.registerEditorComponent({
         const [src, ...rest] = line.split("|");
         return { src: src.trim(), caption: rest.join("|").trim() };
       });
-    return { cols: attrs.cols || "2", size: attrs.class || "normal", images };
+    return { cols: attrs.cols || "2", images };
   },
-  toBlock: ({ cols = "2", size = "normal", images = [] }) => {
+  toBlock: ({ cols = "2", images = [] }) => {
     const attrs = [`cols="${cols}"`];
-    if (size === "wide" || size === "full") attrs.push(`class="${size}"`);
     const lines = (images || [])
       .filter((item) => item && item.src)
       .map((item) => (item.caption ? `${item.src} | ${String(item.caption).replace(/\n/g, " ")}` : item.src));

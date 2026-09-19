@@ -6,8 +6,6 @@
 
        ![...](anh.jpg "...")
        {class="narrow"}   → nhỏ, ở giữa cột (mã QR, hình nhỏ)
-       {class="wide"}     → lấn ra hai bên cột chữ (52rem)
-       {class="full"}     → tràn hết chiều ngang khung (64rem)
 
      Decap CMS chèn ảnh đúng bằng cú pháp Markdown này, nên mọi ảnh viết từ CMS
      cũng tự động thành <figure> có srcset, WebP và lightbox. */ -}}
@@ -30,11 +28,9 @@
   {{- if not $res -}}
     {{- warnf "Không tìm thấy ảnh %q trong bài %q" $src $page.Path -}}
   {{- else -}}
-    {{- /* Bề rộng ảnh hiển thị, theo --measure, --measure-wide, --shell trong main.css */ -}}
-    {{- $sizes := "(min-width: 45rem) 40rem, 100vw" -}}
+    {{- /* Bề rộng ảnh hiển thị: cột chữ khoảng 44rem khi có sidebar bên cạnh */ -}}
+    {{- $sizes := "(min-width: 64rem) 44rem, 100vw" -}}
     {{- if eq $class "narrow" }}{{ $sizes = "20rem" }}{{ end -}}
-    {{- if eq $class "wide" }}{{ $sizes = "(min-width: 57rem) 52rem, 100vw" }}{{ end -}}
-    {{- if eq $class "full" }}{{ $sizes = "(min-width: 69rem) 64rem, 100vw" }}{{ end -}}
     {{- /* Ảnh đầu tiên của bài thường nằm ngay dưới tiêu đề: tải ngay, không lazy */ -}}
     {{- $loading := cond (eq .Ordinal 0) "eager" "lazy" -}}
     {{- $picture := partial "picture.html" (dict

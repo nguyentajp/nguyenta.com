@@ -10,9 +10,7 @@
      Cách 2 — lấy hết ảnh khớp một mẫu tên trong page bundle. Viết một dòng
      thì phải kết thúc bằng "/>", nếu không Hugo báo lỗi "must be closed":
 
-       {{< gallery cols="2" match="minoo-*.jpg" />}}
-
-     Thêm class="wide" để lưới lấn sang khoảng 間, class="full" để tràn khung. */ -}}
+       {{< gallery cols="2" match="minoo-*.jpg" />}} */ -}}
 {{- $page := .Page -}}
 {{- $cols := .Get "cols" | default "2" -}}
 {{- $class := .Get "class" | default "" -}}

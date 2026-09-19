@@ -3,8 +3,7 @@
   {{- /* data-pagefind-body: Pagefind chỉ lập chỉ mục phần này, không lẫn menu hay sidebar */}}
   <article class="post" data-pagefind-body data-pagefind-meta="date:{{ .Date.Format "2006-01-02" }}">
     <header class="post-head">
-      {{- /* Trang bài viết không có sidebar bên cạnh (sidebar nằm dưới bài), nên
-           dòng này cho người đọc biết mình đang ở đâu và quay về danh mục */}}
+      {{- /* Dòng đường dẫn: người đọc biết mình đang ở đâu và quay về danh mục */}}
       <nav class="crumbs" aria-label="{{ i18n "nav_breadcrumb" }}" data-pagefind-ignore>
         <ol>
           {{- with site.GetPage "/posts" }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>{{ end }}

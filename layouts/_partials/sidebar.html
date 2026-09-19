@@ -1,8 +1,8 @@
 {{- /* Sidebar: mọi lối đi trong site nằm sẵn trên màn hình, như các blog quen
      thuộc. Các khối: người viết, tìm kiếm, bài viết mới, danh mục, ủng hộ,
      lưu trữ theo tháng. Mỗi khối là một khung có nhãn đề (xem main.css mục 8).
-     Trên mobile và ở trang bài viết, sidebar nằm dưới nội dung và tự xếp thành
-     hàng ngang (CSS dựa vào bề rộng thật của sidebar, không dựa vào màn hình). */ -}}
+     Trên tablet và mobile, sidebar nằm dưới nội dung và tự xếp thành hàng
+     ngang (CSS dựa vào bề rộng thật của sidebar, không dựa vào màn hình). */ -}}
 {{- $posts := where site.RegularPages "Section" "posts" -}}
 <aside class="sidebar" aria-label="{{ i18n "sidebar_label" }}" data-pagefind-ignore>
   <div class="sidebar-inner">

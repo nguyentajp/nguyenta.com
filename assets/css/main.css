@@ -80,11 +80,6 @@
   --shell: 64rem;
   --sidebar: 16.5rem;
   --col-gap: clamp(2.5rem, 5vw, 4rem);
-  /* Trang bài viết không có sidebar bên cạnh: cột chữ 40rem, khoảng 75 ký tự
-     tiếng Việt hay 36 chữ tiếng Nhật một dòng. Ảnh "wide" và "full" lấn ra
-     hai bên tới 52rem và hết khung. */
-  --measure: 40rem;
-  --measure-wide: 52rem;
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
 
   /* Bo góc khung ảnh: bìa bài, gallery, video, ảnh chân dung */
@@ -432,21 +427,8 @@ a:hover {
   padding-block: var(--space-6) var(--ma);
 }
 
-.layout.is-wide,
-.layout.is-post {
+.layout.is-wide {
   grid-template-columns: minmax(0, 1fr);
-}
-
-/* Trang bài viết: cột chữ ở giữa, khoảng trống hai bên là 間 của bài. Sidebar
-   xuống dưới bài (xem mục 8), cách bài một khoảng rộng. */
-.layout.is-post > main {
-  width: 100%;
-  max-width: var(--measure);
-  margin-inline: auto;
-}
-
-.layout.is-post {
-  row-gap: var(--ma);
 }
 
 main {
@@ -1172,7 +1154,7 @@ main {
 /* ── 8. Sidebar ───────────────────────────────────────────────────────────── */
 /* Sidebar là một container: các luật bên dưới dựa vào bề rộng thật của nó,
    không dựa vào bề rộng màn hình. Nằm cột bên phải thì là một cột dọc; nằm
-   dưới nội dung (mobile, trang bài viết) thì rộng ra và xếp thành hàng. */
+   dưới nội dung (tablet, mobile) thì rộng ra và xếp thành hàng. */
 .sidebar {
   container: sidebar / inline-size;
   font-size: 0.9375rem;
@@ -1182,6 +1164,21 @@ main {
 .sidebar-inner {
   display: grid;
   gap: var(--space-6);
+}
+
+/* Sidebar dính (máy tính, sidebar nằm bên phải): cuộn theo trang như thường,
+   tới khung cuối thì đứng lại ở đáy màn hình trong khi bài vẫn chạy, hết bài
+   thì trôi đi cùng trang. Không có thanh cuộn thứ hai, không giấu khung nào.
+   Cách làm: đặt sidebar ở đáy hàng lưới (align-self: end) và dính theo mép
+   dưới. min-height bằng màn hình để sidebar ngắn hơn màn hình (ít khung,
+   màn hình cao) vẫn bắt đầu ngay đầu hàng, rồi dính ở mép trên. */
+@media (min-width: 56rem) {
+  .sidebar {
+    position: sticky;
+    bottom: var(--space-5);
+    align-self: end;
+    min-height: calc(100vh - 2 * var(--space-5));
+  }
 }
 
 /* Mỗi khối là một khung mảnh màu mực, bo góc như ảnh. Tên khối là một nhãn
@@ -1239,14 +1236,6 @@ main {
   .widget-about .avatar {
     grid-row: span 2;
     margin: 0;
-  }
-}
-
-/* Trang bài viết trên máy tính: sáu khối thành hai hàng ba cột đều nhau,
-   mỗi khối đủ rộng để chữ không bị bẻ vụn thành dòng ngắn. */
-@container sidebar (min-width: 56rem) {
-  .sidebar-inner {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -1607,21 +1596,8 @@ main {
 
 
 /* ── 11. Ảnh, gallery, video, lightbox ───────────────────────────────── */
-/* Trang có sidebar bên phải: ảnh "wide" và "full" rộng bằng cột. Trang bài
-   viết (cột chữ ở giữa): "wide" lấn ra hai bên tới 52rem, "full" rộng hết
-   khung. Trên mobile, mọi ảnh tràn sát hai mép màn hình. */
-@media (min-width: 48rem) {
-  .is-post .figure.wide,
-  .is-post .figure.full {
-    width: min(var(--measure-wide), 100vw - 2 * var(--gutter));
-    margin-inline-start: 50%;
-    translate: -50% 0;
-  }
-
-  .is-post .figure.full {
-    width: min(var(--shell), 100vw - 2 * var(--gutter));
-  }
-}
+/* Ảnh trong bài rộng bằng cột chữ (bên phải là sidebar). Trên mobile, mọi
+   ảnh tràn sát hai mép màn hình, trừ ảnh nhỏ ở giữa cột. */
 
 /* Ảnh nhỏ ở giữa cột (mã QR, hình nhỏ): không tràn mép trên mobile, luôn bo góc */
 .figure.narrow {
