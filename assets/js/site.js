@@ -1,10 +1,11 @@
-// JavaScript của cả site. Chỉ năm việc, việc nào không có phần tử tương ứng
+// JavaScript của cả site. Chỉ sáu việc, việc nào không có phần tử tương ứng
 // trên trang thì bỏ qua:
 //   1. Kamon tự vẽ khi vào trang chủ lần đầu trong phiên
 //   2. Lightbox: bấm ảnh để xem lớn, Esc hoặc bấm nền để đóng, ← → để chuyển
 //   3. Video YouTube: chỉ tải iframe khi người đọc bấm phát
 //   4. Trang 静: Esc hoặc chạm vào đâu cũng quay lại trang trước
 //   5. Furigana: nút chọn hiện, chạm để xem, tắt
+//   6. Nút giao diện sáng tối
 
 // ── 1. Kamon ────────────────────────────────────────────────────────────────
 // Lần thứ hai trở đi trong cùng phiên, kamon hiện sẵn. Người đọc bật
@@ -184,4 +185,55 @@
     if (root.dataset.furigana !== "tap") return;
     event.target.closest("ruby")?.classList.toggle("is-shown");
   });
+})();
+
+// ── 6. Giao diện sáng tối ───────────────────────────────────────────────────
+// Mặc định theo cài đặt của máy. Bấm nút thì sang bên kia; nếu bên đó trùng
+// với cài đặt của máy thì xoá lựa chọn đã lưu, để site lại tự theo máy (người
+// đọc đổi máy sang tối lúc đêm thì site cũng tối theo).
+(() => {
+  const button = document.querySelector(".theme-toggle");
+  if (!button) return;
+
+  const root = document.documentElement;
+  const KEY = "gen-theme";
+  const system = matchMedia("(prefers-color-scheme: dark)");
+  const metas = document.querySelectorAll('meta[name="theme-color"]');
+  const systemScheme = () => (system.matches ? "dark" : "light");
+
+  // data-scheme cho CSS chọn biểu tượng; nhãn nút nói việc sẽ xảy ra khi bấm;
+  // màu thanh địa chỉ trên điện thoại đi theo lựa chọn nếu có.
+  const render = () => {
+    const chosen = root.dataset.theme;
+    const scheme = chosen || systemScheme();
+    root.dataset.scheme = scheme;
+    const label = scheme === "dark" ? button.dataset.labelLight : button.dataset.labelDark;
+    button.setAttribute("aria-label", label);
+    button.title = label;
+    metas.forEach((meta) => {
+      if (!chosen) meta.media = `(prefers-color-scheme: ${meta.dataset.scheme})`;
+      else meta.media = meta.dataset.scheme === chosen ? "all" : "not all";
+    });
+  };
+
+  button.addEventListener("click", () => {
+    const next = root.dataset.scheme === "dark" ? "light" : "dark";
+    const followSystem = next === systemScheme();
+    // Tạm tắt hiệu ứng đổi màu khi rê chuột, để cả trang đổi màu cùng lúc thay
+    // vì menu và link phai chậm theo sau nền
+    root.classList.add("is-switching-theme");
+    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("is-switching-theme")));
+    if (followSystem) delete root.dataset.theme;
+    else root.dataset.theme = next;
+    try {
+      if (followSystem) localStorage.removeItem(KEY);
+      else localStorage.setItem(KEY, next);
+    } catch {
+      // Không lưu được (cửa sổ riêng tư): giao diện vẫn đổi trong trang này.
+    }
+    render();
+  });
+
+  system.addEventListener("change", render);
+  render();
 })();

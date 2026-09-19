@@ -37,6 +37,12 @@ other = "Đọc bằng"
 other = "Bài này chưa có bản tiếng Nhật"
 [lang_no_translation_short]
 other = "chưa dịch"
+[lang_label]
+other = "Ngôn ngữ"
+[theme_to_dark]
+other = "Chuyển sang giao diện tối"
+[theme_to_light]
+other = "Chuyển sang giao diện sáng"
 
 # Định dạng ngày theo cú pháp layout của Go, mỗi ngôn ngữ một kiểu riêng
 [date_full]

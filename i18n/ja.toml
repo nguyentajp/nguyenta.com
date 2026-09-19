@@ -37,6 +37,12 @@ other = "他の言語で読む"
 other = "この記事のベトナム語版はまだありません"
 [lang_no_translation_short]
 other = "未訳"
+[lang_label]
+other = "言語"
+[theme_to_dark]
+other = "ダークモードにする"
+[theme_to_light]
+other = "ライトモードにする"
 
 # Định dạng ngày theo cú pháp layout của Go, mỗi ngôn ngữ một kiểu riêng
 [date_full]

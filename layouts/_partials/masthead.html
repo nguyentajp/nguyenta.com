@@ -32,7 +32,10 @@
         {{- end }}
       </nav>
       <button class="menu-button" type="button" popovertarget="menu">{{ i18n "nav_menu" }}</button>
-      {{ partial "lang-switch.html" . }}
+      <div class="masthead-tools">
+        {{ partial "lang-switch.html" . }}
+        {{ partial "theme-toggle.html" . }}
+      </div>
     </div>
   </div>
 

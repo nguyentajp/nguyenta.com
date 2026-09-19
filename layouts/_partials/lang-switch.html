@@ -1,18 +1,23 @@
-{{- /* Nút chuyển ngôn ngữ.
-     - Trang có bản dịch: link thẳng tới đúng trang đó ở ngôn ngữ kia.
-     - Trang chưa có bản dịch: gạch ngang tên ngôn ngữ và nói rõ lý do, không
-       đưa người đọc về trang chủ. */ -}}
-<p class="lang">
-  <span aria-current="true" lang="{{ .Site.Language.Lang }}">{{ i18n "lang_current" }}</span>
-  {{- range hugo.Sites }}
-    {{- $other := .Language }}
-    {{- if ne $other.Lang $.Site.Language.Lang }}
-      {{- with index (where $.Translations "Lang" $other.Lang) 0 }}
-        <a href="{{ .RelPermalink }}" lang="{{ $other.Lang }}" hreflang="{{ $other.Lang }}">{{ $other.Label }}</a>
-      {{- else }}
-        <span lang="{{ $other.Lang }}" aria-disabled="true" title="{{ i18n "lang_no_translation" }}">{{ $other.Label }}</span>
-        <span class="lang-note">{{ i18n "lang_no_translation_short" }}</span>
+{{- /* Nút chuyển ngôn ngữ: quả địa cầu (biểu tượng ngôn ngữ ai cũng hiểu) và hai
+     tên ngôn ngữ viết bằng chính ngôn ngữ đó, gộp trong một khung như công tắc
+     hai nấc. Không dùng lá cờ: cờ là quốc gia chứ không phải ngôn ngữ, Windows
+     không hiện cờ emoji, và màu cờ phá bảng màu của site.
+     - Trang có bản dịch: nấc kia link thẳng tới đúng trang đó ở ngôn ngữ kia.
+     - Trang chưa có bản dịch: nấc kia gạch ngang, nói rõ lý do, không đưa
+       người đọc về trang chủ. */ -}}
+<nav class="lang" aria-label="{{ i18n "lang_label" }}">
+  {{ partial "icon.html" "globe" }}
+  <span class="lang-options">
+    <span aria-current="true" lang="{{ .Site.Language.Lang }}">{{ i18n "lang_current" }}</span>
+    {{- range hugo.Sites }}
+      {{- $other := .Language }}
+      {{- if ne $other.Lang $.Site.Language.Lang }}
+        {{- with index (where $.Translations "Lang" $other.Lang) 0 }}
+          <a href="{{ .RelPermalink }}" lang="{{ $other.Lang }}" hreflang="{{ $other.Lang }}">{{ $other.Label }}</a>
+        {{- else }}
+          <span lang="{{ $other.Lang }}" aria-disabled="true" title="{{ i18n "lang_no_translation" }}">{{ $other.Label }}<span class="visually-hidden"> ({{ i18n "lang_no_translation_short" }})</span></span>
+        {{- end }}
       {{- end }}
     {{- end }}
-  {{- end }}
-</p>
+  </span>
+</nav>

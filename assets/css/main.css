@@ -27,8 +27,8 @@
 
 /* ── 1. Token ─────────────────────────────────────────────────────────────── */
 :root {
-  /* Màu. Không có màu nhấn khi trang đứng yên: thứ bậc tạo bằng đậm nhạt và cỡ
-     chữ. Màu 銀杏 chỉ hiện khi người đọc rê chuột hoặc Tab tới. */
+  /* Màu. Thứ bậc tạo bằng đậm nhạt và cỡ chữ; màu 銀杏 hiện khi người đọc rê
+     chuột hoặc Tab tới, và ở gạch chân các link mời bấm trong sidebar. */
   --shoji: #f6f7f2;      /* 障子 — ánh sáng qua giấy dán cửa, hơi ngả xanh vì bóng tre */
   --sumi: #22251f;       /* 墨 — mực, đen có chút xanh rêu */
   --chikuei: #5a6055;    /* 竹影 — bóng tre, dùng cho chữ phụ */
@@ -38,17 +38,22 @@
   --icho: #6b4f0d;       /* 銀杏 — vàng lá bạch quả, chỉ khi tương tác */
   --shu: #a8402e;        /* 朱 — mực dấu, chỉ con dấu 元 */
 
-  --bg: var(--shoji);
-  --ink: var(--sumi);
-  --muted: var(--chikuei);
-  --band: var(--byakuroku);
-  --rule: var(--fushi);
-  --field: var(--kabe);
-  --accent: var(--icho);
+  /* Mỗi vai trò có hai màu: sáng và tối. Tối không phải đảo màu mà là rừng
+     trúc ban đêm, nền xanh rất tối. light-dark() chọn theo color-scheme: mặc
+     định theo máy, nút ☀/☾ ở đầu trang đặt data-theme trên <html> để ép một
+     bên (head.html, site.js mục 6). */
+  color-scheme: light dark;
+  --bg: light-dark(var(--shoji), #171915);
+  --ink: light-dark(var(--sumi), #daddd3);
+  --muted: light-dark(var(--chikuei), #9ca296);
+  --band: light-dark(var(--byakuroku), #222720);
+  --rule: light-dark(var(--fushi), #363b33);
+  --field: light-dark(var(--kabe), #646960);
+  --accent: light-dark(var(--icho), #e3c05e);
   /* Đường gạch chân mang màu nhấn: pha nhạt với nền, vì màu nhấn đã được làm
      đậm cho đủ tương phản khi là chữ, để làm gạch chân thì gần như màu mực */
   --accent-line: color-mix(in oklab, var(--accent) 60%, var(--bg));
-  --seal: var(--shu);
+  --seal: light-dark(var(--shu), #c4493d);
 
   /* Chữ. "Gen Latin" là Literata, "Gen Latin Display" là Literata bản cắt cho
      cỡ lớn (opsz 60), "Gen JP" là Shippori Mincho, "Gen JP Display"
@@ -93,23 +98,32 @@
   --size-mark-sub: 3rem;
   --size-title: clamp(1.9rem, 3.4vw, 2.6rem);
   --size-lead: clamp(1.75rem, 3vw, 2.25rem);
+}
 
+:root[data-theme="light"] {
   color-scheme: light;
 }
 
-/* Dark mode theo cài đặt hệ thống, không có nút bật tắt.
-   Không phải đảo màu: đây là rừng trúc ban đêm, nền xanh rất tối. */
-@media (prefers-color-scheme: dark) {
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* Trình duyệt cũ chưa hiểu light-dark() (Safari trước 17.5): dùng giao diện
+   sáng và ẩn nút sáng tối, thay vì để mọi màu mất hết. */
+@supports not (color: light-dark(#000, #fff)) {
   :root {
-    --bg: #171915;
-    --ink: #daddd3;
-    --muted: #9ca296;
-    --band: #222720;
-    --rule: #363b33;
-    --field: #646960;
-    --accent: #e3c05e;
-    --seal: #c4493d;
-    color-scheme: dark;
+    --bg: var(--shoji);
+    --ink: var(--sumi);
+    --muted: var(--chikuei);
+    --band: var(--byakuroku);
+    --rule: var(--fushi);
+    --field: var(--kabe);
+    --accent: var(--icho);
+    --seal: var(--shu);
+  }
+
+  .theme-toggle {
+    display: none;
   }
 }
 
@@ -510,7 +524,7 @@ main {
   text-align: center;
 }
 
-/* ── 5. Đầu trang, menu, nút chuyển ngôn ngữ ─────────────────────────────── */
+/* ── 5. Đầu trang, menu, ngôn ngữ, sáng tối ───────────────────────────────── */
 .masthead-brand {
   display: grid;
   justify-items: center;
@@ -596,30 +610,118 @@ main {
   color: var(--accent);
 }
 
-.lang {
+/* Bên phải hàng menu: chọn ngôn ngữ và nút sáng tối, cùng chiều cao 2rem,
+   cùng viền và độ bo, để đọc như một cụm công cụ */
+.masthead-tools {
   grid-column: 3;
   justify-self: end;
   display: flex;
+  align-items: center;
   gap: var(--space-3);
-  align-items: baseline;
+}
+
+.icon {
+  display: block;
+  width: 1.125rem;
+  height: 1.125rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Chọn ngôn ngữ: công tắc hai nấc, nấc đang đọc có nền 白緑 */
+.lang {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   font-size: 0.875rem;
   color: var(--muted);
 }
 
-.lang a {
-  text-decoration: none;
+.lang-options {
+  display: flex;
 }
 
-.lang [aria-current] {
+.lang-options > * {
+  display: flex;
+  align-items: center;
+  min-height: 2rem;
+  padding-inline: 0.7rem;
+  border: 1px solid var(--field);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.lang-options > :first-child {
+  border-start-start-radius: calc(var(--radius) / 2);
+  border-end-start-radius: calc(var(--radius) / 2);
+}
+
+.lang-options > :last-child {
+  border-start-end-radius: calc(var(--radius) / 2);
+  border-end-end-radius: calc(var(--radius) / 2);
+}
+
+.lang-options > * + * {
+  border-inline-start: 0;
+}
+
+.lang-options [aria-current] {
+  background: var(--band);
   color: var(--ink);
 }
 
-.lang [aria-disabled] {
-  text-decoration: line-through 1px var(--rule);
+.lang-options a:hover {
+  color: var(--accent);
 }
 
-.lang-note {
-  font-size: 0.8125rem;
+.lang-options a:focus-visible {
+  outline-offset: -3px;
+}
+
+.lang-options [aria-disabled] {
+  text-decoration: line-through 1px var(--rule);
+  cursor: not-allowed;
+}
+
+/* Lúc bấm đổi sáng tối (site.js thêm lớp này trong hai khung hình): không
+   chuyển động màu, để cả trang đổi cùng lúc */
+.is-switching-theme *,
+.is-switching-theme *::before,
+.is-switching-theme *::after {
+  transition: none !important;
+}
+
+/* Nút sáng tối: đang sáng hiện mặt trăng, đang tối hiện mặt trời. Không có
+   JS (head.html chưa đặt data-scheme) thì không đổi được, nên ẩn đi. */
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid var(--field);
+  border-radius: calc(var(--radius) / 2);
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+:root:not([data-scheme]) .theme-toggle,
+.theme-toggle .icon-sun,
+:root[data-scheme="dark"] .theme-toggle .icon-moon {
+  display: none;
+}
+
+:root[data-scheme="dark"] .theme-toggle .icon-sun {
+  display: block;
 }
 
 /* Menu mobile dùng Popover API của HTML: không cần JavaScript, có sẵn đóng bằng
@@ -628,6 +730,7 @@ main {
   display: none;
   grid-column: 1;
   justify-self: start;
+  white-space: nowrap;
   font: inherit;
   font-size: 1rem;
   color: inherit;
@@ -1417,8 +1520,20 @@ main {
     grid-template-columns: 1fr auto;
   }
 
-  .lang {
+  .masthead-tools {
     grid-column: 2;
+  }
+
+  /* Điện thoại rất hẹp (320px): bỏ quả địa cầu cho đủ chỗ, hai tên ngôn ngữ
+     trong khung vẫn đủ rõ đây là chỗ chọn ngôn ngữ */
+  @media (max-width: 22.999rem) {
+    .lang .icon {
+      display: none;
+    }
+
+    .masthead-tools {
+      gap: var(--space-2);
+    }
   }
 
   .post-grid {

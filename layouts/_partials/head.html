@@ -7,8 +7,12 @@
 {{/* Thanh địa chỉ trên điện thoại cùng màu nền trang. Hai mã màu này phải khớp
      --bg trong assets/css/main.css (light và dark). */ -}}
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f6f7f2" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#171915" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f7f2" media="(prefers-color-scheme: light)" data-scheme="light">
+<meta name="theme-color" content="#171915" media="(prefers-color-scheme: dark)" data-scheme="dark">
+{{- /* Giao diện sáng tối, đặt trước khi vẽ trang để không nháy màu:
+     data-theme = lựa chọn đã lưu (nếu có), data-scheme = giao diện đang hiện
+     (lựa chọn, hoặc theo máy). Nút đổi và phần còn lại: site.js mục 6. */}}
+<script>(function(){var d=document.documentElement,t=null;try{t=localStorage.getItem("gen-theme")}catch(e){}if(t!=="light"&&t!=="dark")t=null;if(t)d.dataset.theme=t;d.dataset.scheme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")})()</script>
 {{- /* Bài có furigana: đặt chế độ người đọc đã chọn lên <html> ngay từ đầu, trước
      khi vẽ trang. Để tới site.js mới đặt thì furigana hiện ra rồi mới ẩn, cả
      đoạn văn nhảy lên (Lighthouse tính là CLS). Xem _partials/furigana.html. */}}

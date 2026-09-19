@@ -1,0 +1,10 @@
+{{- /* Nút sáng tối: đang sáng thì hiện mặt trăng (bấm để sang tối), đang tối thì
+     hiện mặt trời. Biểu tượng nào hiện do CSS dựa vào <html data-scheme>, đặt
+     sẵn trong head.html trước khi vẽ trang. Nhãn và cách đổi: site.js mục 6.
+     Không có JS thì nút ẩn và site theo cài đặt của máy. */ -}}
+<button class="theme-toggle" type="button"
+        aria-label="{{ i18n "theme_to_dark" }}" title="{{ i18n "theme_to_dark" }}"
+        data-label-dark="{{ i18n "theme_to_dark" }}" data-label-light="{{ i18n "theme_to_light" }}">
+  {{- partial "icon.html" "moon" }}
+  {{- partial "icon.html" "sun" -}}
+</button>
