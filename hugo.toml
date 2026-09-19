@@ -165,7 +165,7 @@ defaultContentLanguageInSubdir = false
 
 # ── Danh mục và thẻ ──────────────────────────────────────────────────────────
 # categories: 5 mục cố định, là xương sống điều hướng.
-# tags: tự do, dùng để liên kết chéo giữa các bài ("cùng rễ").
+# tags: tự do, dùng để liên kết chéo giữa các bài (mục "Bài viết liên quan").
 [taxonomies]
   category = "categories"
   tag = "tags"
@@ -247,7 +247,7 @@ defaultContentLanguageInSubdir = false
   email = "info@nguyenta.com"
   # Số bài hiện trên trang chủ, không tính bài mới nhất đã hiện đầy đủ
   homeRecentCount = 4
-  # Số bài "cùng rễ" (liên quan qua thẻ chung) ở cuối mỗi bài
+  # Số bài trong mục "Bài viết liên quan" (chung thẻ hoặc danh mục) ở cuối mỗi bài
   relatedCount = 3
 
   [params.socials]
@@ -257,7 +257,7 @@ defaultContentLanguageInSubdir = false
     x = ""
     youtube = ""
 
-# ── Bài "cùng rễ": Hugo dùng thẻ chung để tìm bài liên quan ─────────────────
+# ── Bài viết liên quan: Hugo dùng thẻ chung để tìm ─────────────────────────
 [related]
   includeNewer = true
   threshold = 60

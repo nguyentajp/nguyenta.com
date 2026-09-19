@@ -9,7 +9,7 @@
     {{ partial "hanko.html" . }}
   </article>
 
-  {{- /* Cuối bài: thẻ, bài trước và sau, bài cùng rễ. Một khối gọn, không lặp dải màu. */}}
+  {{- /* Cuối bài: thẻ, bài trước và sau, bài viết liên quan. Một khối gọn, không lặp dải màu. */}}
   <footer class="post-foot" data-pagefind-ignore>
     {{- with .GetTerms "tags" }}
       <p class="post-tags">
@@ -38,8 +38,8 @@
 
     {{- $related := first (site.Params.relatedCount | default 3) (site.RegularPages.Related .) }}
     {{- with $related }}
-      <section class="related" aria-labelledby="cung-re">
-        <h2 class="section-title" id="cung-re">{{ i18n "post_related" }}</h2>
+      <section class="related" aria-labelledby="lien-quan">
+        <h2 class="section-title" id="lien-quan">{{ i18n "post_related" }}</h2>
         <ul class="related-list">
           {{- $tagNames := slice }}
           {{- range $.GetTerms "tags" }}{{ $tagNames = $tagNames | append .LinkTitle }}{{ end }}

@@ -54,7 +54,7 @@ other = "最終更新 {{ .Date }}"
 [post_tags]
 other = "タグ"
 [post_related]
-other = "同じ根から"
+other = "関連記事"
 [post_related_via]
 other = "共通のタグ「{{ .Tag }}」"
 [post_nearby]

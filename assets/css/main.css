@@ -423,7 +423,7 @@ main {
   margin-block-start: var(--space-3);
 }
 
-/* Tiêu đề một mục trong trang (Gần đây, Cùng rễ, các năm ở Lưu trữ):
+/* Tiêu đề một mục trong trang (Gần đây, Bài viết liên quan, các năm ở Lưu trữ):
    chữ ở giữa, hai đường mảnh hai bên, như đường ngăn giữa hai phần */
 .section-title {
   display: flex;
@@ -848,7 +848,7 @@ main {
   height: auto;
 }
 
-/* Cuối bài: thẻ, bài trước và sau, bài cùng rễ */
+/* Cuối bài: thẻ, bài trước và sau, bài viết liên quan */
 .post-foot {
   margin-block-start: var(--space-6);
 }

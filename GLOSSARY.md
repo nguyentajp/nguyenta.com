@@ -53,7 +53,7 @@ Các chuỗi giao diện thật nằm trong `i18n/vi.toml` và `i18n/ja.toml`. B
 | bài viết | 記事 |
 | danh mục | カテゴリー |
 | thẻ | タグ |
-| bài cùng rễ | 同じ根から |
+| bài viết liên quan | 関連記事 |
 | lưu trữ | アーカイブ |
 | bản nháp | 下書き |
 | ảnh | 写真 |
