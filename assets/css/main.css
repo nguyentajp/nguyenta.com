@@ -1082,8 +1082,8 @@ main {
 }
 
 /* Mỗi khối là một khung mảnh màu mực, bo góc như ảnh. Tên khối là một nhãn
-   nhỏ có viền riêng, đặt lệch trái đè lên đường khung, như mảnh giấy đề tên
-   (題簽) dán trên bìa sách đóng chỉ. Không đổ bóng: khung giấy, không phải card. */
+   có viền riêng và nền 白緑, đặt lệch trái đè lên đường khung, như mảnh giấy đề
+   tên (題簽) dán trên bìa sách đóng chỉ. Không đổ bóng: khung giấy, không phải card. */
 .widget {
   position: relative;
   padding: var(--space-5) var(--space-4) var(--space-4);
@@ -1097,11 +1097,12 @@ main {
   inset-inline-start: var(--space-3);
   translate: 0 -50%;
   max-width: calc(100% - 2 * var(--space-3));
-  padding: 0.1rem var(--space-3);
+  padding: 0.15rem 0.9rem;
   border: 1px solid var(--ink);
   border-radius: calc(var(--radius) / 2);
-  background: var(--bg);
-  font-size: 0.9375rem;
+  background: var(--band);
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
   font-weight: 600;
   line-height: 1.6;
   letter-spacing: 0.02em;
@@ -1505,6 +1506,16 @@ main {
   .is-post .figure.full {
     width: min(var(--shell), 100vw - 2 * var(--gutter));
   }
+}
+
+/* Ảnh nhỏ ở giữa cột (mã QR, hình nhỏ): không tràn mép trên mobile, luôn bo góc */
+.figure.narrow {
+  max-width: 20rem;
+  margin-inline: auto;
+}
+
+.figure.narrow img {
+  border-radius: var(--radius);
 }
 
 /* Lúc ảnh đang tải, khung giữ chỗ mang màu 白緑 thay vì để trống trơn */

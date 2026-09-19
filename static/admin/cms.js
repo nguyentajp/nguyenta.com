@@ -43,8 +43,15 @@ const readAttrs = (text) => {
 
 const SIZES = [
   { label: "Rộng bằng cột chữ", value: "normal" },
-  { label: "Rộng: lấn sang khoảng trống bên phải", value: "wide" },
+  { label: "Rộng: lấn ra hai bên cột chữ", value: "wide" },
   { label: "Tràn hết khung", value: "full" },
+];
+
+// Ảnh lẻ có thêm cỡ nhỏ đặt giữa cột, cho mã QR hay hình nhỏ; bộ ảnh thì không
+const IMAGE_SIZES = [
+  SIZES[0],
+  { label: "Nhỏ, ở giữa cột (mã QR, hình nhỏ)", value: "narrow" },
+  ...SIZES.slice(1),
 ];
 
 // ── Ảnh ────────────────────────────────────────────────────────────────────
@@ -64,9 +71,9 @@ CMS.registerEditorComponent({
       hint: "Tả ngắn ảnh có gì, cho người dùng trình đọc màn hình và khi ảnh không tải được.",
     },
     { name: "caption", label: "Chú thích dưới ảnh", widget: "string", required: false },
-    { name: "size", label: "Cỡ ảnh", widget: "select", default: "normal", options: SIZES },
+    { name: "size", label: "Cỡ ảnh", widget: "select", default: "normal", options: IMAGE_SIZES },
   ],
-  pattern: /^!\[([^\]\n]*)\]\(([^\s)]+)(?:\s+"((?:[^"\\\n]|\\.)*)")?\)(?:\n\{class="(wide|full)"\})?$/,
+  pattern: /^!\[([^\]\n]*)\]\(([^\s)]+)(?:\s+"((?:[^"\\\n]|\\.)*)")?\)(?:\n\{class="(narrow|wide|full)"\})?$/,
   fromBlock: (match) => ({
     alt: match[1],
     src: match[2],
@@ -75,7 +82,7 @@ CMS.registerEditorComponent({
   }),
   toBlock: ({ src = "", alt = "", caption = "", size = "normal" }) => {
     const title = caption ? ` "${quote(caption)}"` : "";
-    const attr = size === "wide" || size === "full" ? `\n{class="${size}"}` : "";
+    const attr = size && size !== "normal" ? `\n{class="${size}"}` : "";
     return `![${String(alt).replace(/[\[\]\n]/g, "")}](${src}${title})${attr}`;
   },
   toPreview: ({ src = "", alt = "" }) => `<img src="${src}" alt="${quote(alt)}">`,

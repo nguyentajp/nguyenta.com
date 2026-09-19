@@ -10,4 +10,11 @@ Nếu có bài viết nào giúp ích cho anh chị, và anh chị muốn gửi 
 
 ## Cách gửi
 
-Thông tin chuyển khoản sẽ được cập nhật ở đây.
+Quét mã VietQR bằng ứng dụng của bất kỳ ngân hàng Việt Nam nào, hoặc chuyển khoản theo thông tin bên dưới.
+
+- Ngân hàng: VIB
+- Chủ tài khoản: TRẦN ANH NGUYÊN
+- Số tài khoản: 999141516
+
+![Mã VietQR chuyển khoản tới tài khoản VIB 999141516 của Trần Anh Nguyên](vietqr-vib.png)
+{class="narrow"}

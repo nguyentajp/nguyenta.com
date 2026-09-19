@@ -211,10 +211,11 @@ Trong CMS: nút **＋ → Ảnh**, chọn ảnh, điền mô tả, chú thích, 
 | Cỡ | Hiển thị |
 |---|---|
 | Rộng bằng cột chữ | Mặc định |
-| Rộng | Lấn sang khoảng trống bên phải |
-| Tràn hết khung | Rộng hết chiều ngang khung trang |
+| Nhỏ, ở giữa cột | Tối đa 20rem, cho mã QR hay hình nhỏ (`{class="narrow"}`) |
+| Rộng | Lấn ra hai bên cột chữ (`{class="wide"}`) |
+| Tràn hết khung | Rộng hết chiều ngang khung trang (`{class="full"}`) |
 
-Trên điện thoại, ảnh nào cũng tràn sát hai mép màn hình.
+Trên điện thoại, ảnh nào cũng tràn sát hai mép màn hình, trừ cỡ nhỏ.
 
 Viết bằng tay thì dùng cú pháp Markdown. Chú thích đặt trong dấu nháy kép, cỡ
 ảnh đặt ở **dòng ngay bên dưới**:
@@ -291,7 +292,7 @@ như bản tiếng Việt.
 |---|---|
 | Trang Giới thiệu | CMS → **Trang**, hoặc `content/vi/about.md`, `content/ja/about.md` |
 | Ảnh chân dung ở sidebar | Thay file `assets/brand/avatar.jpg` (site tự cắt khung dọc 4:5 lấy phần giữa, nên dùng ảnh dọc, mặt ở giữa) |
-| Trang Ủng hộ và khối Ủng hộ ở sidebar | `content/vi/support.md`, `content/ja/support.md`; lời trong khung sidebar ở `i18n` (`sidebar_support_text`). Xoá file thì khối tự ẩn |
+| Trang Ủng hộ và khối Ủng hộ ở sidebar | `content/vi/support/index.md` (kèm ảnh mã QR), `content/ja/support/index.md`; lời trong khung sidebar ở `i18n` (`sidebar_support_text`). Xoá file thì khối tự ẩn |
 | Lời giới thiệu ở sidebar | `hugo.toml` → `[languages.vi.params]` → `bio` (bản tiếng Nhật: `[languages.ja.params]`) |
 | Dòng nhỏ dưới tên blog | `hugo.toml` → `tagline` (hai ngôn ngữ) |
 | Email, mạng xã hội ở trang Liên hệ | `hugo.toml` → `[params]` → `email`, `[params.socials]` |
@@ -723,6 +724,6 @@ chuột trên web.
 
 - [x] Workflow tự đẩy bản xem trước mỗi lần push (cần secret `CLOUDFLARE_API_TOKEN`).
 - [x] Xoá bài thử `zz-thu-nghiem-anh`.
-- [ ] Điền thông tin chuyển khoản vào trang Ủng hộ (`content/vi/support.md`, `content/ja/support.md`), hiện đang là dòng chờ.
+- [x] Thông tin chuyển khoản và mã VietQR ở trang Ủng hộ.
 - [ ] Thay ảnh chân dung (`assets/brand/avatar.jpg`) và thêm ảnh bìa cho các bài.
 - [ ] Mở blog: `maintenance = false` trong `hugo.toml`.
