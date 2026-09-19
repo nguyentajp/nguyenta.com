@@ -1,25 +1,30 @@
-{{- /* Ảnh bìa của một bài trong danh sách, cắt về 3:2 cho các bài xếp đều nhau.
-     Ảnh được chọn theo thứ tự: ảnh ghi ở trường "cover" (chọn trong Decap
-     CMS), file có tên chứa "cover" trong page bundle, rồi tới ảnh đầu tiên
-     của bài. Bài không có ảnh thì không in gì.
-     Tham số: page, sizes, loading ("lazy" mặc định, "eager" cho bài đầu trang). */ -}}
+{{- /* Ảnh bìa, cắt về 3:2 cho các bài xếp đều nhau. Ảnh chọn theo
+     cover-resource.html; bài không có ảnh thì không in gì.
+     Tham số:
+       page     — bài viết
+       sizes    — thuộc tính sizes của <img>
+       loading  — "lazy" (mặc định) hoặc "eager" cho ảnh đầu trang
+       link     — true (mặc định, trong danh sách): ảnh là link tới bài;
+                  false (trong trang bài viết): chỉ là ảnh
+       fallback — false thì chỉ dùng ảnh bìa đã chọn, không lấy ảnh đầu bài
+                  (trang bài viết: ảnh đầu bài đã nằm trong thân bài rồi) */ -}}
 {{- $page := .page -}}
-{{- $res := "" -}}
-{{- with $page.Params.cover }}{{ $res = $page.Resources.GetMatch . }}{{ end -}}
-{{- if not $res }}{{ $res = $page.Resources.GetMatch "{cover,*cover*}" }}{{ end -}}
-{{- if not $res }}{{ $res = index ($page.Resources.ByType "image") 0 }}{{ end -}}
-{{- with $res -}}
-  {{- if in (slice "jpeg" "png" "webp" "tiff" "bmp") .MediaType.SubType -}}
-    {{- $srcset := slice -}}
-    {{- $fallback := "" -}}
-    {{- range slice 480 800 1200 -}}
-      {{- $r := $res.Fill (printf "%dx%d webp Smart" . (div (mul . 2) 3)) -}}
-      {{- $srcset = $srcset | append (printf "%s %dw" $r.RelPermalink $r.Width) -}}
-      {{- if eq . 800 }}{{ $fallback = $r }}{{ end -}}
-    {{- end -}}
-    <a class="cover" href="{{ $page.RelPermalink }}" tabindex="-1" aria-hidden="true">
-      <img src="{{ $fallback.RelPermalink }}" srcset="{{ delimit $srcset ", " }}" sizes="{{ $.sizes | default "(min-width: 64rem) 44rem, 100vw" }}"
-           width="{{ $fallback.Width }}" height="{{ $fallback.Height }}" alt="" loading="{{ $.loading | default "lazy" }}"{{ if eq $.loading "eager" }} fetchpriority="high"{{ end }} decoding="async">
-    </a>
+{{- with partial "cover-resource.html" (dict "page" $page "fallback" .fallback) -}}
+  {{- $res := . -}}
+  {{- $srcset := slice -}}
+  {{- $fallback := "" -}}
+  {{- range slice 480 800 1200 -}}
+    {{- $r := $res.Fill (printf "%dx%d webp Smart" . (div (mul . 2) 3)) -}}
+    {{- $srcset = $srcset | append (printf "%s %dw" $r.RelPermalink $r.Width) -}}
+    {{- if eq . 800 }}{{ $fallback = $r }}{{ end -}}
   {{- end -}}
+  {{- $img := printf `<img src="%s" srcset="%s" sizes="%s" width="%d" height="%d" alt="" loading="%s"%s decoding="async">`
+        $fallback.RelPermalink (delimit $srcset ", ") ($.sizes | default "(min-width: 64rem) 44rem, 100vw")
+        $fallback.Width $fallback.Height ($.loading | default "lazy")
+        (cond (eq $.loading "eager") ` fetchpriority="high"` "") -}}
+  {{- if ne $.link false }}
+    <a class="cover" href="{{ $page.RelPermalink }}" tabindex="-1" aria-hidden="true">{{ $img | safeHTML }}</a>
+  {{- else }}
+    <div class="cover">{{ $img | safeHTML }}</div>
+  {{- end }}
 {{- end -}}

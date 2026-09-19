@@ -183,3 +183,13 @@ other = "Hiện"
 other = "Chạm để xem"
 [furigana_off]
 other = "Tắt"
+
+# Kiểu trình bày bài viết
+[toc_title]
+other = "Trong bài này"
+[vocab_title]
+other = "Từ vựng"
+[vertical_note]
+other = "Bài viết dọc. Đọc từ phải sang trái, cuộn ngang để xem tiếp."
+[vertical_region]
+other = "Thân bài viết dọc"

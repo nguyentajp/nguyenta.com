@@ -29,6 +29,13 @@ Mỗi chữ chiếm một dòng, chia làm bốn cột:
 - hai từ ghép hay gặp trong đề đọc hiểu
 - một câu ví dụ tự đặt, không chép từ sách
 
+{{< tu-vung >}}
+書（か）き順（じゅん） | thứ tự các nét khi viết một chữ
+音読（おんよ）み | cách đọc theo âm Hán, thường dùng trong từ ghép
+訓読（くんよ）み | cách đọc thuần Nhật, thường khi chữ đứng một mình
+復習（ふくしゅう） | ôn lại bài đã học
+{{< /tu-vung >}}
+
 Cột cuối là cột khó nhất và cũng có ích nhất. Tự đặt được câu nghĩa là đã hiểu chữ đó đứng ở đâu trong tiếng Nhật, chứ không chỉ biết nghĩa của nó.
 
 ## Nhịp ôn

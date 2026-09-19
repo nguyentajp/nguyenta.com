@@ -1,0 +1,14 @@
+{{- /* Tìm ảnh bìa của một bài, trả về resource ảnh hoặc "" nếu không có.
+     Thứ tự: ảnh ghi ở trường "cover" (chọn trong Decap CMS), file có tên
+     chứa "cover" trong page bundle, rồi (nếu fallback khác false) ảnh đầu
+     tiên của bài. Bản tiếng Nhật dùng chung ảnh với bản tiếng Việt qua
+     translationKey, không cần upload lại.
+     Tham số: page, fallback (mặc định true). */ -}}
+{{- $page := .page -}}
+{{- $res := "" -}}
+{{- with $page.Params.cover }}{{ $res = $page.Resources.GetMatch . }}{{ end -}}
+{{- if not $res }}{{ $res = $page.Resources.GetMatch "{cover,*cover*}" }}{{ end -}}
+{{- if and (not $res) (ne .fallback false) }}{{ $res = index ($page.Resources.ByType "image") 0 }}{{ end -}}
+{{- /* SVG, GIF không cắt được về 3:2 */ -}}
+{{- if $res }}{{ if not (in (slice "jpeg" "png" "webp" "tiff" "bmp") $res.MediaType.SubType) }}{{ $res = "" }}{{ end }}{{ end -}}
+{{- return $res -}}

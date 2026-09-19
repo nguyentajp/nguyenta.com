@@ -129,6 +129,18 @@ collections:
         required: false
         choose_url: false
         hint: "Hiện trong danh sách bài và khi chia sẻ link. Để trống thì lấy ảnh đầu tiên trong bài."
+      - &variant
+        label: "Kiểu trình bày"
+        name: variant
+        widget: select
+        required: false
+        default: "default"
+        options:
+          - { label: "Mặc định: tiêu đề, ảnh bìa, bài viết", value: "default" }
+          - { label: "Ảnh tràn: ảnh bìa lớn rộng hết khung, hợp bài du lịch", value: "photo" }
+          - { label: "Sổ học: thêm khung mục lục các phần của bài", value: "study" }
+          - { label: "Tuỳ bút dọc: thân bài viết dọc (chỉ bài tiếng Nhật)", value: "vertical" }
+        hint: "Ảnh tràn cần có ảnh bìa. Tuỳ bút dọc hợp bài tiếng Nhật ngắn; chọn cho bài tiếng Việt thì hiện như Mặc định."
       - &body
         label: "Nội dung"
         name: body
@@ -199,6 +211,7 @@ collections:
         required: false
         hint: "Viết bằng tiếng Nhật, cách nhau bằng dấu phẩy. Tra GLOSSARY.md để dùng đúng thẻ đã có."
       - *cover
+      - *variant
       - *body
 
   # ── Các trang cố định ────────────────────────────────────────────────────

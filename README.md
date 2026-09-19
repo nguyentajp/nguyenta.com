@@ -168,9 +168,35 @@ Viết cách đọc trong ngoặc ngay sau chữ Hán, như viết tay. Lúc bui
 - Dùng được trong cả bài tiếng Việt lẫn tiếng Nhật, và trang Giới thiệu. Trong
   tiêu đề, đoạn trích và RSS, ngoặc giữ nguyên dạng `元（げん）`.
 
+Muốn giải nghĩa vài từ ngay trong bài, dùng khung từ vựng: mỗi dòng một từ,
+nghĩa sau dấu gạch đứng, từ viết furigana được như trên.
+
+```
+{{< tu-vung >}}
+書（か）き順（じゅん） | thứ tự nét viết
+復習（ふくしゅう） | ôn tập
+{{< /tu-vung >}}
+```
+
 Bài nào có furigana thì dưới dòng ngày đăng tự có nút chọn cho người đọc:
 **Hiện**, **Chạm để xem** (ẩn cách đọc, chạm hoặc rê chuột vào chữ mới hiện, để
 tự kiểm tra) và **Tắt**. Trình duyệt nhớ lựa chọn cho các bài sau.
+
+### 2.6 Kiểu trình bày
+
+Mỗi bài chọn một kiểu ở ô **Kiểu trình bày** trong CMS (trường `variant` nếu
+viết tay). Bốn kiểu dùng chung font, màu, sidebar; chỉ khác phần đầu bài:
+
+| Kiểu | `variant` | Hiển thị | Hợp với |
+|---|---|---|---|
+| Mặc định | để trống hoặc `default` | Tiêu đề, ảnh bìa rộng bằng cột chữ, bài | Đa số bài |
+| Ảnh tràn | `photo` | Ảnh bìa lớn rộng hết khung ngay dưới menu, rồi tới tiêu đề. Không có ảnh bìa thì hiện như Mặc định | Du lịch, bài nhiều ảnh |
+| Sổ học | `study` | Như Mặc định, thêm khung **Trong bài này** liệt kê các mục (từ hai mục trở lên) | Bài học tiếng Nhật, ghi chép dài |
+| Tuỳ bút dọc | `vertical` | Thân bài viết dọc, đọc từ phải sang trái, cuộn ngang. Chỉ có tác dụng ở bài tiếng Nhật | Tuỳ bút, nhật ký ngắn |
+
+Bài tiếng Nhật trên máy tính luôn có **tiêu đề viết dọc** ở bên phải đầu bài,
+bên trái là mô tả ngắn (description) và dòng thông tin. Trên điện thoại tiêu
+đề trở về chữ ngang. Vì mô tả ngắn hiện ở đầu bài tiếng Nhật, nhớ điền nó.
 
 ---
 

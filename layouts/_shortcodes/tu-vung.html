@@ -1,0 +1,25 @@
+{{- /* Khung từ vựng trong bài: mỗi dòng một từ, nghĩa sau dấu gạch đứng. Từ
+     viết furigana được như trong bài, vì khung này cũng đi qua furigana.html.
+
+       {{< tu-vung >}}
+       書（か）き順（じゅん） | thứ tự nét viết
+       復習（ふくしゅう） | ôn tập
+       {{< /tu-vung >}}
+
+     Khung cùng kiểu với các khung ở sidebar: viền mảnh, nhãn đề đè lên viền. */ -}}
+{{- $rows := slice -}}
+{{- range split (trim .Inner "\n ") "\n" -}}
+  {{- with trim . " \t" -}}
+    {{- $parts := split . "|" -}}
+    {{- $rows = $rows | append (dict "word" (trim (index $parts 0) " ") "meaning" (trim (delimit (after 1 $parts) "|") " ")) -}}
+  {{- end -}}
+{{- end -}}
+<aside class="widget vocab" aria-label="{{ i18n "vocab_title" }}">
+  <p class="widget-title" aria-hidden="true">{{ i18n "vocab_title" }}</p>
+  <dl>
+    {{- range $rows }}
+      <dt lang="ja">{{ .word }}</dt>
+      <dd>{{ .meaning | markdownify }}</dd>
+    {{- end }}
+  </dl>
+</aside>

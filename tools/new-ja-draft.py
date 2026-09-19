@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Tạo khung bản dịch tiếng Nhật cho một bài tiếng Việt.
 
-Script chỉ làm phần máy móc: copy date, translationKey và ảnh bìa, đổi slug
+Script chỉ làm phần máy móc: copy date, translationKey, ảnh bìa và kiểu
+trình bày (variant), đổi slug
 danh mục sang tiếng Nhật, đặt draft: true. Phần dịch do người (hoặc Claude
 Code qua lệnh /dich) viết vào sau.
 
@@ -90,6 +91,7 @@ def main():
     key = unquote(fields.get("translationKey", "")) or source.parent.name
     slug = args.slug or unquote(fields.get("slug", "")) or source.parent.name
     cover = unquote(fields.get("cover", ""))
+    variant = unquote(fields.get("variant", ""))
     target = pathlib.Path("content/ja/posts") / slug / "index.md"
     if target.exists():
         sys.exit(f"{target} đã tồn tại. Xoá nó trước, hoặc chọn --slug khác.")
@@ -108,6 +110,7 @@ def main():
         f"translationKey: {key}\n"
         f"slug: {slug}\n"
         + (f"cover: {cover}\n" if cover else "")
+        + (f"variant: {variant}\n" if variant and variant != "default" else "")
         + 'description: ""   # TODO: dịch description\n'
         f"categories: [{', '.join(repr(c) for c in ja_categories).replace(chr(39), chr(34))}]\n"
         "tags: []   # TODO: dịch thẻ, tra GLOSSARY.md\n"

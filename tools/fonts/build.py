@@ -149,9 +149,10 @@ FACES = [
     },
 ]
 
-# Giữ lại các feature cần dùng: kern, chữ ghép, palt cho tiêu đề tiếng Nhật và
-# halt để trình duyệt thu gọn dấu câu tiếng Nhật đứng liền nhau.
-LAYOUT_FEATURES = ["kern", "liga", "clig", "calt", "palt", "halt", "ccmp", "locl", "mark", "mkmk"]
+# Giữ lại các feature cần dùng: kern, chữ ghép, palt cho tiêu đề tiếng Nhật,
+# halt để trình duyệt thu gọn dấu câu tiếng Nhật đứng liền nhau, và vert/vrt2
+# cho chữ viết dọc (dấu 、。「」 và ー đổi sang dạng đứng).
+LAYOUT_FEATURES = ["kern", "liga", "clig", "calt", "palt", "halt", "vert", "vrt2", "ccmp", "locl", "mark", "mkmk"]
 
 # 約物の半角詰め. Shippori Mincho không có feature halt, nên khi hai dấu câu
 # đứng liền nhau (」「, 。」) mỗi dấu vẫn chiếm trọn một ô, nhìn hở như chữ sắp

@@ -32,6 +32,13 @@ Câu này gần như luôn đứng đầu email gửi cho người ngoài công 
 
 Câu kết gần như bắt buộc. お願いいたします trang trọng hơn お願いします; thêm 何卒 ở đầu khi đang nhờ một việc quan trọng.
 
+{{< tu-vung >}}
+お世話（せわ）になっております | câu chào mở đầu email gửi người ngoài công ty
+お疲（つか）れ様（さま）です | câu chào với người trong công ty
+恐（おそ）れ入（い）りますが | xin lỗi đã làm phiền, dùng trước lời nhờ
+何卒（なにとぞ） | rất mong, dùng khi nhờ việc quan trọng
+{{< /tu-vung >}}
+
 ## Mẹo nhỏ
 
 Nguyên lưu ba câu này thành đoạn văn mẫu trong phần mềm email. Mỗi lần viết chỉ cần chèn vào rồi sửa phần giữa. Sau một thời gian, tay tự gõ đúng mà không cần mẫu nữa.
