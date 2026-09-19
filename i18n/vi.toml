@@ -70,6 +70,8 @@ other = "Đọc tiếp"
 other = "{{ .Count }} phút đọc"
 [sekki_label]
 other = "Tiết {{ .Name }}"
+[sekki_starts]
+other = "Bắt đầu khoảng ngày {{ .Day }}/{{ .Month }}"
 [updated_on]
 other = "Sửa lần cuối {{ .Date }}"
 

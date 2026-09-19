@@ -70,6 +70,8 @@ other = "続きを読む"
 other = "約 {{ .Count }} 分"
 [sekki_label]
 other = "{{ .Name }}"
+[sekki_starts]
+other = "{{ .Month }}月{{ .Day }}日ごろから"
 [updated_on]
 other = "最終更新 {{ .Date }}"
 

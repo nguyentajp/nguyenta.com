@@ -327,6 +327,7 @@ như bản tiếng Việt.
 | Tagline dưới tên blog và ở chân trang | `hugo.toml` → `tagline` (hai ngôn ngữ) |
 | Email, mạng xã hội ở trang Liên hệ | `hugo.toml` → `[params]` → `email`, `[params.socials]` |
 | Số bài ở trang chủ | `hugo.toml` → `homeRecentCount` |
+| Lời giải thích 24 tiết khí (khung hiện khi rê chuột vào tên tiết khí) | CMS → **Dữ liệu** → **Giải thích 24 tiết khí**, hoặc `data/sekki_notes.yaml` |
 | Chữ trên giao diện (nút, nhãn) | `i18n/vi.toml`, `i18n/ja.toml` |
 | Màu, cỡ chữ, khoảng cách | `assets/css/main.css`, phần **1. Token** ở đầu file |
 

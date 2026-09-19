@@ -1,0 +1,77 @@
+# Lời giải thích 24 tiết khí, hiện trong khung nhỏ khi rê chuột (điện thoại:
+# chạm) vào tên tiết khí dưới ngày đăng của bài. Sửa trong CMS → Dữ liệu →
+# Giải thích 24 tiết khí, hoặc sửa tay file này. Trường "ja" là tên chữ Hán,
+# dùng để nối với ngày trong data/sekki.toml: không sửa trường này.
+sekki:
+  - ja: 立春
+    vi_text: "Ngày bắt đầu mùa xuân theo lịch cũ. Trời còn lạnh, nhưng nắng đã dài hơn và hoa mơ bắt đầu nở."
+    ja_text: "暦の上で春が始まる日。寒さはまだ厳しいものの、日差しが少しずつ明るくなり、梅がほころび始めます。"
+  - ja: 雨水
+    vi_text: "Tuyết chuyển thành mưa, băng tuyết tan thành nước. Xưa kia là mốc để bắt đầu chuẩn bị việc đồng áng."
+    ja_text: "雪が雨に変わり、積もった雪や氷が解けて水になるころ。農作業の準備を始める目安とされてきました。"
+  - ja: 啓蟄
+    vi_text: "Sâu bọ ngủ đông dưới đất tỉnh dậy, chui lên đón hơi ấm. 啓 là mở ra, 蟄 là côn trùng nằm im qua đông."
+    ja_text: "冬ごもりしていた虫たちが、土の中から這い出てくるころ。「啓」は開く、「蟄」は土の中で冬を越す虫のこと。"
+  - ja: 春分
+    vi_text: "Ngày và đêm dài gần bằng nhau. Ở Nhật là ngày nghỉ lễ, rơi vào giữa tuần 彼岸 đi viếng mộ tổ tiên."
+    ja_text: "昼と夜の長さがほぼ等しくなる日。国民の祝日で、春のお彼岸の中日にあたります。"
+  - ja: 清明
+    vi_text: "Trời trong, cây cỏ tươi sáng, hoa anh đào nở rộ. Ở Việt Nam là dịp tảo mộ."
+    ja_text: "「清浄明潔」を略した言葉で、万物が清らかで生き生きとするころ。桜が見ごろを迎えます。"
+  - ja: 穀雨
+    vi_text: "Mưa xuân thấm đất, nuôi hạt giống vừa gieo. Tiết cuối cùng của mùa xuân."
+    ja_text: "穀物を潤す春の雨が降るころ。春の最後の節気で、種まきの目安とされてきました。"
+  - ja: 立夏
+    vi_text: "Ngày bắt đầu mùa hè theo lịch cũ. Lá non xanh, gió nhẹ, là tiết trời dễ chịu nhất trong năm."
+    ja_text: "暦の上で夏が始まる日。新緑がまぶしく、さわやかな風が吹く、一年でいちばん過ごしやすいころ。"
+  - ja: 小満
+    vi_text: "Cây cỏ lớn dần, muôn vật dần đầy đặn. Lúa mạch gieo từ mùa thu bắt đầu chín."
+    ja_text: "草木が育ち、天地に生気が少しずつ満ちてくるころ。秋にまいた麦の穂が実り始めます。"
+  - ja: 芒種
+    vi_text: "Mùa gieo các loại hạt có râu như lúa. Ở Nhật, mùa mưa 梅雨 bắt đầu vào khoảng này."
+    ja_text: "稲や麦など、穂先に芒（のぎ）のある穀物の種をまくころ。梅雨入りもこのころです。"
+  - ja: 夏至
+    vi_text: "Ngày dài nhất, đêm ngắn nhất trong năm. Ở Nhật lúc này đang giữa mùa mưa, nên ít khi thấy được nắng dài."
+    ja_text: "一年でもっとも昼が長く、夜が短い日。ただ日本では梅雨のさなかで、長い日差しを感じにくい時期です。"
+  - ja: 小暑
+    vi_text: "Cái nóng bắt đầu. Mùa mưa sắp dứt, ve bắt đầu kêu. Người Nhật gửi thiệp hỏi thăm mùa hè 暑中見舞い từ đây."
+    ja_text: "本格的な暑さが始まるころ。梅雨明けが近づき、蝉が鳴き始めます。暑中見舞いを出すのもこのころから。"
+  - ja: 大暑
+    vi_text: "Nóng nhất trong năm. Người Nhật ăn lươn vào ngày 土用の丑 để lấy sức qua mùa hè."
+    ja_text: "一年でもっとも暑さが厳しいころ。夏の土用の丑の日に、鰻を食べて精をつける習わしがあります。"
+  - ja: 立秋
+    vi_text: "Ngày bắt đầu mùa thu theo lịch cũ, dù trời còn nóng gắt. Từ hôm nay, thiệp hỏi thăm đổi thành 残暑見舞い, hỏi thăm cái nóng còn sót lại."
+    ja_text: "暦の上で秋が始まる日。実際には暑さの盛りですが、この日から挨拶状は「残暑見舞い」に変わります。"
+  - ja: 処暑
+    vi_text: "Cái nóng bắt đầu dịu. 処 ở đây nghĩa là dừng lại: nóng đến đây là thôi. Cũng là mùa bão."
+    ja_text: "暑さがようやく収まり始めるころ。「処」はとどまるという意味です。台風が多くなる時期でもあります。"
+  - ja: 白露
+    vi_text: "Sáng sớm có sương đọng trắng trên cỏ. Không khí đã mang hơi thu."
+    ja_text: "朝晩の冷え込みで、草花に白い露が宿り始めるころ。秋の気配が深まります。"
+  - ja: 秋分
+    vi_text: "Ngày và đêm lại dài bằng nhau; từ đây đêm dài dần. Ở Nhật là ngày nghỉ lễ, giữa tuần 彼岸 mùa thu."
+    ja_text: "昼と夜の長さがほぼ等しくなる日。この日を境に夜が長くなっていきます。秋のお彼岸の中日で、国民の祝日です。"
+  - ja: 寒露
+    vi_text: "Sương đêm đã lạnh. Trời thu cao và trong, những ngày nắng ráo nối nhau."
+    ja_text: "露が冷たく感じられるころ。空気が澄み、秋晴れの日が続きます。"
+  - ja: 霜降
+    vi_text: "Sương muối bắt đầu xuống. Trên núi, lá phong đổi màu đẹp nhất."
+    ja_text: "霜が降り始めるころ。山々では紅葉が見ごろを迎えます。"
+  - ja: 立冬
+    vi_text: "Ngày bắt đầu mùa đông theo lịch cũ. Gió lạnh đầu mùa 木枯らし thổi, lá cây rụng dần."
+    ja_text: "暦の上で冬が始まる日。木枯らしが吹き、木々の葉が落ち始めます。"
+  - ja: 小雪
+    vi_text: "Tuyết nhẹ bắt đầu rơi ở vùng núi và miền bắc. Trong phố, hàng bạch quả vàng rực."
+    ja_text: "北国や山では、わずかに雪が降り始めるころ。街では銀杏並木が色づきます。"
+  - ja: 大雪
+    vi_text: "Núi phủ tuyết dày, đồng bằng cũng bắt đầu có tuyết. Mùa đông thật sự đến."
+    ja_text: "山々が雪に覆われ、平地でも雪が降り始めるころ。本格的な冬の到来です。"
+  - ja: 冬至
+    vi_text: "Ngày ngắn nhất trong năm. Người Nhật tắm bồn thả quả yuzu và ăn bí đỏ, cầu một mùa đông khoẻ mạnh."
+    ja_text: "一年でもっとも昼が短い日。柚子湯に入り、かぼちゃを食べて、無病息災を願います。"
+  - ja: 小寒
+    vi_text: "Bước vào những ngày lạnh nhất, gọi là 寒の入り. Thiệp hỏi thăm đổi thành 寒中見舞い."
+    ja_text: "寒さが本格的になる「寒の入り」。この日から節分までを「寒の内」といい、寒中見舞いを出す時期です。"
+  - ja: 大寒
+    vi_text: "Lạnh nhất trong năm. Nước lúc này được cho là khó hỏng, nên người ta dùng để ủ tương miso và nấu rượu."
+    ja_text: "一年でもっとも寒さが厳しいころ。寒の水は腐りにくいとされ、味噌や酒の仕込みに使われてきました。"

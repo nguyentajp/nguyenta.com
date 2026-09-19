@@ -8,6 +8,7 @@
 //   6. Nút giao diện sáng tối
 //   7. Hàng ngang cuộn (Bài viết liên quan): nút ‹ ›
 //   8. Ô đăng ký bản tin ở chân trang (giao diện mẫu, chưa gửi đi đâu)
+//   9. Khung giải thích tiết khí: mở khi rê chuột (máy tính có chuột)
 
 // ── 1. Kamon ────────────────────────────────────────────────────────────────
 // Lần thứ hai trở đi trong cùng phiên, kamon hiện sẵn. Người đọc bật
@@ -287,4 +288,79 @@
     event.preventDefault();
     status.hidden = false;
   });
+})();
+
+// ── 9. Tiết khí ─────────────────────────────────────────────────────────────
+// Khung giải thích là popover của HTML: bấm tên tiết khí là mở, không cần JS,
+// và khung nằm giữa màn hình (điện thoại, bàn phím). Với chuột, JS mở khung
+// ngay khi rê vào tên, đặt sát dưới tên, rời chuột thì đóng; bấm vào tên thì
+// khung ở lại cho tới khi bấm ra ngoài hoặc Esc.
+(() => {
+  const button = document.querySelector("[data-sekki]");
+  const note = document.getElementById("sekki-note");
+  if (!button || !note) return;
+
+  const GAP = 8;
+  const EDGE = 12;
+  let timer;
+  let pinned = false;
+
+  const isOpen = () => note.matches(":popover-open");
+  const anchored = () => note.classList.contains("is-anchored");
+
+  // Dưới tên tiết khí, căn giữa theo tên; sát mép màn hình thì dịch vào trong,
+  // thiếu chỗ bên dưới thì lật lên trên
+  const place = () => {
+    const rect = button.getBoundingClientRect();
+    const width = note.offsetWidth;
+    const height = note.offsetHeight;
+    const x = Math.max(EDGE, Math.min(rect.left + rect.width / 2 - width / 2, innerWidth - width - EDGE));
+    let y = rect.bottom + GAP;
+    if (y + height > innerHeight - EDGE) y = Math.max(EDGE, rect.top - GAP - height);
+    note.style.setProperty("--x", `${x}px`);
+    note.style.setProperty("--y", `${y}px`);
+  };
+
+  const open = () => {
+    clearTimeout(timer);
+    if (isOpen()) return;
+    note.classList.add("is-anchored");
+    note.showPopover();
+    place();
+  };
+
+  const closeSoon = () => {
+    clearTimeout(timer);
+    if (pinned) return;
+    timer = setTimeout(() => {
+      if (anchored() && isOpen()) note.hidePopover();
+    }, 250);
+  };
+
+  const mouse = (handler) => (event) => {
+    if (event.pointerType === "mouse") handler();
+  };
+
+  button.addEventListener("pointerenter", mouse(open));
+  button.addEventListener("pointerleave", mouse(closeSoon));
+  note.addEventListener("pointerenter", mouse(() => clearTimeout(timer)));
+  note.addEventListener("pointerleave", mouse(closeSoon));
+
+  // Khung đang mở do rê chuột: bấm vào tên là ghim lại, không đóng
+  button.addEventListener("click", (event) => {
+    if (!anchored() || !isOpen()) return;
+    event.preventDefault();
+    clearTimeout(timer);
+    pinned = true;
+  });
+
+  note.addEventListener("toggle", (event) => {
+    if (event.newState !== "closed") return;
+    note.classList.remove("is-anchored");
+    pinned = false;
+  });
+
+  addEventListener("scroll", () => {
+    if (anchored() && isOpen()) place();
+  }, { passive: true });
 })();

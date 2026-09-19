@@ -240,3 +240,34 @@ collections:
             modes: [rich_text, raw]
             buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
             editor_components: [image]
+
+  # ── Dữ liệu dùng chung ───────────────────────────────────────────────────
+  - name: du-lieu
+    label: "Dữ liệu"
+    label_singular: "dữ liệu"
+    description: "Những đoạn chữ dùng chung cho cả site, không thuộc bài nào."
+    files:
+      - name: tiet-khi
+        label: "Giải thích 24 tiết khí"
+        file: data/sekki_notes.yaml
+        description: "Hiện trong khung nhỏ khi người đọc rê chuột (điện thoại: chạm) vào tên tiết khí dưới ngày đăng của bài."
+        fields:
+          - label: "24 tiết khí"
+            name: sekki
+            widget: list
+            allow_add: false
+            allow_remove: false
+            allow_reorder: false
+            collapsed: true
+            summary: "{{fields.ja}}"
+            fields:
+              - label: "Tên chữ Hán"
+                name: ja
+                widget: string
+                hint: "Không sửa ô này: site dùng nó để biết đoạn giải thích thuộc tiết nào."
+              - label: "Giải thích tiếng Việt"
+                name: vi_text
+                widget: text
+              - label: "Giải thích tiếng Nhật"
+                name: ja_text
+                widget: text

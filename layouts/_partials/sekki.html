@@ -1,6 +1,12 @@
 {{- /* Tiết khí của một ngày, tính lúc build nên không cần JavaScript.
      Dữ liệu ở data/sekki.toml, xếp theo thứ tự trong năm. Lấy tiết gần nhất
-     trước ngày đăng; nếu là mấy ngày đầu tháng Một thì vẫn là Đông chí. */ -}}
+     trước ngày đăng; nếu là mấy ngày đầu tháng Một thì vẫn là Đông chí.
+
+     In ra tên tiết khí (gạch chân chấm, màu 竹) là một nút mở khung giải thích.
+     Lời giải thích ở data/sekki_notes.yaml (sửa được trong CMS), nối bằng tên
+     chữ Hán. Khung là popover của HTML: bấm (chạm) để mở, Esc hoặc nút × để
+     đóng, không cần JS; trên điện thoại khung nằm giữa màn hình. Trên máy tính
+     có chuột, site.js mục 9 mở khung ngay khi rê chuột và đặt nó sát tên. */ -}}
 {{- $date := .date -}}
 {{- $terms := hugo.Data.sekki.sekki -}}
 {{- $found := index (where $terms "month" 12) 1 -}}
@@ -9,5 +15,25 @@
     {{- $found = . -}}
   {{- end -}}
 {{- end -}}
-{{- $name := cond (eq site.Language.Lang "ja") $found.ja $found.vi -}}
-{{- i18n "sekki_label" (dict "Name" $name) -}}
+{{- $ja := eq site.Language.Lang "ja" -}}
+{{- $label := i18n "sekki_label" (dict "Name" (cond $ja $found.ja $found.vi)) -}}
+{{- $note := index (where hugo.Data.sekki_notes.sekki "ja" $found.ja) 0 -}}
+{{- $text := "" -}}
+{{- with $note }}{{ $text = cond $ja .ja_text .vi_text }}{{ end -}}
+{{- if $text -}}
+  <button class="sekki" type="button" popovertarget="sekki-note" data-sekki>{{ $label }}</button>
+  <span class="sekki-note" id="sekki-note" popover role="dialog" aria-labelledby="sekki-note-title" data-pagefind-ignore="all">
+    <span class="sekki-note-head">
+      <span class="sekki-note-title" id="sekki-note-title">
+        <span lang="ja">{{ $found.ja }}</span>
+        <span class="sekki-note-kana" lang="ja">{{ $found.kana }}</span>
+        {{- if not $ja }}<span class="sekki-note-vi">{{ $found.vi }}</span>{{ end }}
+      </span>
+      <button class="sekki-note-close" type="button" popovertarget="sekki-note" popovertargetaction="hide" aria-label="{{ i18n "nav_menu_close" }}">{{ partial "icon.html" "close" }}</button>
+    </span>
+    <span class="sekki-note-date">{{ i18n "sekki_starts" (dict "Day" $found.day "Month" $found.month) }}</span>
+    <span class="sekki-note-text">{{ $text }}</span>
+  </span>
+{{- else -}}
+  {{ $label }}
+{{- end -}}

@@ -36,6 +36,8 @@
   --fushi: #c5cbbf;      /* 節 — đốt tre, dùng cho đường mảnh */
   --kabe: #858b7f;       /* 壁 — viền ô nhập liệu, đủ 3:1 theo WCAG 1.4.11 */
   --icho: #6b4f0d;       /* 銀杏 — vàng lá bạch quả, chỉ khi tương tác */
+  --take: #3f6a47;       /* 竹 — xanh thân tre: vòng tre của kamon, tên tiết khí bấm được */
+  --ginnan: #a67c14;     /* lá bạch quả trong kamon: vàng tươi hơn 銀杏, chỉ làm hình */
   --shu: #a8402e;        /* 朱 — mực dấu, chỉ con dấu 元 */
 
   /* Mỗi vai trò có hai màu: sáng và tối. Tối không phải đảo màu mà là rừng
@@ -50,6 +52,9 @@
   --rule: light-dark(var(--fushi), #363b33);
   --field: light-dark(var(--kabe), #646960);
   --accent: light-dark(var(--icho), #e3c05e);
+  /* 竹 làm chữ đạt 5,8 : 1 trên nền sáng, 8,5 : 1 trên nền tối */
+  --bamboo: light-dark(var(--take), #8fbf95);
+  --leaf: light-dark(var(--ginnan), #e3c05e);
   /* Đường gạch chân mang màu nhấn: pha nhạt với nền, vì màu nhấn đã được làm
      đậm cho đủ tương phản khi là chữ, để làm gạch chân thì gần như màu mực */
   --accent-line: color-mix(in oklab, var(--accent) 60%, var(--bg));
@@ -111,6 +116,8 @@
     --rule: var(--fushi);
     --field: var(--kabe);
     --accent: var(--icho);
+    --bamboo: var(--take);
+    --leaf: var(--ginnan);
     --seal: var(--shu);
   }
 
@@ -1177,6 +1184,130 @@ a.lang:hover .icon {
   text-underline-offset: 0.3em;
 }
 
+/* Tên tiết khí dưới ngày đăng: màu 竹 và gạch chân chấm, khác hẳn chữ phụ
+   xung quanh, để người đọc thấy ngay đây là chỗ bấm được (_partials/sekki.html) */
+.sekki {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--bamboo);
+  text-decoration: underline dotted 1px;
+  text-decoration-color: color-mix(in oklab, var(--bamboo) 75%, var(--bg));
+  text-underline-offset: 0.3em;
+  cursor: pointer;
+}
+
+.sekki:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+/* Khung giải thích. Mặc định (điện thoại, bàn phím, không có JS): nằm giữa màn
+   hình, nền phía sau tối đi, có nút × để đóng. */
+.sekki-note {
+  position: fixed;
+  inset: 0;
+  width: min(22rem, 100% - 2 * var(--gutter));
+  height: fit-content;
+  margin: auto;
+  padding: var(--space-4);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  text-align: start;
+  white-space: normal;
+  box-shadow: 0 1rem 2.5rem -1.25rem color-mix(in oklab, var(--sumi) 45%, transparent);
+}
+
+.sekki-note:popover-open {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.sekki-note::backdrop {
+  background: color-mix(in oklab, var(--sumi) 30%, transparent);
+}
+
+.sekki-note-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: var(--space-3);
+}
+
+.sekki-note-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--space-3);
+}
+
+.sekki-note-title > :first-child {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+}
+
+.sekki-note-kana,
+.sekki-note-date {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.sekki-note-vi {
+  font-size: 1rem;
+}
+
+.sekki-note-text {
+  padding-block-start: var(--space-2);
+  border-block-start: 1px solid var(--rule);
+  text-wrap: pretty;
+}
+
+.sekki-note-text:lang(ja) {
+  line-break: strict;
+}
+
+.sekki-note-close {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin: calc(var(--space-1) * -1) calc(var(--space-2) * -1) 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.sekki-note-close:hover {
+  color: var(--accent);
+}
+
+/* Máy tính có chuột (site.js mục 9): khung mở khi rê chuột, đặt sát dưới tên
+   tiết khí, không phủ tối nền, không cần nút × */
+.sekki-note.is-anchored {
+  inset: auto;
+  top: var(--y, 0);
+  left: var(--x, 0);
+  margin: 0;
+}
+
+.sekki-note.is-anchored::backdrop {
+  background: none;
+}
+
+.sekki-note.is-anchored .sekki-note-close {
+  display: none;
+}
+
 /* Ảnh bìa trong trang bài viết: ngay dưới đầu bài, rộng bằng cột chữ */
 .post > .cover {
   margin-block: 0 var(--space-6);
@@ -1533,6 +1664,12 @@ a.lang:hover .icon {
 
 .widget p + p {
   margin-block-start: var(--space-2);
+}
+
+.widget-more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
 }
 
 /* Link mời bấm trong khung (đọc thêm, ủng hộ, bài viết mới) gạch chân bằng
