@@ -327,10 +327,26 @@ Xem tiến trình ở tab **Actions** trên GitHub: dấu ✓ xanh là đã lên
 
 Build tay: tab **Actions** → **Deploy** → **Run workflow**.
 
+### Chế độ bảo trì
+
+Khi `maintenance = true` trong mục `[params]` của [hugo.toml](hugo.toml),
+nguyenta.com chỉ hiện vòng ensō của trang 静 với dòng "Nơi này đang được
+dựng", có link sang bản tiếng Nhật. Workflow chỉ đưa lên trang đó, file CSS,
+font và `/admin`, nên bài viết, ảnh, RSS, sitemap và chỉ mục tìm kiếm không
+có trên mạng, đoán URL cũng không mở được. Máy tìm kiếm được báo là không
+ghi nhận trang.
+
+- **Mở blog:** đổi thành `maintenance = false`, commit. Vài phút sau site hiện đầy đủ.
+- **Viết bài trong lúc bảo trì:** CMS ở `/admin` vẫn dùng được. Bài được lưu
+  vào repo nhưng chưa ai đọc được, cho tới khi mở blog.
+- `hugo server` ở máy luôn hiện site đầy đủ. Lời nhắn nằm ở `maint_line`
+  trong `i18n/vi.toml` và `i18n/ja.toml`.
+
 ### Build production ở máy
 
 Để xem site giống hệt bản trên mạng, hoặc đo Lighthouse. Đo trên `hugo server`
-không chính xác.
+không chính xác. Đang bật chế độ bảo trì thì bản build này cũng chỉ ra trang
+bảo trì; muốn xem cả site thì build bằng `hugo --minify -e development`.
 
 ```bash
 hugo --minify

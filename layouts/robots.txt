@@ -1,0 +1,9 @@
+User-agent: *
+{{- /* Đang bảo trì thì không cho máy tìm kiếm ghi nhận trang "đang dựng" */}}
+{{- if and hugo.IsProduction site.Params.maintenance }}
+Disallow: /
+{{- else }}
+Disallow:
+
+Sitemap: {{ "sitemap.xml" | absURL }}
+{{- end }}

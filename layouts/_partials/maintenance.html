@@ -1,0 +1,14 @@
+{{- /* Trang bảo trì: mượn nguyên giao diện trang 静 (vòng ensō, một dòng chữ),
+     thay lời nhắn và thay "Quay lại" bằng link sang ngôn ngữ kia. Dùng trong
+     baseof.html khi bật params.maintenance. data-maintenance vừa để site.js
+     không gắn hành vi "bấm đâu cũng quay lại", vừa là dấu hiệu để workflow
+     deploy biết cần xoá các trang còn lại. */ -}}
+{{- $other := cond (eq site.Language.Lang "vi") "/ja/" "/" }}
+<div class="sei" data-maintenance>
+  {{- with resources.Get "brand/enso.webp" }}
+    <div class="enso" role="img" aria-label="{{ i18n "sei_enso_alt" }}"
+         style="{{ printf "--enso: url(%s)" .RelPermalink | safeCSS }}"></div>
+  {{- end }}
+  <p class="sei-line">{{ i18n "maint_line" }}</p>
+  <a class="sei-back" href="{{ $other }}" hreflang="{{ cond (eq site.Language.Lang "vi") "ja" "vi" }}">{{ i18n "maint_other_lang" }}</a>
+</div>

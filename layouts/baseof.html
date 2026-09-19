@@ -6,6 +6,12 @@
   {{ block "head" . }}{{ end }}
 </head>
 <body>
+  {{- /* Chế độ bảo trì (params.maintenance trong hugo.toml, chỉ khi build thật):
+       mọi trang đều chỉ là vòng ensō và một dòng chữ. Bước cuối của
+       workflow deploy còn xoá hết các trang khác trước khi đưa lên. */}}
+  {{- if and hugo.IsProduction site.Params.maintenance }}
+  <main id="noi-dung">{{ partial "maintenance.html" . }}</main>
+  {{- else }}
   <a class="skip" href="#noi-dung">{{ i18n "skip_to_content" }}</a>
   {{- /* Trang có "bare: true" trong front matter (trang 静) không có header,
        sidebar và footer. Dùng cờ thay vì block rỗng: Go template bỏ qua define
@@ -26,6 +32,7 @@
     {{ partial "footer.html" . }}
   {{- end }}
   {{ partial "lightbox.html" . }}
+  {{- end }}
   {{ partial "scripts.html" . }}
   {{- /* Trang nào cần thêm JS riêng (ví dụ Tìm kiếm) thì định nghĩa block này */}}
   {{ block "scripts" . }}{{ end }}

@@ -237,6 +237,11 @@ defaultContentLanguageInSubdir = false
 
 # ── Thông số dùng chung cho cả hai ngôn ngữ ──────────────────────────────────
 [params]
+  # Chế độ bảo trì: true thì nguyenta.com chỉ hiện một trang "đang dựng" (vòng
+  # ensō của trang 静), mọi bài viết, RSS, sitemap và chỉ mục tìm kiếm đều
+  # không được đưa lên. Chỉ có tác dụng khi build thật (GitHub Actions);
+  # `hugo server` ở máy vẫn hiện site đầy đủ. Mở blog: đổi thành false, commit.
+  maintenance = true
   author = "Gen"
   authorKanji = "英元"
   email = "info@nguyenta.com"

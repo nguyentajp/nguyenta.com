@@ -123,7 +123,8 @@
 // quay lại đúng bài người đọc vừa rời đi, nếu họ tới từ chính site này.
 (() => {
   const sei = document.querySelector(".sei");
-  if (!sei) return;
+  // Trang bảo trì mượn giao diện 静 nhưng không có chỗ nào để quay lại
+  if (!sei || "maintenance" in sei.dataset) return;
 
   const leave = () => {
     let cameFromHere = false;

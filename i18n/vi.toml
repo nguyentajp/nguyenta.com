@@ -136,6 +136,11 @@ other = "Vòng ensō vẽ bằng một nét bút lông"
 [sei_back]
 other = "Quay lại"
 
+[maint_line]
+other = "Nơi này đang được dựng. Mời anh chị ghé lại sau, khi mọi thứ đã sẵn sàng."
+[maint_other_lang]
+other = "日本語"
+
 [footer_colophon]
 other = "Viết tại Osaka. Dựng bằng Hugo, đặt trên GitHub Pages."
 [footer_rss]
