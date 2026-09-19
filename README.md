@@ -20,6 +20,7 @@ build và đưa lên GitHub Pages.
 8. [Xử lý lỗi thường gặp](#8-xử-lý-lỗi-thường-gặp)
 9. [Cấu trúc thư mục](#9-cấu-trúc-thư-mục)
 10. [Nâng cấp phiên bản](#10-nâng-cấp-phiên-bản)
+11. [Kiến trúc kỹ thuật](#11-kiến-trúc-kỹ-thuật): GitHub, Cloudflare, Worker là gì và vì sao dùng
 
 ---
 
@@ -39,6 +40,8 @@ Sửa file ở máy ─────┘        (repo)              (khoảng 2 ph
 - Viết ở máy: sửa file rồi tự `git push` (xem [mục 2.2](#22-viết-ở-máy-không-cần-mạng)).
 - Mỗi lần có commit mới trên nhánh `main`, site tự build lại. Ngoài ra site còn
   tự build mỗi ngày lúc **0:05 giờ Nhật**, để bài hẹn giờ tự hiện.
+
+Từng mảnh trong sơ đồ trên là gì và vì sao cần, xem [mục 11](#11-kiến-trúc-kỹ-thuật).
 
 ---
 
@@ -469,12 +472,14 @@ archetypes/posts.md        Mẫu cho bài mới tạo bằng hugo new
 tools/fonts/               Tải và subset font (Literata, Shippori Mincho)
 tools/brand/               Script vẽ kamon, favicon, con dấu, vòng ensō
 tools/new-ja-draft.py      Tạo khung bản dịch tiếng Nhật (lệnh /dich gọi script này)
+tools/cms-auth/            Worker Cloudflare cho đăng nhập CMS (xem mục 11.3)
+tools/preview/             Cấu hình Worker bản xem trước riêng (xem mục 11.4)
 .github/workflows/         Build và deploy tự động
 hugo.toml                  Cấu hình site, có ghi chú từng mục
 STYLE.md, GLOSSARY.md      Văn phong và thuật ngữ khi dịch
 ```
 
-Thư mục `public/` và `resources/` do Hugo sinh ra, không commit.
+Thư mục `public/`, `preview-public/` và `resources/` do Hugo sinh ra, không commit.
 
 ---
 
@@ -491,3 +496,224 @@ khi push.
 | Decap CMS | Số phiên bản **và** mã `integrity` trong `static/admin/index.html` (có lệnh tính mã ghi ngay trong file) |
 | Font | `tools/fonts/fonts.lock.json` (commit của repo google/fonts và SHA256 từng file) |
 | Thư viện Python | `tools/fonts/requirements.txt` |
+
+---
+
+## 11. Kiến trúc kỹ thuật
+
+Mục này ghi lại site được ghép từ những mảnh nào, mỗi mảnh là gì, vì sao cần
+nó, và vì sao chọn cách này chứ không phải cách khác. Đọc lại khi quên, hoặc
+trước khi định thay đổi một mảnh nào đó.
+
+### 11.1 Toàn cảnh
+
+```
+                          ┌──────────────── GitHub ────────────────┐
+ Viết ở /admin ──────────►│ repo nguyentajp/nguyenta.com (mã nguồn) │
+   (Decap CMS)            │        │ mỗi commit lên main           │
+       ▲                  │        ▼                               │
+       │ đăng nhập        │ GitHub Actions: build bằng Hugo        │
+       │                  │        │                               │
+       │                  │        ▼                               │
+       │                  │ GitHub Pages: phục vụ file tĩnh ───────┼──► https://nguyenta.com
+       │                  └────────────────────────────────────────┘       ▲
+       │                                                                   │ DNS (Hostinger):
+       │                  ┌────────────── Cloudflare ──────────────┐       │ tên miền trỏ về GitHub
+       └──────────────────┤ Worker nguyenta-cms-auth (công khai)   │
+                          │   đổi mã GitHub lấy token cho CMS      │
+                          │                                        │
+                          │ Worker nguyenta-preview                │
+                          │   site đầy đủ, có Cloudflare Access ───┼──► chỉ Gen xem được
+                          └────────────────────────────────────────┘
+```
+
+Hai nửa độc lập với nhau: **GitHub** giữ mã nguồn và phục vụ site công khai;
+**Cloudflare** chỉ làm hai việc phụ mà GitHub Pages không làm được (đăng nhập
+CMS và bản xem trước có khoá). Cloudflare hỏng thì nguyenta.com vẫn chạy, chỉ
+không đăng nhập CMS được.
+
+### 11.2 Từng mảnh là gì, vì sao cần
+
+**Git và GitHub (repo).** Git lưu mọi phiên bản của mọi file; GitHub là nơi
+cất repo trên mạng. Mỗi bài viết là một file, nên lịch sử bài viết chính là
+lịch sử Git: sửa nhầm thì quay lại được, không cần sao lưu database như
+WordPress. Repo để **public** vì GitHub Pages miễn phí chỉ chạy với repo public.
+Hệ quả: ai cũng đọc được mã nguồn và cả bài nháp đã commit. File cá nhân
+(`Yêu cầu.md`) nằm trong `.gitignore` nên không bị đẩy lên.
+
+**Hugo.** Chương trình biến thư mục `content/` (Markdown) thành site HTML tĩnh.
+Site tĩnh không có PHP, không có database, nên không có gì để hack hay để cập
+nhật bảo mật, tải rất nhanh và lưu trữ miễn phí.
+
+**GitHub Actions.** Máy ảo miễn phí của GitHub, tự chạy mỗi khi có commit lên
+`main` và mỗi ngày lúc 0:05 giờ Nhật. Nó làm đúng các bước như ở máy: tải
+font, chạy Hugo, cắt font theo từng trang, lập chỉ mục tìm kiếm, rồi giao kết
+quả cho GitHub Pages. Nhờ vậy viết trên điện thoại qua `/admin` là đủ, không
+cần mở máy tính. Cấu hình: [.github/workflows/deploy.yml](.github/workflows/deploy.yml).
+
+**GitHub Pages.** Dịch vụ phục vụ file tĩnh miễn phí của GitHub, đặt ở nhiều
+máy chủ khắp thế giới. Nguồn build đặt là **GitHub Actions** (Settings › Pages),
+tên miền riêng là `nguyenta.com`, bật **Enforce HTTPS**.
+
+**Tên miền và DNS (Hostinger).** Tên miền `nguyenta.com` mua ở Hostinger và
+DNS vẫn quản lý ở đó. DNS là "danh bạ" đổi tên miền thành địa chỉ IP:
+
+| Bản ghi | Tên | Giá trị | Ý nghĩa |
+|---|---|---|---|
+| A ×4 | `@` | `185.199.108.153`, `.109.153`, `.110.153`, `.111.153` | `nguyenta.com` trỏ về máy chủ GitHub Pages |
+| CNAME | `www` | `nguyentajp.github.io` | `www.nguyenta.com` đi theo GitHub, GitHub tự chuyển về `nguyenta.com` |
+
+Có 4 bản ghi A vì GitHub Pages chạy trên 4 cụm máy chủ. Trình duyệt nhận cả 4,
+cụm nào trục trặc thì tự thử cụm khác, nên site không sập theo một máy.
+**Không** chuyển DNS sang Cloudflare: không cần, và chuyển thì phải làm lại
+toàn bộ phần này.
+
+**HTTPS.** Chứng chỉ do Let's Encrypt cấp, GitHub tự xin và tự gia hạn. Không
+phải làm gì.
+
+**Pagefind.** Công cụ tìm kiếm chạy hoàn toàn trong trình duyệt: lúc build nó
+lập chỉ mục mọi bài, người đọc gõ tìm thì trình duyệt tải từng mảnh chỉ mục
+nhỏ. Không cần máy chủ tìm kiếm, không gửi từ khoá của người đọc đi đâu.
+
+**Font tự host** (`tools/fonts/`). Font nằm ngay trên nguyenta.com, không gọi
+Google Fonts, nên trình duyệt người đọc không phải kết nối tới Google. Mỗi
+trang chỉ chứa đúng những chữ nó dùng (khoảng 35 KB tiếng Việt, 66 KB tiếng
+Nhật) thay vì cả bộ font vài MB.
+
+**Decap CMS** (`static/admin/`). Giao diện viết bài ở `/admin`. Nó không có
+máy chủ riêng: chạy trong trình duyệt, đọc và ghi file thẳng vào repo qua
+GitHub API bằng tài khoản GitHub của anh. "Công bố" trong CMS thực chất là
+một commit.
+
+**GitHub OAuth App** (`nguyenta.com CMS`, trong GitHub › Settings › Developer
+settings › OAuth Apps). Là "giấy phép" để Decap xin GitHub cho phép ghi vào
+repo thay anh. App có hai giá trị: **Client ID** (công khai) và **Client
+secret** (bí mật tuyệt đối, ai có nó có thể giả làm app này).
+
+**Cloudflare.** Công ty vận hành mạng máy chủ khắp thế giới. Ở đây chỉ dùng
+hai dịch vụ miễn phí: **Workers** và **Access**. Tài khoản đăng ký bằng
+`nguyentajp1403@gmail.com`.
+
+**Cloudflare Workers.** Đoạn code nhỏ chạy trên máy chủ Cloudflare, gọi tới là
+chạy, không phải thuê hay bảo trì máy chủ. Gói miễn phí cho 100.000 lượt gọi
+mỗi ngày, blog cá nhân dùng không hết. Mỗi Worker có địa chỉ dạng
+`<tên-worker>.genblog.workers.dev` (`genblog` là subdomain của tài khoản, đặt
+một lần, đổi thì mọi địa chỉ Worker đổi theo).
+
+**Cloudflare Access.** Lớp khoá đặt trước một Worker: ai vào cũng phải đăng
+nhập trước, chỉ người được cho phép mới qua. Đang dùng policy **Cloudflare
+account members**: chỉ người đăng nhập được tài khoản Cloudflare này, tức là
+anh.
+
+**wrangler.** Công cụ dòng lệnh của Cloudflare để deploy Worker từ máy. Luôn
+gọi bằng `npx wrangler@4` (ghim bản 4). Đăng nhập một lần bằng
+`npx wrangler login`; quyền được lưu trong máy ở
+`~/Library/Preferences/.wrangler/`.
+
+### 11.3 Vì sao CMS cần một Worker để đăng nhập
+
+GitHub chỉ đưa quyền ghi repo (token) cho ai chứng minh được mình là app hợp
+lệ, bằng cách gửi kèm **Client secret**. Secret không được nằm trong trình
+duyệt hay trong repo public, vì ai xem mã nguồn trang cũng thấy. GitHub Pages
+chỉ phục vụ file tĩnh, không có chỗ nào chạy code phía máy chủ để giữ secret.
+Worker `nguyenta-cms-auth` chính là chỗ đó: nó giữ secret, và chỉ làm đúng
+một việc là đổi mã đăng nhập lấy token.
+
+Một lần đăng nhập diễn ra như sau:
+
+1. Anh bấm **Đăng nhập bằng GitHub** ở `nguyenta.com/admin`. CMS mở một cửa sổ
+   nhỏ tới `nguyenta-cms-auth.genblog.workers.dev/auth`.
+2. Worker tạo một chuỗi ngẫu nhiên (`state`), cất vào cookie, rồi chuyển cửa sổ
+   sang trang "Authorize" của GitHub.
+3. Anh đồng ý. GitHub quay lại `/callback` của Worker, kèm một mã dùng một lần
+   (`code`) và chuỗi `state`.
+4. Worker so `state` với cookie (chống trang lạ giả mạo lượt đăng nhập), rồi
+   gửi `code` + Client ID + Client secret cho GitHub, nhận về token.
+5. Worker trao token cho cửa sổ `/admin`, và chỉ trao cho đúng
+   `https://nguyenta.com` (biến `ALLOWED_ORIGINS`). Cửa sổ nhỏ đóng lại.
+6. Từ đó CMS dùng token gọi GitHub API để đọc và commit bài.
+
+Worker không lưu token, không ghi log. Token nằm trong trình duyệt của anh.
+Quyền xin là `public_repo`: chỉ ghi được repo public, không đụng tới repo
+private nào của anh. Mã nguồn: [tools/cms-auth/worker.js](tools/cms-auth/worker.js),
+khoảng 60 dòng, tự viết để đọc hiểu được hết thay vì dùng code của người khác.
+
+Deploy lại sau khi sửa: `npx wrangler@4 deploy --config tools/cms-auth/wrangler.toml`.
+
+### 11.4 Bảo trì và bản xem trước: ai thấy gì
+
+| Địa chỉ | Ai xem được | Nội dung |
+|---|---|---|
+| `nguyenta.com` và mọi trang con | Mọi người | Lúc bảo trì: chỉ trang ensō "đang dựng" (xem [mục 7](#7-build-và-deploy)) |
+| `nguyenta.com/concept/` | Mọi người | Bản mẫu thiết kế, mở cả khi bảo trì |
+| `nguyenta.com/admin/` | Mọi người mở được, chỉ anh đăng nhập được | CMS |
+| `nguyenta-preview.genblog.workers.dev` | Chỉ anh (Cloudflare Access) | Site đầy đủ, không bảo trì, không bài nháp |
+| `nguyenta-cms-auth.genblog.workers.dev` | Công khai, **không được** bật Access | Máy chủ đăng nhập CMS |
+
+Bản xem trước là Worker `nguyenta-preview` chỉ chứa file tĩnh
+([tools/preview/wrangler.toml](tools/preview/wrangler.toml)). Nó được build
+riêng với `maintenance = false` và địa chỉ gốc của chính nó, vào thư mục
+`preview-public/` (không commit). Hiện đang đẩy tay từ máy:
+
+```bash
+HUGO_PARAMS_MAINTENANCE=false HUGO_ENVIRONMENT=production hugo --minify --baseURL https://nguyenta-preview.genblog.workers.dev/ -d preview-public
+```
+
+```bash
+npx wrangler@4 deploy --config tools/preview/wrangler.toml
+```
+
+> ⚠️ Không bao giờ tắt Access của `nguyenta-preview`, và không đẩy bản đầy đủ
+> lên Worker nào chưa có Access: nội dung sẽ lộ ra cho bất kỳ ai có địa chỉ.
+
+### 11.5 Các API đang dùng
+
+API là "cửa" để chương trình nói chuyện với một dịch vụ, thay cho việc bấm
+chuột trên web.
+
+| API | Ai gọi | Để làm gì |
+|---|---|---|
+| GitHub REST API (`api.github.com`) | Decap CMS, trong trình duyệt | Đọc danh sách bài, commit bài mới, tải ảnh lên repo |
+| GitHub OAuth (`github.com/login/oauth/authorize`, `/access_token`) | Worker `nguyenta-cms-auth` | Xin anh đồng ý, rồi đổi mã một lần lấy token |
+| `window.postMessage` | Cửa sổ đăng nhập ↔ trang `/admin` | Trao token giữa hai cửa sổ trình duyệt, chỉ cho origin `nguyenta.com` |
+| GitHub Pages API (qua lệnh `gh api`) | Dùng một lần khi dựng | Bật Pages với nguồn Actions, đặt tên miền, bật HTTPS |
+| Cloudflare API (qua `wrangler`) | Từ máy anh | Deploy hai Worker, cất Client secret |
+| YouTube (`youtube-nocookie.com`) | Trình duyệt người đọc, chỉ khi bấm phát | Phát video nhúng trong bài |
+
+### 11.6 Tài khoản và bí mật nằm ở đâu
+
+| Thứ | Nằm ở | Lộ hoặc mất thì làm gì |
+|---|---|---|
+| Tài khoản GitHub `nguyentajp` | — | Giữ bật xác thực hai lớp (2FA): tài khoản này ghi được cả site |
+| Client secret của OAuth App | Secret của Worker `nguyenta-cms-auth` trên Cloudflare, **không** có trong repo | GitHub › OAuth App › Generate a new client secret, xoá secret cũ, chạy lại `npx wrangler@4 secret put GITHUB_CLIENT_SECRET --config tools/cms-auth/wrangler.toml` |
+| Client ID | `tools/cms-auth/wrangler.toml` | Công khai, không sao |
+| Tài khoản Cloudflare | Email `nguyentajp1403@gmail.com` | Cũng là chìa khoá của bản xem trước (Access), nên giữ mật khẩu mạnh và 2FA |
+| Quyền wrangler trên máy | `~/Library/Preferences/.wrangler/` | Thu hồi: `npx wrangler logout` |
+| Tên miền | Hostinger | Nhớ gia hạn hằng năm; hết hạn là site mất |
+
+### 11.7 Những quyết định đã chọn và lý do
+
+- **Cloudflare Worker cho đăng nhập CMS**, không dùng Netlify: Worker miễn
+  phí, không bắt chuyển site hay DNS, và code đủ ngắn để tự đọc hiểu.
+- **Tự viết Worker** thay vì dùng bản có sẵn trên mạng: không phải tin code
+  của người lạ trong khâu cầm token ghi repo.
+- **Repo public**: bắt buộc để dùng GitHub Pages miễn phí. Muốn repo private
+  thì phải trả GitHub Pro.
+- **DNS để ở Hostinger**: Cloudflare chỉ cần cho Worker, không cần giữ tên miền.
+- **Bảo trì bằng cách lọc file khi deploy**, không chỉ đổi giao diện: đổi giao
+  diện thôi thì đoán đúng URL, RSS hay sitemap vẫn đọc được bài.
+- **Bản xem trước có Access** thay cho đường dẫn bí mật: đường dẫn bí mật thì
+  ai có link là xem được; Access bắt đăng nhập thật.
+- **Access policy "Cloudflare account members"**: không phải khai email riêng,
+  và không ai ngoài chủ tài khoản vào được.
+- **Worker thay cho Cloudflare Pages**: Cloudflare đã gộp Pages vào Workers;
+  wrangler mới tạo project Pages kiểu cũ không được.
+
+### 11.8 Đang làm dở
+
+- [ ] Điền Client ID vào `tools/cms-auth/wrangler.toml`, cất Client secret,
+      deploy lại Worker, thử đăng nhập `nguyenta.com/admin`.
+- [ ] Cho workflow tự đẩy bản xem trước mỗi lần push: cần một Cloudflare API
+      token chỉ có quyền deploy Worker, cất trong GitHub › Settings › Secrets.
+- [ ] Xoá bài thử `content/vi/posts/zz-thu-nghiem-anh/` (chỉ có ở máy).
+- [ ] Mở blog: `maintenance = false` trong `hugo.toml`.
