@@ -1,18 +1,18 @@
-{{- /* Một bài trong danh sách: tiêu đề, dòng thông tin, ảnh bìa, đoạn trích.
+{{- /* Một bài trong danh sách: tiêu đề, dòng thông tin, ảnh, đoạn giới thiệu.
      Tham số:
        page    — bài viết
-       variant — "lead" (bài mới nhất trên trang chủ), "list" (trang Bài viết,
-                 danh mục, thẻ) hoặc "grid" (các bài cũ hơn trên trang chủ)
+       variant — "lead" (bài Spotlight trên trang chủ), "list" (trang Bài
+                 viết, danh mục, thẻ) hoặc "grid" (các bài khác trên trang chủ)
        loading — "eager" cho ảnh nằm ngay đầu trang
        image   — ảnh thay cho ảnh bìa (ảnh Spotlight)
-       label   — nhãn nhỏ trên tiêu đề (Spotlight) */ -}}
+     Kiểu "list": ảnh nhỏ bên trái (bài không có ảnh thì là hình minh hoạ của
+     danh mục), bên phải là tiêu đề, dòng thông tin và đoạn mở đầu bài, cắt
+     gọn trong khoảng ba dòng. */ -}}
 {{- $page := .page -}}
 {{- $variant := .variant | default "list" -}}
-{{- $sizes := cond (eq $variant "grid") "(min-width: 64rem) 21rem, (min-width: 40rem) 50vw, 100vw" "(min-width: 64rem) 44rem, 100vw" -}}
-{{- $excerptLen := cond (eq $variant "grid") 140 260 -}}
+{{- $list := eq $variant "list" -}}
 <article class="post-item post-item--{{ $variant }}">
   <header class="post-item-head">
-    {{- with .label }}<p class="post-item-label">{{ . }}</p>{{ end }}
     {{- /* Trong lưới "Gần đây" đã có tiêu đề mục h2, nên tên bài là h3 */}}
     {{- if eq $variant "grid" }}
       <h3 class="post-item-title"><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h3>
@@ -21,9 +21,19 @@
     {{- end }}
     {{ partial "post-meta.html" (dict "page" $page) }}
   </header>
-  {{ partial "cover.html" (dict "page" $page "image" .image "sizes" $sizes "loading" (.loading | default "lazy")) }}
-  {{- with or $page.Description $page.Summary }}
-    <p class="post-item-excerpt">{{ . | plainify | truncate $excerptLen }}</p>
+  {{- if $list }}
+    <a class="post-item-thumb" href="{{ $page.RelPermalink }}" tabindex="-1" aria-hidden="true">
+      {{- partial "thumb.html" (dict "page" $page "sizes" "(min-width: 36rem) 13rem, 7.5rem") -}}
+    </a>
+    {{- with or $page.Summary $page.Description }}
+      <p class="post-item-excerpt">{{ . | plainify | truncate 320 }}</p>
+    {{- end }}
+  {{- else }}
+    {{- $sizes := cond (eq $variant "grid") "(min-width: 64rem) 21rem, (min-width: 40rem) 50vw, 100vw" "(min-width: 64rem) 44rem, 100vw" }}
+    {{ partial "cover.html" (dict "page" $page "image" .image "sizes" $sizes "loading" (.loading | default "lazy")) }}
+    {{- with or $page.Description $page.Summary }}
+      <p class="post-item-excerpt">{{ . | plainify | truncate (cond (eq $variant "grid") 140 260) }}</p>
+    {{- end }}
   {{- end }}
   <p class="post-item-more"><a href="{{ $page.RelPermalink }}">{{ i18n "read_more" }}<span class="visually-hidden">: {{ $page.Title }}</span></a></p>
 </article>

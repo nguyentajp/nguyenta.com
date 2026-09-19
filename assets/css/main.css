@@ -932,21 +932,6 @@ a.lang:hover .icon {
   text-wrap: balance;
 }
 
-/* Nhãn Spotlight trên tiêu đề bài nổi bật: cùng kiểu nhãn đề 題簽 với các
-   khung ở sidebar */
-.post-item-label {
-  display: inline-block;
-  margin-block-end: var(--space-3);
-  padding: 0.1rem 0.75rem;
-  border: 1px solid var(--ink);
-  border-radius: calc(var(--radius) / 2);
-  background: var(--band);
-  font-family: var(--font-display);
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
 .post-item--lead .post-item-title {
   font-size: var(--size-lead);
   line-height: 1.2;
@@ -1053,11 +1038,75 @@ a.lang:hover .icon {
   text-decoration-color: var(--accent);
 }
 
-/* Danh sách: các bài ngăn nhau bằng một đường mảnh và khoảng thở rộng */
+/* Danh sách (trang Bài viết, danh mục, thẻ): ảnh nhỏ bên trái, chữ bên phải;
+   đoạn mở đầu cắt gọn trong ba dòng. Các bài ngăn nhau bằng một đường mảnh. */
 .post-list > .post-item + .post-item {
-  margin-block-start: var(--space-6);
-  padding-block-start: var(--space-6);
+  margin-block-start: var(--space-5);
+  padding-block-start: var(--space-5);
   border-block-start: 1px solid var(--rule);
+}
+
+.post-item--list {
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 1fr);
+  grid-template-areas:
+    "thumb head"
+    "thumb excerpt"
+    "thumb more";
+  grid-template-rows: auto auto 1fr;
+  column-gap: var(--space-5);
+}
+
+.post-item--list .post-item-head {
+  grid-area: head;
+}
+
+.post-item-thumb {
+  grid-area: thumb;
+  display: block;
+}
+
+.post-item--list .post-item-title {
+  font-size: 1.375rem;
+  line-height: 1.3;
+}
+
+.post-item--list .meta {
+  margin-block-start: var(--space-2);
+}
+
+.post-item--list .post-item-excerpt {
+  grid-area: excerpt;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  margin-block-start: var(--space-3);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.post-item--list .post-item-more {
+  grid-area: more;
+  margin-block-start: var(--space-2);
+}
+
+/* Điện thoại: ảnh nhỏ hơn cạnh tiêu đề, đoạn mở đầu chạy hết bề ngang */
+@media (max-width: 35.999rem) {
+  .post-item--list {
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    grid-template-areas:
+      "thumb head"
+      "excerpt excerpt"
+      "more more";
+    grid-template-rows: auto;
+    column-gap: var(--space-4);
+  }
+
+  .post-item--list .post-item-title {
+    font-size: 1.1875rem;
+  }
 }
 
 /* Trang chủ: các bài cũ hơn xếp lưới hai cột, căn theo đầu hàng */

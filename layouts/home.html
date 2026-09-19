@@ -6,15 +6,14 @@
 {{ define "main" }}
   {{- $posts := where .Site.RegularPages "Section" "posts" -}}
   {{- $spot := first 1 (where $posts "Params.spotlight" true) -}}
-  {{- $label := i18n "spotlight_label" -}}
-  {{- if not $spot }}{{ $spot = first 1 $posts }}{{ $label = "" }}{{ end -}}
+  {{- if not $spot }}{{ $spot = first 1 $posts }}{{ end -}}
   {{- range $spot }}
     {{- $p := . }}
     {{- $image := "" }}
     {{- with $p.Params.spotlight_image }}{{ $image = $p.Resources.GetMatch . }}{{ end }}
     {{- /* Chỉ ảnh chụp mới cắt khung được; SVG hay file lạ thì dùng ảnh bìa */}}
     {{- with $image }}{{ if not (in (slice "jpeg" "png" "webp") .MediaType.SubType) }}{{ $image = "" }}{{ end }}{{ end }}
-    {{ partial "post-item.html" (dict "page" $p "variant" "lead" "loading" "eager" "label" $label "image" $image) }}
+    {{ partial "post-item.html" (dict "page" $p "variant" "lead" "loading" "eager" "image" $image) }}
   {{- else }}
     <p class="empty">{{ i18n "list_no_posts" }}</p>
   {{- end }}
