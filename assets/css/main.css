@@ -768,11 +768,9 @@ main {
 }
 
 /* ── 6. Bài trong danh sách ───────────────────────────────────────────────── */
-/* Mỗi bài: tiêu đề và dòng thông tin căn giữa, ảnh bìa, đoạn trích căn trái,
-   rồi link đọc tiếp. Ba cỡ: bài mới nhất (lead), danh sách, lưới hai cột. */
-.post-item-head {
-  text-align: center;
-}
+/* Mỗi bài: tiêu đề, dòng thông tin, ảnh bìa, đoạn trích, link đọc tiếp, tất
+   cả cùng canh trái theo một mép. Ba cỡ: bài mới nhất (lead), danh sách, lưới
+   hai cột. */
 
 .post-item-title {
   font-family: var(--font-headline);
@@ -810,14 +808,24 @@ main {
   color: var(--accent);
 }
 
+/* Dòng thông tin: mỗi mục (ngày kèm thứ, tiết khí, thời gian đọc…) không bao
+   giờ bị ngắt giữa chừng; hết chỗ thì cả mục xuống dòng. Canh trái trong danh
+   sách, canh giữa dưới tiêu đề bài viết. */
 .meta {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: var(--space-1) var(--space-4);
   margin-block-start: var(--space-3);
   font-size: 0.875rem;
   color: var(--muted);
+}
+
+.meta > * {
+  white-space: nowrap;
+}
+
+.post-head .meta {
+  justify-content: center;
 }
 
 .meta a {
@@ -1038,90 +1046,9 @@ main {
   text-underline-offset: 0.3em;
 }
 
-/* Dòng lời dẫn (description) dưới tiêu đề, chỉ ở bài tiếng Nhật */
-.post-lead {
-  max-width: 34rem;
-  margin: var(--space-4) auto 0;
-  font-size: 1.0625rem;
-  line-height: 1.9;
-  color: var(--muted);
-  text-wrap: pretty;
-}
-
-/* Bài tiếng Nhật trên máy tính: tiêu đề viết dọc đứng ở bên phải đầu bài,
-   như trang mở đầu một bài trong tạp chí Nhật. Bên trái, đọc ngang: đường
-   dẫn ở trên, lời dẫn ở giữa, dòng thông tin và nút furigana ở dưới. Tiêu
-   đề dài hơn 18rem thì sang cột thứ hai bên trái, ngắt đúng chỗ cụm từ. */
-@media (min-width: 48rem) {
-  .post-head:lang(ja) {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-rows: auto 1fr auto auto;
-    grid-template-areas:
-      "crumbs title"
-      "lead   title"
-      "meta   title"
-      "switch title";
-    column-gap: var(--space-6);
-    padding-block-end: var(--space-5);
-    border-block-end: 1px solid var(--rule);
-    text-align: start;
-  }
-
-  .post-head:lang(ja) .crumbs {
-    grid-area: crumbs;
-  }
-
-  .post-head:lang(ja) .post-title {
-    grid-area: title;
-    writing-mode: vertical-rl;
-    max-block-size: 18rem;
-    min-block-size: 12rem;
-    font-size: clamp(2rem, 2.8vw, 2.4rem);
-    line-height: 1.5;
-    letter-spacing: 0.12em;
-    font-feature-settings: normal;
-  }
-
-  .post-head:lang(ja) .post-lead {
-    grid-area: lead;
-    align-self: center;
-    margin: var(--space-4) 0;
-  }
-
-  .post-head:lang(ja) .meta {
-    grid-area: meta;
-  }
-
-  .post-head:lang(ja) .furigana-switch {
-    grid-area: switch;
-  }
-
-  .post-head:lang(ja) .crumbs ol,
-  .post-head:lang(ja) .meta,
-  .post-head:lang(ja) .furigana-switch {
-    justify-content: flex-start;
-  }
-}
-
 /* Ảnh bìa trong trang bài viết: ngay dưới đầu bài, rộng bằng cột chữ */
 .post > .cover {
   margin-block: 0 var(--space-6);
-}
-
-/* Ảnh tràn (bài kiểu "photo"): ảnh bìa rộng bằng cả khung trang, ngay dưới
-   hàng menu, bo góc như mọi ảnh; trên mobile tràn sát mép, góc vuông */
-.hero {
-  width: 100%;
-  margin-block-start: var(--space-5);
-}
-
-.hero img {
-  width: 100%;
-  height: clamp(16rem, 52vh, 34rem);
-  object-fit: cover;
-  background: var(--band);
-  border-radius: var(--radius);
 }
 
 /* Khung "Trong bài này" (bài kiểu "study") và khung từ vựng: cùng kiểu khung
@@ -1170,35 +1097,6 @@ main {
 .vocab dd {
   font-size: 0.9375em;
   color: var(--muted);
-}
-
-/* Tuỳ bút dọc (bài tiếng Nhật kiểu "vertical"): thân bài viết dọc, đọc từ
-   phải sang trái. Khung cao cố định, dài hơn bề ngang cột thì cuộn ngang và
-   bắt đầu từ mép phải. Các lề margin-block của .prose là thuộc tính logic,
-   nên khoảng cách đoạn tự chuyển thành khoảng cách giữa các cột chữ. */
-.tategaki-note {
-  margin-block-end: var(--space-3);
-  font-size: 0.8125rem;
-  color: var(--muted);
-}
-
-/* Viết dọc thì "chiều ngang" của khung là chiều block: dùng width/height vật
-   lý cho khỏi nhầm. Ngang bằng cột chữ, cao bằng khoảng 28 chữ. */
-.tategaki {
-  writing-mode: vertical-rl;
-  width: 100%;
-  height: min(30rem, 72svh);
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  padding-block: var(--space-2);
-  line-height: 2.1;
-  letter-spacing: 0.08em;
-  scrollbar-width: thin;
-  scrollbar-color: var(--rule) transparent;
-}
-
-.tategaki:focus-visible {
-  outline-offset: 4px;
 }
 
 /* Ảnh trong bài rộng bằng cột nội dung (xem mục 11 cho ảnh tràn trên mobile) */
@@ -1721,13 +1619,8 @@ main {
   }
 
   .figure img,
-  .cover img,
-  .hero img {
+  .cover img {
     border-radius: 0;
-  }
-
-  .hero {
-    padding-inline: 0;
   }
 
   .figure figcaption {

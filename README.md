@@ -185,18 +185,20 @@ tự kiểm tra) và **Tắt**. Trình duyệt nhớ lựa chọn cho các bài 
 ### 2.6 Kiểu trình bày
 
 Mỗi bài chọn một kiểu ở ô **Kiểu trình bày** trong CMS (trường `variant` nếu
-viết tay). Bốn kiểu dùng chung font, màu, sidebar; chỉ khác phần đầu bài:
+viết tay). Hai kiểu dùng chung font, màu, sidebar; chỉ khác phần đầu bài:
 
 | Kiểu | `variant` | Hiển thị | Hợp với |
 |---|---|---|---|
-| Mặc định | để trống hoặc `default` | Tiêu đề, ảnh bìa rộng bằng cột chữ, bài | Đa số bài |
-| Ảnh tràn | `photo` | Ảnh bìa lớn rộng hết khung ngay dưới menu, rồi tới tiêu đề. Không có ảnh bìa thì hiện như Mặc định | Du lịch, bài nhiều ảnh |
+| Mặc định | để trống hoặc `default` | Tiêu đề, ảnh bìa ngay dưới tiêu đề, bài | Đa số bài |
 | Sổ học | `study` | Như Mặc định, thêm khung **Trong bài này** liệt kê các mục (từ hai mục trở lên) | Bài học tiếng Nhật, ghi chép dài |
-| Tuỳ bút dọc | `vertical` | Thân bài viết dọc, đọc từ phải sang trái, cuộn ngang. Chỉ có tác dụng ở bài tiếng Nhật | Tuỳ bút, nhật ký ngắn |
 
-Bài tiếng Nhật trên máy tính luôn có **tiêu đề viết dọc** ở bên phải đầu bài,
-bên trái là mô tả ngắn (description) và dòng thông tin. Trên điện thoại tiêu
-đề trở về chữ ngang. Vì mô tả ngắn hiện ở đầu bài tiếng Nhật, nhớ điền nó.
+Cả hai ngôn ngữ đều **viết ngang**, không có chữ dọc ở đâu cả, để bố cục bản
+Việt và bản Nhật giống nhau. (Hai kiểu cũ `photo` và `vertical` đã bỏ; bài nào
+còn ghi hai giá trị đó thì tự hiện như Mặc định.)
+
+Ảnh bìa luôn nằm **dưới tiêu đề**. Ảnh khác chèn ở chỗ nào trong bài cũng được:
+trong CMS bấm **+ → Ảnh** tại vị trí muốn chèn, hoặc viết tay
+`![Chú thích](ten-anh.jpg)` ngay dòng đó (mục 3).
 
 ---
 

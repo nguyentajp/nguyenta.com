@@ -4,7 +4,7 @@
      dịch; danh mục khi đó đã nằm ở dòng đường dẫn phía trên tiêu đề. */ -}}
 {{- $page := .page -}}
 <p class="meta">
-  <time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ $page.Date.Format (i18n "date_full") }}</time>
+  <time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ partial "date.html" $page.Date }}</time>
   {{- if .full }}<span>{{ partial "sekki.html" (dict "date" $page.Date) }}</span>{{ end }}
   {{- if not .full }}
     {{- with $page.GetTerms "categories" }}

@@ -1,33 +1,8 @@
-{{- /* Trang bài viết. Kiểu trình bày chọn bằng trường "variant" (README mục 2.6,
-     partial post-variant.html):
+{{- /* Trang bài viết: đường dẫn, tiêu đề, dòng thông tin, rồi ảnh bìa (nếu có)
+     ngay DƯỚI tiêu đề, rồi thân bài. Mọi chữ, kể cả bài tiếng Nhật, đều viết
+     ngang. Kiểu trình bày chọn bằng trường "variant" (README mục 2.6):
        default   tiêu đề, ảnh bìa, thân bài
-       photo     ảnh tràn: ảnh bìa lớn rộng hết khung, ngay dưới đầu trang
-       study     sổ học: thêm khung "Trong bài này" liệt kê các mục của bài
-       vertical  tuỳ bút dọc, chỉ bài tiếng Nhật: thân bài viết dọc
-     Bài tiếng Nhật trên máy tính: tiêu đề viết dọc ở bên phải đầu bài, bên
-     trái là lời dẫn (description) và dòng thông tin. */ -}}
-
-{{- /* Ảnh tràn nằm ngoài lưới hai cột, ngay dưới hàng menu (baseof.html) */}}
-{{ define "hero" }}
-  {{- if eq (partial "post-variant.html" .) "photo" }}
-    {{- with partial "cover-resource.html" (dict "page" . "fallback" false) }}
-      {{- $res := . }}
-      {{- $srcset := slice }}
-      {{- $fallback := "" }}
-      {{- range slice 800 1200 1600 2000 }}
-        {{- if le . $res.Width }}
-          {{- $r := $res.Resize (printf "%dx webp" .) }}
-          {{- $srcset = $srcset | append (printf "%s %dw" $r.RelPermalink $r.Width) }}
-          {{- if or (not $fallback) (le . 1200) }}{{ $fallback = $r }}{{ end }}
-        {{- end }}
-      {{- end }}
-      <div class="shell hero">
-        <img src="{{ $fallback.RelPermalink }}" srcset="{{ delimit $srcset ", " }}" sizes="(min-width: 68rem) 64rem, 100vw"
-             width="{{ $fallback.Width }}" height="{{ $fallback.Height }}" alt="" fetchpriority="high" decoding="async">
-      </div>
-    {{- end }}
-  {{- end }}
-{{ end }}
+       study     sổ học: thêm khung "Trong bài này" liệt kê các mục của bài */ -}}
 
 {{ define "main" }}
   {{- $variant := partial "post-variant.html" . }}
@@ -43,14 +18,11 @@
         </ol>
       </nav>
       <h1 class="post-title">{{ .Title }}</h1>
-      {{- if eq site.Language.Lang "ja" }}{{ with .Description }}<p class="post-lead">{{ . }}</p>{{ end }}{{ end }}
       {{ partial "post-meta.html" (dict "page" . "full" true) }}
       {{- if strings.Contains $content "<ruby>" }}{{ partial "furigana-switch.html" . }}{{ end }}
     </header>
 
-    {{- if in (slice "default" "study") $variant }}
-      {{ partial "cover.html" (dict "page" . "link" false "fallback" false "loading" "eager") }}
-    {{- end }}
+    {{ partial "cover.html" (dict "page" . "link" false "fallback" false "loading" "eager") }}
 
     {{- /* Sổ học: khung mục lục, chỉ khi bài có từ hai mục trở lên */}}
     {{- if eq $variant "study" }}
@@ -64,14 +36,7 @@
       {{- end }}
     {{- end }}
 
-    {{- if eq $variant "vertical" }}
-      {{- /* Viết dọc: đọc từ phải sang trái, từng cột trên xuống dưới. Khung
-           cuộn ngang nên phải nhận được focus để đọc bằng bàn phím. */}}
-      <p class="tategaki-note" data-pagefind-ignore>{{ i18n "vertical_note" }}</p>
-      <div class="post-body prose tategaki" tabindex="0" role="region" aria-label="{{ i18n "vertical_region" }}">{{ $content }}</div>
-    {{- else }}
-      <div class="post-body prose">{{ $content }}</div>
-    {{- end }}
+    <div class="post-body prose">{{ $content }}</div>
     {{ partial "hanko.html" . }}
   </article>
 

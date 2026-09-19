@@ -49,6 +49,23 @@ other = "ライトモードにする"
 other = "2006年1月2日"
 [date_compact]
 other = "1月2日"
+# 曜日は日付の後ろに括弧で: "2026年9月19日（土）"
+[date_weekday]
+other = "{{ .Date }}（{{ .Weekday }}）"
+[weekday_0]
+other = "日"
+[weekday_1]
+other = "月"
+[weekday_2]
+other = "火"
+[weekday_3]
+other = "水"
+[weekday_4]
+other = "木"
+[weekday_5]
+other = "金"
+[weekday_6]
+other = "土"
 
 [read_more]
 other = "続きを読む"
@@ -189,7 +206,3 @@ other = "非表示"
 other = "この記事の内容"
 [vocab_title]
 other = "語彙"
-[vertical_note]
-other = "縦書きの本文です。右から左へ、横にスクロールしてお読みください。"
-[vertical_region]
-other = "縦書きの本文"

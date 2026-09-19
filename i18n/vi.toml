@@ -49,6 +49,23 @@ other = "Chuyển sang giao diện sáng"
 other = "2 tháng 1, 2006"
 [date_compact]
 other = "02.01"
+# Ngày kèm thứ trong tuần (_partials/date.html): "Thứ bảy, 19 tháng 9, 2026"
+[date_weekday]
+other = "{{ .Weekday }}, {{ .Date }}"
+[weekday_0]
+other = "Chủ nhật"
+[weekday_1]
+other = "Thứ hai"
+[weekday_2]
+other = "Thứ ba"
+[weekday_3]
+other = "Thứ tư"
+[weekday_4]
+other = "Thứ năm"
+[weekday_5]
+other = "Thứ sáu"
+[weekday_6]
+other = "Thứ bảy"
 
 [read_more]
 other = "Đọc tiếp"
@@ -189,7 +206,3 @@ other = "Tắt"
 other = "Trong bài này"
 [vocab_title]
 other = "Từ vựng"
-[vertical_note]
-other = "Bài viết dọc. Đọc từ phải sang trái, cuộn ngang để xem tiếp."
-[vertical_region]
-other = "Thân bài viết dọc"

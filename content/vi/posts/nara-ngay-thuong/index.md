@@ -7,7 +7,6 @@ description: Tránh cuối tuần, Nara chậm hẳn lại. Hươu nằm dưới
 categories: ["du-lich"]
 tags: ["nara", "đi bộ", "mùa hè"]
 cover: cover.jpg
-variant: photo
 demo: true
 draft: false
 ---

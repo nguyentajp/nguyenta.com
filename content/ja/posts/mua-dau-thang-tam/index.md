@@ -7,7 +7,6 @@ description: 夕立が街をしずめていきました。小さな喫茶店の�
 categories: ["nikki"]
 tags: ["大阪", "夏", "雨"]
 cover: cover.jpg
-variant: vertical
 demo: true
 draft: false
 ---

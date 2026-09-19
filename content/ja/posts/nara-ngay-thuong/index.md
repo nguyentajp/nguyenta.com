@@ -7,7 +7,6 @@ description: 週末を避けると、奈良はぐっとゆっくりになりま�
 categories: ["tabi"]
 tags: ["奈良", "散歩", "夏"]
 cover: cover.jpg
-variant: photo
 demo: true
 draft: false
 ---

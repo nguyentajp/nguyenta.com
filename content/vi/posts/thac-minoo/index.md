@@ -7,7 +7,6 @@ description: Từ ga Minoo đi bộ chừng bốn mươi phút dọc suối là 
 categories: ["du-lich"]
 tags: ["osaka", "minoo", "đi bộ"]
 cover: cover.jpg
-variant: photo
 demo: true
 draft: false
 ---

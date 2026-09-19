@@ -1,10 +1,6 @@
 {{- /* Kiểu trình bày của một bài (trường "variant", README mục 2.6), trả về
-     một trong: default, photo, study, vertical.
-     - Giá trị lạ hoặc để trống: default.
-     - vertical chỉ dành cho bài tiếng Nhật; bài tiếng Việt về default.
-     - photo cần ảnh bìa; không có ảnh bìa thì về default. */ -}}
+     default hoặc study. Giá trị lạ, để trống, hay kiểu cũ đã bỏ (photo,
+     vertical) đều về default. */ -}}
 {{- $v := .Params.variant | default "default" -}}
-{{- if not (in (slice "default" "photo" "study" "vertical") $v) }}{{ $v = "default" }}{{ end -}}
-{{- if and (eq $v "vertical") (ne .Site.Language.Lang "ja") }}{{ $v = "default" }}{{ end -}}
-{{- if and (eq $v "photo") (not (partial "cover-resource.html" (dict "page" . "fallback" false))) }}{{ $v = "default" }}{{ end -}}
+{{- if not (in (slice "default" "study") $v) }}{{ $v = "default" }}{{ end -}}
 {{- return $v -}}

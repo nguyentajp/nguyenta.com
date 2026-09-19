@@ -7,7 +7,6 @@ description: 箕面駅から川沿いを四十分ほど歩くと滝に着きま�
 categories: ["tabi"]
 tags: ["大阪", "箕面", "散歩"]
 cover: cover.jpg
-variant: photo
 demo: true
 draft: false
 ---

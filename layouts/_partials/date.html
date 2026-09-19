@@ -1,0 +1,8 @@
+{{- /* Ngày đăng đầy đủ kèm thứ trong tuần, trả về chuỗi:
+       vi  Thứ bảy, 19 tháng 9, 2026
+       ja  2026年9月19日（土）
+     Tên thứ và vị trí của nó nằm trong i18n (date_weekday, weekday_0…6), không
+     dùng tên thứ Hugo tự dịch vì bản tiếng Việt của Hugo viết hoa "Thứ Bảy".
+     Dùng: partial "date.html" $page.Date */ -}}
+{{- $wd := i18n (printf "weekday_%d" .Weekday) -}}
+{{- return i18n "date_weekday" (dict "Weekday" $wd "Date" (.Format (i18n "date_full"))) -}}

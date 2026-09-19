@@ -16,7 +16,7 @@
     <section class="sheet">
       <header class="sheet-head">
         <h2 class="sheet-title"><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h2>
-        <time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ $page.Date.Format (i18n "date_full") }}</time>
+        <time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ partial "date.html" $page.Date }}</time>
       </header>
       <ul class="sheet-row">
         {{- range .imgs }}

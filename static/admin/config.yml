@@ -137,10 +137,8 @@ collections:
         default: "default"
         options:
           - { label: "Mặc định: tiêu đề, ảnh bìa, bài viết", value: "default" }
-          - { label: "Ảnh tràn: ảnh bìa lớn rộng hết khung, hợp bài du lịch", value: "photo" }
           - { label: "Sổ học: thêm khung mục lục các phần của bài", value: "study" }
-          - { label: "Tuỳ bút dọc: thân bài viết dọc (chỉ bài tiếng Nhật)", value: "vertical" }
-        hint: "Ảnh tràn cần có ảnh bìa. Tuỳ bút dọc hợp bài tiếng Nhật ngắn; chọn cho bài tiếng Việt thì hiện như Mặc định."
+        hint: "Ảnh bìa (nếu có) luôn nằm ngay dưới tiêu đề. Ảnh khác chèn ở đâu trong bài cũng được, bằng nút + → Ảnh."
       - &body
         label: "Nội dung"
         name: body

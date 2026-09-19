@@ -21,8 +21,6 @@
     <main id="noi-dung">{{ block "main" . }}{{ end }}</main>
   {{- else }}
     {{ partial "masthead.html" . }}
-    {{- /* Chỗ cho ảnh lớn rộng hết khung trước lưới hai cột (bài kiểu "Ảnh tràn") */}}
-    {{ block "hero" . }}{{ end }}
     {{- /* Hai cột như một blog quen thuộc: nội dung bên trái, sidebar bên phải.
          Trang nào cần cả bề ngang (trang Ảnh) đặt "sidebar: false". */}}
     {{- $sidebar := ne .Params.sidebar false }}
