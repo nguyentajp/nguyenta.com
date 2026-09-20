@@ -1,24 +1,18 @@
 {{- /* Mục lục: mọi lối vào kho bài trên một trang, bốn cách tìm:
        1. theo từ khoá   ô tìm kiếm, gửi sang trang Tìm kiếm
        2. theo danh mục  mỗi danh mục một ô: hình minh hoạ, tên, số bài
-       3. theo thẻ       mọi thẻ, kèm số bài
-       4. theo ngày đăng toàn bộ bài theo năm và tháng, không đoạn trích, không
+       3. theo ngày đăng toàn bộ bài theo năm và tháng, không đoạn trích, không
                          phân trang, để lùi thật sâu về quá khứ mà không phải
                          bấm "trang sau". Mỗi tháng có id "thang-YYYY-MM" để
                          sidebar link thẳng tới.
+       4. theo thẻ       mọi thẻ, kèm số bài
      Trang không có sidebar (sidebar: false) để các cột có đủ chỗ. */ -}}
 {{ define "main" }}
   {{- $posts := where .Site.RegularPages "Section" "posts" -}}
   {{- $years := $posts.GroupByDate "2006" -}}
   <header class="page-head">
     <h1 class="page-title">{{ .Title }}</h1>
-    {{- with .Description }}<p class="page-intro">{{ . }}</p>{{ end }}
-    <nav class="index-jump" aria-label="{{ .Title }}">
-      <a href="#tim">{{ i18n "index_search" }}</a>
-      <a href="#danh-muc">{{ i18n "index_categories" }}</a>
-      <a href="#the">{{ i18n "index_tags" }}</a>
-      <a href="#ngay-dang">{{ i18n "index_time" }}</a>
-    </nav>
+    {{- with .Description }}<p class="page-intro page-intro--wide">{{ . }}</p>{{ end }}
   </header>
 
   <div class="index">
@@ -46,17 +40,6 @@
                 <span class="count">{{ i18n "list_count" (dict "Count" $n) }}</span>
               </a>
             </li>
-          {{- end }}
-        </ul>
-      </section>
-    {{- end }}
-
-    {{- with site.Taxonomies.tags }}
-      <section class="index-block" aria-labelledby="the">
-        <h2 class="section-title" id="the">{{ i18n "index_tags" }}</h2>
-        <ul class="tag-cloud">
-          {{- range .Alphabetical }}
-            <li><a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}</a> <span class="count">{{ .Count }}</span></li>
           {{- end }}
         </ul>
       </section>
@@ -92,5 +75,16 @@
         <p class="empty">{{ i18n "list_no_posts" }}</p>
       {{- end }}
     </section>
+
+    {{- with site.Taxonomies.tags }}
+      <section class="index-block" aria-labelledby="the">
+        <h2 class="section-title" id="the">{{ i18n "index_tags" }}</h2>
+        <ul class="tag-cloud">
+          {{- range .Alphabetical }}
+            <li><a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}</a> <span class="count">{{ .Count }}</span></li>
+          {{- end }}
+        </ul>
+      </section>
+    {{- end }}
   </div>
 {{ end }}

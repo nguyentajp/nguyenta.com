@@ -4,5 +4,5 @@ translationKey: page-archive
 url: "/ja/mokuji/"
 layout: "archive"
 sidebar: false
-description: "このブログのすべての記事です。キーワード、カテゴリー、タグ、日付から探せます。"
+description: "すべての記事を、キーワード・カテゴリー・日付・タグから探せます。"
 ---

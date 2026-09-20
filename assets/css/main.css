@@ -498,6 +498,13 @@ main {
   text-wrap: pretty;
 }
 
+/* Lời dẫn của trang Mục lục: một câu liệt kê bốn lối tìm, đọc như một dòng
+   chỉ đường. Nới bề ngang để câu nằm gọn một dòng trên máy tính thay vì gãy
+   làm đôi; màn hình hẹp thì vẫn xuống dòng như thường. */
+.page-intro--wide {
+  max-width: 46rem;
+}
+
 .page-parent,
 .page-count {
   font-size: 0.9375rem;
@@ -1879,12 +1886,16 @@ main {
   margin-block-start: var(--space-2);
 }
 
-/* Link mời bấm trong khung (đọc thêm, ủng hộ, bài viết mới) gạch chân bằng
-   màu nhấn, để mắt thấy ngay đâu là lối đi tiếp */
-.widget-more a,
-.widget-posts a {
+/* Link mời bấm trong khung (đọc thêm, ủng hộ) gạch chân bằng màu nhấn, để mắt
+   thấy ngay đâu là lối đi tiếp. Danh sách bài viết mới thì KHÔNG gạch chân:
+   năm dòng gạch chân liền nhau thành một mảng vạch, rối hơn là dẫn đường. */
+.widget-more a {
   text-decoration: underline 0.09em var(--accent-line);
   text-underline-offset: 0.3em;
+}
+
+.widget-posts a {
+  text-decoration: none;
 }
 
 .widget-more a:hover,
@@ -2621,26 +2632,9 @@ html:has(.lightbox[open]) {
   font-variant-numeric: tabular-nums;
 }
 
-/* Mục lục: bốn khối ngăn nhau bằng tiêu đề mục có hai đường mảnh */
-.index-jump {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-2) var(--space-5);
-  margin-block-start: var(--space-4);
-  font-size: 0.9375rem;
-}
-
-.index-jump a {
-  text-decoration: underline 1px var(--rule);
-  text-underline-offset: 0.3em;
-}
-
-.index-jump a:hover {
-  color: var(--accent);
-  text-decoration-color: var(--accent);
-}
-
+/* Mục lục: bốn khối ngăn nhau bằng tiêu đề mục có hai đường mảnh. Không có
+   hàng link nhảy mục ở đầu trang: bốn tiêu đề đã nằm ngay dưới, cuộn một cái
+   là thấy. */
 .index-block {
   scroll-margin-block-start: var(--space-5);
 }
