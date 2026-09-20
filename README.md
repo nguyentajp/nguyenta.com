@@ -796,6 +796,18 @@ Có quyết định mới thì ghi vào đây.
 - **Không làm trang chủ kiểu bìa (表紙).** Đã dựng bốn mẫu ngày 20/9, từ nhẹ
   tới đậm; anh xem rồi thấy màu mè. Đầu trang hiện tại đã đủ. Đừng đề xuất lại.
 
+#### Bản tin — chốt ngày 21/9/2026
+
+- **Dùng Kit (kit.com), không dùng Buttondown.** Buttondown free chỉ 100 người
+  đăng ký; Kit free tới 10.000 người và gửi bao nhiêu số cũng được. Cả hai đều
+  là form POST thẳng, không API key trong repo, không cần JS — nên đổi nhà chỉ
+  là sửa bốn dòng trong `[params.newsletter]`.
+- **Không cần tự gửi bài mới theo RSS.** Anh tự soạn và bấm gửi từng số cho
+  những người đã đăng ký. Vì thế mức free của Kit là đủ, không phải trả tiền.
+- **Không dùng Substack**, tuy nó vừa free vừa không giới hạn người: bài sẽ
+  phải đăng bên đó nữa, tức là viết hai nơi và người đọc bị kéo sang sân của
+  họ.
+
 #### Logo — chốt ngày 21/9/2026
 
 - **Tên blog ở đầu trang và chân trang là HÌNH chữ "Gen"**, cắt sẵn thành
@@ -836,13 +848,25 @@ Có quyết định mới thì ghi vào đây.
       không giấu bài khỏi bản xem trước; nó chỉ chặn bài lên nguyenta.com và
       giúp lệnh grep ở trên tìm thấy.
 - [ ] Thay ảnh chân dung (`assets/brand/avatar.jpg`) và thêm ảnh bìa cho các bài.
-- [ ] Bản tin ở chân trang: code đã nối sẵn với Buttondown, chỉ còn thiếu tài
-      khoản. Đăng ký ở buttondown.com rồi điền username vào
-      `params.newsletter.username` trong `hugo.toml` là chạy. Để trống thì khối
-      vẫn là giao diện mẫu như cũ (bấm Đăng ký ra dòng "chưa mở").
+- [ ] Bản tin ở chân trang: code đã nối sẵn, chỉ còn thiếu tài khoản. Lập tài
+      khoản ở nhà cung cấp rồi điền `id` vào `[params.newsletter]` trong
+      `hugo.toml` là chạy; `action`, `suffix` và `field` của từng nhà đã ghi
+      sẵn ngay trong file đó. Để trống `id` thì khối vẫn là giao diện mẫu (bấm
+      Đăng ký ra dòng "chưa mở").
 
-      Form POST thẳng sang Buttondown nên **không có API key nào trong repo**
-      và không cần JS. Free 100 người đăng ký; **tự gửi bài mới theo RSS là
-      tính năng trả tiền** (~$9/tháng), bản free phải tự soạn và bấm gửi từng
-      số.
+      Form POST thẳng sang nhà cung cấp nên **không có API key nào trong repo**
+      và không cần JS.
+
+      Mức free của vài nhà, tra lại ngày 21/9/2026:
+
+      | Nhà | Người đăng ký | Tự gửi bài mới theo RSS |
+      |---|---|---|
+      | Kit (kit.com) | 10.000 | không, phải tự soạn và bấm gửi |
+      | Buttondown | 100 | không, trả tiền (~$9/tháng) mới có |
+      | MailerLite | 250 | không |
+      | Substack | không giới hạn | có, nhưng bài phải đăng bên đó |
+
+      Không có nhà nào vừa free, vừa không giới hạn người, vừa tự gửi. Chỗ
+      "không giới hạn" duy nhất là Substack, đổi lại bài phải nằm trên
+      Substack — tức là viết hai nơi.
 - [ ] Mở blog: `maintenance = false` trong `hugo.toml`.
