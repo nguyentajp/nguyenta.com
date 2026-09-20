@@ -816,4 +816,11 @@ Có quyết định mới thì ghi vào đây.
       và không cần JS. Free 100 người đăng ký; **tự gửi bài mới theo RSS là
       tính năng trả tiền** (~$9/tháng), bản free phải tự soạn và bấm gửi từng
       số.
+- [ ] Logo ngang (combination mark), bản nháp chờ anh chọn. `tools/brand/logo.py`
+      sinh ra `kamon-enso.svg` (kamon đổi vòng tre thành ensō) và ba bản ghép
+      với ba kiểu chữ ký: `logo-kanji.svg` (元), `logo-kana.svg` (ゲン),
+      `logo-latin.svg` (Gen). **Chưa gắn vào trang nào cả** — còn chờ chốt ba
+      việc: chọn chữ ký, đặt logo ở đâu, và kamon trên site có đổi vòng theo
+      không. Chốt xong thì ghi vào mục 11.7 rồi xoá hai bản không dùng.
+
 - [ ] Mở blog: `maintenance = false` trong `hugo.toml`.
