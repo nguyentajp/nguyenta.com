@@ -1,11 +1,26 @@
 {{ define "main" }}
+  {{- /* Trang Bài viết: bài viết nổi bật đầy đủ ở đầu trang thứ nhất, rồi tới
+       danh sách theo thời gian. Bài nổi bật bị lấy ra khỏi danh sách để không
+       hiện hai lần, và chỉ hiện ở trang 1 (sang trang 2 thì không còn).
+       Khác trang chủ ở chỗ fallback = false: phải có bài bật ô "Bài viết nổi
+       bật" trong CMS thì mới có khối này, không thì trang trở lại như cũ. */}}
+  {{- $spot := false }}
+  {{- if eq .Section "posts" }}{{ $spot = partial "spotlight.html" (dict "fallback" false) }}{{ end }}
+  {{- $pages := .Pages }}
+  {{- with $spot }}{{ $pages = complement (slice .page) $pages }}{{ end }}
+  {{- $paginator := .Paginate $pages }}
   <header class="page-head">
     <h1 class="page-title">{{ .Title }}</h1>
     {{- with .Description }}<p class="page-intro">{{ . }}</p>{{ end }}
   </header>
+  {{- with $spot }}
+    {{- if eq $paginator.PageNumber 1 }}
+      {{ partial "post-item.html" (dict "page" .page "variant" "lead" "loading" "eager" "image" .image) }}
+    {{- end }}
+  {{- end }}
   <div class="post-list">
-    {{- range $i, $p := .Paginator.Pages }}
-      {{ partial "post-item.html" (dict "page" $p "variant" "list" "loading" (cond (eq $i 0) "eager" "lazy")) }}
+    {{- range $i, $p := $paginator.Pages }}
+      {{ partial "post-item.html" (dict "page" $p "variant" "list" "loading" (cond (and (eq $i 0) (not $spot)) "eager" "lazy")) }}
     {{- else }}
       <p class="empty">{{ i18n "list_no_posts" }}</p>
     {{- end }}

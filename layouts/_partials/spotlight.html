@@ -1,0 +1,22 @@
+{{- /* Bài viết nổi bật (ô "Bài viết nổi bật" trong CMS, trường spotlight).
+     Trả về dict "page" và "image", hoặc false nếu không có bài nào.
+
+     Tham số fallback: trang chủ luôn phải có một bài lớn ở đầu, nên khi không
+     bài nào bật thì lấy bài mới nhất (fallback true). Trang Bài viết thì không:
+     ở đó bài mới nhất đã đứng đầu danh sách rồi, lấy nó làm bài nổi bật nữa
+     thì thành hiện hai lần.
+
+     image: chỉ ảnh chụp mới cắt khung được; SVG hay file lạ thì trả về rỗng để
+     nơi gọi dùng ảnh bìa. */ -}}
+{{- $posts := where site.RegularPages "Section" "posts" -}}
+{{- $spot := first 1 (where $posts "Params.spotlight" true) -}}
+{{- if and (not $spot) .fallback -}}{{ $spot = first 1 $posts }}{{- end -}}
+{{- $out := false -}}
+{{- with $spot -}}
+  {{- $p := index . 0 -}}
+  {{- $image := "" -}}
+  {{- with $p.Params.spotlight_image }}{{ $image = $p.Resources.GetMatch . }}{{ end -}}
+  {{- with $image }}{{ if not (in (slice "jpeg" "png" "webp") .MediaType.SubType) }}{{ $image = "" }}{{ end }}{{ end -}}
+  {{- $out = dict "page" $p "image" $image -}}
+{{- end -}}
+{{- return $out -}}

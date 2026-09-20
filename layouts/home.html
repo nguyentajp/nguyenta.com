@@ -1,24 +1,19 @@
-{{- /* Trang chủ: bài Spotlight đầy đủ ở trên, các bài khác xếp lưới hai cột bên
-     dưới, cuối cùng là link tới toàn bộ bài viết.
-     Spotlight: bài mới nhất có "spotlight: true" (ô Spotlight trong CMS); không
-     bài nào bật thì là bài mới nhất. Ảnh: "spotlight_image" nếu có, không thì
-     ảnh bìa. Bài Spotlight không lặp lại ở mục Gần đây. */ -}}
+{{- /* Trang chủ: bài viết nổi bật đầy đủ ở trên, các bài khác xếp lưới hai cột
+     bên dưới, cuối cùng là link tới toàn bộ bài viết.
+     Bài nổi bật: xem _partials/spotlight.html. Ở đây fallback = true, nên không
+     bài nào bật thì bài mới nhất lên đầu. Bài đó không lặp lại ở mục Gần đây. */ -}}
 {{ define "main" }}
   {{- $posts := where .Site.RegularPages "Section" "posts" -}}
-  {{- $spot := first 1 (where $posts "Params.spotlight" true) -}}
-  {{- if not $spot }}{{ $spot = first 1 $posts }}{{ end -}}
-  {{- range $spot }}
-    {{- $p := . }}
-    {{- $image := "" }}
-    {{- with $p.Params.spotlight_image }}{{ $image = $p.Resources.GetMatch . }}{{ end }}
-    {{- /* Chỉ ảnh chụp mới cắt khung được; SVG hay file lạ thì dùng ảnh bìa */}}
-    {{- with $image }}{{ if not (in (slice "jpeg" "png" "webp") .MediaType.SubType) }}{{ $image = "" }}{{ end }}{{ end }}
-    {{ partial "post-item.html" (dict "page" $p "variant" "lead" "loading" "eager" "image" $image) }}
+  {{- $spot := partial "spotlight.html" (dict "fallback" true) -}}
+  {{- with $spot }}
+    {{ partial "post-item.html" (dict "page" .page "variant" "lead" "loading" "eager" "image" .image) }}
   {{- else }}
     <p class="empty">{{ i18n "list_no_posts" }}</p>
   {{- end }}
 
-  {{- with $posts | complement $spot | first (site.Params.homeRecentCount | default 4) }}
+  {{- $rest := $posts }}
+  {{- with $spot }}{{ $rest = complement (slice .page) $posts }}{{ end }}
+  {{- with $rest | first (site.Params.homeRecentCount | default 4) }}
     <section class="recent" aria-labelledby="gan-day">
       <h2 class="section-title" id="gan-day">{{ i18n "list_recent" }}</h2>
       <div class="post-grid">
