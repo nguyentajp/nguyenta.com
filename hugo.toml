@@ -290,20 +290,22 @@ defaultContentLanguageInSubdir = false
   # Đường dẫn form là: action + id + suffix. Mỗi nhà một kiểu, nên cả ba thứ
   # đều ghi ở đây, không chôn trong layout:
   #
-  #   Kit (kit.com, trước là ConvertKit) — free tới 10.000 người đăng ký:
+  #   Kit (kit.com, trước là ConvertKit) — đang dùng, free tới 10.000 người:
   #     id     = số form, lấy trong URL lúc sửa form trên Kit
-  #     action = "https://app.convertkit.com/forms/"
+  #     action = "https://app.kit.com/forms/"
   #     suffix = "/subscriptions"
   #     field  = "email_address"
   #
-  #   Buttondown — free tới 100 người đăng ký:
+  #   Buttondown — free tới 100 người:
   #     id     = username Buttondown
   #     action = "https://buttondown.com/api/emails/embed-subscribe/"
   #     suffix = ""
   #     field  = "email"
+  #
+  # Form Kit đang dùng: "nguyenta.com", bật sẵn thư xác nhận (double opt-in).
   [params.newsletter]
-    id = ""
-    action = "https://app.convertkit.com/forms/"
+    id = "9940557"
+    action = "https://app.kit.com/forms/"
     suffix = "/subscriptions"
     field = "email_address"
 

@@ -848,14 +848,17 @@ Có quyết định mới thì ghi vào đây.
       không giấu bài khỏi bản xem trước; nó chỉ chặn bài lên nguyenta.com và
       giúp lệnh grep ở trên tìm thấy.
 - [ ] Thay ảnh chân dung (`assets/brand/avatar.jpg`) và thêm ảnh bìa cho các bài.
-- [ ] Bản tin ở chân trang: code đã nối sẵn, chỉ còn thiếu tài khoản. Lập tài
-      khoản ở nhà cung cấp rồi điền `id` vào `[params.newsletter]` trong
-      `hugo.toml` là chạy; `action`, `suffix` và `field` của từng nhà đã ghi
-      sẵn ngay trong file đó. Để trống `id` thì khối vẫn là giao diện mẫu (bấm
-      Đăng ký ra dòng "chưa mở").
+- [x] Bản tin ở chân trang: đã nối với **Kit**, form `9940557`, bật thư xác
+      nhận. Ô đăng ký gửi thật. Đổi nhà sau này thì sửa bốn dòng
+      `[params.newsletter]` trong `hugo.toml`; thông số của từng nhà ghi sẵn
+      ngay trong file đó. Để trống `id` thì khối quay về giao diện mẫu.
 
-      Form POST thẳng sang nhà cung cấp nên **không có API key nào trong repo**
-      và không cần JS.
+      Gửi một số bản tin: vào kit.com → **Broadcasts** → soạn → gửi. Bản free
+      không tự gửi theo RSS, mỗi bài anh tự soạn và bấm gửi.
+
+      Form POST thẳng sang Kit nên **không có API key nào trong repo** và không
+      cần JS. Người đọc bấm Đăng ký thì sang trang xác nhận của Kit, rồi nhận
+      thư để bấm xác nhận lần nữa (double opt-in).
 
       Mức free của vài nhà, tra lại ngày 21/9/2026:
 
