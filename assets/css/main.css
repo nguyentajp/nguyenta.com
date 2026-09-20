@@ -1073,6 +1073,15 @@ main {
   border-block-start: 1px solid var(--rule);
 }
 
+/* Trang Bài viết có bài nổi bật đứng trên danh sách: cần một đường ngăn, không
+   thì bài đầu danh sách nhìn như phần tiếp của bài nổi bật. Trang chủ không
+   cần vì đã có tiêu đề "Gần đây" ngăn giữa. */
+.post-item--lead + .post-list {
+  margin-block-start: var(--space-5);
+  padding-block-start: var(--space-5);
+  border-block-start: 1px solid var(--rule);
+}
+
 .post-item--list {
   display: grid;
   grid-template-columns: 13rem minmax(0, 1fr);
