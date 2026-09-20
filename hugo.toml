@@ -198,8 +198,11 @@ defaultContentLanguageInSubdir = false
   tag = "tags"
 
 # ── Phân trang ───────────────────────────────────────────────────────────────
+# Số bài mỗi trang ở trang Bài viết, danh mục và thẻ. Để 6 vì mỗi bài trong
+# danh sách chiếm khá nhiều chỗ (ảnh nhỏ + ba dòng mở đầu), và vì trang Bài
+# viết còn có bài nổi bật đứng trên nữa.
 [pagination]
-  pagerSize = 10
+  pagerSize = 6
 
 # ── Markdown ─────────────────────────────────────────────────────────────────
 [markup]

@@ -1254,14 +1254,58 @@ main {
   text-wrap: pretty;
 }
 
+/* Phân trang: hai nút viền hai bên, số trang ở giữa. Ô trống bên nào không có
+   nút vẫn giữ chỗ, nhờ vậy số trang luôn nằm đúng giữa. Cùng kiểu viền với
+   khung chọn ngôn ngữ ở đầu trang. */
 .pager {
   display: flex;
-  gap: var(--space-5);
+  gap: var(--space-4);
+  align-items: center;
   justify-content: space-between;
   margin-block-start: var(--space-6);
   padding-block-start: var(--space-4);
   border-block-start: 1px solid var(--rule);
   font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.pager > span {
+  flex: 1;
+}
+
+.pager > :last-child {
+  text-align: end;
+}
+
+.pager > :nth-child(2) {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.pager a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding-inline: var(--space-4);
+  border: 1px solid var(--field);
+  border-radius: calc(var(--radius) / 2);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.pager a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media (max-width: 30rem) {
+  .pager {
+    gap: var(--space-3);
+  }
+
+  .pager a {
+    padding-inline: var(--space-3);
+  }
 }
 
 /* ── 7. Bài viết ──────────────────────────────────────────────────────────── */
