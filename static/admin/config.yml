@@ -131,19 +131,19 @@ collections:
         choose_url: false
         hint: "Hiện trong danh sách bài và khi chia sẻ link. Để trống thì lấy ảnh đầu tiên trong bài."
       - &spotlight
-        label: "Spotlight"
+        label: "Bài viết nổi bật"
         name: spotlight
         widget: boolean
         required: false
         default: false
         hint: "Bật thì bài này nằm lớn ở đầu trang chủ. Nhiều bài cùng bật thì bài mới nhất được chọn; không bài nào bật thì đầu trang chủ là bài mới nhất. Bản tiếng Nhật bật riêng cho trang chủ tiếng Nhật."
       - &spotlight_image
-        label: "Ảnh Spotlight"
+        label: "Ảnh bài viết nổi bật"
         name: spotlight_image
         widget: image
         required: false
         choose_url: false
-        hint: "Không bắt buộc. Ảnh riêng cho vị trí Spotlight, nên là ảnh ngang. Để trống thì dùng ảnh bìa."
+        hint: "Không bắt buộc. Ảnh riêng cho chỗ nổi bật ở đầu trang chủ, nên là ảnh ngang. Để trống thì dùng ảnh bìa."
       - &variant
         label: "Kiểu trình bày"
         name: variant

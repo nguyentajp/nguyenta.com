@@ -326,7 +326,7 @@ như bản tiếng Việt.
 | Lời giới thiệu ở sidebar | `hugo.toml` → `[languages.vi.params]` → `bio` (bản tiếng Nhật: `[languages.ja.params]`) |
 | Tagline dưới tên blog và ở chân trang | `hugo.toml` → `tagline` (hai ngôn ngữ) |
 | Email, mạng xã hội ở trang Liên hệ | `hugo.toml` → `[params]` → `email`, `[params.socials]` |
-| Bài lớn ở đầu trang chủ (Spotlight) | Trong CMS bật ô **Spotlight** ở bài muốn đưa lên (trường `spotlight: true`), ảnh riêng ở ô **Ảnh Spotlight** (`spotlight_image`, để trống thì dùng ảnh bìa). Nhiều bài cùng bật thì bài mới nhất được chọn; không bài nào bật thì là bài mới nhất. Mỗi ngôn ngữ bật riêng |
+| Bài lớn ở đầu trang chủ | Trong CMS bật ô **Bài viết nổi bật** ở bài muốn đưa lên (trường `spotlight: true`), ảnh riêng ở ô **Ảnh bài viết nổi bật** (`spotlight_image`, để trống thì dùng ảnh bìa). Nhiều bài cùng bật thì bài mới nhất được chọn; không bài nào bật thì là bài mới nhất. Mỗi ngôn ngữ bật riêng |
 | Số bài ở trang chủ | `hugo.toml` → `homeRecentCount` |
 | Lời giải thích 24 tiết khí (khung hiện khi rê chuột vào tên tiết khí) | CMS → **Dữ liệu** → **Giải thích 24 tiết khí**, hoặc `data/sekki_notes.yaml` |
 | Màu nhấn của site (đổi theo tiết khí) | `tools/sekki_colors.py` — sửa sắc/độ tươi của tiết trong bảng `SEKKI`, chạy `./.venv/bin/python tools/sekki_colors.py --toml` rồi dán vào `data/sekki.toml`. Chạy không có `--toml` thì ra bảng kiểm tương phản. Đừng sửa tay mã màu trong `data/sekki.toml` |
