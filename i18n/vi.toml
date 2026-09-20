@@ -89,6 +89,8 @@ other = "{{ .Count }} bài"
 other = "Bài cũ hơn"
 [page_newer]
 other = "Bài mới hơn"
+[page_num]
+other = "Trang {{ .Num }}"
 [page_of]
 other = "Trang {{ .Current }} trên {{ .Total }}"
 

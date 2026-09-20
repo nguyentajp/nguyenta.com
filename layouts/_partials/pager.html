@@ -1,10 +1,52 @@
-{{- /* Phân trang: bài cũ hơn bên trái, số trang ở giữa, bài mới hơn bên phải */ -}}
+{{- /* Phân trang: mỗi trang là một ô vuông có viền, trang đang đọc là ô đặc.
+     Thứ tự như mọi nơi khác: số nhỏ bên trái, số lớn bên phải — trang 1 là
+     bài mới nhất, trang cuối là bài cũ nhất. Hai ô ‹ › ở hai đầu đi lùi và đi
+     tiếp; đầu nào hết đường thì ô vẫn còn đó nhưng mờ, để hàng không xê dịch.
+     Nhiều trang thì chỉ hiện trang đầu, trang cuối và ba trang quanh chỗ đang
+     đọc, chỗ nhảy số đặt dấu … */ -}}
 {{- with .Paginator }}
   {{- if gt .TotalPages 1 }}
-    <nav class="pager" aria-label="{{ i18n "page_of" (dict "Current" .PageNumber "Total" .TotalPages) }}">
-      <span>{{- with .Next }}<a href="{{ .URL }}">{{ i18n "page_older" }}</a>{{ end }}</span>
-      <span>{{ i18n "page_of" (dict "Current" .PageNumber "Total" .TotalPages) }}</span>
-      <span>{{- with .Prev }}<a href="{{ .URL }}">{{ i18n "page_newer" }}</a>{{ end }}</span>
+    {{- $cur := .PageNumber }}
+    {{- $total := .TotalPages }}
+    <nav class="pager" aria-label="{{ i18n "page_of" (dict "Current" $cur "Total" $total) }}">
+      <ul class="pager-list">
+        <li>
+          {{- with .Prev }}
+            <a class="pager-step" href="{{ .URL }}" rel="prev">
+              <span aria-hidden="true">‹</span><span class="visually-hidden">{{ i18n "page_newer" }}</span>
+            </a>
+          {{- else }}
+            <span class="pager-step is-off" aria-hidden="true">‹</span>
+          {{- end }}
+        </li>
+
+        {{- /* $shown: số trang vừa in ra, để biết chỗ nào phải chèn dấu … */}}
+        {{- $shown := 0 }}
+        {{- range .Pagers }}
+          {{- $n := .PageNumber }}
+          {{- if or (eq $n 1) (eq $n $total) (and (ge $n (sub $cur 1)) (le $n (add $cur 1))) }}
+            {{- if gt $n (add $shown 1) }}<li class="pager-gap" aria-hidden="true">…</li>{{ end }}
+            <li>
+              {{- if eq $n $cur }}
+                <span class="pager-num is-current" aria-current="page">{{ $n }}</span>
+              {{- else }}
+                <a class="pager-num" href="{{ .URL }}" aria-label="{{ i18n "page_num" (dict "Num" $n) }}">{{ $n }}</a>
+              {{- end }}
+            </li>
+            {{- $shown = $n }}
+          {{- end }}
+        {{- end }}
+
+        <li>
+          {{- with .Next }}
+            <a class="pager-step" href="{{ .URL }}" rel="next">
+              <span aria-hidden="true">›</span><span class="visually-hidden">{{ i18n "page_older" }}</span>
+            </a>
+          {{- else }}
+            <span class="pager-step is-off" aria-hidden="true">›</span>
+          {{- end }}
+        </li>
+      </ul>
     </nav>
   {{- end }}
 {{- end }}

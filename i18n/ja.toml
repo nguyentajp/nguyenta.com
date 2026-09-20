@@ -86,9 +86,11 @@ other = "まだ記事がありません。"
 [list_count]
 other = "{{ .Count }} 件"
 [page_older]
-other = "前のページ"
-[page_newer]
 other = "次のページ"
+[page_newer]
+other = "前のページ"
+[page_num]
+other = "{{ .Num }} ページ目"
 [page_of]
 other = "{{ .Total }} ページ中 {{ .Current }} ページ"
 
