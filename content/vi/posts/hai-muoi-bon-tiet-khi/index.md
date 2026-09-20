@@ -6,6 +6,7 @@ slug: hai-muoi-bon-tiet-khi
 description: Người Việt và người Nhật dùng chung hai mươi bốn tiết khí, nhưng cách gọi và cách cảm thì không hẳn giống nhau.
 categories: ["suy-nghi"]
 tags: ["tiết khí", "ngôn ngữ", "mùa thu"]
+cover: cover.jpg
 draft: false
 demo: true
 ---

@@ -6,6 +6,7 @@ slug: take-no-ha-ga-naru-heya-de
 description: 大阪の朝はまだ蒸し暑いのですが、夕方になると風の匂いが変わります。
 categories: ["nikki"]
 tags: ["大阪", "秋", "竹"]
+cover: cover.jpg
 draft: false
 demo: true
 ---

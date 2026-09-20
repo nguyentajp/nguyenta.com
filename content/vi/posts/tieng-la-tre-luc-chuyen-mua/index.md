@@ -6,6 +6,7 @@ slug: tieng-la-tre-luc-chuyen-mua
 description: Buổi sáng ở Osaka vẫn còn oi, nhưng đến chiều thì mùi gió đã khác.
 categories: ["nhat-ky"]
 tags: ["osaka", "mùa thu", "tre"]
+cover: cover.jpg
 draft: false
 demo: true
 ---
