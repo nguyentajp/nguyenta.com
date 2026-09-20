@@ -117,10 +117,6 @@ other = "Trang tìm kiếm cần bật JavaScript. Anh có thể xem toàn bộ 
 other = "Tháng {{ .Month }}"
 [archive_jump]
 other = "Nhảy tới năm"
-[photos_intro]
-other = "Ảnh trong các bài viết, mới nhất ở trên. Bấm vào ảnh để xem lớn."
-[photos_none]
-other = "Chưa có ảnh nào."
 [categories_none]
 other = "Chưa có bài nào trong mục này."
 [categories_all]

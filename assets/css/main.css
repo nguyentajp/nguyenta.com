@@ -19,7 +19,7 @@
      9. Chân trang
     10. Chuyển động
     11. Ảnh, gallery, video, lightbox
-    12. Lưu trữ, danh mục, thẻ, ảnh
+    12. Lưu trữ, danh mục, thẻ
     13. Trang 凪 và trang 404
     14. Tìm kiếm
     15. Liên hệ
@@ -2837,80 +2837,6 @@ html:has(.lightbox[open]) {
 .tag-cloud a:hover {
   color: var(--accent);
 }
-
-/* Contact sheet: hàng ảnh giữ tỷ lệ gốc. Mỗi ảnh lớn lên theo tỷ lệ của
-   chính nó (--r = rộng ÷ cao), nên cả hàng cao đều nhau mà không ảnh nào bị
-   cắt. Không cần JavaScript. */
-.sheet {
-  padding-block-start: var(--space-5);
-  border-block-start: 1px solid var(--rule);
-}
-
-.sheet + .sheet {
-  margin-block-start: var(--space-6);
-}
-
-.sheet-head {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
-  align-items: baseline;
-  justify-content: space-between;
-  margin-block-end: var(--space-4);
-}
-
-.sheet-title {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 450;
-}
-
-.sheet-title a {
-  text-decoration: none;
-}
-
-.sheet-title a:hover {
-  color: var(--accent);
-}
-
-.sheet-head time {
-  font-size: 0.875rem;
-  color: var(--muted);
-}
-
-.sheet-row {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.sheet-row li {
-  flex: var(--r) 1 calc(var(--r) * 11rem);
-}
-
-/* Phần tử rỗng ở cuối hàng hút hết chỗ thừa, để hàng cuối không bị kéo giãn */
-.sheet-row::after {
-  content: "";
-  flex: 999 1 0;
-}
-
-.sheet-row img {
-  width: 100%;
-  aspect-ratio: var(--r);
-  background: var(--band);
-}
-
-@media (max-width: 47.999rem) {
-  .sheet-row {
-    margin-inline: calc(var(--gutter) * -1);
-  }
-
-  .sheet-row li {
-    flex-basis: calc(var(--r) * 7rem);
-  }
-}
-
 
 /* Trang Về blog này: bảng màu thật và kamon, con dấu */
 .swatches {
