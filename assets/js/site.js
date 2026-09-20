@@ -283,7 +283,25 @@
   const form = document.querySelector("[data-news]");
   if (!form) return;
   const status = form.querySelector(".news-status");
+  const email = form.querySelector("#news-email");
   form.querySelector("fieldset").disabled = false;
+
+  // Trình duyệt báo lỗi ô nhập bằng ngôn ngữ của MÁY ("Please fill out this
+  // field."), không theo ngôn ngữ trang. Thay bằng câu tiếng Việt / tiếng Nhật
+  // lấy từ data-msg-* (i18n, đặt ở _partials/footer.html).
+  const say = () => {
+    email.setCustomValidity("");
+    if (email.validity.valueMissing) {
+      email.setCustomValidity(form.dataset.msgRequired);
+    } else if (email.validity.typeMismatch) {
+      email.setCustomValidity(form.dataset.msgInvalid);
+    }
+  };
+  // invalid: lúc trình duyệt sắp hiện bóng nhắn. input: xoá lời nhắn cũ đi,
+  // không thì ô cứ ở trạng thái sai dù người đọc đã sửa.
+  email.addEventListener("invalid", say);
+  email.addEventListener("input", say);
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     status.hidden = false;

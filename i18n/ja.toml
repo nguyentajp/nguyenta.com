@@ -218,6 +218,10 @@ other = "メールアドレス"
 other = "mail@example.com"
 [news_button]
 other = "登録"
+[news_required]
+other = "メールアドレスを入力してください"
+[news_invalid]
+other = "メールアドレスの形式が正しくありません（例 mail@example.com）"
 [news_not_open]
 other = "ニュースレターは準備中で、まだ登録を受け付けていません。それまでは RSS でお読みいただけます。"
 [footer_nav]
