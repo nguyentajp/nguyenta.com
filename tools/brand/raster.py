@@ -178,10 +178,12 @@ def og_image(lang: str) -> None:
     kamon = paint_kamon(marks.kamon(), kamon_size)
     image.alpha_composite(kamon, ((margin_x - kamon_size) // 2 + 20, (height - kamon_size) // 2))
 
-    latin = ImageFont.truetype(str(FONT_SRC / "Literata[opsz,wght].ttf"), 96)
-    latin.set_variation_by_axes([60, 450])       # opsz, wght
+    # Tên blog dùng đúng bộ chữ của logo — Shippori Mincho B1, xem
+    # tools/brand/logo.py. Cỡ 94 để chiều cao chữ hoa khớp bản Literata 96 cũ
+    # (chữ hoa Shippori cao 0,733 em, Literata 0,72).
+    title = ImageFont.truetype(str(FONT_SRC / "ShipporiMinchoB1-SemiBold.ttf"), 94)
     title_y = height // 2 - 90
-    draw.text((margin_x + 40, title_y), "Gen", font=latin, fill=SUMI)
+    draw.text((margin_x + 40, title_y), "Gen", font=title, fill=SUMI)
 
     if lang == "vi":
         body = ImageFont.truetype(str(FONT_SRC / "Literata[opsz,wght].ttf"), 34)

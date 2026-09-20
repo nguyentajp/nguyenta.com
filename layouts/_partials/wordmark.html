@@ -1,0 +1,9 @@
+{{- /* Chữ "Gen" cắt sẵn thành đường viền từ Shippori Mincho B1 (tools/brand/logo.py).
+     Nhúng inline để CSS tô màu theo màu chữ của link bao ngoài. Không nhận
+     tham số: chỗ nào cần cỡ khác thì đặt bằng CSS của khối bao ngoài, như
+     .footer-brand .wordmark svg.
+     aria-hidden: đây là HÌNH chữ Gen; chữ Gen cho máy đọc màn hình nằm ở thẻ
+     .visually-hidden ngay cạnh, không thì máy đọc sẽ đọc "Gen" hai lần. */ -}}
+{{- with resources.Get "brand/wordmark.svg" -}}
+  <span class="wordmark" aria-hidden="true">{{ .Content | safeHTML }}</span>
+{{- end -}}

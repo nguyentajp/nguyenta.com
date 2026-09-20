@@ -13,7 +13,7 @@
     <section class="footer-about" aria-label="{{ .Site.Title }}">
       <a class="footer-brand" href="{{ "" | relLangURL }}">
         {{- partial "kamon.html" (dict "class" "kamon footer-mark") }}
-        <span>{{ .Site.Title }}</span>
+        {{ partial "wordmark.html" . }}<span class="visually-hidden">{{ .Site.Title }}</span>
       </a>
       {{- with site.Params.tagline }}<p class="footer-tagline">{{ replace (htmlEscape .) "、" "、<wbr>" | safeHTML }}</p>{{ end }}
       <p class="footer-links">

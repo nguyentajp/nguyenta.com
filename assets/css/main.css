@@ -740,12 +740,19 @@ main {
   width: var(--size-mark);
 }
 
+/* Tên blog là hình chữ cắt từ Shippori Mincho B1, không phải chữ chạy bằng
+   font (tools/brand/logo.py nói rõ vì sao). 0,73 là tỉ lệ chiều cao chữ hoa
+   trên cỡ chữ: giữ nguyên chỗ đứng cũ của --size-brand, kể cả bản điện thoại. */
 .brand-name {
-  font-family: var(--font-headline);
-  font-size: var(--size-brand);
-  font-weight: 450;
+  display: flex;
+  margin: 0;
   line-height: 1;
-  letter-spacing: 0.02em;
+}
+
+.wordmark svg {
+  display: block;
+  width: auto;
+  height: calc(var(--size-brand) * 0.73);
 }
 
 .brand:hover {
@@ -1948,10 +1955,12 @@ main {
   display: inline-flex;
   align-items: center;
   gap: var(--space-3);
-  font-family: var(--font-headline);
-  font-size: 1.6rem;
   line-height: 1;
   text-decoration: none;
+}
+
+.footer-brand .wordmark svg {
+  height: 1.17rem;
 }
 
 .footer-mark {
@@ -2320,7 +2329,8 @@ main {
   }
 }
 
-.kamon {
+.kamon,
+.wordmark {
   display: block;
 }
 

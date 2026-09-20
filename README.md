@@ -791,6 +791,30 @@ Có quyết định mới thì ghi vào đây.
 - **Không làm trang chủ kiểu bìa (表紙).** Đã dựng bốn mẫu ngày 20/9, từ nhẹ
   tới đậm; anh xem rồi thấy màu mè. Đầu trang hiện tại đã đủ. Đừng đề xuất lại.
 
+#### Logo — chốt ngày 21/9/2026
+
+- **Tên blog ở đầu trang và chân trang là HÌNH chữ "Gen"**, cắt sẵn thành
+  đường viền từ Shippori Mincho B1 SemiBold — chính bộ chữ site dùng cho tiêu
+  đề tiếng Nhật, nên logo và site là một bộ. Chữ Latin của một bộ minh triều
+  Nhật mang đúng chất Nhật mà vẫn đọc được với người Việt. Sinh bằng
+  `tools/brand/logo.py`, nhúng qua `_partials/wordmark.html`.
+- **Không dùng chữ Hán trong logo.** 元 và ゲン đã dựng thử ngày 21/9 rồi bỏ.
+  Con dấu 元 cuối bài thì vẫn giữ — đó là con dấu, không phải logo.
+- **Không dùng nét vẽ tay cho chữ.** Đã thử chữ thư pháp dựng bằng nét bút
+  lông (元, ゲン, Gen); anh xem rồi thấy xấu. Chữ phải là typography. Đừng
+  đề xuất lại.
+- **Vòng tre của kamon giữ nguyên, không đổi sang ensō.** Đã dựng thử ensō
+  vector thay vòng tre ngày 21/9; anh bác. Ensō vẫn chỉ dùng ở trang 凪 và
+  trang bảo trì. Đừng đề xuất lại.
+- **Chữ cắt thành đường viền, không gọi font.** Bản Shippori gửi tới người đọc
+  đã cắt bỏ chữ Latin cho nhẹ trang (`tools/fonts/build.py`, scope "ja"), nên
+  viết "Gen" bằng nó sẽ phải gửi thêm một file font cho mọi trang. Cắt thành
+  đường viền còn tránh được cảnh chữ nhảy font lúc trang mới tải. Chữ cho máy
+  đọc màn hình đặt ở thẻ `.visually-hidden` ngay cạnh.
+- **`logo.svg` là bản ghép sẵn kamon + chữ**, dành cho chỗ ngoài site (ảnh đại
+  diện Facebook, in ấn) nơi không có CSS của site để xếp hai thứ cạnh nhau.
+  Trên site thì dùng hai mảnh rời, vì đầu trang còn cần vòng tre tự vẽ.
+
 ### 11.8 Đang làm dở
 
 - [x] Workflow tự đẩy bản xem trước mỗi lần push (cần secret `CLOUDFLARE_API_TOKEN`).
@@ -816,11 +840,4 @@ Có quyết định mới thì ghi vào đây.
       và không cần JS. Free 100 người đăng ký; **tự gửi bài mới theo RSS là
       tính năng trả tiền** (~$9/tháng), bản free phải tự soạn và bấm gửi từng
       số.
-- [ ] Logo ngang (combination mark), bản nháp chờ anh chọn. `tools/brand/logo.py`
-      sinh ra `kamon-enso.svg` (kamon đổi vòng tre thành ensō) và ba bản ghép
-      với ba kiểu chữ ký: `logo-kanji.svg` (元), `logo-kana.svg` (ゲン),
-      `logo-latin.svg` (Gen). **Chưa gắn vào trang nào cả** — còn chờ chốt ba
-      việc: chọn chữ ký, đặt logo ở đâu, và kamon trên site có đổi vòng theo
-      không. Chốt xong thì ghi vào mục 11.7 rồi xoá hai bản không dùng.
-
 - [ ] Mở blog: `maintenance = false` trong `hugo.toml`.

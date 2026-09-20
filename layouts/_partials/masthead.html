@@ -31,10 +31,11 @@
   <div class="shell masthead-brand">
     <a class="brand" href="{{ "" | relLangURL }}">
       {{- partial "kamon.html" (dict "class" "kamon brand-mark" "animated" .IsHome) }}
+      {{- /* Tên blog là HÌNH chữ, không phải chữ: xem _partials/wordmark.html */}}
       {{- if .IsHome }}
-        <h1 class="brand-name">{{ .Site.Title }}</h1>
+        <h1 class="brand-name">{{ partial "wordmark.html" . }}<span class="visually-hidden">{{ .Site.Title }}</span></h1>
       {{- else }}
-        <span class="brand-name">{{ .Site.Title }}</span>
+        <span class="brand-name">{{ partial "wordmark.html" . }}<span class="visually-hidden">{{ .Site.Title }}</span></span>
       {{- end }}
     </a>
     {{- with site.Params.tagline }}<p class="brand-tagline">{{ replace (htmlEscape .) "、" "、<wbr>" | safeHTML }}</p>{{ end }}
