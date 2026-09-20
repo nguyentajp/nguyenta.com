@@ -771,6 +771,11 @@ chuột trên web.
 - **Không làm 七十二候.** Claude từng tự đề xuất rồi ghi nhầm là đã duyệt;
   đã gỡ ở commit `402a743`. Đừng đề xuất lại.
 - **Màu nhấn đổi theo 24 tiết khí thì giữ** — cái này có trong "Yêu cầu.md".
+- **Vòng tre của kamon mang màu mực 墨**, lá vẫn xanh đậm 常磐. Anh chọn mực
+  trong bốn phương án đã đưa (vàng, mực, tre khô, xanh nhạt); trước đó là tre
+  khô 枯竹 #9c8352. Đổi màu thì sửa `--kamon-ring` trong main.css VÀ
+  `KAMON_COLORS` trong `tools/brand/marks.py`, rồi chạy lại `marks.py` và
+  `raster.py` (favicon mang màu sẵn vì không đọc được CSS của trang).
 - **Khung có nhãn đề (sidebar, Mục lục, Từ vựng, Ủng hộ) có nền riêng**, màu
   奉書 `--card`: sáng hơn nền trang một nấc chứ KHÔNG trắng tinh. Anh đã xem
   ba phương án (trong suốt / trắng tinh / trắng giấy) và chọn trắng giấy, vì

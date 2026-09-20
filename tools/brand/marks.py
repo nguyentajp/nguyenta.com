@@ -245,12 +245,12 @@ def svg(body: str, label: str, classes: str = "") -> str:
     )
 
 
-# Màu của kamon (vòng, lá): vòng màu tre khô 枯竹 như vòng tre đan, lá xanh đậm
-# 常磐. Hai màu tách vòng và lá ra khỏi nhau, để ba lá trong vòng tròn không
-# giống biểu tượng phóng xạ. Trên site, màu do CSS tô (main.css: --kamon-ring,
-# --kamon-leaf); favicon không đọc được CSS của trang nên mang màu sẵn, kèm bản
-# cho thanh tab tối.
-KAMON_COLORS = {"light": ("#9c8352", "#2e5538"), "dark": ("#c8b07a", "#8fbf95")}
+# Màu của kamon (vòng, lá): vòng màu mực 墨 như con dấu đóng lên giấy, lá xanh
+# đậm 常磐. Hai màu tách vòng và lá ra khỏi nhau, để ba lá trong vòng tròn
+# không giống biểu tượng phóng xạ. Trên site, màu do CSS tô (main.css:
+# --kamon-ring, --kamon-leaf); favicon không đọc được CSS của trang nên mang
+# màu sẵn, kèm bản cho thanh tab tối — ở đó giấy tối nên nét mực sáng lên.
+KAMON_COLORS = {"light": ("#22251f", "#2e5538"), "dark": ("#daddd3", "#8fbf95")}
 
 
 def favicon() -> str:
