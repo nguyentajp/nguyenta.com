@@ -2,6 +2,9 @@
 # Trang tiếng Việt hiện vi_name (kèm romaji), trang tiếng Nhật hiện chữ Hán.
 # Mã màu phải khớp token ở đầu assets/css/main.css (light / dark); sửa token
 # ở đó thì nhớ sửa ở đây. vi và ja là một câu mô tả vai trò của màu.
+#
+# Màu nhấn thật của site KHÔNG nằm ở đây: nó đổi theo tiết khí, xem
+# data/sekki.toml và tools/sekki_colors.py. 銀杏 chỉ còn là màu dự phòng.
 
 [[colors]]
   ja = "障子"
@@ -54,8 +57,8 @@
   vi_name = "Bạch quả"
   light = "#6b4f0d"
   dark = "#e3c05e"
-  vi = "Màu nhấn, chỉ hiện khi người đọc chạm vào. Vàng lá bạch quả mùa thu."
-  ja_role = "アクセント。触れたときだけ現れる、秋の銀杏の黄。"
+  vi = "Màu nhấn khi chưa vào tiết khí nào. Vàng lá bạch quả mùa thu."
+  ja_role = "節気の色が入らないときのアクセント。秋の銀杏の黄。"
 
 [[colors]]
   ja = "朱"

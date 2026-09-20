@@ -1,0 +1,21 @@
+{{- /* 七十二候 — hậu của một ngày. Nhận một time, trả về một mục trong
+     data/kou.toml (sekki, part, ja, kana, vi).
+
+     Mỗi tiết khí chia làm ba hậu, mỗi hậu chừng năm ngày. Ở đây lấy tiết của
+     ngày đó rồi đếm số ngày đã qua kể từ mốc của tiết: dưới 5 ngày là hậu đầu,
+     dưới 10 là hậu giữa, còn lại là hậu cuối.
+
+     Mấy ngày đầu tháng Một vẫn thuộc 冬至 của NĂM TRƯỚC, nên phải lùi năm lại
+     một, không thì số ngày ra âm và mọi hậu đều thành hậu đầu. Mốc tính theo
+     +09:00 cho khớp timeZone = "Asia/Tokyo" trong hugo.toml. */ -}}
+{{- $date := . -}}
+{{- $sekki := partial "sekki-of.html" $date -}}
+{{- $year := $date.Year -}}
+{{- if and (eq $sekki.month 12) (lt (int $date.Month) 12) -}}
+  {{- $year = sub $year 1 -}}
+{{- end -}}
+{{- $start := time.AsTime (printf "%04d-%02d-%02dT00:00:00+09:00" $year $sekki.month $sekki.day) -}}
+{{- $days := math.Floor (div (sub $date.Unix $start.Unix) 86400) -}}
+{{- $part := cond (lt $days 5) 1 (cond (lt $days 10) 2 3) -}}
+{{- $rows := where (where hugo.Data.kou.kou "sekki" $sekki.ja) "part" $part -}}
+{{- return index $rows 0 -}}

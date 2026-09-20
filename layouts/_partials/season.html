@@ -1,0 +1,20 @@
+{{- /* Dòng mùa ở chân trang: tiết khí và hậu của HÔM NAY (không phải của bài
+     đang đọc). Đi kèm một chấm tròn mang màu nhấn, để người đọc thấy màu của
+     site và cái tên giải thích màu đó nằm cạnh nhau.
+
+     Cả dòng tính lúc build; build chạy lại 0:05 giờ Nhật mỗi ngày nên hậu đổi
+     đúng ngày. Tra bảng: _partials/sekki-of.html và _partials/kou.html.
+
+     Trang tiếng Việt chỉ hiện chữ Việt. Trang tiếng Nhật hiện chữ Hán kèm cách
+     đọc trong ngoặc, vì tên các hậu đọc rất lạ, người Nhật cũng phải tra. */ -}}
+{{- $sekki := partial "sekki-of.html" now -}}
+{{- $kou := partial "kou.html" now -}}
+{{- $ja := eq site.Language.Lang "ja" -}}
+<p class="season">
+  <span class="season-dot" aria-hidden="true"></span>
+  <span class="season-sekki">{{ i18n "sekki_label" (dict "Name" (cond $ja $sekki.ja $sekki.vi)) }}</span>
+  <span class="season-kou">
+    {{- if $ja }}{{ $kou.ja }}<span class="season-kana">（{{ $kou.kana }}）</span>
+    {{- else }}{{ $kou.vi }}{{ end -}}
+  </span>
+</p>

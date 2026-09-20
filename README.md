@@ -317,7 +317,7 @@ như bản tiếng Việt.
 | Muốn sửa | Ở đâu |
 |---|---|
 | Trang Về Nguyên (Gen) | CMS → **Trang**, hoặc `content/vi/about.md`, `content/ja/about.md` |
-| Trang Về blog này | Mục đích, ý tưởng: `content/vi/blog.md`, `content/ja/blog.md`. Bảng màu: `data/palette.toml`. Lời dưới kamon, con dấu: `i18n` (`blog_*`) |
+| Trang Về blog này | Mục đích, ý tưởng: `content/vi/blog.md`, `content/ja/blog.md`. Bảng màu: `data/palette.toml` (màu nhấn theo tiết khí thì ở `data/sekki.toml`). Lời dưới kamon, con dấu: `i18n` (`blog_*`) |
 | Menu đầu trang, submenu Giới thiệu | `hugo.toml` → `menus.main` (mục con có `parent`). Submenu Danh mục tự liệt kê các danh mục |
 | Menu nhỏ ở chân trang | `hugo.toml` → `menus.under` |
 | Trang 404 | `hugo.toml` → `notFoundTitle`, `notFoundText`, `notFoundHome` (mỗi ngôn ngữ một bộ) |
@@ -329,6 +329,8 @@ như bản tiếng Việt.
 | Bài lớn ở đầu trang chủ (Spotlight) | Trong CMS bật ô **Spotlight** ở bài muốn đưa lên (trường `spotlight: true`), ảnh riêng ở ô **Ảnh Spotlight** (`spotlight_image`, để trống thì dùng ảnh bìa). Nhiều bài cùng bật thì bài mới nhất được chọn; không bài nào bật thì là bài mới nhất. Mỗi ngôn ngữ bật riêng |
 | Số bài ở trang chủ | `hugo.toml` → `homeRecentCount` |
 | Lời giải thích 24 tiết khí (khung hiện khi rê chuột vào tên tiết khí) | CMS → **Dữ liệu** → **Giải thích 24 tiết khí**, hoặc `data/sekki_notes.yaml` |
+| Màu nhấn của site (đổi theo tiết khí) | `tools/sekki_colors.py` — sửa sắc/độ tươi của tiết trong bảng `SEKKI`, chạy `./.venv/bin/python tools/sekki_colors.py --toml` rồi dán vào `data/sekki.toml`. Chạy không có `--toml` thì ra bảng kiểm tương phản. Đừng sửa tay mã màu trong `data/sekki.toml` |
+| Dòng mùa ở chân trang (tiết khí và hậu của hôm nay) | Tên và câu tiếng Việt của 72 hậu: `data/kou.toml`. Cách hiện: `layouts/_partials/season.html` |
 | Chữ trên giao diện (nút, nhãn) | `i18n/vi.toml`, `i18n/ja.toml` |
 | Màu, cỡ chữ, khoảng cách | `assets/css/main.css`, phần **1. Token** ở đầu file |
 

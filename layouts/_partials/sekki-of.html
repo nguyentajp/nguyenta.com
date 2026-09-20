@@ -1,0 +1,16 @@
+{{- /* Tiết khí của một ngày. Nhận một time (ngày đăng, hoặc now), trả về một
+     mục trong data/sekki.toml.
+
+     Bảng trong data/sekki.toml xếp theo thứ tự trong năm (5/1 → 22/12), nên
+     chỉ cần chạy hết bảng và giữ lại mục cuối cùng có mốc không muộn hơn ngày
+     đang xét. Mấy ngày đầu tháng Một chưa qua mốc nào trong năm, nên giá trị
+     khởi đầu là 冬至 — mục thứ hai có month = 12. */ -}}
+{{- $date := . -}}
+{{- $terms := hugo.Data.sekki.sekki -}}
+{{- $found := index (where $terms "month" 12) 1 -}}
+{{- range $terms -}}
+  {{- if or (lt .month $date.Month) (and (eq .month $date.Month) (le .day $date.Day)) -}}
+    {{- $found = . -}}
+  {{- end -}}
+{{- end -}}
+{{- return $found -}}

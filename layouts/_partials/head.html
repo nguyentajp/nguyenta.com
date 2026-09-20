@@ -40,6 +40,9 @@
   {{ $css := . | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 {{ end -}}
+{{/* Màu nhấn đổi theo tiết khí, đặt SAU main.css để ghi đè --accent.
+     Xem _partials/sekki-accent.html. */ -}}
+<style>{{ partial "sekki-accent.html" . | safeCSS }}</style>
 
 {{ range .AlternativeOutputFormats -}}
   <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ $.Site.Title }}">

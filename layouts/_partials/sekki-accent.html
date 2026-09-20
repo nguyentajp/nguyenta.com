@@ -1,0 +1,16 @@
+{{- /* Màu nhấn của site đổi theo tiết khí đang tới: trả về một mẩu CSS ghi đè
+     --accent, head.html chèn vào <style> ngay sau main.css.
+
+     Vì sao không đặt thẳng trong main.css: main.css là file tĩnh có fingerprint,
+     để trình duyệt giữ cache lâu. Nếu màu nằm trong đó thì mỗi lần đổi tiết là
+     đổi tên file, người đọc phải tải lại cả stylesheet. Mẩu CSS này chỉ dài
+     chừng 140 byte và nằm ngay trong trang.
+
+     --accent-line không cần ghi đè: nó là color-mix của var(--accent) nên tự
+     đi theo. Nhánh @supports là cho Safari cũ chưa hiểu light-dark(), khớp với
+     phần dự phòng ở main.css mục 1.
+
+     now lấy theo timeZone = "Asia/Tokyo". Build chạy lại 0:05 giờ Nhật mỗi
+     ngày (.github/workflows/deploy.yml), nên màu luôn đúng tiết. */ -}}
+{{- $s := partial "sekki-of.html" now -}}
+{{- return printf ":root{--accent:light-dark(%s,%s)}@supports not (color:light-dark(#000,#fff)){:root{--accent:%s}}" $s.accent_light $s.accent_dark $s.accent_light -}}

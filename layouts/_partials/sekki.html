@@ -1,6 +1,5 @@
 {{- /* Tiết khí của một ngày, tính lúc build nên không cần JavaScript.
-     Dữ liệu ở data/sekki.toml, xếp theo thứ tự trong năm. Lấy tiết gần nhất
-     trước ngày đăng; nếu là mấy ngày đầu tháng Một thì vẫn là Đông chí.
+     Việc tra bảng nằm ở _partials/sekki-of.html; ở đây chỉ lo phần hiện ra.
 
      In ra tên tiết khí (gạch chân chấm, màu 竹) là một nút mở khung giải thích.
      Lời giải thích ở data/sekki_notes.yaml (sửa được trong CMS), nối bằng tên
@@ -8,13 +7,7 @@
      đóng, không cần JS; trên điện thoại khung nằm giữa màn hình. Trên máy tính
      có chuột, site.js mục 9 mở khung ngay khi rê chuột và đặt nó sát tên. */ -}}
 {{- $date := .date -}}
-{{- $terms := hugo.Data.sekki.sekki -}}
-{{- $found := index (where $terms "month" 12) 1 -}}
-{{- range $terms -}}
-  {{- if or (lt .month $date.Month) (and (eq .month $date.Month) (le .day $date.Day)) -}}
-    {{- $found = . -}}
-  {{- end -}}
-{{- end -}}
+{{- $found := partial "sekki-of.html" $date -}}
 {{- $ja := eq site.Language.Lang "ja" -}}
 {{- $label := i18n "sekki_label" (dict "Name" (cond $ja $found.ja $found.vi)) -}}
 {{- $note := index (where hugo.Data.sekki_notes.sekki "ja" $found.ja) 0 -}}

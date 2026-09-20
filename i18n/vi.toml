@@ -194,6 +194,10 @@ other = "{{ .Day }} · {{ .Weekday }}"
 other = "Màu sắc"
 [blog_colors_text]
 other = "Cả bảng màu lấy từ một rừng tre nhìn qua khung cửa dán giấy kiểu Nhật: giấy, mực, bóng tre. Ban đêm là rừng trúc về đêm, nền xanh rất tối. Ô trái là giao diện sáng, ô phải là giao diện tối."
+[blog_sekki]
+other = "Màu của tiết khí"
+[blog_sekki_text]
+other = "Màu nhấn của site không cố định: nó đi theo hai mươi bốn tiết khí của lịch Nhật. Mỗi nửa tháng site đổi sang màu của tiết mới — hoa mai, lá non, lá đỏ, tuyết — rồi sau một năm quay về chỗ cũ. Dải dưới đây là cả vòng một năm; ô có viền là tiết của hôm nay, tên nó nằm ở chân trang."
 [blog_marks]
 other = "Gia huy và con dấu"
 [blog_kamon_text]

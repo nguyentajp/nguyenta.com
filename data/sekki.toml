@@ -3,6 +3,13 @@
 # Layout so ngày đăng với các mốc dưới đây và lấy tiết khí gần nhất trước đó.
 # Ngày bắt đầu mỗi tiết xê dịch một ngày tuỳ năm; sai số đó không ảnh hưởng
 # tới ý nghĩa của nhãn. Bảng người đọc được nằm trong GLOSSARY.md.
+#
+# accent_light / accent_dark là màu nhấn của site trong tiết đó (--accent trong
+# main.css, chèn ở _partials/sekki-accent.html). ĐỪNG sửa tay: hai mã màu này
+# do tools/sekki_colors.py sinh ra, ở đó có sắc và độ tươi của từng tiết cùng
+# phần kiểm tương phản. Muốn đổi màu thì sửa bảng trong tool rồi chạy
+#   ./.venv/bin/python tools/sekki_colors.py --toml
+# và dán lại. Chạy không có --toml thì ra bảng kiểm tương phản.
 
 [[sekki]]
   order = 23
@@ -11,6 +18,9 @@
   ja = "小寒"
   kana = "しょうかん"
   vi = "Tiểu hàn"
+  # 芹 rau cần
+  accent_light = "#346237"
+  accent_dark = "#9fd09f"
 
 [[sekki]]
   order = 24
@@ -19,6 +29,9 @@
   ja = "大寒"
   kana = "だいかん"
   vi = "Đại hàn"
+  # 蕗の薹 ngồng fuki
+  accent_light = "#585918"
+  accent_dark = "#c4c685"
 
 [[sekki]]
   order = 1
@@ -27,6 +40,9 @@
   ja = "立春"
   kana = "りっしゅん"
   vi = "Lập xuân"
+  # 梅 hoa mai
+  accent_light = "#7a4058"
+  accent_dark = "#eeaac4"
 
 [[sekki]]
   order = 2
@@ -35,6 +51,9 @@
   ja = "雨水"
   kana = "うすい"
   vi = "Vũ thủy"
+  # 霞 sương mù
+  accent_light = "#42576e"
+  accent_dark = "#acc4de"
 
 [[sekki]]
   order = 3
@@ -43,6 +62,9 @@
   ja = "啓蟄"
   kana = "けいちつ"
   vi = "Kinh trập"
+  # 桃 hoa đào
+  accent_light = "#7d4046"
+  accent_dark = "#f3abaf"
 
 [[sekki]]
   order = 4
@@ -51,6 +73,9 @@
   ja = "春分"
   kana = "しゅんぶん"
   vi = "Xuân phân"
+  # 桜 hoa anh đào
+  accent_light = "#734363"
+  accent_dark = "#e5add1"
 
 [[sekki]]
   order = 5
@@ -59,6 +84,9 @@
   ja = "清明"
   kana = "せいめい"
   vi = "Thanh minh"
+  # 若葉 lá non
+  accent_light = "#435f21"
+  accent_dark = "#adce8c"
 
 [[sekki]]
   order = 6
@@ -67,6 +95,9 @@
   ja = "穀雨"
   kana = "こくう"
   vi = "Cốc vũ"
+  # 牡丹 hoa mẫu đơn
+  accent_light = "#7b3d5d"
+  accent_dark = "#f0a8ca"
 
 [[sekki]]
   order = 7
@@ -75,6 +106,9 @@
   ja = "立夏"
   kana = "りっか"
   vi = "Lập hạ"
+  # 新竹 tre mới
+  accent_light = "#2b6339"
+  accent_dark = "#97d2a2"
 
 [[sekki]]
   order = 8
@@ -83,6 +117,9 @@
   ja = "小満"
   kana = "しょうまん"
   vi = "Tiểu mãn"
+  # 紅花 hoa rum
+  accent_light = "#833f27"
+  accent_dark = "#f9ab90"
 
 [[sekki]]
   order = 9
@@ -91,6 +128,9 @@
   ja = "芒種"
   kana = "ぼうしゅ"
   vi = "Mang chủng"
+  # 青梅 mai xanh
+  accent_light = "#545b16"
+  accent_dark = "#bfc884"
 
 [[sekki]]
   order = 10
@@ -99,6 +139,9 @@
   ja = "夏至"
   kana = "げし"
   vi = "Hạ chí"
+  # 菖蒲 hoa diên vĩ
+  accent_light = "#594a82"
+  accent_dark = "#c5b6f6"
 
 [[sekki]]
   order = 11
@@ -107,6 +150,9 @@
   ja = "小暑"
   kana = "しょうしょ"
   vi = "Tiểu thử"
+  # 蓮 hoa sen
+  accent_light = "#724268"
+  accent_dark = "#e4add7"
 
 [[sekki]]
   order = 12
@@ -115,6 +161,9 @@
   ja = "大暑"
   kana = "たいしょ"
   vi = "Đại thử"
+  # 雷雨 mưa dông
+  accent_light = "#205b7f"
+  accent_dark = "#8ec9f3"
 
 [[sekki]]
   order = 13
@@ -123,6 +172,9 @@
   ja = "立秋"
   kana = "りっしゅう"
   vi = "Lập thu"
+  # 涼風 gió mát
+  accent_light = "#076169"
+  accent_dark = "#85cfd8"
 
 [[sekki]]
   order = 14
@@ -131,6 +183,9 @@
   ja = "処暑"
   kana = "しょしょ"
   vi = "Xử thử"
+  # 稲 lúa chín
+  accent_light = "#695205"
+  accent_dark = "#d7bf7c"
 
 [[sekki]]
   order = 15
@@ -139,6 +194,9 @@
   ja = "白露"
   kana = "はくろ"
   vi = "Bạch lộ"
+  # 露草 hoa thài lài
+  accent_light = "#3c5387"
+  accent_dark = "#a5c0fc"
 
 [[sekki]]
   order = 16
@@ -147,6 +205,9 @@
   ja = "秋分"
   kana = "しゅうぶん"
   vi = "Thu phân"
+  # 萩 hoa thưu
+  accent_light = "#6a4572"
+  accent_dark = "#dab0e3"
 
 [[sekki]]
   order = 17
@@ -155,6 +216,9 @@
   ja = "寒露"
   kana = "かんろ"
   vi = "Hàn lộ"
+  # 菊 hoa cúc
+  accent_light = "#704e00"
+  accent_dark = "#e1ba79"
 
 [[sekki]]
   order = 18
@@ -163,6 +227,9 @@
   ja = "霜降"
   kana = "そうこう"
   vi = "Sương giáng"
+  # 紅葉 lá đỏ
+  accent_light = "#833e2d"
+  accent_dark = "#faaa95"
 
 [[sekki]]
   order = 19
@@ -171,6 +238,9 @@
   ja = "立冬"
   kana = "りっとう"
   vi = "Lập đông"
+  # 椿 hoa trà
+  accent_light = "#823d3f"
+  accent_dark = "#f8a8a8"
 
 [[sekki]]
   order = 20
@@ -179,6 +249,9 @@
   ja = "小雪"
   kana = "しょうせつ"
   vi = "Tiểu tuyết"
+  # 枯野 đồng cỏ khô
+  accent_light = "#6c4e35"
+  accent_dark = "#dcb99e"
 
 [[sekki]]
   order = 21
@@ -187,6 +260,9 @@
   ja = "大雪"
   kana = "たいせつ"
   vi = "Đại tuyết"
+  # 雪 tuyết
+  accent_light = "#3c5b65"
+  accent_dark = "#a5c8d3"
 
 [[sekki]]
   order = 22
@@ -195,3 +271,6 @@
   ja = "冬至"
   kana = "とうじ"
   vi = "Đông chí"
+  # 柚子 quả yuzu
+  accent_light = "#655403"
+  accent_dark = "#d4c178"

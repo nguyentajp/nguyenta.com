@@ -37,6 +37,26 @@
       {{- end }}
     </ul>
 
+    {{- /* Màu nhấn đi theo tiết khí, nên bảng màu ở trên chưa nói hết. Dải này
+         là cả một năm: hai mươi bốn ô theo đúng thứ tự trong năm, ô của tiết
+         hôm nay có viền. Ô lấy màu theo giao diện đang xem — khai hai lần để
+         trình duyệt cũ chưa hiểu light-dark() vẫn ra màu của giao diện sáng.
+         Bản thân màu và phần kiểm tương phản: tools/sekki_colors.py. */}}
+    <div class="prose">
+      <h2 id="mau-tiet-khi">{{ i18n "blog_sekki" }}</h2>
+      <p>{{ i18n "blog_sekki_text" }}</p>
+    </div>
+    {{- $today := partial "sekki-of.html" now }}
+    <ul class="year-strip">
+      {{- range hugo.Data.sekki.sekki }}
+        {{- $name := cond (eq $lang "ja") .ja .vi }}
+        <li{{ if eq .order $today.order }} aria-current="true"{{ end }}>
+          <span style="{{ printf "background:%s;background:light-dark(%s,%s)" .accent_light .accent_light .accent_dark | safeCSS }}"></span>
+          <span class="visually-hidden">{{ $name }}</span>
+        </li>
+      {{- end }}
+    </ul>
+
     <div class="prose">
       <h2 id="kamon">{{ i18n "blog_marks" }}</h2>
     </div>
