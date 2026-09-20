@@ -1858,37 +1858,6 @@ main {
   word-break: keep-all;
 }
 
-/* Dòng mùa: tiết khí và hậu của hôm nay. Chấm tròn mang màu nhấn của tiết,
-   đứng cạnh cái tên giải thích vì sao site đang mang màu đó. Hai phần cách
-   nhau bằng dấu giữa dòng, tự xuống hàng khi chật (_partials/season.html). */
-.season {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0 var(--space-2);
-  margin-block-start: var(--space-3);
-  color: var(--muted);
-  font-size: 0.9375rem;
-}
-
-.season-dot {
-  align-self: center;
-  width: 0.5em;
-  height: 0.5em;
-  border-radius: 50%;
-  background: var(--accent);
-}
-
-.season-kou::before {
-  margin-inline-end: var(--space-2);
-  color: var(--rule);
-  content: "·";
-}
-
-.season-kana {
-  font-size: 0.85em;
-}
-
 .footer-links {
   display: flex;
   flex-wrap: wrap;
@@ -2999,6 +2968,13 @@ html:has(.lightbox[open]) {
 .year-strip [aria-current] span:first-child {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
+}
+
+/* Tên tiết hôm nay, đặt ngay dưới dải để biết ô có viền là tiết nào */
+.year-strip-now {
+  margin-block: calc(var(--space-5) * -1) var(--space-6);
+  color: var(--muted);
+  font-size: 0.9375rem;
 }
 
 .swatch-name {

@@ -4,9 +4,7 @@
           đi đâu cả (site.js mục 8 báo "chưa mở"). Trước khi mở blog: nối với
           một dịch vụ bản tin thật hoặc xoá khối này (README mục 11.8).
        3. Khung Ủng hộ ở góc phải, cùng kiểu khung có nhãn đề với sidebar.
-     Hàng cuối: menu nhỏ (Thẻ, Liên hệ, Nagi) và dòng bản quyền.
-     Dưới tagline là dòng mùa: tiết khí và hậu của hôm nay, cùng màu nhấn mà
-     tiết đó mang lại cho cả site (_partials/season.html). */ -}}
+     Hàng cuối: menu nhỏ (Thẻ, Liên hệ, Nagi) và dòng bản quyền. */ -}}
 {{- $fb := site.Params.socials.facebook -}}
 <footer class="site-footer">
   <div class="shell footer-grid">
@@ -16,7 +14,6 @@
         <span>{{ .Site.Title }}</span>
       </a>
       {{- with site.Params.tagline }}<p class="footer-tagline">{{ replace (htmlEscape .) "、" "、<wbr>" | safeHTML }}</p>{{ end }}
-      {{ partial "season.html" . }}
       <p class="footer-links">
         {{- with $fb }}<a href="{{ . }}" rel="me">Facebook</a>{{ end }}
         {{- with site.Home.OutputFormats.Get "rss" }}<a href="{{ .RelPermalink }}">{{ i18n "footer_rss" }}</a>{{ end }}

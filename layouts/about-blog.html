@@ -56,6 +56,7 @@
         </li>
       {{- end }}
     </ul>
+    <p class="year-strip-now">{{ i18n "sekki_label" (dict "Name" (cond (eq $lang "ja") $today.ja $today.vi)) }}</p>
 
     <div class="prose">
       <h2 id="kamon">{{ i18n "blog_marks" }}</h2>

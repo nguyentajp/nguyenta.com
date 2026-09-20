@@ -330,7 +330,6 @@ như bản tiếng Việt.
 | Số bài ở trang chủ | `hugo.toml` → `homeRecentCount` |
 | Lời giải thích 24 tiết khí (khung hiện khi rê chuột vào tên tiết khí) | CMS → **Dữ liệu** → **Giải thích 24 tiết khí**, hoặc `data/sekki_notes.yaml` |
 | Màu nhấn của site (đổi theo tiết khí) | `tools/sekki_colors.py` — sửa sắc/độ tươi của tiết trong bảng `SEKKI`, chạy `./.venv/bin/python tools/sekki_colors.py --toml` rồi dán vào `data/sekki.toml`. Chạy không có `--toml` thì ra bảng kiểm tương phản. Đừng sửa tay mã màu trong `data/sekki.toml` |
-| Dòng mùa ở chân trang (tiết khí và hậu của hôm nay) | Tên và câu tiếng Việt của 72 hậu: `data/kou.toml`. Cách hiện: `layouts/_partials/season.html` |
 | Chữ trên giao diện (nút, nhãn) | `i18n/vi.toml`, `i18n/ja.toml` |
 | Màu, cỡ chữ, khoảng cách | `assets/css/main.css`, phần **1. Token** ở đầu file |
 
