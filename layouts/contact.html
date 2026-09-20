@@ -1,14 +1,9 @@
 {{- /* Trang Liên hệ: chỉ email và mạng xã hội, không form gửi qua bên thứ ba.
-     Email và các tài khoản lấy từ [params] trong hugo.toml; tài khoản nào để
-     trống thì không hiện. */ -}}
+     Email lấy từ [params], các tài khoản lấy từ [params.socials] trong
+     hugo.toml; tài khoản nào để trống thì không hiện. Trước đây chỗ này in ra
+     nguyên cái giá trị trong file cấu hình, nên Facebook hiện ra cả đường dẫn
+     dài. Nay là hàng biểu tượng kèm tên nhà, cùng một bộ với chân trang. */ -}}
 {{ define "main" }}
-  {{- $networks := slice
-    (dict "key" "facebook"  "label" "Facebook"  "url" "%s")
-    (dict "key" "github"    "label" "GitHub"    "url" "https://github.com/%s")
-    (dict "key" "instagram" "label" "Instagram" "url" "https://www.instagram.com/%s/")
-    (dict "key" "x"         "label" "X"         "url" "https://x.com/%s")
-    (dict "key" "youtube"   "label" "YouTube"   "url" "https://www.youtube.com/@%s")
-  -}}
   <article data-pagefind-body>
     <header class="page-head">
       <h1 class="page-title">{{ .Title }}</h1>
@@ -19,12 +14,7 @@
         <dt>Email</dt>
         <dd><a href="mailto:{{ . }}">{{ . }}</a></dd>
       {{- end }}
-      {{- range $net := $networks }}
-        {{- with index site.Params.socials $net.key }}
-          <dt>{{ $net.label }}</dt>
-          <dd><a href="{{ printf $net.url . }}" rel="me">{{ . }}</a></dd>
-        {{- end }}
-      {{- end }}
     </dl>
+    {{ partial "socials.html" (dict "class" "contact-social" "names" true) }}
   </article>
 {{ end }}

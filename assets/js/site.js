@@ -9,6 +9,7 @@
 //   7. Hàng ngang cuộn (Bài viết liên quan): nút ‹ ›
 //   8. Ô đăng ký bản tin ở chân trang (giao diện mẫu, chưa gửi đi đâu)
 //   9. Khung giải thích tiết khí: mở khi rê chuột (máy tính có chuột)
+//  10. Đồng hồ Osaka và TP.HCM ở chân trang
 
 // ── 1. Kamon ────────────────────────────────────────────────────────────────
 // Lần thứ hai trở đi trong cùng phiên, kamon hiện sẵn. Người đọc bật
@@ -388,3 +389,46 @@
     if (anchored() && isOpen()) place();
   }, { passive: true });
 })();
+
+// ── 10. Đồng hồ hai thành phố ───────────────────────────────────────────────
+// Blog viết từ Osaka, người đọc phần lớn ở Việt Nam: hai nơi cách nhau hai
+// tiếng. Giờ tính ngay trên máy người đọc bằng Intl, không gọi ra ngoài, không
+// cần biết họ đang ở đâu. Hàng đồng hồ ẩn sẵn trong HTML nên không có JS thì
+// không có hàng này, chứ không hiện ra ô trống. Đổi số đúng lúc sang phút mới,
+// để hai thành phố nhảy cùng một nhịp.
+{
+  const row = document.querySelector("[data-clock]");
+  const clocks = row ? [...row.querySelectorAll("[data-clock-tz]")] : [];
+
+  if (clocks.length) {
+    const lang = document.documentElement.lang || "vi";
+    const formats = new Map(
+      clocks.map((el) => [
+        el,
+        new Intl.DateTimeFormat(lang, {
+          timeZone: el.dataset.clockTz,
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }),
+      ]),
+    );
+
+    const tick = () => {
+      const now = new Date();
+      for (const [el, format] of formats) {
+        // Một số máy trả về "24:05" lúc nửa đêm; đổi lại thành "00:05".
+        const time = format.format(now).replace(/^24:/, "00:");
+        el.textContent = time;
+        el.dateTime = time;
+      }
+    };
+
+    tick();
+    row.hidden = false;
+    setTimeout(() => {
+      tick();
+      setInterval(tick, 60000);
+    }, (60 - new Date().getSeconds()) * 1000);
+  }
+}

@@ -140,6 +140,14 @@ other = "ただいま、場を整えています。整いましたら、また�
 [maint_other_lang]
 other = "Tiếng Việt"
 
+[footer_col_read]
+other = "読む"
+[footer_col_more]
+other = "その他"
+[clock_osaka]
+other = "大阪"
+[clock_saigon]
+other = "ホーチミン"
 [footer_rss]
 other = "RSS"
 
@@ -154,10 +162,6 @@ other = "検索"
 other = "{{ .Year }}年{{ .Month }}月"
 [sidebar_recent]
 other = "新着記事"
-[sidebar_support_text]
-other = "広告のないブログです。記事が役に立ったら、お茶を一杯ごちそうしていただけるとうれしいです。"
-[sidebar_support_link]
-other = "応援する"
 [sidebar_label]
 other = "サイドバー"
 
@@ -228,5 +232,3 @@ other = "メールアドレスの形式が正しくありません（例 mail@ex
 other = "登録後、確認メールをお送りします。メールアドレスは Buttondown が保管し、他の用途には使いません。"
 [news_not_open]
 other = "ニュースレターは準備中で、まだ登録を受け付けていません。それまでは RSS でお読みいただけます。"
-[footer_nav]
-other = "その他のページ"

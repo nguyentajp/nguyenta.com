@@ -1,11 +1,18 @@
-{{- /* Chân trang trên dải 白緑, ba cột (điện thoại: xếp chồng):
-       1. Kamon nhỏ, tên blog, tagline; Facebook và RSS.
-       2. Bản tin: ô email và nút đăng ký. Gửi thật khi params.newsletter.username
+{{- /* Chân trang trên dải 白緑. Bốn cột, đọc từ trái sang: ai viết, đi đâu
+       được, trang khác, và bản tin. Điện thoại thì xếp chồng.
+       1. Kamon nhỏ, tên blog, tagline, hàng biểu tượng mạng xã hội và RSS
+          (socials.html, dùng chung với trang Liên hệ).
+       2. Lối đi chính: lấy thẳng từ menu chính trong hugo.toml.
+       3. Trang khác: lấy từ menu phụ, thêm trang Ủng hộ.
+       4. Bản tin: ô email và nút đăng ký. Gửi thật khi params.newsletter.username
           có giá trị; để trống thì chỉ là giao diện mẫu, bấm Đăng ký ra dòng
           "chưa mở" (site.js mục 8).
-       3. Khung Ủng hộ ở góc phải, cùng kiểu khung có nhãn đề với sidebar.
-     Hàng cuối: menu nhỏ (Thẻ, Liên hệ, Nagi) và dòng bản quyền. */ -}}
-{{- $fb := site.Params.socials.facebook -}}
+     Hàng cuối: dòng bản quyền và đồng hồ hai thành phố (site.js mục 10).
+
+     Trước đây cột thứ ba là khung Ủng hộ có viền và nhãn đề — cùng kiểu với
+     khung ở sidebar. Đặt một cái khung như thế cạnh hai khối chữ trần làm cả
+     chân trang lệch nhịp, nên Ủng hộ trở lại làm một link trong cột trang
+     khác, còn chân trang thì chỉ còn chữ và đường mảnh. */ -}}
 {{- $news := site.Params.newsletter | default dict -}}
 {{- $newsUser := $news.username | default "" -}}
 <footer class="site-footer">
@@ -16,18 +23,32 @@
         {{ partial "wordmark.html" . }}<span class="visually-hidden">{{ .Site.Title }}</span>
       </a>
       {{- with site.Params.tagline }}<p class="footer-tagline">{{ replace (htmlEscape .) "、" "、<wbr>" | safeHTML }}</p>{{ end }}
-      <p class="footer-links">
-        {{- with $fb }}<a href="{{ . }}" rel="me">Facebook</a>{{ end }}
-        {{- with site.Home.OutputFormats.Get "rss" }}<a href="{{ .RelPermalink }}">{{ i18n "footer_rss" }}</a>{{ end }}
-      </p>
+      {{ partial "socials.html" (dict "class" "footer-social" "rss" true) }}
     </section>
+
+    <nav class="footer-col" aria-labelledby="chan-trang-doc">
+      <h2 class="footer-title" id="chan-trang-doc">{{ i18n "footer_col_read" }}</h2>
+      <ul>
+        {{- range .Site.Menus.main }}
+          {{- if not .Parent }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
+        {{- end }}
+      </ul>
+    </nav>
+
+    <nav class="footer-col" aria-labelledby="chan-trang-khac">
+      <h2 class="footer-title" id="chan-trang-khac">{{ i18n "footer_col_more" }}</h2>
+      <ul>
+        {{- range .Site.Menus.under }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
+        {{- with site.GetPage "/support" }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}
+      </ul>
+    </nav>
 
     <section class="footer-news" aria-labelledby="ban-tin">
       <h2 class="footer-title" id="ban-tin">{{ i18n "news_title" }}</h2>
       <p>{{ i18n "news_text" }}</p>
-      {{- /* Có username: form POST thẳng sang Buttondown, method="post" nên email
-           không bao giờ nằm trong URL. Buttondown trả về trang xác nhận của nó,
-           rồi gửi thư cho người đọc bấm xác nhận.
+      {{- /* Có username: form POST thẳng sang dịch vụ bản tin, method="post" nên
+           email không bao giờ nằm trong URL. Dịch vụ trả về trang xác nhận của
+           nó, rồi gửi thư cho người đọc bấm xác nhận.
            Chưa có username: fieldset disabled, để không có JS thì không bấm gửi
            được; site.js mục 8 mở khoá rồi hiện dòng "chưa mở".
            data-msg-*: trình duyệt báo lỗi ô nhập bằng tiếng của MÁY, nên mặc
@@ -48,22 +69,18 @@
         {{- end }}
       </form>
     </section>
-
-    {{- with site.GetPage "/support" }}
-      <section class="widget footer-support" aria-labelledby="ung-ho">
-        <h2 class="widget-title" id="ung-ho">{{ .Title }}</h2>
-        <p>{{ i18n "sidebar_support_text" }}</p>
-        {{- if ne $.RelPermalink .RelPermalink }}
-          <p class="widget-more"><a href="{{ .RelPermalink }}">{{ i18n "sidebar_support_link" }}</a></p>
-        {{- end }}
-      </section>
-    {{- end }}
   </div>
 
   <div class="shell footer-bottom">
-    <nav class="footer-nav" aria-label="{{ i18n "footer_nav" }}">
-      {{- range .Site.Menus.under }}<a href="{{ .URL }}">{{ .Name }}</a>{{ end }}
-    </nav>
     <p class="colophon">© {{ now.Year }} {{ site.Params.author }}</p>
+    {{- /* Đồng hồ hai thành phố: blog viết từ Osaka cho người đọc phần lớn ở
+         Việt Nam, hai nơi cách nhau hai tiếng. Giờ do trình duyệt tính
+         (site.js mục 10), nên ẩn sẵn: không có JS thì không có hàng này chứ
+         không hiện ra hai dấu gạch. */}}
+    <p class="footer-clock" data-clock hidden>
+      {{- range slice (dict "tz" "Asia/Tokyo" "name" (i18n "clock_osaka")) (dict "tz" "Asia/Ho_Chi_Minh" "name" (i18n "clock_saigon")) }}
+        <span class="clock-city">{{ .name }} <time data-clock-tz="{{ .tz }}"></time></span>
+      {{- end }}
+    </p>
   </div>
 </footer>

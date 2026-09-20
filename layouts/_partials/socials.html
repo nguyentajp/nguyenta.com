@@ -1,0 +1,34 @@
+{{- /* Hàng mạng xã hội, dùng chung cho chân trang và trang Liên hệ. Mỗi nhà
+     một biểu tượng nét mảnh (icon.html), mang màu mực của trang chứ không
+     mang màu gốc của họ — để cả hàng đọc ra như một bộ, không phải mấy con
+     tem dán lên. Tài khoản nào để trống trong hugo.toml thì không hiện.
+
+     Tham số:
+       class  tên lớp của hàng (footer-social, contact-social)
+       names  true thì hiện cả tên nhà cạnh biểu tượng (trang Liên hệ)
+       rss    true thì thêm link RSS ở cuối hàng (chân trang)
+
+     Facebook ghi cả đường dẫn trong hugo.toml vì tên trang cá nhân Facebook
+     không suy ra được từ một mẩu; các nhà còn lại chỉ ghi tên tài khoản. */ -}}
+{{- $networks := slice
+  (dict "key" "facebook"  "label" "Facebook"  "url" "%s")
+  (dict "key" "instagram" "label" "Instagram" "url" "https://www.instagram.com/%s/")
+  (dict "key" "youtube"   "label" "YouTube"   "url" "https://www.youtube.com/@%s")
+  (dict "key" "x"         "label" "X"         "url" "https://x.com/%s")
+  (dict "key" "github"    "label" "GitHub"    "url" "https://github.com/%s")
+-}}
+{{- $names := .names | default false -}}
+<p class="{{ .class }}">
+  {{- range $net := $networks }}
+    {{- with index site.Params.socials $net.key }}
+      <a href="{{ printf $net.url . }}" rel="me"{{ if not $names }} aria-label="{{ $net.label }}"{{ end }}>
+        {{- partial "icon.html" $net.key }}{{ if $names }}<span>{{ $net.label }}</span>{{ end -}}
+      </a>
+    {{- end }}
+  {{- end }}
+  {{- if .rss }}
+    {{- with site.Home.OutputFormats.Get "rss" }}
+      <a href="{{ .RelPermalink }}" aria-label="{{ i18n "footer_rss" }}">{{ partial "icon.html" "rss" }}</a>
+    {{- end }}
+  {{- end }}
+</p>

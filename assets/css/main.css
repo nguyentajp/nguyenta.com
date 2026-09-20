@@ -1999,8 +1999,11 @@ a.pager-step:hover {
 }
 
 /* ── 9. Chân trang ────────────────────────────────────────────────────────── */
-/* Dải 白緑 ba cột: tên blog và tagline, bản tin, khung Ủng hộ ở góc phải.
-   Hàng cuối là menu nhỏ và dòng bản quyền, ngăn bằng một đường mảnh. */
+/* Dải 白緑 bốn cột: ai viết (kèm hàng biểu tượng mạng xã hội), hai cột link,
+   rồi bản tin. Không có khung nào ở đây: khung có viền và nhãn đề là chuyện
+   của sidebar, đặt xuống chân trang thì lệch nhịp với các cột chữ trần bên
+   cạnh. Hàng cuối là dòng bản quyền và đồng hồ hai thành phố, ngăn bằng một
+   đường mảnh. */
 .site-footer {
   border-block-start: 1px solid var(--rule);
   background: var(--band);
@@ -2011,8 +2014,8 @@ a.pager-step:hover {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) var(--sidebar);
-  gap: var(--space-6) var(--col-gap);
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.5fr);
+  gap: var(--space-6) var(--space-5);
   align-items: start;
 }
 
@@ -2043,16 +2046,34 @@ a.pager-step:hover {
   word-break: keep-all;
 }
 
-.footer-links {
+/* Mạng xã hội và RSS: chỉ có hình, mang màu mực của trang chứ không mang màu
+   gốc của từng nhà — để cả hàng đọc ra như một bộ, không phải mấy con tem dán
+   lên. Ô bấm rộng hơn hình để ngón tay không trượt. */
+.footer-social {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
+  gap: var(--space-2);
   margin-block-start: var(--space-4);
+  margin-inline-start: calc(-1 * var(--space-2));
 }
 
-.footer-links a {
-  text-decoration: underline 0.09em var(--accent-line);
-  text-underline-offset: 0.3em;
+.footer-social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: calc(var(--radius) / 2);
+  color: var(--ink);
+}
+
+.footer-social a:hover {
+  color: var(--accent);
+}
+
+.footer-social .icon {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .footer-title {
@@ -2060,6 +2081,26 @@ a.pager-step:hover {
   font-size: 1.0625rem;
   font-weight: 600;
   letter-spacing: 0.02em;
+}
+
+/* Hai cột link: chữ thường, không gạch chân, cách nhau thưa đủ để bấm trên
+   điện thoại */
+.footer-col ul {
+  margin-block-start: var(--space-3);
+  list-style: none;
+}
+
+.footer-col li + li {
+  margin-block-start: var(--space-2);
+}
+
+.footer-col a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.footer-col a:hover {
+  color: var(--accent);
 }
 
 .footer-news > p {
@@ -2129,20 +2170,6 @@ a.pager-step:hover {
   text-wrap: pretty;
 }
 
-/* Khung Ủng hộ: trong suốt trên dải 白緑, khác nền giấy của đầu trang; nhãn
-   đề đậm hơn dải một bậc để không chìm vào nền chân trang */
-.footer-support {
-  margin-block-start: var(--space-3);
-}
-
-.footer-support .widget-title {
-  background: color-mix(in oklab, var(--band), var(--ink) 14%);
-}
-
-.footer-support p {
-  text-wrap: pretty;
-}
-
 .footer-bottom {
   display: flex;
   flex-wrap: wrap;
@@ -2154,34 +2181,43 @@ a.pager-step:hover {
   border-block-start: 1px solid var(--rule);
 }
 
-.footer-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-5);
-}
-
-.footer-nav a {
-  text-decoration: none;
-}
-
-.footer-nav a:hover {
-  color: var(--accent);
-}
-
 .colophon {
   font-size: 0.8125rem;
   color: var(--muted);
   font-variant-numeric: lining-nums;
 }
 
-/* Máy tính bảng: tên blog hết một hàng, bản tin và Ủng hộ chia đôi hàng dưới.
-   Điện thoại: một cột. */
+/* Đồng hồ hai thành phố: blog viết từ Osaka, người đọc phần lớn ở Việt Nam.
+   Hai số đứng cạnh nhau nói luôn cái khoảng cách hai tiếng, không cần giải
+   thích. Giờ do site.js mục 10 điền, nên hàng này ẩn cho tới lúc có số —
+   phải khai lại [hidden] vì display: flex sẽ đè lên mặc định của trình duyệt. */
+.footer-clock {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.footer-clock[hidden] {
+  display: none;
+}
+
+.clock-city time {
+  margin-inline-start: 0.35rem;
+  color: var(--ink);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* Máy tính bảng: tên blog hết một hàng, hai cột link chia đôi hàng dưới, bản
+   tin hết một hàng nữa. Điện thoại: một cột. */
 @media (max-width: 55.999rem) {
   .footer-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .footer-about {
+  .footer-about,
+  .footer-news {
     grid-column: 1 / -1;
   }
 }
@@ -3358,4 +3394,31 @@ html:has(.lightbox[open]) {
 
 .contact dd {
   font-size: 1.125rem;
+}
+
+/* Mạng xã hội ở trang Liên hệ: cùng bộ biểu tượng với chân trang nhưng có kèm
+   tên nhà, vì ở đây người đọc đang đi tìm chỗ để nhắn chứ không lướt qua. */
+.contact-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin-block-start: var(--space-5);
+  font-size: 1.125rem;
+}
+
+.contact-social a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.25rem;
+  text-decoration: none;
+}
+
+.contact-social a:hover {
+  color: var(--accent);
+}
+
+.contact-social .icon {
+  width: 1.25rem;
+  height: 1.25rem;
 }
