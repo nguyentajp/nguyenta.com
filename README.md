@@ -807,7 +807,13 @@ Có quyết định mới thì ghi vào đây.
       không giấu bài khỏi bản xem trước; nó chỉ chặn bài lên nguyenta.com và
       giúp lệnh grep ở trên tìm thấy.
 - [ ] Thay ảnh chân dung (`assets/brand/avatar.jpg`) và thêm ảnh bìa cho các bài.
-- [ ] Bản tin ở chân trang mới là giao diện mẫu (bấm Đăng ký chỉ báo "chưa
-      mở", không gửi email đi đâu). Nối với một dịch vụ bản tin thật, hoặc xoá
-      khối `footer-news` trong `layouts/_partials/footer.html`.
+- [ ] Bản tin ở chân trang: code đã nối sẵn với Buttondown, chỉ còn thiếu tài
+      khoản. Đăng ký ở buttondown.com rồi điền username vào
+      `params.newsletter.username` trong `hugo.toml` là chạy. Để trống thì khối
+      vẫn là giao diện mẫu như cũ (bấm Đăng ký ra dòng "chưa mở").
+
+      Form POST thẳng sang Buttondown nên **không có API key nào trong repo**
+      và không cần JS. Free 100 người đăng ký; **tự gửi bài mới theo RSS là
+      tính năng trả tiền** (~$9/tháng), bản free phải tự soạn và bấm gửi từng
+      số.
 - [ ] Mở blog: `maintenance = false` trong `hugo.toml`.

@@ -276,15 +276,18 @@
 })();
 
 // ── 8. Bản tin ──────────────────────────────────────────────────────────────
-// Chưa có dịch vụ bản tin: form chỉ để xem giao diện. Có JS thì mở khoá ô
-// nhập; bấm Đăng ký chỉ hiện dòng "chưa mở", email không được gửi hay lưu ở
-// đâu cả. Không có JS thì form vẫn khoá (footer.html).
+// Hai trạng thái, do params.newsletter.username trong hugo.toml quyết định.
+//  - Có dịch vụ: form tự POST sang Buttondown, JS ở đây chỉ lo dịch lời nhắn
+//    lỗi của ô email. Không có JS thì form vẫn gửi được bình thường.
+//  - Chưa có (data-news-mock): footer.html khoá fieldset để không JS thì không
+//    bấm gửi được; có JS thì mở khoá cho xem giao diện, bấm Đăng ký chỉ hiện
+//    dòng "chưa mở", email không được gửi hay lưu ở đâu cả.
 (() => {
   const form = document.querySelector("[data-news]");
   if (!form) return;
-  const status = form.querySelector(".news-status");
+  const mock = form.hasAttribute("data-news-mock");
   const email = form.querySelector("#news-email");
-  form.querySelector("fieldset").disabled = false;
+  if (mock) form.querySelector("fieldset").disabled = false;
 
   // Trình duyệt báo lỗi ô nhập bằng ngôn ngữ của MÁY ("Please fill out this
   // field."), không theo ngôn ngữ trang. Thay bằng câu tiếng Việt / tiếng Nhật
@@ -302,10 +305,13 @@
   email.addEventListener("invalid", say);
   email.addEventListener("input", say);
 
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    status.hidden = false;
-  });
+  if (mock) {
+    const status = form.querySelector(".news-status");
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      status.hidden = false;
+    });
+  }
 })();
 
 // ── 9. Tiết khí ─────────────────────────────────────────────────────────────

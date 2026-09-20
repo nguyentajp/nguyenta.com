@@ -222,6 +222,8 @@ other = "Đăng ký"
 other = "Hãy nhập email"
 [news_invalid]
 other = "Email chưa đúng dạng, ví dụ ten@vidu.com"
+[news_note]
+other = "Sau khi đăng ký, anh chị sẽ nhận một thư xác nhận. Địa chỉ email do Buttondown giữ, không dùng vào việc gì khác."
 [news_not_open]
 other = "Bản tin đang được chuẩn bị, chưa nhận đăng ký. Trong lúc chờ, anh chị có thể theo dõi blog qua RSS."
 [footer_nav]

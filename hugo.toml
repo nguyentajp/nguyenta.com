@@ -281,6 +281,17 @@ defaultContentLanguageInSubdir = false
   # cuối mỗi bài. Hàng hiện khoảng ba bài một lượt, nhiều hơn thì cuộn ngang.
   relatedCount = 6
 
+  # Bản tin ở chân trang. Để trống username thì khối chỉ là giao diện mẫu, bấm
+  # Đăng ký ra dòng "chưa mở" (site.js mục 8). Điền username Buttondown vào là
+  # form gửi thật: nó POST thẳng sang Buttondown, không có API key nào nằm
+  # trong repo và không cần JS. Buttondown gửi thư xác nhận, người đọc bấm vào
+  # thư mới thành người đăng ký (double opt-in).
+  [params.newsletter]
+    username = ""
+    # Trang Buttondown mà form gửi tới. Đổi nếu sau này chuyển dịch vụ khác có
+    # cùng kiểu form POST (name="email").
+    action = "https://buttondown.com/api/emails/embed-subscribe/"
+
   [params.socials]
     # Để trống nghĩa là không hiện. Điền dần khi anh muốn.
     # Facebook ghi cả đường dẫn; hiện ở chân trang và trang Liên hệ.

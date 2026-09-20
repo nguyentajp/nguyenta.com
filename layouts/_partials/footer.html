@@ -1,11 +1,13 @@
 {{- /* Chân trang trên dải 白緑, ba cột (điện thoại: xếp chồng):
        1. Kamon nhỏ, tên blog, tagline; Facebook và RSS.
-       2. Bản tin: ô email và nút đăng ký. HIỆN CHỈ LÀ GIAO DIỆN MẪU, chưa gửi
-          đi đâu cả (site.js mục 8 báo "chưa mở"). Trước khi mở blog: nối với
-          một dịch vụ bản tin thật hoặc xoá khối này (README mục 11.8).
+       2. Bản tin: ô email và nút đăng ký. Gửi thật khi params.newsletter.username
+          có giá trị; để trống thì chỉ là giao diện mẫu, bấm Đăng ký ra dòng
+          "chưa mở" (site.js mục 8).
        3. Khung Ủng hộ ở góc phải, cùng kiểu khung có nhãn đề với sidebar.
      Hàng cuối: menu nhỏ (Thẻ, Liên hệ, Nagi) và dòng bản quyền. */ -}}
 {{- $fb := site.Params.socials.facebook -}}
+{{- $news := site.Params.newsletter | default dict -}}
+{{- $newsUser := $news.username | default "" -}}
 <footer class="site-footer">
   <div class="shell footer-grid">
     <section class="footer-about" aria-label="{{ .Site.Title }}">
@@ -23,18 +25,27 @@
     <section class="footer-news" aria-labelledby="ban-tin">
       <h2 class="footer-title" id="ban-tin">{{ i18n "news_title" }}</h2>
       <p>{{ i18n "news_text" }}</p>
-      {{- /* fieldset disabled: không có JS thì không gửi được, để email của người
-           đọc không bao giờ bị gắn vào URL của trang.
+      {{- /* Có username: form POST thẳng sang Buttondown, method="post" nên email
+           không bao giờ nằm trong URL. Buttondown trả về trang xác nhận của nó,
+           rồi gửi thư cho người đọc bấm xác nhận.
+           Chưa có username: fieldset disabled, để không có JS thì không bấm gửi
+           được; site.js mục 8 mở khoá rồi hiện dòng "chưa mở".
            data-msg-*: trình duyệt báo lỗi ô nhập bằng tiếng của MÁY, nên mặc
            định ra tiếng Anh. site.js mục 8 thay bằng hai câu này. */}}
-      <form class="news-form" data-news
+      <form class="news-form"{{ with $newsUser }} action="{{ $news.action }}{{ . }}" method="post"{{ else }} data-news-mock{{ end }}
+            data-news
             data-msg-required="{{ i18n "news_required" }}" data-msg-invalid="{{ i18n "news_invalid" }}">
-        <fieldset class="joined" disabled>
+        <fieldset class="joined"{{ if not $newsUser }} disabled{{ end }}>
           <label class="visually-hidden" for="news-email">{{ i18n "news_label" }}</label>
           <input id="news-email" name="email" type="email" placeholder="{{ i18n "news_placeholder" }}" autocomplete="email" required>
           <button type="submit">{{ i18n "news_button" }}</button>
         </fieldset>
-        <p class="news-status" role="status" aria-live="polite" hidden>{{ i18n "news_not_open" }}</p>
+        {{- with $newsUser }}
+          <input type="hidden" name="embed" value="1">
+          <p class="news-note">{{ i18n "news_note" }}</p>
+        {{- else }}
+          <p class="news-status" role="status" aria-live="polite" hidden>{{ i18n "news_not_open" }}</p>
+        {{- end }}
       </form>
     </section>
 
