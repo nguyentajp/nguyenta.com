@@ -7,6 +7,7 @@ description: Buổi sáng ở Osaka vẫn còn oi, nhưng đến chiều thì m�
 categories: ["nhat-ky"]
 tags: ["osaka", "mùa thu", "tre"]
 draft: false
+demo: true
 ---
 
 Buổi sáng ở Osaka vẫn còn oi, nhưng đến chiều thì mùi gió đã khác. Nguyên ngồi viết trong một căn phòng nhỏ, nghe lá tre cọ vào nhau ngoài cửa sổ, và nhận ra đã lâu rồi không để ý tới những âm thanh như vậy.

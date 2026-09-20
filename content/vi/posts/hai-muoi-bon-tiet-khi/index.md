@@ -7,6 +7,7 @@ description: Người Việt và người Nhật dùng chung hai mươi bốn ti
 categories: ["suy-nghi"]
 tags: ["tiết khí", "ngôn ngữ", "mùa thu"]
 draft: false
+demo: true
 ---
 
 Hôm nay là Bạch lộ, tiết khí mà người Nhật gọi là 白露. Cùng một cái tên, cùng gốc chữ Hán, nhưng khi đọc lên trong tiếng Việt và trong tiếng Nhật thì hai cảm giác lại khác nhau.

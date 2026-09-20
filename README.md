@@ -782,6 +782,13 @@ chuột trên web.
 - [ ] Xoá bài demo: các thư mục trong `content/*/posts/` có `demo: true` trong
       front matter (ảnh bìa của chúng là ảnh vẽ tạm). Tìm bằng
       `grep -rl '^demo: true' content`. Chưa xoá thì workflow không cho mở blog.
+
+      **Cách anh muốn làm (chốt 20/9):** cứ để nguyên bài demo trên bản xem
+      trước cho dễ hình dung tổng thể, xong xuôi hết mới xoá một lượt. Vì thế
+      MỌI bài do Claude viết đều phải mang dấu `demo: true`, kể cả mấy bài đầu
+      tiên vốn gọi là "bài mẫu" — không thì lần dọn cuối sẽ bỏ sót. Dấu này
+      không giấu bài khỏi bản xem trước; nó chỉ chặn bài lên nguyenta.com và
+      giúp lệnh grep ở trên tìm thấy.
 - [ ] Thay ảnh chân dung (`assets/brand/avatar.jpg`) và thêm ảnh bìa cho các bài.
 - [ ] Bản tin ở chân trang mới là giao diện mẫu (bấm Đăng ký chỉ báo "chưa
       mở", không gửi email đi đâu). Nối với một dịch vụ bản tin thật, hoặc xoá
