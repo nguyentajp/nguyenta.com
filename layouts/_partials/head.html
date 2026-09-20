@@ -19,7 +19,12 @@
 {{- if and .IsPage (findRE `[（(][ぁ-ゖァ-ヺー]+[）)]` .RawContent 1) }}
 <script>try{document.documentElement.dataset.furigana=localStorage.getItem("gen-furigana")||"show"}catch(e){document.documentElement.dataset.furigana="show"}</script>
 {{- end }}
-<title>{{ if or .IsHome (and hugo.IsProduction site.Params.maintenance (not .Params.maintenance_exempt)) }}{{ .Site.Title }}{{ else if eq .Kind "404" }}404 — {{ .Site.Title }}{{ else }}{{ .Title }} — {{ .Site.Title }}{{ end }}</title>
+{{- /* Tiêu đề trên tab trình duyệt. Trang chủ (và trang bảo trì) mang thêm
+     tagline sau dấu gạch, vì một chữ "Gen" trơ trọi thì người mở tab không
+     biết đây là blog gì. Bỏ dấu chấm cuối tagline: tiêu đề tab không phải câu
+     văn. Trang con đã có tên riêng nên giữ nguyên "Tên trang — Gen". */}}
+{{- $tagline := strings.TrimSuffix "。" (strings.TrimSuffix "." (site.Params.tagline | default "")) -}}
+<title>{{ if or .IsHome (and hugo.IsProduction site.Params.maintenance (not .Params.maintenance_exempt)) }}{{ .Site.Title }}{{ with $tagline }} - {{ . }}{{ end }}{{ else if eq .Kind "404" }}404 — {{ .Site.Title }}{{ else }}{{ .Title }} — {{ .Site.Title }}{{ end }}</title>
 {{ with or .Description .Summary .Site.Params.description -}}
   <meta name="description" content="{{ . | plainify | truncate 180 }}">
 {{ end -}}

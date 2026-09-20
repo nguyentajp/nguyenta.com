@@ -6,7 +6,6 @@
      Tham số:
        class  tên lớp của hàng (footer-social, contact-social)
        names  true thì hiện cả tên nhà cạnh biểu tượng (trang Liên hệ)
-       rss    true thì thêm link RSS ở cuối hàng (chân trang)
 
      Facebook ghi cả đường dẫn trong hugo.toml vì tên trang cá nhân Facebook
      không suy ra được từ một mẩu; các nhà còn lại chỉ ghi tên tài khoản. */ -}}
@@ -24,11 +23,6 @@
       <a href="{{ printf $net.url . }}" rel="me"{{ if not $names }} aria-label="{{ $net.label }}"{{ end }}>
         {{- partial "icon.html" $net.key }}{{ if $names }}<span>{{ $net.label }}</span>{{ end -}}
       </a>
-    {{- end }}
-  {{- end }}
-  {{- if .rss }}
-    {{- with site.Home.OutputFormats.Get "rss" }}
-      <a href="{{ .RelPermalink }}" aria-label="{{ i18n "footer_rss" }}">{{ partial "icon.html" "rss" }}</a>
     {{- end }}
   {{- end }}
 </p>

@@ -2722,11 +2722,22 @@ html:has(.lightbox[open]) {
   font-variant-numeric: tabular-nums;
 }
 
-/* Mục lục: bốn khối ngăn nhau bằng tiêu đề mục có hai đường mảnh. Không có
-   hàng link nhảy mục ở đầu trang: bốn tiêu đề đã nằm ngay dưới, cuộn một cái
-   là thấy. */
+/* Mục lục có ba tầng, mỗi tầng một hình thức khác hẳn nhau để mắt không phải
+   đoán mình đang ở đâu:
+     khối   (Tìm theo từ khoá, Theo danh mục, Theo ngày đăng, Theo thẻ)
+            chữ to, nằm giữa, hai đường mảnh chạy ra hai bên
+     năm    một nhãn nền 白緑 nằm sát mép trái, dính lại ở đầu màn hình khi cuộn
+     tháng  chữ nhỏ ở cột trái, ngăn với danh sách bài bằng một đường DỌC
+   Trước đây tháng ngăn nhau bằng đường ngang, trùng hệt với đường ngăn khối,
+   nên nhìn vào không biết đâu là hết một khối đâu là hết một tháng.
+   Không có hàng link nhảy mục ở đầu trang: bốn tiêu đề đã nằm ngay dưới. */
 .index-block {
   scroll-margin-block-start: var(--space-5);
+}
+
+.index-block .section-title {
+  margin-block: var(--ma) var(--space-5);
+  font-size: 1.25rem;
 }
 
 .index-block:first-child .section-title {
@@ -2782,40 +2793,59 @@ html:has(.lightbox[open]) {
   color: var(--muted);
 }
 
-/* Theo ngày đăng: năm là một dòng lớn; mỗi tháng một hàng, tên tháng ở cột
-   trái, các bài ở cột phải: ngày kèm thứ, tiêu đề, danh mục */
+/* Theo ngày đăng */
 .index-year + .index-year {
   margin-block-start: var(--space-6);
 }
 
+/* Năm: nhãn nền 白緑 sát mép trái, dính lại ở đầu màn hình suốt chiều dài của
+   năm đó, nên cuộn sâu vẫn biết đang ở năm nào. Nền đặc để chữ bên dưới không
+   lộ qua lúc trôi. */
 .index-year-title {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  width: fit-content;
+  margin-block-end: var(--space-4);
+  padding: 0.15rem var(--space-3);
+  border-radius: calc(var(--radius) / 2);
+  background: var(--band);
   font-family: var(--font-headline);
-  font-size: 1.75rem;
+  font-size: 1.375rem;
   font-weight: 450;
-  line-height: 1.2;
+  line-height: 1.4;
   font-variant-numeric: lining-nums;
 }
 
-/* Ngày đứng sát tên tháng, tiêu đề bài có phần lớn bề ngang */
+/* Tháng: tên tháng ở cột trái, danh sách bài ở cột phải, ngăn nhau bằng một
+   đường DỌC — không dùng đường ngang, vì đường ngang là của tầng khối. */
 .index-month {
   display: grid;
-  grid-template-columns: 4.75rem minmax(0, 1fr);
-  gap: var(--space-3) var(--space-3);
-  align-items: baseline;
-  padding-block: var(--space-4);
-  border-block-end: 1px solid var(--rule);
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: var(--space-3);
+  padding-block: var(--space-3);
   scroll-margin-block-start: var(--space-5);
 }
 
+.index-month + .index-month {
+  padding-block-start: var(--space-4);
+}
+
 .index-month-title {
+  padding-block-start: 0.15rem;
   font-size: 0.9375rem;
   font-weight: 600;
   color: var(--muted);
 }
 
+.index-month .index-posts {
+  padding-inline-start: var(--space-4);
+  border-inline-start: 1px solid var(--rule);
+}
+
 .index-posts {
   display: grid;
-  gap: var(--space-2);
+  gap: var(--space-3);
   list-style: none;
 }
 
@@ -2824,6 +2854,31 @@ html:has(.lightbox[open]) {
   grid-template-columns: 6.25rem minmax(0, 1fr) auto;
   gap: var(--space-1) var(--space-4);
   align-items: baseline;
+}
+
+/* Cột hẹp: ngày giữ cột trái, danh mục tụt xuống dưới tiêu đề thay vì chen
+   vào cùng hàng rồi đè lên chữ */
+@media (max-width: 48rem) {
+  .index-posts li {
+    grid-template-columns: 5rem minmax(0, 1fr);
+  }
+
+  .index-post-cat {
+    grid-column: 2;
+  }
+}
+
+/* Điện thoại: tên tháng lên trên, đường dọc bỏ đi cho đỡ chật */
+@media (max-width: 30rem) {
+  .index-month {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+
+  .index-month .index-posts {
+    padding-inline-start: 0;
+    border-inline-start: 0;
+  }
 }
 
 .index-posts time,

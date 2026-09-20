@@ -1,6 +1,6 @@
 {{- /* Chân trang trên dải 白緑. Bốn cột, đọc từ trái sang: ai viết, đi đâu
        được, trang khác, và bản tin. Điện thoại thì xếp chồng.
-       1. Kamon nhỏ, tên blog, tagline, hàng biểu tượng mạng xã hội và RSS
+       1. Kamon nhỏ, tên blog, tagline, hàng biểu tượng mạng xã hội
           (socials.html, dùng chung với trang Liên hệ).
        2. Lối đi chính: lấy thẳng từ menu chính trong hugo.toml.
        3. Trang khác: lấy từ menu phụ, thêm trang Ủng hộ.
@@ -24,7 +24,7 @@
         {{ partial "wordmark.html" . }}<span class="visually-hidden">{{ .Site.Title }}</span>
       </a>
       {{- with site.Params.tagline }}<p class="footer-tagline">{{ replace (htmlEscape .) "、" "、<wbr>" | safeHTML }}</p>{{ end }}
-      {{ partial "socials.html" (dict "class" "footer-social" "rss" true) }}
+      {{ partial "socials.html" (dict "class" "footer-social") }}
     </section>
 
     <nav class="footer-col" aria-labelledby="chan-trang-doc">
@@ -73,12 +73,13 @@
 
   <div class="shell footer-bottom">
     <p class="colophon">© {{ now.Year }} {{ site.Params.author }}</p>
-    {{- /* Đồng hồ hai thành phố: blog viết từ Osaka cho người đọc phần lớn ở
-         Việt Nam, hai nơi cách nhau hai tiếng. Giờ do trình duyệt tính
+    {{- /* Đồng hồ hai thành phố: giờ Việt Nam đứng trước, giờ Nhật đứng sau,
+         vì người đọc phần lớn ở Việt Nam. Hai nơi cách nhau hai tiếng.
+         Giờ do trình duyệt tính
          (site.js mục 10), nên ẩn sẵn: không có JS thì không có hàng này chứ
          không hiện ra hai dấu gạch. */}}
     <p class="footer-clock" data-clock hidden>
-      {{- range slice (dict "tz" "Asia/Tokyo" "name" (i18n "clock_osaka")) (dict "tz" "Asia/Ho_Chi_Minh" "name" (i18n "clock_saigon")) }}
+      {{- range slice (dict "tz" "Asia/Ho_Chi_Minh" "name" (i18n "clock_saigon")) (dict "tz" "Asia/Tokyo" "name" (i18n "clock_osaka")) }}
         <span class="clock-city">{{ .name }} <time data-clock-tz="{{ .tz }}"></time></span>
       {{- end }}
     </p>
