@@ -37,26 +37,52 @@
       {{- end }}
     </ul>
 
-    {{- /* Màu nhấn đi theo tiết khí, nên bảng màu ở trên chưa nói hết. Dải này
-         là cả một năm: hai mươi bốn ô theo đúng thứ tự trong năm, ô của tiết
-         hôm nay có viền. Ô lấy màu theo giao diện đang xem — khai hai lần để
-         trình duyệt cũ chưa hiểu light-dark() vẫn ra màu của giao diện sáng.
-         Bản thân màu và phần kiểm tương phản: tools/sekki_colors.py. */}}
+    {{- /* Màu nhấn đi theo tiết khí, nên bảng màu ở trên chưa nói hết. Bảng này
+         dựng cùng một kiểu với bảng màu ở trên (cùng class .swatches): ô màu
+         sáng/tối, tên tiết kèm khoảng ngày, rồi tên màu và lý do chọn màu đó.
+
+         Khoảng ngày tính từ mốc của tiết này tới trước mốc của tiết kế tiếp.
+         Bảng trong data/sekki.toml xếp theo thứ tự trong năm, nên "tiết kế
+         tiếp" là mục sau, và mục cuối (冬至) thì quay vòng về mục đầu (小寒).
+         Mốc nào cũng rơi vào ngày 4 trở đi nên trừ một ngày không bao giờ lùi
+         sang tháng trước.
+
+         Hàng của tiết hôm nay được tô nền và có chữ "hôm nay" ở cuối tên. */}}
+    {{- $terms := hugo.Data.sekki.sekki }}
+    {{- $today := partial "sekki-of.html" now }}
     <div class="prose">
       <h2 id="mau-tiet-khi">{{ i18n "blog_sekki" }}</h2>
       <p>{{ i18n "blog_sekki_text" }}</p>
     </div>
-    {{- $today := partial "sekki-of.html" now }}
-    <ul class="year-strip">
-      {{- range hugo.Data.sekki.sekki }}
-        {{- $name := cond (eq $lang "ja") .ja .vi }}
-        <li{{ if eq .order $today.order }} aria-current="true"{{ end }}>
-          <span style="{{ printf "background:%s;background:light-dark(%s,%s)" .accent_light .accent_light .accent_dark | safeCSS }}"></span>
-          <span class="visually-hidden">{{ $name }}</span>
+    <ul class="swatches swatches--sekki">
+      {{- range $i, $t := $terms }}
+        {{- $next := index $terms (mod (add $i 1) (len $terms)) }}
+        {{- $now := eq $t.order $today.order }}
+        <li{{ if $now }} class="is-now"{{ end }}>
+          <span class="swatch-chips" aria-hidden="true">
+            <span style="{{ printf "background:%s" $t.accent_light | safeCSS }}"></span>
+            <span style="{{ printf "background:%s" $t.accent_dark | safeCSS }}"></span>
+          </span>
+          <span class="swatch-name">
+            {{- if eq $lang "ja" }}
+              <span>{{ $t.ja }}</span> <span class="swatch-romaji">{{ $t.kana }}</span>
+            {{- else }}
+              <span>{{ $t.vi }}</span>
+            {{- end }}
+            <span class="swatch-when">
+              {{- i18n "sekki_range" (dict "D1" $t.day "M1" $t.month "D2" (sub $next.day 1) "M2" $next.month) -}}
+              {{ if $now }} · <span class="swatch-now">{{ i18n "blog_sekki_today" }}</span>{{ end }}
+            </span>
+          </span>
+          <span class="swatch-role">
+            {{- /* Tiếng Nhật dùng dấu chấm 。 và không có dấu cách sau nó;
+                 tiếng Việt thì dấu chấm Latinh và có dấu cách */ -}}
+            <b>{{ cond (eq $lang "ja") (printf "%s。" $t.color_ja) (printf "%s." $t.color_vi) }}</b>
+            {{- if ne $lang "ja" }} {{ end }}{{ cond (eq $lang "ja") $t.why_ja $t.why_vi }}
+          </span>
         </li>
       {{- end }}
     </ul>
-    <p class="year-strip-now">{{ i18n "sekki_label" (dict "Name" (cond (eq $lang "ja") $today.ja $today.vi)) }}</p>
 
     <div class="prose">
       <h2 id="kamon">{{ i18n "blog_marks" }}</h2>

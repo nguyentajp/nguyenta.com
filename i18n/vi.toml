@@ -193,7 +193,11 @@ other = "Cả bảng màu lấy từ một rừng tre nhìn qua khung cửa dán
 [blog_sekki]
 other = "Màu của tiết khí"
 [blog_sekki_text]
-other = "Màu nhấn của site không cố định: nó đi theo hai mươi bốn tiết khí của lịch Nhật. Mỗi nửa tháng site đổi sang màu của tiết mới — hoa mai, lá non, lá đỏ, tuyết — rồi sau một năm quay về chỗ cũ. Dải dưới đây là cả vòng một năm; ô có viền là tiết của hôm nay."
+other = "Màu nhấn của site không cố định: nó đi theo hai mươi bốn tiết khí, cách người Nhật chia một năm thành hai mươi bốn chặng. Mỗi chặng chừng nửa tháng và có một dấu hiệu riêng của trời đất — mai nở, lá non, sương xuống, tuyết dày — màu nhấn lấy từ chính dấu hiệu đó, rồi sau một năm quay về chỗ cũ. Ô bên trái là màu cho giao diện sáng và giao diện tối."
+[sekki_range]
+other = "khoảng {{ .D1 }}/{{ .M1 }} – {{ .D2 }}/{{ .M2 }}"
+[blog_sekki_today]
+other = "hôm nay"
 [blog_marks]
 other = "Gia huy và con dấu"
 [blog_kamon_text]
