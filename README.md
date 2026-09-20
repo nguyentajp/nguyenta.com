@@ -757,6 +757,10 @@ chuột trên web.
 
 #### Giao diện — chốt ngày 20/9/2026
 
+Đây là bản gốc của các quyết định về giao diện. Trước đây chúng chỉ nằm trong
+khung chat nên không tra lại được, và Claude đã làm lệch một lần (七十二候).
+Có quyết định mới thì ghi vào đây.
+
 - **Trang tiếng Việt càng ít chữ Nhật và chữ Hán càng tốt.** Chỉ còn link
   chuyển ngôn ngữ (日本語). Đừng thêm chữ Hán trang trí vào trang tiếng Việt.
 - **Bài viết nổi bật đứng đầu cả trang chủ lẫn trang Bài viết.** Không có
