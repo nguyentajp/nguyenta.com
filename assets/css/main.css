@@ -39,7 +39,6 @@
   --icho: #6b4f0d;       /* 銀杏 — vàng lá bạch quả, chỉ khi tương tác */
   --take: #3f6a47;       /* 竹 — xanh thân tre: vòng tre của kamon, tên tiết khí bấm được */
   --ginnan: #a67c14;     /* vàng bạch quả tươi hơn 銀杏, chỉ làm hình (hình minh hoạ) */
-  --karetake: #9c8352;   /* 枯竹 — tre khô: vòng tre của kamon */
   --tokiwa: #2e5538;     /* 常磐 — xanh đậm của lá: ba lá của kamon */
   --shu: #a8402e;        /* 朱 — mực dấu, chỉ con dấu 元 */
 
@@ -52,7 +51,9 @@
   --ink: light-dark(var(--sumi), #daddd3);
   --muted: light-dark(var(--chikuei), #9ca296);
   --band: light-dark(var(--byakuroku), #222720);
-  /* Nền trong các khung có nhãn đề (sidebar, Mục lục, Từ vựng, Ủng hộ). Sáng
+  /* Nền của mọi khung có viền đứng trên mặt trang: khung có nhãn đề (sidebar,
+     Mục lục trong bài, Từ vựng, Ủng hộ), thẻ danh mục, ô danh mục ở trang Mục
+     lục, khung gia huy và con dấu ở trang Về blog này. Sáng
      hơn nền trang đúng một nấc, đọc ra như một tờ giấy đặt lên trang chứ
      không phải một ô màu. Giao diện tối không có "trắng" nên làm ngược lại:
      sáng hơn nền tối một nấc. */
@@ -64,7 +65,10 @@
   --bamboo: light-dark(var(--take), #8fbf95);
   /* Vàng bạch quả tươi, chỉ làm hình (điểm màu trong hình minh hoạ) */
   --gold: light-dark(var(--ginnan), #d9b24a);
-  --kamon-ring: light-dark(var(--karetake), #c8b07a);
+  /* Vòng tre của kamon mang màu mực, như con dấu đóng lên giấy. Không phải
+     đen tuyệt đối: 墨 có chút xanh rêu, nên nét đọc ra như mực mài chứ không
+     như mực in. Giao diện tối lật lại: giấy tối thì nét mực sáng. */
+  --kamon-ring: light-dark(var(--sumi), #daddd3);
   --kamon-leaf: light-dark(var(--tokiwa), #8fbf95);
   /* Đường gạch chân mang màu nhấn: pha nhạt với nền, vì màu nhấn đã được làm
      đậm cho đủ tương phản khi là chữ, để làm gạch chân thì gần như màu mực */
@@ -130,7 +134,7 @@
     --accent: var(--icho);
     --bamboo: var(--take);
     --gold: var(--ginnan);
-    --kamon-ring: var(--karetake);
+    --kamon-ring: var(--sumi);
     --kamon-leaf: var(--tokiwa);
     --seal: var(--shu);
   }
@@ -2648,6 +2652,7 @@ html:has(.lightbox[open]) {
   padding: var(--space-3);
   border: 1px solid var(--rule);
   border-radius: var(--radius);
+  background: var(--card);
   text-align: center;
   text-decoration: none;
 }
@@ -2823,6 +2828,7 @@ html:has(.lightbox[open]) {
   padding: var(--space-4);
   border: 1px solid var(--field);
   border-radius: var(--radius);
+  background: var(--card);
 }
 
 .category-card:hover {
@@ -3074,6 +3080,7 @@ html:has(.lightbox[open]) {
   padding: var(--space-5) var(--space-4);
   border: 1px solid var(--rule);
   border-radius: var(--radius);
+  background: var(--card);
   text-align: center;
 }
 
