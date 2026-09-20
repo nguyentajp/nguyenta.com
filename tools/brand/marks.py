@@ -35,20 +35,44 @@ def polar(angle_deg: float, radius: float) -> tuple[float, float]:
 
 
 # ── Vòng tre 竹輪 ─────────────────────────────────────────────────────────────
-def bamboo_ring(r_out: float = 49.0, r_in: float = 44.2, nodes=(-30, 90, 210), gap: float = 2.6) -> str:
-    """Ba đoạn thân tre, cách nhau bằng khe đốt (節)."""
-    half = gap / 2
+def arc_band(start: float, end: float, r_out: float, r_in: float) -> str:
+    """Một dải cung tròn, từ góc start tới góc end, dày r_out − r_in."""
+    big = 1 if end - start > 180 else 0
+    return (
+        f"M{p(*polar(start, r_out))}"
+        f"A{r_out} {r_out} 0 {big} 1 {p(*polar(end, r_out))}"
+        f"L{p(*polar(end, r_in))}"
+        f"A{r_in} {r_in} 0 {big} 0 {p(*polar(start, r_in))}Z"
+    )
+
+
+def bamboo_ring(nodes=(-30, 90, 210), r_out: float = 47.2, r_in: float = 42.8,
+                node_span: float = 3.0, node_out: float = 49.5, node_in: float = 40.6,
+                slit: float = 0.9, plain_gap: float | None = None) -> str:
+    """Vòng tre ba đốt: ba đoạn thân, mỗi chỗ nối là một vành đốt phình ra.
+
+    Vành đốt (節) chính là thứ làm người xem nhận ra đây là tre. Bản đầu chỉ có
+    ba cung tròn cách nhau bằng khe trống; hồi đó vòng mang màu tre khô nên màu
+    gánh phần "tre". Khi vòng đổi sang màu mực thì chỉ còn lại một vòng tròn
+    đứt nét, nên phải đưa cái đốt vào hình.
+
+    node_out là chỗ rộng nhất nên nó quyết định cỡ vòng: phải ≤ 49,5 vì khung
+    là 100×100, tâm (50,50), chừa nửa đơn vị cho nét khỏi chạm mép.
+
+    plain_gap: bỏ vành đốt, quay lại ba cung cách nhau bằng khe. Dùng cho
+    favicon, vì ở cỡ 16px vành đốt mảnh hơn một pixel, vẽ ra chỉ thành vệt bẩn.
+    """
+    ns = sorted(nodes)
     parts = []
-    for index, node in enumerate(sorted(nodes)):
-        start = node + half
-        end = (sorted(nodes)[index + 1] if index + 1 < len(nodes) else sorted(nodes)[0] + 360) - half
-        big = 1 if end - start > 180 else 0
-        parts.append(
-            f"M{p(*polar(start, r_out))}"
-            f"A{r_out} {r_out} 0 {big} 1 {p(*polar(end, r_out))}"
-            f"L{p(*polar(end, r_in))}"
-            f"A{r_in} {r_in} 0 {big} 0 {p(*polar(start, r_in))}Z"
-        )
+    for index, node in enumerate(ns):
+        nxt = ns[index + 1] if index + 1 < len(ns) else ns[0] + 360
+        if plain_gap is not None:
+            half = plain_gap / 2
+            parts.append(arc_band(node + half, nxt - half, r_out, r_in))
+            continue
+        # vành đốt, rồi đoạn thân tới sát vành đốt kế tiếp
+        parts.append(arc_band(node - node_span, node + node_span, node_out, node_in))
+        parts.append(arc_band(node + node_span + slit, nxt - node_span - slit, r_out, r_in))
     return "".join(parts)
 
 
@@ -112,13 +136,13 @@ def ginkgo_leaf(angle: float, apex: float = 7.0, radius: float = 34.6, spread: f
     return path
 
 
-def kamon(veins: bool = True, gap: float = 2.6, animated: bool = False) -> str:
+def kamon(veins: bool = True, plain_gap: float | None = None, animated: bool = False) -> str:
     """Kamon dạng nhiều path: vòng tre và ba lá tách riêng.
 
     Bản animated dùng cho trang chủ: vòng tre hiện dần nhờ mask là một đường
     tròn nét liền có stroke-dasharray, ba lá lớn dần từ tâm ra.
     """
-    ring = f'<path class="ring" fill-rule="evenodd" d="{bamboo_ring(gap=gap)}"/>'
+    ring = f'<path class="ring" fill-rule="evenodd" d="{bamboo_ring(plain_gap=plain_gap)}"/>'
     leaves = "".join(
         f'<path class="leaf" style="--delay:{0.75 + index * 0.16:.2f}s" fill-rule="evenodd" '
         f'd="{ginkgo_leaf(angle, veins=veins)}"/>'
@@ -129,7 +153,7 @@ def kamon(veins: bool = True, gap: float = 2.6, animated: bool = False) -> str:
 
     mask = (
         '<defs><mask id="gen-ring-draw" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">'
-        '<circle class="ring-mask" cx="50" cy="50" r="46.6" fill="none" stroke="#fff" stroke-width="10" '
+        '<circle class="ring-mask" cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="11" '
         'pathLength="1" transform="rotate(-90 50 50)"/></mask></defs>'
     )
     return svg(mask + f'<g mask="url(#gen-ring-draw)">{ring}</g>' + leaves, "Kamon của Gen", "kamon-draw")
@@ -254,13 +278,13 @@ KAMON_COLORS = {"light": ("#22251f", "#2e5538"), "dark": ("#daddd3", "#8fbf95")}
 
 
 def favicon() -> str:
-    """Cỡ favicon: gân lá và khe đốt nhỏ hơn một pixel nên bỏ đi cho nét sạch."""
+    """Cỡ favicon: gân lá và vành đốt nhỏ hơn một pixel nên bỏ đi cho nét sạch."""
     (ring_l, leaf_l), (ring_d, leaf_d) = KAMON_COLORS["light"], KAMON_COLORS["dark"]
     style = (
         f"<style>.ring{{fill:{ring_l}}}.leaf{{fill:{leaf_l}}}"
         f"@media (prefers-color-scheme:dark){{.ring{{fill:{ring_d}}}.leaf{{fill:{leaf_d}}}}}</style>"
     )
-    return kamon(veins=False, gap=1.4).replace("<g ", style + "<g ", 1)
+    return kamon(veins=False, plain_gap=1.4).replace("<g ", style + "<g ", 1)
 
 
 def main() -> None:

@@ -771,6 +771,10 @@ chuột trên web.
 - **Không làm 七十二候.** Claude từng tự đề xuất rồi ghi nhầm là đã duyệt;
   đã gỡ ở commit `402a743`. Đừng đề xuất lại.
 - **Màu nhấn đổi theo 24 tiết khí thì giữ** — cái này có trong "Yêu cầu.md".
+- **Vòng tre của kamon có ba vành đốt (節)**, không còn là ba cung tròn cách
+  nhau bằng khe trống. Hồi vòng mang màu tre khô thì màu gánh phần "tre"; đổi
+  sang màu mực thì hình phải tự nói được, nên đưa cái đốt vào. Favicon 16–32px
+  vẫn dùng bản ba cung trơn vì ở cỡ đó vành đốt mảnh hơn một pixel.
 - **Vòng tre của kamon mang màu mực 墨**, lá vẫn xanh đậm 常磐. Anh chọn mực
   trong bốn phương án đã đưa (vàng, mực, tre khô, xanh nhạt); trước đó là tre
   khô 枯竹 #9c8352. Đổi màu thì sửa `--kamon-ring` trong main.css VÀ

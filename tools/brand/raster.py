@@ -154,13 +154,15 @@ def paint_kamon(svg: str, size: int, supersample: int = 4) -> Image.Image:
 def apple_touch_icon() -> None:
     size, pad = 180, 22
     icon = Image.new("RGBA", (size, size), SHOJI)
-    kamon = paint_kamon(marks.kamon(veins=False, gap=1.8), size - 2 * pad)
+    # 180px nên vành đốt vẫn đọc được: dùng bản đầy đủ, chỉ bỏ gân lá
+    kamon = paint_kamon(marks.kamon(veins=False), size - 2 * pad)
     icon.alpha_composite(kamon, (pad, pad))
     icon.convert("RGB").save(ROOT / "static/apple-touch-icon.png", optimize=True)
 
 
 def favicon_ico() -> None:
-    svg = marks.kamon(veins=False, gap=1.4)
+    # 16 và 32px: vành đốt mảnh hơn một pixel nên bỏ, giống favicon.svg
+    svg = marks.kamon(veins=False, plain_gap=1.4)
     frames = [paint_kamon(svg, s, supersample=8) for s in (32, 16)]
     frames[0].save(ROOT / "static/favicon.ico", sizes=[(32, 32), (16, 16)], append_images=frames[1:])
 
