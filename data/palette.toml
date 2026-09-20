@@ -43,6 +43,15 @@
   ja_role = "唯一の淡い色。枠の題簽や、控えめな帯に。"
 
 [[colors]]
+  ja = "奉書"
+  romaji = "Hōsho"
+  vi_name = "Giấy trắng"
+  light = "#fcfdfa"
+  dark = "#1d201b"
+  vi = "Nền các khung có nhãn đề. Sáng hơn nền trang một nấc, như tờ giấy đặt lên trang."
+  ja_role = "題簽のある枠の地。地の色より一段明るく、紙を一枚重ねたように。"
+
+[[colors]]
   ja = "竹"
   romaji = "Take"
   vi_name = "Tre"

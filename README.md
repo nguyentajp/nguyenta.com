@@ -771,6 +771,10 @@ chuột trên web.
 - **Không làm 七十二候.** Claude từng tự đề xuất rồi ghi nhầm là đã duyệt;
   đã gỡ ở commit `402a743`. Đừng đề xuất lại.
 - **Màu nhấn đổi theo 24 tiết khí thì giữ** — cái này có trong "Yêu cầu.md".
+- **Khung có nhãn đề (sidebar, Mục lục, Từ vựng, Ủng hộ) có nền riêng**, màu
+  奉書 `--card`: sáng hơn nền trang một nấc chứ KHÔNG trắng tinh. Anh đã xem
+  ba phương án (trong suốt / trắng tinh / trắng giấy) và chọn trắng giấy, vì
+  trắng tinh sẽ là thứ sáng nhất site, sáng hơn cả màu giấy 障子.
 - **Không làm trang chủ kiểu bìa (表紙).** Đã dựng bốn mẫu ngày 20/9, từ nhẹ
   tới đậm; anh xem rồi thấy màu mè. Đầu trang hiện tại đã đủ. Đừng đề xuất lại.
 

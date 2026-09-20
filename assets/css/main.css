@@ -33,6 +33,7 @@
   --sumi: #22251f;       /* 墨 — mực, đen có chút xanh rêu */
   --chikuei: #5a6055;    /* 竹影 — bóng tre, dùng cho chữ phụ */
   --byakuroku: #dce3d6;  /* 白緑 — dải dưới mặt đất */
+  --hosho: #fcfdfa;      /* 奉書 — giấy trắng dày, tờ đặt lên trên mặt giấy dán cửa */
   --fushi: #c5cbbf;      /* 節 — đốt tre, dùng cho đường mảnh */
   --kabe: #858b7f;       /* 壁 — viền ô nhập liệu, đủ 3:1 theo WCAG 1.4.11 */
   --icho: #6b4f0d;       /* 銀杏 — vàng lá bạch quả, chỉ khi tương tác */
@@ -51,6 +52,11 @@
   --ink: light-dark(var(--sumi), #daddd3);
   --muted: light-dark(var(--chikuei), #9ca296);
   --band: light-dark(var(--byakuroku), #222720);
+  /* Nền trong các khung có nhãn đề (sidebar, Mục lục, Từ vựng, Ủng hộ). Sáng
+     hơn nền trang đúng một nấc, đọc ra như một tờ giấy đặt lên trang chứ
+     không phải một ô màu. Giao diện tối không có "trắng" nên làm ngược lại:
+     sáng hơn nền tối một nấc. */
+  --card: light-dark(var(--hosho), #1d201b);
   --rule: light-dark(var(--fushi), #363b33);
   --field: light-dark(var(--kabe), #646960);
   --accent: light-dark(var(--icho), #e3c05e);
@@ -118,6 +124,7 @@
     --ink: var(--sumi);
     --muted: var(--chikuei);
     --band: var(--byakuroku);
+    --card: var(--hosho);
     --rule: var(--fushi);
     --field: var(--kabe);
     --accent: var(--icho);
@@ -1792,6 +1799,7 @@ main {
   padding: var(--space-5) var(--space-4) var(--space-4);
   border: 1px solid var(--ink);
   border-radius: var(--radius);
+  background: var(--card);
 }
 
 .widget-title {
