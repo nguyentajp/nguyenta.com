@@ -656,9 +656,55 @@ main {
   outline-offset: -3px;
 }
 
+/* Ngôn ngữ chưa có bản dịch: gạch ngang bằng màu mực cho thật rõ. Trước đây
+   gạch bằng --rule nên gần như không nhìn thấy. */
 .lang-options [aria-disabled] {
-  text-decoration: line-through 1px var(--rule);
+  position: relative;
+  text-decoration: line-through 0.09em var(--ink);
   cursor: not-allowed;
+}
+
+/* Khung nhắn "chưa có bản dịch", treo dưới nút và thẳng mép phải để không
+   tràn ra khỏi màn hình. Mặc định không dựng ra, chỉ máy có chuột mới có
+   (@media ngay dưới) — trên điện thoại chỉ còn gạch ngang, nhìn là hiểu. */
+.lang-note {
+  display: none;
+}
+
+@media (hover: hover) {
+  .lang-note {
+    position: absolute;
+    inset-block-start: calc(100% + var(--space-2));
+    inset-inline-end: 0;
+    z-index: 5;
+    display: block;
+    width: max-content;
+    max-width: 14rem;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--rule);
+    border-radius: calc(var(--radius) / 2);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    text-align: start;
+    text-decoration: none;
+    white-space: normal;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 120ms ease;
+  }
+
+  .lang-options [aria-disabled]:hover .lang-note {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: reduce) {
+  .lang-note {
+    transition: none;
+  }
 }
 
 /* Tầng 2: logo là một khối ngang, kamon bên trái, chữ Gen bên phải; tagline

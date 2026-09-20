@@ -3,8 +3,15 @@
      (Tiếng Việt | 日本語), ngôn ngữ đang đọc có nền 白緑. Không dùng lá cờ: cờ
      là quốc gia chứ không phải ngôn ngữ.
      - Trang có bản dịch: nấc kia link thẳng tới đúng trang đó ở ngôn ngữ kia.
-     - Trang chưa có bản dịch: nấc kia gạch ngang, nói rõ lý do, không đưa
-       người đọc về trang chủ. */ -}}
+     - Trang chưa có bản dịch: nấc kia gạch ngang bằng màu mực cho rõ, và khi
+       rê chuột thì hiện một khung nhỏ nói rõ lý do. Không đưa người đọc về
+       trang chủ. Khung chỉ hiện trên máy có chuột (@media hover trong main.css
+       mục 5); trên điện thoại chỉ còn gạch ngang, nhìn là hiểu.
+
+     Lời nhắn nói "bài" hay "trang" tuỳ chỗ đang đứng. Máy đọc màn hình không
+     đọc khung đó (aria-hidden) mà đọc chữ ẩn ngay sau tên ngôn ngữ. */ -}}
+{{- $isPost := and .IsPage (eq .Section "posts") -}}
+{{- $note := i18n (cond $isPost "lang_no_translation" "lang_no_translation_page") -}}
 <nav class="lang" aria-label="{{ i18n "lang_label" }}">
   {{ partial "icon.html" "globe" }}
   <span class="lang-options">
@@ -16,7 +23,11 @@
         {{- with index (where $.Translations "Lang" $l.Lang) 0 }}
           <a href="{{ .RelPermalink }}" lang="{{ $l.Lang }}" hreflang="{{ $l.Lang }}">{{ $l.Label }}</a>
         {{- else }}
-          <span lang="{{ $l.Lang }}" aria-disabled="true" title="{{ i18n "lang_no_translation" }}">{{ $l.Label }}<span class="visually-hidden"> ({{ i18n "lang_no_translation_short" }})</span></span>
+          <span lang="{{ $l.Lang }}" aria-disabled="true">
+            {{- $l.Label -}}
+            <span class="visually-hidden"> ({{ i18n "lang_no_translation_short" }})</span>
+            <span class="lang-note" aria-hidden="true">{{ $note }}</span>
+          </span>
         {{- end }}
       {{- end }}
     {{- end }}

@@ -16,6 +16,8 @@ other = "本文へ移動"
 other = "Đọc bằng tiếng Việt"
 [lang_no_translation]
 other = "この記事のベトナム語版はまだありません"
+[lang_no_translation_page]
+other = "このページのベトナム語版はまだありません"
 [lang_no_translation_short]
 other = "未訳"
 [lang_label]
