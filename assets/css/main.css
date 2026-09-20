@@ -1391,51 +1391,80 @@ a.pager-step:hover {
   color: var(--accent);
 }
 
-/* Nút chọn furigana: cùng kiểu với nút chuyển ngôn ngữ ở đầu trang. Chữ nhỏ,
-   ba lựa chọn ngăn bằng đường mảnh, lựa chọn đang dùng đậm màu và gạch chân. */
+/* Khung chọn furigana: một khung nhỏ có viền, đứng giữa dưới dòng thông tin.
+   Bên trong là công tắc ba nấc, cùng kiểu với nút chuyển ngôn ngữ ở đầu
+   trang, nấc đang dùng có nền 白緑. Trước đây chỉ là ba chữ trần nên lẫn vào
+   dòng ngày đăng, người đọc không nhận ra là bấm được. */
 .furigana-switch {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: baseline;
-  margin-block-start: var(--space-3);
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  width: fit-content;
+  max-width: 100%;
+  margin: var(--space-4) auto 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--rule);
+  border-radius: calc(var(--radius) / 2);
+  background: var(--card);
   font-size: 0.875rem;
   color: var(--muted);
 }
 
-/* Không có JS thì không chọn được: furigana luôn hiện, nút ẩn đi */
+/* Không có JS thì không chọn được: furigana luôn hiện, khung ẩn đi */
 :root:not([data-furigana]) .furigana-switch {
   display: none;
 }
 
 .furigana-switch-label {
-  margin-inline-end: var(--space-2);
+  letter-spacing: 0.02em;
 }
 
-.furigana-switch button {
-  padding: var(--space-1) var(--space-3);
-  border: 0;
-  border-inline-start: 1px solid var(--rule);
+.furigana-options {
+  display: flex;
+}
+
+.furigana-options button {
+  display: flex;
+  align-items: center;
+  min-height: 1.875rem;
+  padding-inline: 0.7rem;
+  border: 1px solid var(--field);
   background: none;
   color: inherit;
   font: inherit;
+  white-space: nowrap;
   cursor: pointer;
 }
 
-.furigana-switch-label + button {
+.furigana-options button:first-child {
+  border-start-start-radius: calc(var(--radius) / 2);
+  border-end-start-radius: calc(var(--radius) / 2);
+}
+
+.furigana-options button:last-child {
+  border-start-end-radius: calc(var(--radius) / 2);
+  border-end-end-radius: calc(var(--radius) / 2);
+}
+
+.furigana-options button + button {
   border-inline-start: 0;
 }
 
-.furigana-switch button:hover {
+.furigana-options button:hover {
   color: var(--accent);
+}
+
+.furigana-options button:focus-visible {
+  outline-offset: -3px;
 }
 
 :root[data-furigana="show"] [data-furigana-mode="show"],
 :root[data-furigana="tap"] [data-furigana-mode="tap"],
 :root[data-furigana="off"] [data-furigana-mode="off"] {
+  background: var(--band);
   color: var(--ink);
-  text-decoration: underline 1px var(--ink);
-  text-underline-offset: 0.3em;
 }
 
 /* Tên tiết khí dưới ngày đăng: màu 竹 và gạch chân chấm, khác hẳn chữ phụ

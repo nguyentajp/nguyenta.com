@@ -178,9 +178,14 @@ nghĩa sau dấu gạch đứng, từ viết furigana được như trên.
 {{< /tu-vung >}}
 ```
 
-Bài nào có furigana thì dưới dòng ngày đăng tự có nút chọn cho người đọc:
-**Hiện**, **Chạm để xem** (ẩn cách đọc, chạm hoặc rê chuột vào chữ mới hiện, để
-tự kiểm tra) và **Tắt**. Trình duyệt nhớ lựa chọn cho các bài sau.
+Bài nào có furigana thì dưới dòng ngày đăng tự có một khung nhỏ để người đọc
+chọn: **Hiện**, **Chạm để xem** (ẩn cách đọc, chạm hoặc rê chuột vào chữ mới
+hiện, để tự kiểm tra) và **Tắt**. Trình duyệt nhớ lựa chọn cho các bài sau.
+
+Mọi bài tiếng Nhật đều phải có furigana, không riêng bài học tiếng. Lệnh
+`/dich` đã mang sẵn quy tắc này: gắn cách đọc ở lần xuất hiện đầu tiên của mỗi
+từ trong bài, không gắn lại ở các lần sau, và không gắn trong tiêu đề hay
+`description` (mấy chỗ đó không đi qua bộ đổi nên ngoặc sẽ hiện nguyên xi).
 
 ### 2.6 Kiểu trình bày
 

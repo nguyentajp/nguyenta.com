@@ -1,11 +1,15 @@
 {{- /* Nút chọn furigana dưới dòng thông tin của bài, chỉ có ở bài có furigana.
-     Ba chế độ: hiện, chạm để xem, tắt. Chế độ đang dùng nằm ở
+     Là một khung nhỏ có viền chứ không phải mấy chữ rời: trước đây ba chữ
+     trần nằm lẫn với dòng ngày đăng nên chìm mất, người đọc không biết là bấm
+     được. Ba chế độ: hiện, chạm để xem, tắt. Chế độ đang dùng nằm ở
      <html data-furigana>, do đoạn script nhỏ trong head.html đặt sẵn trước khi
      vẽ trang, nên nút và chữ không nhảy khi tải. Không có JS thì furigana luôn
-     hiện và nút này ẩn đi. */ -}}
+     hiện và khung này ẩn đi. */ -}}
 <div class="furigana-switch" role="group" aria-label="{{ i18n "furigana_label" }}" data-pagefind-ignore>
   <span class="furigana-switch-label" aria-hidden="true">{{ i18n "furigana_label" }}</span>
-  {{- range slice "show" "tap" "off" }}
-    <button type="button" data-furigana-mode="{{ . }}">{{ i18n (printf "furigana_%s" .) }}</button>
-  {{- end }}
+  <span class="furigana-options">
+    {{- range slice "show" "tap" "off" }}
+      <button type="button" data-furigana-mode="{{ . }}">{{ i18n (printf "furigana_%s" .) }}</button>
+    {{- end }}
+  </span>
 </div>

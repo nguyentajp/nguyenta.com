@@ -32,6 +32,11 @@ riêng, địa danh, khái niệm), **thêm vào GLOSSARY.md trước**, rồi m
    - `tags`: dịch theo GLOSSARY.md.
    - Thân bài: dịch theo đúng STYLE.md mục 3.
    - Giữ nguyên mọi shortcode, tên file ảnh, số liệu, khối code.
+   - **Furigana: bài tiếng Nhật nào cũng phải có.** Viết cách đọc trong ngoặc
+     ngay sau chữ Hán theo README mục 2.5, ví dụ `夕立（ゆうだち）`. Gắn ở lần
+     xuất hiện đầu tiên của mỗi từ trong bài, không gắn lại ở các lần sau.
+     Không gắn cho tiêu đề, `description` và `tags`: mấy chỗ đó không đi qua
+     bộ đổi furigana nên ngoặc sẽ hiện ra nguyên xi.
    - `draft: true` giữ nguyên. Chỉ chủ blog mới đổi thành `false`.
 
 3. Chỗ nào không chắc thì để ghi chú ngay trong file:
