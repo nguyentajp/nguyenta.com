@@ -755,6 +755,23 @@ chuột trên web.
 - **Worker thay cho Cloudflare Pages**: Cloudflare đã gộp Pages vào Workers;
   wrangler mới tạo project Pages kiểu cũ không được.
 
+#### Giao diện — chốt ngày 20/9/2026
+
+- **Trang tiếng Việt càng ít chữ Nhật và chữ Hán càng tốt.** Chỉ còn link
+  chuyển ngôn ngữ (日本語). Đừng thêm chữ Hán trang trí vào trang tiếng Việt.
+- **Bài viết nổi bật đứng đầu cả trang chủ lẫn trang Bài viết.** Không có
+  nhãn "Spotlight", không chạy vòng, mỗi lúc đúng một bài.
+- **Gọi là "Bài viết nổi bật"**, không gọi là Spotlight — kể cả nhãn trong
+  CMS. Tên trường trong file bài vẫn là `spotlight`.
+- **Mục "Gần đây" ở trang chủ giữ nguyên lưới ảnh to**, không đổi sang kiểu
+  ảnh nhỏ ba dòng như trang Bài viết.
+- **Trang Ảnh đã xoá hẳn**, không đặt link ở chân trang.
+- **Giải thích 24 tiết khí chỉ hiện khi rê chuột vào tên tiết khí.** Không
+  làm trang riêng để liệt kê.
+- **Không làm 七十二候.** Claude từng tự đề xuất rồi ghi nhầm là đã duyệt;
+  đã gỡ ở commit `402a743`. Đừng đề xuất lại.
+- **Màu nhấn đổi theo 24 tiết khí thì giữ** — cái này có trong "Yêu cầu.md".
+
 ### 11.8 Đang làm dở
 
 - [x] Workflow tự đẩy bản xem trước mỗi lần push (cần secret `CLOUDFLARE_API_TOKEN`).
