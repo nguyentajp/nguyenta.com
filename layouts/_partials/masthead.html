@@ -103,20 +103,22 @@
     <nav class="menu-panel" aria-label="{{ i18n "nav_menu" }}">
       <ul>
         {{- range .Site.Menus.main }}
+          {{- /* aria-current: đúng trang đang mở thì đánh dấu, người đọc mở ngăn
+               ra là biết mình đang ở đâu */}}
           <li>
-            <a href="{{ .URL }}">{{ .Name }}</a>
+            <a href="{{ .URL }}"{{ if eq .URL $.RelPermalink }} aria-current="page"{{ end }}>{{ .Name }}</a>
             {{- $isCategories := and $categories (eq .URL $categories.RelPermalink) }}
             {{- if or .HasChildren $isCategories }}
               <ul class="menu-sub{{ if $isCategories }} menu-sub--grid{{ end }}">
-                {{- range .Children }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
-                {{- if $isCategories }}{{ range $categories.Pages.ByWeight }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>{{ end }}{{ end }}
+                {{- range .Children }}<li><a href="{{ .URL }}"{{ if eq .URL $.RelPermalink }} aria-current="page"{{ end }}>{{ .Name }}</a></li>{{ end }}
+                {{- if $isCategories }}{{ range $categories.Pages.ByWeight }}<li><a href="{{ .RelPermalink }}"{{ if eq .RelPermalink $.RelPermalink }} aria-current="page"{{ end }}>{{ .LinkTitle }}</a></li>{{ end }}{{ end }}
               </ul>
             {{- end }}
           </li>
         {{- end }}
       </ul>
       <ul class="menu-under">
-        {{- range .Site.Menus.under }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
+        {{- range .Site.Menus.under }}<li><a href="{{ .URL }}"{{ if eq .URL $.RelPermalink }} aria-current="page"{{ end }}>{{ .Name }}</a></li>{{ end }}
       </ul>
     </nav>
   </div>

@@ -1146,6 +1146,38 @@ main {
   padding-block: var(--space-2);
 }
 
+/* Mục đang mở trong ngăn Menu: gạch chân như hàng menu; ô danh mục đang mở
+   thì nền 白緑 viền mực */
+.menu-panel a[aria-current="page"] {
+  text-decoration: underline 1px var(--ink);
+  text-underline-offset: 0.35em;
+}
+
+.menu-sub--grid a[aria-current="page"] {
+  border-color: var(--ink);
+  background: var(--band);
+  text-decoration: none;
+}
+
+/* Máy cảm ứng không có chuột (iPad, điện thoại xoay ngang, tức là rộng từ
+   768px mà vẫn dùng ngón tay): menu con kiểu rê chuột không dùng được. iOS
+   bắt chạm hai lần mới vào trang và để menu con treo lơ lửng; Android chạm là
+   đi luôn, menu con chỉ chớp lên. Nên ở đây bỏ menu con và mũi tên, bấm tên
+   mục là tới thẳng trang đó; bản đồ đầy đủ (danh mục, trang con) nằm trong
+   ngăn Menu, mở bằng nút ☰ hiện ra ở đầu hàng công cụ. Điện thoại dọc
+   (dưới 768px) đã như vậy sẵn (khối cuối mục 10). */
+@media (hover: none) {
+  .nav-sub,
+  .nav-item > a .icon {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: grid;
+    margin-inline-start: -0.625rem;
+  }
+}
+
 /* ── 5b. Thanh tiêu đề dính (điện thoại) ──────────────────────────────────── */
 /* _partials/appbar.html, site.js mục 11. Chỉ có trên màn hình hẹp. Nền là
    giấy 障子 hơi trong, làm mờ chữ chạy bên dưới như thanh điều hướng của iOS
