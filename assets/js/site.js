@@ -196,9 +196,11 @@
 // Mặc định theo cài đặt của máy. Bấm nút thì sang bên kia; nếu bên đó trùng
 // với cài đặt của máy thì xoá lựa chọn đã lưu, để site lại tự theo máy (người
 // đọc đổi máy sang tối lúc đêm thì site cũng tối theo).
+// Nút có thể có nhiều nơi (đầu trang, ngăn Menu, khung 🌐 trên thanh dính):
+// mọi nút cùng đọc một trạng thái và cùng đổi nhãn.
 (() => {
-  const button = document.querySelector(".theme-toggle");
-  if (!button) return;
+  const buttons = [...document.querySelectorAll(".theme-toggle")];
+  if (buttons.length === 0) return;
 
   const root = document.documentElement;
   const KEY = "gen-theme";
@@ -212,16 +214,18 @@
     const chosen = root.dataset.theme;
     const scheme = chosen || systemScheme();
     root.dataset.scheme = scheme;
-    const label = scheme === "dark" ? button.dataset.labelLight : button.dataset.labelDark;
-    button.setAttribute("aria-label", label);
-    button.title = label;
+    buttons.forEach((button) => {
+      const label = scheme === "dark" ? button.dataset.labelLight : button.dataset.labelDark;
+      button.setAttribute("aria-label", label);
+      button.title = label;
+    });
     metas.forEach((meta) => {
       if (!chosen) meta.media = `(prefers-color-scheme: ${meta.dataset.scheme})`;
       else meta.media = meta.dataset.scheme === chosen ? "all" : "not all";
     });
   };
 
-  button.addEventListener("click", () => {
+  const toggle = () => {
     const next = root.dataset.scheme === "dark" ? "light" : "dark";
     const followSystem = next === systemScheme();
     // Tạm tắt hiệu ứng đổi màu khi rê chuột, để cả trang đổi màu cùng lúc thay
@@ -237,7 +241,8 @@
       // Không lưu được (cửa sổ riêng tư): giao diện vẫn đổi trong trang này.
     }
     render();
-  });
+  };
+  buttons.forEach((button) => button.addEventListener("click", toggle));
 
   system.addEventListener("change", render);
   render();

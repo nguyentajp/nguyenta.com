@@ -1154,17 +1154,60 @@ main {
   display: block;
 }
 
-/* Mục đang mở trong ngăn Menu: gạch chân như hàng menu; ô danh mục đang mở
-   thì nền 白緑 viền mực */
+/* Chỗ đang đứng trong ngăn Menu, không gạch chân mà theo lối thanh bên của
+   iPad và macOS: mục chính của khu đang đọc đổi sang màu nhấn; đúng trang
+   đang mở thì thêm một vạch màu nhấn sát mép trái ngăn. Ô danh mục đang mở
+   tô đặc màu nhấn. Màu nhấn đổi theo tiết khí và đã được kiểm đủ tương phản
+   với nền giấy (tools/sekki_colors.py); tương phản là đối xứng, nên chữ màu
+   giấy trên ô màu nhấn cũng rõ y như vậy. */
+.menu-panel > ul:first-child > li.is-current > a,
 .menu-panel a[aria-current="page"] {
-  text-decoration: underline 1px var(--ink);
-  text-underline-offset: 0.35em;
+  color: var(--accent);
+}
+
+.menu-panel > ul:first-child > li > a,
+.menu-sub:not(.menu-sub--grid) a {
+  position: relative;
+}
+
+.menu-panel > ul:first-child > li > a[aria-current="page"]::before,
+.menu-sub:not(.menu-sub--grid) a[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  inset-block: 0.2em;
+  inset-inline-start: calc(-1 * var(--space-4));
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--accent);
+}
+
+/* Mục con nằm sau đường dọc: vạch đè lên đúng đường đó */
+.menu-sub:not(.menu-sub--grid) a[aria-current="page"]::before {
+  inset-inline-start: calc(-1 * var(--space-4) - 1px);
+  width: 2px;
+  border-radius: 0;
 }
 
 .menu-sub--grid a[aria-current="page"] {
-  border-color: var(--ink);
-  background: var(--band);
-  text-decoration: none;
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* Hàng đầu ngăn: công tắc ngôn ngữ bên trái, nút sáng tối bên phải. Khung
+   🌐 trên thanh dính cũng xếp như vậy. */
+.menu-lang,
+.appbar-lang {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.menu-lang .theme-toggle,
+.appbar-lang .theme-toggle {
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 /* Máy cảm ứng không có chuột (iPad, điện thoại xoay ngang, tức là rộng từ
