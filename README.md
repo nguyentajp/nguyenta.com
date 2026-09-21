@@ -870,9 +870,11 @@ Mọi thứ về **một trục giữa** như đầu trang (bìa sổ).
   CSS, JS, ảnh có mã băm trên máy; Speculation Rules dựng sẵn trang khi chạm
   vào link. Trang đầu nặng hơn (~110 KB font thay vì ~45 KB), các trang sau
   gần như không tải font. Tắt khẩn cấp Service Worker: xem đầu `static/sw.js`.
-- **Chữ đọc canh đều hai lề** (thân bài, trang giới thiệu, đoạn trích, lời
-  giới thiệu ở sidebar, kết quả tìm kiếm). Tiếng Nhật giãn giữa ký tự
-  (両端揃え). Đoạn trích trong khối căn giữa thì dòng cuối nằm giữa.
+- **Mọi đoạn chữ canh đều hai lề** (thân bài, danh sách, đoạn trích, lời dẫn
+  đầu trang, mô tả màu và 24 tiết khí, chú thích trong khung, lời giới thiệu
+  ở sidebar, bản tin, kết quả tìm kiếm). Tiếng Nhật giãn giữa ký tự (両端揃え).
+  Khối căn giữa thì dòng cuối nằm giữa. Không canh đều: tiêu đề, tên bài,
+  tagline, nhãn ngày tháng.
 
 #### Sau đợt review code — chốt ngày 21/9/2026
 

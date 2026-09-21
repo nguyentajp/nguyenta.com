@@ -337,12 +337,16 @@ a:hover {
   overflow-wrap: anywhere;
 }
 
-/* Điện thoại: mục danh sách hẹp hơn đoạn văn một khoảng gạch đầu dòng, canh
-   đều ở bề ngang đó làm câu tiếng Việt giãn hở từng chữ. Để mục danh sách
-   canh trái; tiếng Nhật giãn giữa ký tự nên vẫn canh đều được. */
+/* Điện thoại: thu hẹp chỗ thụt của danh sách (gạch đầu dòng sát hơn) để dòng
+   chữ rộng thêm, canh đều hai lề không làm câu tiếng Việt giãn hở */
 @media (max-width: 35.999rem) {
-  .prose li:not(:lang(ja)) {
-    text-align: start;
+  .prose ul,
+  .prose ol {
+    padding-inline-start: 1.15em;
+  }
+
+  .prose ul > li::before {
+    margin-inline-start: -1.15em;
   }
 }
 
@@ -529,9 +533,13 @@ main {
   word-break: auto-phrase;
 }
 
+/* Lời dẫn dưới tiêu đề: dài hai dòng thì canh đều, dòng cuối nằm giữa, như
+   đoạn trích trong danh sách */
 .page-intro {
   max-width: 34rem;
   margin: var(--space-4) auto 0;
+  text-align: justify;
+  text-align-last: center;
   color: var(--muted);
   text-wrap: pretty;
 }
@@ -2645,6 +2653,8 @@ a.pager-step:hover {
 
 .footer-news > p {
   margin-block-start: var(--space-2);
+  text-align: justify;
+  text-align-last: auto;
   color: var(--muted);
   text-wrap: pretty;
 }
@@ -2722,6 +2732,8 @@ a.pager-step:hover {
    xong, màu nhấn khi chưa được (data-state do site.js mục 8 đặt). */
 .news-status {
   margin-block-start: var(--space-3);
+  text-align: justify;
+  text-align-last: center;
   padding: 0.625rem 0.875rem;
   background: var(--card);
   border-inline-start: 3px solid var(--rule);
@@ -2826,6 +2838,11 @@ a.pager-step:hover {
   .news-form {
     max-width: 24rem;
     margin-inline: auto;
+  }
+
+  /* Câu giới thiệu bản tin dài hai dòng (tiếng Nhật): canh đều, dòng cuối giữa */
+  .footer-news > p {
+    text-align-last: center;
   }
 
   .footer-col a {
@@ -3774,6 +3791,7 @@ html:has(.lightbox[open]) {
 
 .category-desc {
   margin-block-start: var(--space-1);
+  text-align: justify;
   font-size: 0.9375rem;
   color: var(--muted);
 }
@@ -4005,6 +4023,7 @@ html:has(.lightbox[open]) {
 }
 
 .swatch-role {
+  text-align: justify;
   font-size: 0.9375rem;
   line-height: 1.6;
   color: var(--muted);
@@ -4045,7 +4064,10 @@ html:has(.lightbox[open]) {
   margin: 0;
 }
 
+/* Chú thích trong khung căn giữa: canh đều hai lề, dòng cuối nằm giữa */
 .marks figcaption {
+  text-align: justify;
+  text-align-last: center;
   font-size: 0.9375rem;
   line-height: 1.7;
   color: var(--muted);
