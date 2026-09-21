@@ -842,13 +842,15 @@ Mọi thứ về **một trục giữa** như đầu trang (bìa sổ).
   đứng cạnh nhau.
 - **Ô bấm trên điện thoại cao ít nhất 40–44px.**
 - **Thanh tiêu đề dính** (kiểu thanh điều hướng iOS): tiêu đề lớn cuộn đi thì
-  thanh mảnh trượt xuống: ☰ · tên bài (chạm để lên đầu) · kính lúp. Bài có
-  furigana thêm hàng nút furigana; bài viết có vạch đã đọc tới đâu.
+  thanh mảnh trượt xuống: ☰ · tên bài (chạm để lên đầu) · 🌐 · sáng tối. 🌐
+  chỉ mở khung chọn ngôn ngữ khi bấm. Không có kính lúp (ô tìm nằm trong ☰).
+  Bài có furigana thêm hàng nút furigana; bài viết có vạch đã đọc tới đâu.
 - **Menu là ngăn kéo trượt từ trái** (off-canvas), nền tối phía sau, chạm ra
-  ngoài để đóng. Không có JS vẫn mở được (Popover API). Cuối ngăn có công tắc
-  ngôn ngữ; mục đang xem được đánh dấu.
-- **Chọn ngôn ngữ khi đang cuộn:** nút 🌐 trên thanh dính mở khung "Tiếng Việt
-  | 日本語".
+  ngoài để đóng. Không có JS vẫn mở được (Popover API). Thứ tự trong ngăn:
+  ô tìm · Giới thiệu (và trang con) · Bài viết · Danh mục · Mục lục · Liên
+  hệ · công tắc ngôn ngữ và sáng tối · Thẻ, Nagi. Liên hệ là mục chính ở đây
+  (ngoài hàng menu nó vẫn là link ở chân trang). Chỗ đang đứng: chữ màu nhấn
+  và vạch màu nhấn bên trái, không gạch chân.
 - **Máy cảm ứng không có menu con kiểu rê chuột** (iPad, điện thoại xoay
   ngang): bấm tên mục là tới trang; bản đồ đầy đủ trong ngăn ☰.
 - **Trang Danh mục trên điện thoại:** hình nhỏ cạnh tên, danh sách bài trải

@@ -100,15 +100,18 @@
         <button type="submit" aria-label="{{ i18n "sidebar_search_button" }}">{{ partial "icon.html" "search" }}</button>
       </form>
     {{- end }}
-    {{- /* Chọn ngôn ngữ và sáng tối ngay đầu ngăn, trên mục Bài viết: mở ngăn
-         từ thanh dính giữa bài vẫn đổi được ngay */}}
-    <div class="menu-lang">
-      {{ partial "lang-switch.html" . }}
-      {{ partial "theme-toggle.html" . }}
-    </div>
+    {{- /* Thứ tự trong ngăn khác hàng menu một chút, theo cách người mở ngăn
+         đi tìm: Giới thiệu (mục có trang con) lên đầu, rồi Bài viết, Danh mục,
+         Mục lục, và Liên hệ thành một mục chính ở cuối (ngoài hàng menu nó là
+         link nhỏ ở chân trang). Công tắc ngôn ngữ và sáng tối nằm cuối, trên
+         hàng Thẻ, Nagi. */}}
+    {{- $contact := site.GetPage "/contact" }}
+    {{- $drawer := slice }}
+    {{- range .Site.Menus.main }}{{ if .HasChildren }}{{ $drawer = $drawer | append . }}{{ end }}{{ end }}
+    {{- range .Site.Menus.main }}{{ if not .HasChildren }}{{ $drawer = $drawer | append . }}{{ end }}{{ end }}
     <nav class="menu-panel" aria-label="{{ i18n "nav_menu" }}">
       <ul>
-        {{- range .Site.Menus.main }}
+        {{- range $drawer }}
           {{- /* Người đọc mở ngăn ra là biết mình đang ở đâu (main.css mục 5):
                  is-current  mục chính của khu đang đọc (đang ở một bài thì là
                              Bài viết, ở một danh mục thì là Danh mục): chữ màu nhấn
@@ -129,9 +132,21 @@
             {{- end }}
           </li>
         {{- end }}
+        {{- with $contact }}
+          {{- $here := eq .RelPermalink $.RelPermalink }}
+          <li{{ if $here }} class="is-current"{{ end }}><a href="{{ .RelPermalink }}"{{ if $here }} aria-current="page"{{ end }}>{{ .LinkTitle }}</a></li>
+        {{- end }}
       </ul>
+      <div class="menu-lang">
+        {{ partial "lang-switch.html" . }}
+        {{ partial "theme-toggle.html" . }}
+      </div>
       <ul class="menu-under">
-        {{- range .Site.Menus.under }}<li><a href="{{ .URL }}"{{ if eq .URL $.RelPermalink }} aria-current="page"{{ end }}>{{ .Name }}</a></li>{{ end }}
+        {{- range .Site.Menus.under }}
+          {{- if not (and $contact (eq .URL $contact.RelPermalink)) }}
+            <li><a href="{{ .URL }}"{{ if eq .URL $.RelPermalink }} aria-current="page"{{ end }}>{{ .Name }}</a></li>
+          {{- end }}
+        {{- end }}
       </ul>
     </nav>
   </div>

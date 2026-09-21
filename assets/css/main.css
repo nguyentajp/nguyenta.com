@@ -1136,7 +1136,7 @@ main {
   display: flex;
   flex-wrap: wrap;
   gap: 0 var(--space-5);
-  margin-block-start: var(--space-4);
+  margin-block-start: var(--space-3);
   font-size: 1rem;
   color: var(--muted);
 }
@@ -1147,7 +1147,7 @@ main {
 }
 
 .menu-lang {
-  margin-block-start: var(--space-4);
+  margin-block-start: var(--space-5);
 }
 
 .menu-lang .lang > .icon {
@@ -1194,18 +1194,15 @@ main {
   color: var(--bg);
 }
 
-/* Hàng đầu ngăn: công tắc ngôn ngữ bên trái, nút sáng tối bên phải. Khung
-   🌐 trên thanh dính cũng xếp như vậy. */
-.menu-lang,
-.appbar-lang {
+/* Hàng cuối ngăn: công tắc ngôn ngữ bên trái, nút sáng tối bên phải */
+.menu-lang {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
 }
 
-.menu-lang .theme-toggle,
-.appbar-lang .theme-toggle {
+.menu-lang .theme-toggle {
   width: 2.5rem;
   height: 2.5rem;
 }
@@ -1285,6 +1282,18 @@ main {
     display: flex;
     justify-content: flex-end;
     margin-inline-end: -0.625rem;
+  }
+
+  /* Nút sáng tối trên thanh: không viền, cùng dáng nút 🌐 bên cạnh */
+  .appbar .theme-toggle {
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 0;
+  }
+
+  .appbar .theme-toggle .icon {
+    width: 1.375rem;
+    height: 1.375rem;
   }
 
   /* Khung chọn ngôn ngữ: treo ngay dưới thanh, sát mép phải, dưới nút 🌐 */
