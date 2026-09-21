@@ -1221,21 +1221,84 @@ main {
   margin-block-start: var(--space-4);
 }
 
-.post-item-more {
-  margin-block-start: var(--space-3);
+/* Nút "Đọc tiếp" và "Tất cả bài viết": một ô bấm trọn vẹn thay cho dòng chữ
+   gạch chân, mắt thấy ngay đâu là lối đi tiếp. Chữ ở giữa, mũi tên bám mép
+   phải; rê chuột thì mũi tên nhích sang một chút. Chữ thường, không in hoa:
+   chữ Việt in hoa có dấu nặng nề, chữ Nhật thì không có in hoa.
+     .button--read     nền 白緑 như dải chân trang (mỗi bài một nút)
+     .button--outline  chỉ có viền mực (một nút cuối mục Gần đây) */
+.button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: var(--space-2) 3rem;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) / 2);
   font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
 }
 
-.post-item-more a,
-.all-posts a {
-  text-decoration: underline 1px var(--ink);
-  text-underline-offset: 0.3em;
-}
-
-.post-item-more a:hover,
-.all-posts a:hover {
+.button .icon {
+  position: absolute;
+  inset-inline-end: var(--space-4);
+  width: 1.125rem;
+  height: 1.125rem;
   color: var(--accent);
-  text-decoration-color: var(--accent);
+}
+
+.button:hover .icon {
+  color: currentColor;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .button .icon {
+    transition: translate 150ms ease;
+  }
+
+  .button:hover .icon {
+    translate: 0.2rem 0;
+  }
+}
+
+.button--read {
+  background: var(--band);
+  color: var(--ink);
+}
+
+.button--read:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.button--outline {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.button--outline:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.post-item-more {
+  margin-block-start: var(--space-4);
+}
+
+/* Bài nổi bật trên màn hình rộng: nút không trải hết cột 44rem mà vừa đủ,
+   đặt giữa; danh sách thì nút nằm theo cột chữ. Điện thoại: nút rộng hết cột
+   (khối cuối mục 6). */
+.post-item--lead .button,
+.all-posts .button {
+  display: inline-flex;
+  min-width: 16rem;
+}
+
+.post-item--list .button {
+  display: inline-flex;
+  min-width: 12rem;
 }
 
 /* Danh sách (trang Bài viết, danh mục, thẻ): ảnh nhỏ bên trái, chữ bên phải;
@@ -1298,7 +1361,7 @@ main {
 
 .post-item--list .post-item-more {
   grid-area: more;
-  margin-block-start: var(--space-2);
+  margin-block-start: var(--space-3);
 }
 
 /* Điện thoại: không còn chỗ cho hai cột, nên mỗi bài thành một khối dọc căn
@@ -1340,6 +1403,15 @@ main {
 .all-posts {
   margin-block-start: var(--space-6);
   text-align: center;
+}
+
+/* Điện thoại: nút rộng hết cột, ngón cái chạm đâu cũng trúng */
+@media (max-width: 35.999rem) {
+  .post-item-more .button,
+  .all-posts .button {
+    display: flex;
+    min-width: 0;
+  }
 }
 
 /* Danh sách hàng chữ gọn (kết quả tìm kiếm): ngày ở cột trái */

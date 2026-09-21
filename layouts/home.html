@@ -20,6 +20,6 @@
         {{- range . }}{{ partial "post-item.html" (dict "page" . "variant" "grid") }}{{ end }}
       </div>
     </section>
-    <p class="all-posts"><a href="{{ (site.GetPage "/posts").RelPermalink }}">{{ i18n "list_all_posts" }}</a></p>
+    <p class="all-posts"><a class="button button--outline" href="{{ (site.GetPage "/posts").RelPermalink }}">{{ i18n "list_all_posts" }}{{ partial "icon.html" "arrow" }}</a></p>
   {{- end }}
 {{ end }}

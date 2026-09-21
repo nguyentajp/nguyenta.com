@@ -35,5 +35,5 @@
       <p class="post-item-excerpt">{{ . | plainify | truncate (cond (eq $variant "grid") 140 260) }}</p>
     {{- end }}
   {{- end }}
-  <p class="post-item-more"><a href="{{ $page.RelPermalink }}">{{ i18n "read_more" }}<span class="visually-hidden">: {{ $page.Title }}</span></a></p>
+  <p class="post-item-more"><a class="button button--read" href="{{ $page.RelPermalink }}">{{ i18n "read_more" }}<span class="visually-hidden">: {{ $page.Title }}</span>{{ partial "icon.html" "arrow" }}</a></p>
 </article>
