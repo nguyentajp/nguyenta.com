@@ -824,6 +824,15 @@ Có quyết định mới thì ghi vào đây.
   phải đăng bên đó nữa, tức là viết hai nơi và người đọc bị kéo sang sân của
   họ.
 
+#### Sau đợt review code — chốt ngày 21/9/2026
+
+- **Link RSS nằm dưới ô đăng ký bản tin**, không ở hàng mạng xã hội.
+- **Dòng "Cập nhật" chỉ hiện khi điền tay** (trường `updated`); ngày từ git
+  chỉ dành cho máy (sitemap, Google).
+- **Không làm nút chia sẻ / sao chép link cuối bài.** Đừng đề xuất lại.
+- **Thống kê người đọc để sau**: khi làm thì dùng Cloudflare Web Analytics
+  (tài khoản Cloudflare đã có, không cookie).
+
 #### Logo — chốt ngày 21/9/2026
 
 - **Tên blog ở đầu trang và chân trang là HÌNH chữ "Gen"**, cắt sẵn thành
@@ -899,3 +908,4 @@ Có quyết định mới thì ghi vào đây.
       "không giới hạn" duy nhất là Substack, đổi lại bài phải nằm trên
       Substack — tức là viết hai nơi.
 - [ ] Mở blog: `maintenance = false` trong `hugo.toml`.
+- [ ] Sau khi mở blog: thống kê người đọc bằng Cloudflare Web Analytics.
