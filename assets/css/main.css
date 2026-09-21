@@ -317,6 +317,26 @@ a:hover {
   margin-block-start: 1.1em;
 }
 
+/* Canh đều hai lề cho chữ đọc: mép phải thẳng như trang sách, mắt không bị
+   giật theo đường răng cưa. Chỉ đoạn văn, mục danh sách và trích dẫn; tiêu
+   đề, chú thích ảnh vẫn như cũ. Tiếng Việt giãn giữa các chữ (âm tiết ngắn
+   nên khoảng giãn nhỏ); tiếng Nhật giãn giữa các ký tự, đúng lối dàn trang
+   Nhật (両端揃え). Link dài (URL) được phép ngắt ở bất kỳ đâu, để một dòng
+   không phải giãn hở hoác chỉ vì một chuỗi không ngắt được. */
+.prose p,
+.prose li,
+.prose blockquote {
+  text-align: justify;
+}
+
+.prose:lang(ja) :is(p, li, blockquote) {
+  text-justify: inter-character;
+}
+
+.prose a {
+  overflow-wrap: anywhere;
+}
+
 .prose h2,
 .prose h3 {
   font-family: var(--font-display);
@@ -1339,8 +1359,14 @@ main {
   border-radius: var(--radius);
 }
 
+/* Đoạn trích cũng canh đều hai lề. Ở các khối căn giữa (bài nổi bật, lưới,
+   danh sách trên điện thoại) dòng cuối nằm giữa, như đoạn dẫn dưới tựa bài
+   trong sách: mép hai bên thẳng mà vẫn đứng trên trục giữa của trang. Danh
+   sách trên màn hình rộng (chữ bám mép ảnh) thì dòng cuối bám trái. */
 .post-item-excerpt {
   margin-block-start: var(--space-4);
+  text-align: justify;
+  text-align-last: center;
   font-size: var(--text-size);
   line-height: var(--text-leading);
   letter-spacing: var(--text-tracking);
@@ -1485,6 +1511,7 @@ main {
 
 .post-item--list .post-item-excerpt {
   grid-area: excerpt;
+  text-align-last: start;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
@@ -1521,6 +1548,10 @@ main {
 
   .post-item--list .meta {
     justify-content: center;
+  }
+
+  .post-item--list .post-item-excerpt {
+    text-align-last: center;
   }
 
   .post-item--list .post-item-title {
@@ -1592,6 +1623,7 @@ main {
 }
 
 .entry-excerpt {
+  text-align: justify;
   grid-column: 2;
   margin-block-start: var(--space-2);
   font-size: 0.9375rem;
@@ -1868,6 +1900,7 @@ a.pager-step:hover {
 }
 
 .sekki-note-text {
+  text-align: justify;
   padding-block-start: var(--space-2);
   border-block-start: 1px solid var(--rule);
   text-wrap: pretty;
@@ -2230,6 +2263,7 @@ a.pager-step:hover {
 }
 
 .bio {
+  text-align: justify;
   color: var(--ink);
   text-wrap: pretty;
 }

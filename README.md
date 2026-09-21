@@ -846,6 +846,9 @@ Mọi thứ về **một trục giữa** như đầu trang (bìa sổ).
   furigana thêm hàng nút furigana; bài viết có vạch đã đọc tới đâu.
 - **Menu là ngăn kéo trượt từ trái** (off-canvas), nền tối phía sau, chạm ra
   ngoài để đóng. Không có JS vẫn mở được (Popover API).
+- **Chữ đọc canh đều hai lề** (thân bài, trang giới thiệu, đoạn trích, lời
+  giới thiệu ở sidebar, kết quả tìm kiếm). Tiếng Nhật giãn giữa ký tự
+  (両端揃え). Đoạn trích trong khối căn giữa thì dòng cuối nằm giữa.
 
 #### Sau đợt review code — chốt ngày 21/9/2026
 
