@@ -34,6 +34,8 @@ other = "2006年1月2日"
 [date_short]
 other = "2006.01.02"
 # 曜日は日付の後ろに括弧で: "2026年9月19日（土）"
+[post_updated]
+other = "{{ .Date }} 更新"
 [date_weekday]
 other = "{{ .Date }}（{{ .Weekday }}）"
 [weekday_0]

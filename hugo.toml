@@ -14,6 +14,19 @@ copyright = "Gen"
 timeZone = "Asia/Tokyo"
 
 enableRobotsTXT = true
+
+# Ngày sửa cuối của mỗi trang (.Lastmod): lấy trường "updated" trong front
+# matter nếu có (ô "Ngày cập nhật" trong CMS), không thì ngày commit cuối trong
+# git. Dùng cho sitemap, dateModified của Google và article:modified_time.
+# Dòng "Cập nhật" người đọc thấy dưới tiêu đề bài CHỈ hiện khi có "updated",
+# để sửa lỗi chính tả không thành "bài vừa cập nhật". Không dùng tên "lastmod"
+# cho trường này: Hugo tự ghi ngày git vào .Params.lastmod, không phân biệt
+# được với ngày điền tay.
+# CI phải checkout đủ lịch sử git (fetch-depth: 0) thì ngày này mới đúng.
+enableGitInfo = true
+
+[frontmatter]
+  lastmod = ["updated", "lastmod", ":git", ":default"]
 # Cần cho tiếng Nhật: Hugo đếm chữ theo ký tự thay vì theo khoảng trắng, nên
 # thời gian đọc và đoạn tóm tắt của bài tiếng Nhật mới đúng.
 hasCJKLanguage = true

@@ -43,6 +43,9 @@ jobs:
     steps:
       - name: Lấy mã nguồn
         uses: actions/checkout@v7
+        with:
+          # Đủ lịch sử git để Hugo biết ngày sửa cuối của từng bài (enableGitInfo)
+          fetch-depth: 0
 
       - name: Cài Hugo extended
         run: |

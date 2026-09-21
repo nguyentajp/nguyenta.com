@@ -14,6 +14,14 @@
     {{- end }}
   {{- end }}
   {{- if .full }}
+    {{- /* Chỉ khi tác giả tự điền "updated" (ô "Ngày cập nhật" trong CMS) và nó
+         sang ngày khác ngày đăng. Ngày lấy từ git không hiện ở đây: xem
+         [frontmatter] trong hugo.toml. */}}
+    {{- with $page.Params.updated }}
+      {{- if gt ($page.Lastmod.Format "20060102") ($page.Date.Format "20060102") }}
+        <span>{{ i18n "post_updated" (dict "Date" ($page.Lastmod.Format (i18n "date_full"))) }}</span>
+      {{- end }}
+    {{- end }}
     <span>{{ i18n "reading_time" (dict "Count" $page.ReadingTime) }}</span>
     {{- with index (where $page.Translations "Lang" (cond (eq site.Language.Lang "vi") "ja" "vi")) 0 }}
       <span><a href="{{ .RelPermalink }}" lang="{{ .Language.Lang }}" hreflang="{{ .Language.Lang }}">{{ i18n "lang_read_other" }}</a></span>

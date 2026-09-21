@@ -147,6 +147,12 @@ Hai rạng sáng thứ Ba, hoặc sớm hơn nếu trong khoảng đó có commi
 Muốn bài hiện đúng giờ thì vào tab **Actions** trên GitHub, chọn **Deploy** →
 **Run workflow** sau giờ đó.
 
+**Ngày cập nhật.** Sửa nội dung đáng kể (thêm đoạn, sửa thông tin sai) thì
+điền ô **Ngày cập nhật** trong CMS (trường `updated`), dưới tiêu đề bài sẽ hiện
+"Cập nhật 21 tháng 9, 2026". Sửa lỗi chính tả thì để trống. Không điền gì thì
+Google và sitemap vẫn biết ngày sửa cuối (lấy từ git), chỉ người đọc là không
+thấy dòng đó.
+
 ### 2.5 Furigana (cách đọc trên chữ Hán)
 
 Viết cách đọc trong ngoặc ngay sau chữ Hán, như viết tay. Lúc build, Hugo tự

@@ -94,6 +94,16 @@ collections:
         date_format: "DD/MM/YYYY"
         time_format: "HH:mm"
         hint: "Chọn giờ trong tương lai để hẹn giờ đăng: bài hiện lên ở lần build đầu tiên sau giờ đó (site tự build lại mỗi ngày lúc 0:05)."
+      - &lastmod
+        label: "Ngày cập nhật"
+        name: updated
+        widget: datetime
+        required: false
+        default: ""
+        format: "YYYY-MM-DDTHH:mm:ssZ"
+        date_format: "DD/MM/YYYY"
+        time_format: "HH:mm"
+        hint: "Chỉ điền khi sửa nội dung đáng kể (thêm đoạn, sửa thông tin sai). Dưới tiêu đề bài sẽ hiện “Cập nhật ngày …”. Sửa lỗi chính tả thì để trống."
       - &draft
         label: "Bản nháp"
         name: draft
@@ -201,6 +211,7 @@ collections:
         required: false
         hint: "Tên thư mục của bản tiếng Việt, ví dụ tieng-la-tre-luc-chuyen-mua. Hai bản cùng mã thì nút chuyển ngôn ngữ nối đúng bài."
       - *date
+      - *lastmod
       - *draft
       - label: "Mô tả ngắn"
         name: description
