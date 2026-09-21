@@ -3,6 +3,7 @@ title: Cảm ơn anh chị
 translationKey: page-thanks
 url: "/cam-on/"
 noindex: true
+maintenance_exempt: true
 sitemap:
   disable: true
 ---
