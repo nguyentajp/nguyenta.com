@@ -303,8 +303,12 @@ defaultContentLanguageInSubdir = false
   #     field  = "email"
   #
   # Form Kit đang dùng: "nguyenta.com", bật sẵn thư xác nhận (double opt-in).
+  # Mỗi form Kit chỉ có một thư xác nhận và một trang Cảm ơn, nên tiếng Nhật
+  # cần form riêng: điền số form đó vào id_ja. Để trống thì trang tiếng Nhật
+  # dùng chung id (thư xác nhận ra tiếng Việt).
   [params.newsletter]
     id = "9940557"
+    id_ja = ""
     action = "https://app.kit.com/forms/"
     suffix = "/subscriptions"
     field = "email_address"
