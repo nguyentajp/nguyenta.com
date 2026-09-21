@@ -4,7 +4,7 @@ date: 2026-06-21T18:40:00+09:00
 translationKey: thac-minoo
 slug: thac-minoo
 description: Từ ga Minoo đi bộ chừng bốn mươi phút dọc suối là tới thác. Đi sớm thì đường còn vắng và mát.
-categories: ["du-lich"]
+categories: ["chuyen-di"]
 tags: ["osaka", "minoo", "đi bộ"]
 cover: cover.jpg
 demo: true

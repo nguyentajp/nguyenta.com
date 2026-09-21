@@ -67,7 +67,7 @@ Các chuỗi giao diện thật nằm trong `i18n/vi.toml` và `i18n/ja.toml`. B
 | `nhat-ky` | Nhật ký | `nikki` | 日記 |
 | `so-thich` | Sở thích | `shumi` | 趣味 |
 | `doi-song` | Đời sống | `kurashi` | 暮らし |
-| `du-lich` | Du lịch | `tabi` | 旅 |
+| `chuyen-di` | Chuyến đi | `tabi` | 旅 |
 | `suy-nghi` | Suy nghĩ | `shisaku` | 思索 |
 | `hoc-tap` | Học tập | `manabi` | 学び |
 

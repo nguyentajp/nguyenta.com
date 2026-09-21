@@ -75,7 +75,7 @@ npx decap-server
    | Ngày đăng | Để giờ tương lai là **hẹn giờ đăng** (xem [2.4](#24-hẹn-giờ-đăng)) |
    | Bản nháp | **Bật**: bài chưa hiện trên site. **Tắt**: bài được đăng |
    | Mô tả ngắn | Một hai câu, hiện trong danh sách bài, khi chia sẻ link và trong kết quả tìm kiếm |
-   | Danh mục | Chọn đúng một: Nhật ký, Sở thích, Đời sống, Du lịch, Suy nghĩ, Học tập |
+   | Danh mục | Chọn đúng một: Nhật ký, Sở thích, Đời sống, Chuyến đi, Suy nghĩ, Học tập |
    | Thẻ | Viết tự nhiên, có dấu, cách nhau bằng dấu phẩy: `osaka, mùa thu` |
    | Ảnh bìa | Không bắt buộc. Để trống thì lấy ảnh đầu tiên trong bài |
    | Nội dung | Thân bài. Nút **＋** để chèn Ảnh, Bộ ảnh, Video YouTube |
@@ -311,7 +311,7 @@ Lệnh này:
 1. Đọc [STYLE.md](STYLE.md) (văn phong です/ます) và [GLOSSARY.md](GLOSSARY.md)
    (bảng thuật ngữ).
 2. Tạo `content/ja/posts/<slug-romaji>/index.md`, copy ngày đăng, ảnh bìa, đổi
-   danh mục sang tiếng Nhật (`du-lich` → `tabi`), đặt `draft: true`.
+   danh mục sang tiếng Nhật (`chuyen-di` → `tabi`), đặt `draft: true`.
 3. Ghi `translationKey` vào **cả hai bản** để nút chuyển ngôn ngữ nối đúng bài.
 4. Viết bản dịch.
 

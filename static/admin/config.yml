@@ -125,7 +125,7 @@ collections:
           - { label: "Nhật ký", value: nhat-ky }
           - { label: "Sở thích", value: so-thich }
           - { label: "Đời sống", value: doi-song }
-          - { label: "Du lịch", value: du-lich }
+          - { label: "Chuyến đi", value: chuyen-di }
           - { label: "Suy nghĩ", value: suy-nghi }
           - { label: "Học tập", value: hoc-tap }
       - label: "Thẻ"
@@ -227,7 +227,7 @@ collections:
           - { label: "日記 · Nhật ký", value: nikki }
           - { label: "趣味 · Sở thích", value: shumi }
           - { label: "暮らし · Đời sống", value: kurashi }
-          - { label: "旅 · Du lịch", value: tabi }
+          - { label: "旅 · Chuyến đi", value: tabi }
           - { label: "思索 · Suy nghĩ", value: shisaku }
           - { label: "学び · Học tập", value: manabi }
       - label: "Thẻ"

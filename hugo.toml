@@ -63,7 +63,7 @@ defaultContentLanguageInSubdir = false
     weight = 1
 
     [languages.vi.params]
-      description = "Ghi chép của Gen từ Osaka: học tập, đời sống, du lịch, suy nghĩ và nhật ký."
+      description = "Ghi chép của Gen từ Osaka: học tập, đời sống, những chuyến đi, suy nghĩ và nhật ký."
       # Tagline dưới tên blog ở đầu trang và ở chân trang. Là một câu tuyên
       # ngôn ngắn, ứng với câu tiếng Nhật 大阪より、ベトナム人として、自分の旅を綴る。
       tagline = "Từ Osaka, một người Việt chép lại hành trình của mình."

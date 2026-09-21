@@ -1147,9 +1147,7 @@ main {
 }
 
 .menu-lang {
-  margin-block-start: var(--space-5);
-  padding-block-start: var(--space-4);
-  border-block-start: 1px solid var(--rule);
+  margin-block-start: var(--space-4);
 }
 
 .menu-lang .lang > .icon {

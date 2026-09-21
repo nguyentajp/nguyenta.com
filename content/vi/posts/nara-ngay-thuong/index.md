@@ -4,7 +4,7 @@ date: 2026-08-29T19:20:00+09:00
 translationKey: nara-ngay-thuong
 slug: nara-ngay-thuong
 description: Tránh cuối tuần, Nara chậm hẳn lại. Hươu nằm dưới bóng cây, những con đường nhỏ sau đền gần như không có ai.
-categories: ["du-lich"]
+categories: ["chuyen-di"]
 tags: ["nara", "đi bộ", "mùa hè"]
 cover: cover.jpg
 demo: true

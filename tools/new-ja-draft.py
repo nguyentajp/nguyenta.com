@@ -22,7 +22,7 @@ CATEGORIES = {
     "nhat-ky": "nikki",
     "so-thich": "shumi",
     "doi-song": "kurashi",
-    "du-lich": "tabi",
+    "chuyen-di": "tabi",
     "suy-nghi": "shisaku",
     "hoc-tap": "manabi",
 }

@@ -100,6 +100,9 @@
         <button type="submit" aria-label="{{ i18n "sidebar_search_button" }}">{{ partial "icon.html" "search" }}</button>
       </form>
     {{- end }}
+    {{- /* Chọn ngôn ngữ ngay đầu ngăn, trên mục Bài viết: mở ngăn từ thanh dính
+         giữa bài vẫn đổi được ngay */}}
+    <div class="menu-lang">{{ partial "lang-switch.html" . }}</div>
     <nav class="menu-panel" aria-label="{{ i18n "nav_menu" }}">
       <ul>
         {{- range .Site.Menus.main }}
@@ -121,7 +124,5 @@
         {{- range .Site.Menus.under }}<li><a href="{{ .URL }}"{{ if eq .URL $.RelPermalink }} aria-current="page"{{ end }}>{{ .Name }}</a></li>{{ end }}
       </ul>
     </nav>
-    {{- /* Chọn ngôn ngữ ở cuối ngăn: mở ngăn từ thanh dính giữa bài vẫn đổi được */}}
-    <div class="menu-lang">{{ partial "lang-switch.html" . }}</div>
   </div>
 </header>

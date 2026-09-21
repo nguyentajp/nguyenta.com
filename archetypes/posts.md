@@ -8,7 +8,7 @@ translationKey: "{{ .File.ContentBaseName }}"
 slug: "{{ .File.ContentBaseName }}"
 # description dùng cho đoạn giới thiệu, thẻ Open Graph và kết quả tìm kiếm.
 description: ""
-# Chọn một trong: hoc-tap, doi-song, du-lich, suy-nghi, nhat-ky
+# Chọn một trong: hoc-tap, doi-song, chuyen-di, suy-nghi, nhat-ky
 # (tiếng Nhật: manabi, kurashi, tabi, shisaku, nikki)
 categories: []
 # Thẻ viết tự nhiên, có dấu: ["osaka", "mùa thu"]
