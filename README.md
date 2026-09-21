@@ -845,7 +845,14 @@ Mọi thứ về **một trục giữa** như đầu trang (bìa sổ).
   thanh mảnh trượt xuống: ☰ · tên bài (chạm để lên đầu) · kính lúp. Bài có
   furigana thêm hàng nút furigana; bài viết có vạch đã đọc tới đâu.
 - **Menu là ngăn kéo trượt từ trái** (off-canvas), nền tối phía sau, chạm ra
-  ngoài để đóng. Không có JS vẫn mở được (Popover API).
+  ngoài để đóng. Không có JS vẫn mở được (Popover API). Cuối ngăn có công tắc
+  ngôn ngữ; mục đang xem được đánh dấu.
+- **Chọn ngôn ngữ khi đang cuộn:** nút 🌐 trên thanh dính mở khung "Tiếng Việt
+  | 日本語".
+- **Máy cảm ứng không có menu con kiểu rê chuột** (iPad, điện thoại xoay
+  ngang): bấm tên mục là tới trang; bản đồ đầy đủ trong ngăn ☰.
+- **Trang Danh mục trên điện thoại:** hình nhỏ cạnh tên, danh sách bài trải
+  hết bề ngang, ngày ở trên tên bài.
 - **Đầu trang danh sách là tấm nhãn đề nền 白緑** (danh mục, thẻ, Bài viết,
   Mục lục, Tìm kiếm, Giới thiệu): tên mục cha chữ nhỏ, tiêu đề, một dòng
   "mô tả · số bài". Điện thoại: sát hai mép, nối liền dưới hàng menu.

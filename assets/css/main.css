@@ -1146,6 +1146,16 @@ main {
   padding-block: var(--space-2);
 }
 
+.menu-lang {
+  margin-block-start: var(--space-5);
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid var(--rule);
+}
+
+.menu-lang .lang > .icon {
+  display: block;
+}
+
 /* Mục đang mở trong ngăn Menu: gạch chân như hàng menu; ô danh mục đang mở
    thì nền 白緑 viền mực */
 .menu-panel a[aria-current="page"] {
@@ -1217,9 +1227,10 @@ main {
     visibility: visible;
   }
 
+  /* Hai bên cùng bề rộng (hai ô bấm) để tên trang nằm đúng giữa màn hình */
   .appbar-row {
     display: grid;
-    grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+    grid-template-columns: 5.5rem minmax(0, 1fr) 5.5rem;
     align-items: center;
     min-height: 3rem;
     padding-inline: calc(var(--gutter) - 0.625rem);
@@ -1227,6 +1238,24 @@ main {
 
   .appbar .icon-button {
     display: grid;
+  }
+
+  .appbar-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-inline-end: -0.625rem;
+  }
+
+  /* Khung chọn ngôn ngữ: treo ngay dưới thanh, sát mép phải, dưới nút 🌐 */
+  .appbar-lang {
+    position: fixed;
+    inset: calc(var(--appbar-h) + var(--space-2)) var(--gutter) auto auto;
+    margin: 0;
+    padding: var(--space-3);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--ink);
   }
 
   .appbar-title {
@@ -3739,14 +3768,55 @@ html:has(.lightbox[open]) {
   color: var(--muted);
 }
 
+/* Điện thoại: hình minh hoạ nhỏ lại, đứng cạnh tên và mô tả như một biểu
+   tượng; danh sách bài xuống hàng dưới, chạy hết bề ngang khung, mỗi bài
+   ngày ở trên, tên ở dưới. Trước đây danh sách kẹt ở cột phải, dưới hình là
+   một khoảng trống, còn tên bài bị ép gãy ba dòng.
+   .category-body display: contents để tên, mô tả, danh sách thành ô lưới
+   của chính khung, xếp được theo hàng. */
 @media (max-width: 35.999rem) {
   .category-card {
-    grid-template-columns: 6.5rem minmax(0, 1fr);
-    gap: var(--space-3) var(--space-4);
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    grid-template-areas:
+      "art name"
+      "art desc";
+    gap: 0 var(--space-4);
+    align-items: center;
+  }
+
+  .category-body {
+    display: contents;
+  }
+
+  .category-art {
+    grid-area: art;
+  }
+
+  .category-name {
+    grid-area: name;
+    align-self: end;
+    font-size: 1.3125rem;
+  }
+
+  .category-desc {
+    grid-area: desc;
+    align-self: start;
+  }
+
+  .category-posts,
+  .category-none,
+  .category-all {
+    grid-column: 1 / -1;
   }
 
   .category-posts {
-    grid-column: 1 / -1;
+    gap: var(--space-3);
+    margin-block-start: var(--space-4);
+  }
+
+  .category-posts li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.1rem;
   }
 }
 

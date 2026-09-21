@@ -121,5 +121,7 @@
         {{- range .Site.Menus.under }}<li><a href="{{ .URL }}"{{ if eq .URL $.RelPermalink }} aria-current="page"{{ end }}>{{ .Name }}</a></li>{{ end }}
       </ul>
     </nav>
+    {{- /* Chọn ngôn ngữ ở cuối ngăn: mở ngăn từ thanh dính giữa bài vẫn đổi được */}}
+    <div class="menu-lang">{{ partial "lang-switch.html" . }}</div>
   </div>
 </header>

@@ -3,7 +3,8 @@
      trang ở giữa. Chỉ có trên màn hình hẹp (main.css mục 5b); máy tính không
      cần vì đầu trang và sidebar đã đủ lối đi.
 
-       ☰ (mở ngăn Menu) · tên bài / tên trang (chạm để lên đầu) · kính lúp
+       ☰ (mở ngăn Menu) · tên bài / tên trang (chạm để lên đầu) · 🌐 (khung
+       chọn ngôn ngữ, cùng công tắc như ở đầu trang) · kính lúp
        hàng thứ hai, chỉ ở bài có furigana: nút chọn furigana, để đang đọc
        giữa bài vẫn bật tắt được mà không phải cuộn ngược lên
        vạch mảnh dưới đáy, chỉ ở bài viết: đã đọc tới đâu (CSS thuần)
@@ -18,10 +19,14 @@
     <button class="appbar-title" type="button" data-to-top aria-label="{{ i18n "to_top" }}">
       {{- if .IsHome }}{{ partial "wordmark.html" . }}{{ else }}<span>{{ .Title }}</span>{{ end -}}
     </button>
-    {{- with site.GetPage "/search" }}
-      <a class="icon-button" href="{{ .RelPermalink }}" aria-label="{{ .Title }}">{{ partial "icon.html" "search" }}</a>
-    {{- end }}
+    <span class="appbar-actions">
+      <button class="icon-button" type="button" popovertarget="appbar-lang" aria-label="{{ i18n "lang_label" }}">{{ partial "icon.html" "globe" }}</button>
+      {{- with site.GetPage "/search" }}
+        <a class="icon-button" href="{{ .RelPermalink }}" aria-label="{{ .Title }}">{{ partial "icon.html" "search" }}</a>
+      {{- end }}
+    </span>
   </div>
+  <div class="appbar-lang" id="appbar-lang" popover>{{ partial "lang-switch.html" . }}</div>
   {{- if $furigana }}
     <div class="appbar-sub">{{ partial "furigana-switch.html" . }}</div>
   {{- end }}
