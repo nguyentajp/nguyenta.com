@@ -266,9 +266,9 @@ collections:
     description: "Những đoạn chữ dùng chung cho cả site, không thuộc bài nào."
     files:
       - name: tiet-khi
-        label: "Giải thích 24 tiết khí"
+        label: "24 tiết khí"
         file: data/sekki_notes.yaml
-        description: "Hiện trong khung nhỏ khi người đọc rê chuột (điện thoại: chạm) vào tên tiết khí dưới ngày đăng của bài."
+        description: "Toàn bộ chữ của 24 tiết khí. Lời giải thích hiện trong khung nhỏ khi rê chuột (điện thoại: chạm) vào tên tiết khí dưới ngày đăng bài; tên màu và câu “vì sao” hiện ở trang Về blog này, mục Màu của tiết khí."
         fields:
           - label: "24 tiết khí"
             name: sekki
@@ -286,6 +286,18 @@ collections:
               - label: "Giải thích tiếng Việt"
                 name: vi_text
                 widget: text
+              - label: "Tên màu tiếng Việt"
+                name: color_vi
+                widget: string
+              - label: "Vì sao màu này (tiếng Việt)"
+                name: why_vi
+                widget: text
               - label: "Giải thích tiếng Nhật"
                 name: ja_text
+                widget: text
+              - label: "Tên màu tiếng Nhật"
+                name: color_ja
+                widget: string
+              - label: "Vì sao màu này (tiếng Nhật)"
+                name: why_ja
                 widget: text

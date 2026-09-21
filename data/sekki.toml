@@ -11,9 +11,8 @@
 #   ./.venv/bin/python tools/sekki_colors.py --toml
 # và dán lại. Chạy không có --toml thì ra bảng kiểm tương phản.
 #
-# color_vi / color_ja là tên của màu; why_vi / why_ja là một câu nói vì sao
-# tiết này mang màu đó. Cả bốn trường hiện ở trang Về blog này, mục "Màu của
-# tiết khí" — sửa chữ thì sửa thẳng ở đây. Trang tiếng Việt chỉ dùng bản _vi.
+# File này chỉ giữ ngày và màu. Mọi chữ của 24 tiết (lời giải thích, tên màu,
+# câu "vì sao màu này") nằm chung ở data/sekki_notes.yaml.
 
 [[sekki]]
   order = 23
@@ -24,10 +23,6 @@
   vi = "Tiểu hàn"
   accent_light = "#346237"
   accent_dark = "#9fd09f"
-  color_ja = "芹の緑"
-  color_vi = "Xanh rau cần"
-  why_vi = "Rét bắt đầu ngấm. Rau cần vẫn mọc tốt dưới nước lạnh, xanh giữa mùa không còn gì xanh."
-  why_ja = "寒が入っても、冷たい水のなかで芹はよく育ちます。"
 
 [[sekki]]
   order = 24
@@ -38,10 +33,6 @@
   vi = "Đại hàn"
   accent_light = "#585918"
   accent_dark = "#c4c685"
-  color_ja = "蕗の薹の黄緑"
-  color_vi = "Vàng ngả xanh của ngồng fuki"
-  why_vi = "Rét nhất năm, vậy mà ngồng fuki đã nhú lên khỏi tuyết — dấu đầu tiên của xuân."
-  why_ja = "いちばん寒い頃ですが、蕗の薹が雪を押しのけて出ます。"
 
 [[sekki]]
   order = 1
@@ -52,10 +43,6 @@
   vi = "Lập xuân"
   accent_light = "#7a4058"
   accent_dark = "#eeaac4"
-  color_ja = "梅の紅"
-  color_vi = "Hồng hoa mai"
-  why_vi = "Rét vẫn còn, nhưng mai nở trước mọi loài hoa, nên sắc hồng của nó mở đầu một năm."
-  why_ja = "寒さは残っていますが、どの花よりも早く梅が咲きます。"
 
 [[sekki]]
   order = 2
@@ -66,10 +53,6 @@
   vi = "Vũ thủy"
   accent_light = "#42576e"
   accent_dark = "#acc4de"
-  color_ja = "霞の青鼠"
-  color_vi = "Xanh xám của sương"
-  why_vi = "Tuyết tan thành mưa; chân trời lúc nào cũng có một dải mù giăng ngang, màu nhạt và ẩm."
-  why_ja = "雪が雨に変わり、遠くにいつも靄がかかっています。"
 
 [[sekki]]
   order = 3
@@ -80,10 +63,6 @@
   vi = "Kinh trập"
   accent_light = "#7d4046"
   accent_dark = "#f3abaf"
-  color_ja = "桃の紅"
-  color_vi = "Đỏ hoa đào"
-  why_vi = "Sâu trùng thức dậy dưới đất, hoa đào nở cùng lúc, màu ấm hẳn lên so với tiết trước."
-  why_ja = "土の虫が動き出し、桃が咲いて、色が一気に暖かくなります。"
 
 [[sekki]]
   order = 4
@@ -94,10 +73,6 @@
   vi = "Xuân phân"
   accent_light = "#734363"
   accent_dark = "#e5add1"
-  color_ja = "桜の薄紅"
-  color_vi = "Hồng anh đào"
-  why_vi = "Ngày dài bằng đêm. Cả nước Nhật cùng nhìn lên một màu hoa, nên màu này nhạt và mỏng."
-  why_ja = "昼と夜が同じ長さになり、どこでも同じ花を見上げます。"
 
 [[sekki]]
   order = 5
@@ -108,10 +83,6 @@
   vi = "Thanh minh"
   accent_light = "#435f21"
   accent_dark = "#adce8c"
-  color_ja = "若葉の緑"
-  color_vi = "Xanh lá non"
-  why_vi = "Trời quang, cây đâm lá mới. Xanh còn nhạt và trong, chưa dày như lá mùa hè."
-  why_ja = "空が澄み、新しい葉の淡い緑が出そろいます。"
 
 [[sekki]]
   order = 6
@@ -122,10 +93,6 @@
   vi = "Cốc vũ"
   accent_light = "#7b3d5d"
   accent_dark = "#f0a8ca"
-  color_ja = "牡丹の紅"
-  color_vi = "Đỏ mẫu đơn"
-  why_vi = "Mưa xuống nuôi lúa. Mẫu đơn là loài nở to và đậm nhất trong các hoa xuân."
-  why_ja = "穀物を育てる雨が降り、春の花でいちばん大きく濃い牡丹が咲きます。"
 
 [[sekki]]
   order = 7
@@ -136,10 +103,6 @@
   vi = "Lập hạ"
   accent_light = "#2b6339"
   accent_dark = "#97d2a2"
-  color_ja = "新竹の緑"
-  color_vi = "Xanh tre mới"
-  why_vi = "Vào hè, măng đã thành cây; thân tre xanh tươi, chưa ngả vàng như tre già."
-  why_ja = "夏に入り、筍が竹になって、幹がまだ黄ばまない緑です。"
 
 [[sekki]]
   order = 8
@@ -150,10 +113,6 @@
   vi = "Tiểu mãn"
   accent_light = "#833f27"
   accent_dark = "#f9ab90"
-  color_ja = "紅花の橙"
-  color_vi = "Cam hoa rum"
-  why_vi = "Hạt đã mẩy. Hoa rum nở vàng cam ngoài ruộng, xưa người Nhật dùng làm phẩm nhuộm."
-  why_ja = "実がふくらみ、畑で紅花が咲きます。昔は染料にしました。"
 
 [[sekki]]
   order = 9
@@ -164,10 +123,6 @@
   vi = "Mang chủng"
   accent_light = "#545b16"
   accent_dark = "#bfc884"
-  color_ja = "青梅の黄緑"
-  color_vi = "Xanh ngả vàng của mai non"
-  why_vi = "Mùa cấy. Quả mai còn xanh nhưng đã bắt nắng, ngả dần sang vàng."
-  why_ja = "田植えの頃、梅の実はまだ青く、日に焼けて黄を帯びます。"
 
 [[sekki]]
   order = 10
@@ -178,10 +133,6 @@
   vi = "Hạ chí"
   accent_light = "#594a82"
   accent_dark = "#c5b6f6"
-  color_ja = "菖蒲の紫"
-  color_vi = "Tím diên vĩ"
-  why_vi = "Ngày dài nhất năm. Diên vĩ nở tím ven nước, màu đậm nhất trong các hoa mùa này."
-  why_ja = "一年で昼がいちばん長く、水辺に菖蒲が咲きます。"
 
 [[sekki]]
   order = 11
@@ -192,10 +143,6 @@
   vi = "Tiểu thử"
   accent_light = "#724268"
   accent_dark = "#e4add7"
-  color_ja = "蓮の紅"
-  color_vi = "Hồng sen"
-  why_vi = "Nóng mới chớm. Sen mở trong đầm từ tờ mờ sáng rồi khép lại lúc trưa."
-  why_ja = "暑さが始まり、蓮が早朝に開きます。"
 
 [[sekki]]
   order = 12
@@ -206,10 +153,6 @@
   vi = "Đại thử"
   accent_light = "#205b7f"
   accent_dark = "#8ec9f3"
-  color_ja = "雷雨の青"
-  color_vi = "Xanh mưa dông"
-  why_vi = "Nóng nhất năm. Chiều nào mây cũng kéo đến rồi trút xuống một trận, trời tối lại."
-  why_ja = "いちばん暑く、午後になると雲が出て一雨きます。"
 
 [[sekki]]
   order = 13
@@ -220,10 +163,6 @@
   vi = "Lập thu"
   accent_light = "#076169"
   accent_dark = "#85cfd8"
-  color_ja = "涼風の浅葱"
-  color_vi = "Xanh lơ của gió mát"
-  why_vi = "Vẫn oi, nhưng gió đã khác và đêm bắt đầu dịu. Màu nhạt đi so với giữa hè."
-  why_ja = "まだ蒸しますが風が変わり、夜が和らぎます。"
 
 [[sekki]]
   order = 14
@@ -234,10 +173,6 @@
   vi = "Xử thử"
   accent_light = "#695205"
   accent_dark = "#d7bf7c"
-  color_ja = "稲の黄"
-  color_vi = "Vàng lúa"
-  why_vi = "Cái nóng lui dần. Đồng lúa ngả vàng, chờ gặt."
-  why_ja = "暑さが退き、田が黄色くなって刈り入れを待ちます。"
 
 [[sekki]]
   order = 15
@@ -248,10 +183,6 @@
   vi = "Bạch lộ"
   accent_light = "#3c5387"
   accent_dark = "#a5c0fc"
-  color_ja = "露草の青"
-  color_vi = "Xanh hoa thài lài"
-  why_vi = "Sương bắt đầu đọng trắng trên cỏ buổi sớm; thài lài nở xanh ven bờ ruộng."
-  why_ja = "朝、草に白い露が置き、畦に露草が咲きます。"
 
 [[sekki]]
   order = 16
@@ -262,10 +193,6 @@
   vi = "Thu phân"
   accent_light = "#6a4572"
   accent_dark = "#dab0e3"
-  color_ja = "萩の紫"
-  color_vi = "Tím hoa thưu"
-  why_vi = "Lại một ngày dài bằng đêm, nhưng lần này trời đi về phía lạnh. Hoa thưu nở tím dọc lối."
-  why_ja = "また昼と夜が同じ長さになり、道ばたに萩が咲きます。"
 
 [[sekki]]
   order = 17
@@ -276,10 +203,6 @@
   vi = "Hàn lộ"
   accent_light = "#704e00"
   accent_dark = "#e1ba79"
-  color_ja = "菊の黄"
-  color_vi = "Vàng hoa cúc"
-  why_vi = "Sương lạnh hơn. Cúc nở muộn, vàng lên đúng lúc mọi thứ khác đang tàn."
-  why_ja = "露が冷たくなり、遅く咲く菊が枯れゆくなかで黄を差します。"
 
 [[sekki]]
   order = 18
@@ -290,10 +213,6 @@
   vi = "Sương giáng"
   accent_light = "#833e2d"
   accent_dark = "#faaa95"
-  color_ja = "紅葉の赤"
-  color_vi = "Đỏ lá phong"
-  why_vi = "Sương bắt đầu thành giá. Lá phong đỏ rực một đợt rồi rụng."
-  why_ja = "露が霜に変わり、楓が赤くなって散ります。"
 
 [[sekki]]
   order = 19
@@ -304,10 +223,6 @@
   vi = "Lập đông"
   accent_light = "#823d3f"
   accent_dark = "#f8a8a8"
-  color_ja = "椿の紅"
-  color_vi = "Đỏ hoa trà"
-  why_vi = "Vào đông. Hoa trà nở giữa lớp lá xanh dày, đỏ thẫm và bền qua nhiều ngày rét."
-  why_ja = "冬に入り、厚い緑の葉のあいだに椿が濃く長く咲きます。"
 
 [[sekki]]
   order = 20
@@ -318,10 +233,6 @@
   vi = "Tiểu tuyết"
   accent_light = "#6c4e35"
   accent_dark = "#dcb99e"
-  color_ja = "枯野の茶"
-  color_vi = "Nâu đồng cỏ khô"
-  why_vi = "Tuyết mới lác đác. Đồng đã úa thành một màu nâu xám, không còn màu nào tươi."
-  why_ja = "雪はまだ少しで、野は枯れて茶鼠になります。"
 
 [[sekki]]
   order = 21
@@ -332,10 +243,6 @@
   vi = "Đại tuyết"
   accent_light = "#3c5b65"
   accent_dark = "#a5c8d3"
-  color_ja = "雪の青"
-  color_vi = "Xanh lam của tuyết"
-  why_vi = "Tuyết xuống dày. Màu này lấy từ bóng đổ trên tuyết, ngả xanh chứ không trắng."
-  why_ja = "雪が積もり、雪の影は白ではなく青に見えます。"
 
 [[sekki]]
   order = 22
@@ -346,7 +253,3 @@
   vi = "Đông chí"
   accent_light = "#655403"
   accent_dark = "#d4c178"
-  color_ja = "柚子の黄"
-  color_vi = "Vàng quả yuzu"
-  why_vi = "Đêm dài nhất năm. Người Nhật thả quả yuzu vào bồn tắm cho ấm người."
-  why_ja = "一年で夜がいちばん長く、柚子を風呂に浮かべます。"

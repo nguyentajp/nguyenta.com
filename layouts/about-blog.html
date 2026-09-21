@@ -74,11 +74,13 @@
               {{ if $now }} · <span class="swatch-now">{{ i18n "blog_sekki_today" }}</span>{{ end }}
             </span>
           </span>
+          {{- /* Tên màu và câu "vì sao" nằm ở data/sekki_notes.yaml, nối bằng chữ Hán */}}
+          {{- $n := index (where hugo.Data.sekki_notes.sekki "ja" $t.ja) 0 }}
           <span class="swatch-role">
             {{- /* Tiếng Nhật dùng dấu chấm 。 và không có dấu cách sau nó;
                  tiếng Việt thì dấu chấm Latinh và có dấu cách */ -}}
-            <b>{{ cond (eq $lang "ja") (printf "%s。" $t.color_ja) (printf "%s." $t.color_vi) }}</b>
-            {{- if ne $lang "ja" }} {{ end }}{{ cond (eq $lang "ja") $t.why_ja $t.why_vi }}
+            <b>{{ cond (eq $lang "ja") (printf "%s。" $n.color_ja) (printf "%s." $n.color_vi) }}</b>
+            {{- if ne $lang "ja" }} {{ end }}{{ cond (eq $lang "ja") $n.why_ja $n.why_vi }}
           </span>
         </li>
       {{- end }}
