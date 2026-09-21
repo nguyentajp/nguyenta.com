@@ -1,6 +1,7 @@
 {{- /* Khối @font-face nằm inline trong <head>, mang id="gen-fonts".
-     Sau khi build, tools/fonts/build.py --pages thay ruột thẻ style này bằng
-     subset riêng của từng trang, nên mỗi trang chỉ tải đúng những chữ nó dùng.
+     Sau khi build, tools/fonts/build.py --pages thay ruột thẻ style này: font
+     dùng chung cả site (tải một lần) cộng phần chữ Hán riêng của từng bài
+     tiếng Nhật.
      Không dùng comment CSS làm mốc: Go html/template xoá comment trong <style>.
      Nếu chưa chạy script font, khối này trống và site dùng font hệ thống. */ -}}
 {{- $faces := slice

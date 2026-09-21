@@ -12,8 +12,10 @@ Hai chế độ:
         Dùng khi chạy `hugo server` ở máy.
 
     python3 tools/fonts/build.py --pages public
-        Chạy SAU `hugo`. Với từng trang HTML, sinh subset riêng cho trang đó và
-        thay khối @font-face trong <head>. Dùng trong GitHub Actions.
+        Chạy SAU `hugo`. Sinh font dùng chung cho cả site (chữ Latin, tiếng
+        Việt; kana và chữ giao diện tiếng Nhật) cộng một file nhỏ riêng cho
+        chữ Hán của từng bài tiếng Nhật, rồi thay khối @font-face trong <head>
+        của từng trang. Dùng trong GitHub Actions. Chi tiết: build_pages().
 
 Font gốc lấy bằng tools/fonts/get-sources.py.
 """
@@ -327,7 +329,7 @@ def build_dev() -> None:
     print(f"  {'tổng':<20} {'':>6}          {total / 1024:>7.1f} KB")
 
 
-# ── Chế độ --pages: subset riêng cho từng trang, chạy sau hugo ───────────────
+# ── Chế độ --pages: font chung cả site + phần riêng từng trang, chạy sau hugo ─
 TAG_RE = re.compile(r"<(script|style)\b.*?</\1>", re.S | re.I)
 # Thuộc tính mang chữ người đọc thấy được: alt, title, placeholder… và mọi
 # data-* (JS lấy ra để hiện: lời nhắn bản tin, trạng thái tìm kiếm, chú thích
@@ -528,7 +530,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--dev", action="store_true", help="subset cho toàn site, ghi vào assets/fonts/")
-    group.add_argument("--pages", metavar="DIR", help="subset riêng từng trang trong thư mục đã build")
+    group.add_argument("--pages", metavar="DIR", help="font chung cả site và phần riêng từng trang, cho thư mục đã build")
     args = parser.parse_args()
 
     missing = [face["src"] for face in FACES if not (SRC / face["src"]).exists()]

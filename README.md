@@ -393,7 +393,7 @@ Không cần làm gì. Mỗi commit lên `main` (kể cả từ CMS) đều ch�
 [.github/workflows/deploy.yml](.github/workflows/deploy.yml):
 
 ```
-tải font gốc → subset font toàn site → hugo --minify → subset font từng trang → soát HTML → Pagefind → GitHub Pages
+tải font gốc → subset font toàn site → hugo --minify → font cho từng trang → soát HTML → Pagefind → GitHub Pages
 ```
 
 Bước **soát HTML** (`tools/check.py`) tìm link nội bộ hỏng, id trùng, ảnh thiếu
@@ -555,6 +555,7 @@ tools/new-ja-draft.py      Tạo khung bản dịch tiếng Nhật (lệnh /dich
 tools/preview/             Cấu hình Worker bản xem trước riêng (xem mục 11.4)
 tools/kit/                 Mẫu thư bản tin cho Kit, cùng dáng với blog
 tools/check.py             Soát HTML sau khi build (link hỏng, id trùng, alt, h1)
+static/sw.js               Service Worker: giữ font, CSS, JS, ảnh có mã băm trên máy người đọc
 tools/dev.sh               Chạy site ở máy kèm font và chỉ mục tìm kiếm
 .github/workflows/         Build và deploy tự động
 hugo.toml                  Cấu hình site, có ghi chú từng mục
@@ -626,7 +627,7 @@ nhật bảo mật, tải rất nhanh và lưu trữ miễn phí.
 
 **GitHub Actions.** Máy ảo miễn phí của GitHub, tự chạy mỗi khi có commit lên
 `main` và mỗi ngày lúc 0:05 giờ Nhật. Nó làm đúng các bước như ở máy: tải
-font, chạy Hugo, cắt font theo từng trang, lập chỉ mục tìm kiếm, rồi giao kết
+font, chạy Hugo, ghi font cho từng trang, lập chỉ mục tìm kiếm, rồi giao kết
 quả cho GitHub Pages. Nhờ vậy chỉ cần `git push`, không phải tự build hay tự
 upload gì. Cấu hình: [.github/workflows/deploy.yml](.github/workflows/deploy.yml).
 
@@ -655,9 +656,12 @@ lập chỉ mục mọi bài, người đọc gõ tìm thì trình duyệt tải
 nhỏ. Không cần máy chủ tìm kiếm, không gửi từ khoá của người đọc đi đâu.
 
 **Font tự host** (`tools/fonts/`). Font nằm ngay trên nguyenta.com, không gọi
-Google Fonts, nên trình duyệt người đọc không phải kết nối tới Google. Mỗi
-trang chỉ chứa đúng những chữ nó dùng (khoảng 35 KB tiếng Việt, 66 KB tiếng
-Nhật) thay vì cả bộ font vài MB.
+Google Fonts, nên trình duyệt người đọc không phải kết nối tới Google. Font
+được cắt còn đúng những chữ site dùng, thay vì cả bộ vài MB: một bộ dùng
+chung cho cả site (chữ Latin, tiếng Việt khoảng 110 KB; kana và chữ giao diện
+tiếng Nhật khoảng 65 KB), tải một lần rồi Service Worker (`static/sw.js`) giữ
+trên máy; bài tiếng Nhật thêm một file nhỏ chỉ gồm chữ Hán riêng của bài
+(trung bình 16 KB). Chuyển trang vì vậy không tải lại font, chữ không nháy.
 
 **Decap CMS** (`static/admin/`). Giao diện có form để viết bài ở `/admin`,
 dùng ở máy. `npx decap-server` là cầu nối cho CMS ghi thẳng file vào thư mục
