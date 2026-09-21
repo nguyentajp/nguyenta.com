@@ -1,0 +1,36 @@
+{{- /* RSS của mỗi ngôn ngữ (/index.xml, /ja/index.xml). Mẫu có sẵn của Hugo lấy
+     MỌI trang thường, nên Liên hệ, Tìm kiếm, Nagi, Ủng hộ… cũng thành "bài"
+     trong feed. Ở đây chỉ lấy bài trong posts, mới nhất trước, tối đa
+     services.rss.limit bài. Mỗi bài mang đoạn mở đầu, không mang cả bài: ảnh
+     trong bài dùng đường dẫn tương đối, app đọc RSS sẽ không hiện được. */ -}}
+{{- $pages := where site.RegularPages "Section" "posts" -}}
+{{- $limit := site.Config.Services.RSS.Limit -}}
+{{- if ge $limit 1 }}{{ $pages = first $limit $pages }}{{ end -}}
+{{- printf "<?xml version=%q encoding=%q standalone=%q?>" "1.0" "utf-8" "yes" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ site.Title }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>{{ site.Params.description }}</description>
+    <language>{{ site.Language.Locale }}</language>
+    <copyright>© {{ now.Year }} {{ site.Params.author }}</copyright>
+    {{- with $pages }}
+    <lastBuildDate>{{ (index . 0).Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</lastBuildDate>
+    {{- end }}
+    {{- with .OutputFormats.Get "RSS" }}
+    <atom:link href="{{ .Permalink }}" rel="self" type="{{ .MediaType.Type }}"/>
+    {{- end }}
+    {{- range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
+      <guid>{{ .Permalink }}</guid>
+      {{- range .GetTerms "categories" }}
+      <category>{{ .LinkTitle }}</category>
+      {{- end }}
+      <description>{{ or .Description .Summary | transform.XMLEscape | safeHTML }}</description>
+    </item>
+    {{- end }}
+  </channel>
+</rss>
