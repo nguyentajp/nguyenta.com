@@ -486,9 +486,18 @@ main {
   margin-inline: auto;
 }
 
-/* Tiêu đề trang: to, rõ, căn giữa, là thứ đầu tiên mắt chạm vào */
+/* Đầu trang (danh mục, thẻ, Bài viết, Mục lục, Tìm kiếm, các trang giới
+   thiệu): một tấm nhãn đề nền 白緑, cùng chất liệu với nhãn đề ở sidebar và
+   dải chân trang. Nền tách hẳn phần "đây là trang gì" khỏi danh sách bài bên
+   dưới mà không cần viền hay bóng. Bên trong, từ trên xuống: tên mục cha
+   (Danh mục, Thẻ) chữ nhỏ giãn rộng; tiêu đề; một dòng mô tả kèm số bài.
+   Trang bài viết không dùng tấm này (post-head, mục 7).
+   Điện thoại: tấm trải sát hai mép màn hình như ảnh bìa (khối cuối mục 10). */
 .page-head {
-  margin-block-end: var(--space-6);
+  margin-block-end: var(--space-5);
+  padding: var(--space-5) var(--space-4);
+  border-radius: var(--radius);
+  background: var(--band);
   text-align: center;
 }
 
@@ -525,18 +534,31 @@ main {
   max-width: 46rem;
 }
 
-.page-parent,
-.page-count {
-  font-size: 0.9375rem;
+.page-parent {
+  margin-block-end: var(--space-2);
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
   color: var(--muted);
 }
 
-.page-parent {
-  margin-block-end: var(--space-2);
+.page-parent a {
+  text-decoration: none;
 }
 
+.page-parent a:hover {
+  color: var(--accent);
+}
+
+/* Số bài đứng cuối dòng mô tả, ngăn bằng dấu chấm giữa; không có mô tả thì
+   chỉ còn số bài. Số không bao giờ bị ngắt khỏi chữ "bài / 件". */
 .page-count {
-  margin-block-start: var(--space-3);
+  white-space: nowrap;
+  font-variant-numeric: lining-nums;
+}
+
+.page-intro > span + .page-count::before {
+  content: "·";
+  margin-inline: 0.6em;
 }
 
 /* Tiêu đề một mục trong trang (Gần đây, Bài viết liên quan, các năm ở Lưu trữ):
@@ -2984,6 +3006,19 @@ a.pager-step:hover {
 
   .entry-excerpt {
     grid-column: 1;
+  }
+
+  /* Tấm nhãn đề đầu trang trải sát hai mép như ảnh bìa, góc vuông, và nối
+     liền ngay dưới hàng menu (bù khoảng đệm trên của .layout) thay vì lơ
+     lửng giữa hai khoảng trống */
+  .page-head {
+    margin-inline: calc(var(--gutter) * -1);
+    border-radius: 0;
+  }
+
+  main > .page-head:first-child,
+  main > :first-child > .page-head:first-child {
+    margin-block-start: calc(var(--space-6) * -1);
   }
 
   /* Ảnh tràn sát hai mép màn hình, nên góc vuông: bo góc sát mép màn hình

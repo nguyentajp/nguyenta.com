@@ -26,13 +26,13 @@
       {{- partial "thumb.html" (dict "page" $page "sizes" "(min-width: 36rem) 13rem, calc(100vw - 2.5rem)") -}}
     </a>
     {{- with or $page.Summary $page.Description }}
-      <p class="post-item-excerpt">{{ . | plainify | truncate 320 }}</p>
+      <p class="post-item-excerpt">{{ partial "text-plain.html" . | truncate 320 }}</p>
     {{- end }}
   {{- else }}
     {{- $sizes := cond (eq $variant "grid") "(min-width: 64rem) 21rem, (min-width: 40rem) 50vw, 100vw" "(min-width: 64rem) 44rem, 100vw" }}
     {{ partial "cover.html" (dict "page" $page "image" .image "sizes" $sizes "loading" (.loading | default "lazy")) }}
     {{- with or $page.Description $page.Summary }}
-      <p class="post-item-excerpt">{{ . | plainify | truncate (cond (eq $variant "grid") 140 260) }}</p>
+      <p class="post-item-excerpt">{{ partial "text-plain.html" . | truncate (cond (eq $variant "grid") 140 260) }}</p>
     {{- end }}
   {{- end }}
   <p class="post-item-more"><a class="button button--read" href="{{ $page.RelPermalink }}">{{ i18n "read_more" }}<span class="visually-hidden">: {{ $page.Title }}</span>{{ partial "icon.html" "arrow" }}</a></p>

@@ -33,7 +33,7 @@
 {{- $tagline := strings.TrimSuffix "。" (strings.TrimSuffix "." (site.Params.tagline | default "")) -}}
 <title>{{ if or .IsHome (and hugo.IsProduction site.Params.maintenance (not .Params.maintenance_exempt)) }}{{ .Site.Title }}{{ with $tagline }} - {{ . }}{{ end }}{{ else if eq .Kind "404" }}404 — {{ .Site.Title }}{{ else }}{{ .Title }} — {{ .Site.Title }}{{ end }}</title>
 {{ with or .Description .Summary .Site.Params.description -}}
-  <meta name="description" content="{{ . | plainify | truncate 180 }}">
+  <meta name="description" content="{{ partial "text-plain.html" . | truncate 180 }}">
 {{ end -}}
 <link rel="canonical" href="{{ .Permalink }}">
 {{ partial "hreflang.html" . }}
@@ -73,7 +73,7 @@
 {{ end -}}
 <meta property="og:site_name" content="{{ .Site.Title }}">
 {{ with or .Description .Summary .Site.Params.description -}}
-  <meta property="og:description" content="{{ . | plainify | truncate 180 }}">
+  <meta property="og:description" content="{{ partial "text-plain.html" . | truncate 180 }}">
 {{ end -}}
 {{/* Ảnh chia sẻ: ảnh bìa ở trường "cover", rồi ảnh có tên "cover", không có
      thì dùng ảnh mặc định theo ngôn ngữ */}}
@@ -117,7 +117,7 @@
       "author" $author
       "publisher" $author
   -}}
-  {{ with or .Description .Summary }}{{ $ld = merge $ld (dict "description" (. | plainify | truncate 180)) }}{{ end -}}
+  {{ with or .Description .Summary }}{{ $ld = merge $ld (dict "description" (partial "text-plain.html" . | truncate 180)) }}{{ end -}}
   {{ with $og }}{{ $ld = merge $ld (dict "image" .Permalink) }}{{ end -}}
   {{ with .GetTerms "tags" }}{{ $kw := slice }}{{ range . }}{{ $kw = $kw | append .LinkTitle }}{{ end }}{{ $ld = merge $ld (dict "keywords" (delimit $kw ", ")) }}{{ end -}}
   <script type="application/ld+json">{{ $ld | jsonify | safeJS }}</script>

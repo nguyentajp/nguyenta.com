@@ -846,6 +846,11 @@ Mọi thứ về **một trục giữa** như đầu trang (bìa sổ).
   furigana thêm hàng nút furigana; bài viết có vạch đã đọc tới đâu.
 - **Menu là ngăn kéo trượt từ trái** (off-canvas), nền tối phía sau, chạm ra
   ngoài để đóng. Không có JS vẫn mở được (Popover API).
+- **Đầu trang danh sách là tấm nhãn đề nền 白緑** (danh mục, thẻ, Bài viết,
+  Mục lục, Tìm kiếm, Giới thiệu): tên mục cha chữ nhỏ, tiêu đề, một dòng
+  "mô tả · số bài". Điện thoại: sát hai mép, nối liền dưới hàng menu.
+- **Đoạn trích và thẻ mô tả bỏ cách đọc furigana** (秋（あき） → 秋); mở bài
+  ra thì furigana vẫn đủ.
 - **Chữ đọc canh đều hai lề** (thân bài, trang giới thiệu, đoạn trích, lời
   giới thiệu ở sidebar, kết quả tìm kiếm). Tiếng Nhật giãn giữa ký tự
   (両端揃え). Đoạn trích trong khối căn giữa thì dòng cuối nằm giữa.

@@ -1,0 +1,11 @@
+{{- /* Chữ trơn cho đoạn trích trong danh sách và thẻ mô tả (Google, mạng xã
+     hội): bỏ HTML và bỏ cách đọc furigana viết trong ngoặc, 元（げん） → 元.
+     Ở những chỗ này không có <ruby> và không có nút chọn furigana, ngoặc cách
+     đọc chen vào giữa câu chỉ làm câu khó đọc; mở bài ra thì furigana vẫn đủ.
+     Cú pháp nhận diện khớp với _partials/furigana.html.
+     Dùng: partial "text-plain.html" .Summary | truncate 260 */ -}}
+{{- $kana := `[ぁ-ゖァ-ヺー]+` -}}
+{{- $text := . | plainify -}}
+{{- $text = $text | replaceRE (printf `[｜|]([^\s｜|（()）]+)[（(]%s[）)]` $kana) "$1" -}}
+{{- $text = $text | replaceRE (printf `([\p{Han}々〆ヶ]+)[（(]%s[）)]` $kana) "$1" -}}
+{{- return $text -}}

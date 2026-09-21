@@ -2,8 +2,12 @@
   <header class="page-head">
     {{- with .Parent }}<p class="page-parent"><a href="{{ .RelPermalink }}">{{ .Title }}</a></p>{{ end }}
     <h1 class="page-title">{{ .Title }}</h1>
-    {{- with .Description }}<p class="page-intro">{{ . }}</p>{{ end }}
-    <p class="page-count">{{ i18n "list_count" (dict "Count" (len .Pages)) }}</p>
+    {{- /* Mô tả và số bài chung một dòng, ngăn bằng dấu chấm giữa (main.css) */}}
+    <p class="page-intro">
+      {{- /* Bỏ dấu chấm cuối mô tả: số bài đứng ngay sau, "thời gian. · 10 bài" */}}
+      {{- with .Description }}<span>{{ strings.TrimRight ".。" . }}</span>{{ end -}}
+      <span class="page-count">{{ i18n "list_count" (dict "Count" (len .Pages)) }}</span>
+    </p>
   </header>
   <div class="post-list">
     {{- range .Paginator.Pages }}

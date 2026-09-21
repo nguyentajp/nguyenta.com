@@ -11,7 +11,11 @@
   {{- $paginator := .Paginate $pages }}
   <header class="page-head">
     <h1 class="page-title">{{ .Title }}</h1>
-    {{- with .Description }}<p class="page-intro">{{ . }}</p>{{ end }}
+    <p class="page-intro">
+      {{- /* Bỏ dấu chấm cuối mô tả: số bài đứng ngay sau, "thời gian. · 10 bài" */}}
+      {{- with .Description }}<span>{{ strings.TrimRight ".。" . }}</span>{{ end -}}
+      <span class="page-count">{{ i18n "list_count" (dict "Count" (len .Pages)) }}</span>
+    </p>
   </header>
   {{- with $spot }}
     {{- if eq $paginator.PageNumber 1 }}
