@@ -952,27 +952,29 @@ main {
   color: var(--accent);
 }
 
-/* Bảng Menu: Popover API của HTML, không cần JavaScript, có sẵn đóng bằng Esc
-   và bấm ra ngoài. Phủ kín màn hình như một trang riêng: đầu bảng là logo và
-   nút đóng (dính trên cùng khi cuộn), rồi ô tìm kiếm, rồi bản đồ cả site. */
+/* Ngăn Menu (off-canvas): trượt ra từ mép trái, phần trang còn lại tối đi,
+   chạm vào đó, vuốt nút đóng hoặc bấm Esc là đóng. Popover API của HTML nên
+   không cần JavaScript. Trong ngăn: logo và nút đóng (dính trên cùng khi
+   cuộn), ô tìm kiếm, rồi bản đồ cả site. Chuyển động ở mục 10. */
 #menu {
   position: fixed;
-  inset: 0;
-  width: 100%;
+  inset: 0 auto 0 0;
+  width: min(22rem, 86vw);
   height: 100%;
   max-width: none;
   max-height: none;
   margin: 0;
-  padding: 0 var(--gutter) var(--space-6);
+  padding: env(safe-area-inset-top) var(--space-4) var(--space-6);
   overflow-y: auto;
   overscroll-behavior: contain;
   border: 0;
+  border-inline-end: 1px solid var(--rule);
   background: var(--bg);
   color: var(--ink);
 }
 
-#menu:not(:popover-open) {
-  display: none;
+#menu::backdrop {
+  background: rgb(23 25 21 / 0.45);
 }
 
 .menu-head {
@@ -1100,6 +1102,140 @@ main {
 .menu-under a {
   display: block;
   padding-block: var(--space-2);
+}
+
+/* ── 5b. Thanh tiêu đề dính (điện thoại) ──────────────────────────────────── */
+/* _partials/appbar.html, site.js mục 11. Chỉ có trên màn hình hẹp. Nền là
+   giấy 障子 hơi trong, làm mờ chữ chạy bên dưới như thanh điều hướng của iOS
+   (trình duyệt không làm mờ được thì nền gần đặc, vẫn đọc rõ).
+   --appbar-h: chiều cao thanh, để chỗ dính khác (nhãn năm ở Mục lục) và chỗ
+   nhảy tới mục trong bài chừa ra, không bị thanh che. */
+.appbar {
+  display: none;
+}
+
+@media (max-width: 47.999rem) {
+  :root {
+    --appbar-h: calc(3rem + 1px + env(safe-area-inset-top));
+    scroll-padding-block-start: var(--appbar-h);
+  }
+
+  :root:has(.appbar-sub) {
+    --appbar-h: calc(5.75rem + 1px + env(safe-area-inset-top));
+  }
+
+  .appbar {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 30;
+    display: block;
+    padding-block-start: env(safe-area-inset-top);
+    border-block-end: 1px solid var(--rule);
+    background: color-mix(in oklab, var(--bg) 86%, transparent);
+    -webkit-backdrop-filter: saturate(1.5) blur(14px);
+    backdrop-filter: saturate(1.5) blur(14px);
+    translate: 0 -100%;
+    visibility: hidden;
+  }
+
+  .appbar.is-shown {
+    translate: 0 0;
+    visibility: visible;
+  }
+
+  .appbar-row {
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+    align-items: center;
+    min-height: 3rem;
+    padding-inline: calc(var(--gutter) - 0.625rem);
+  }
+
+  .appbar .icon-button {
+    display: grid;
+  }
+
+  .appbar-title {
+    display: grid;
+    justify-items: center;
+    min-width: 0;
+    padding: 0 var(--space-2);
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    cursor: pointer;
+  }
+
+  .appbar-title:lang(ja) {
+    letter-spacing: 0.03em;
+  }
+
+  .appbar-title span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .appbar-title .wordmark svg {
+    height: 1.15rem;
+  }
+
+  /* Hàng furigana: cùng khung nút như dưới tiêu đề bài, gọn lại */
+  .appbar-sub {
+    display: flex;
+    justify-content: center;
+    padding-block: 0 var(--space-2);
+  }
+
+  .appbar .furigana-switch {
+    margin: 0;
+    padding: var(--space-1) var(--space-2);
+    font-size: 0.8125rem;
+  }
+
+  .appbar .furigana-options button {
+    min-height: 1.75rem;
+  }
+
+  /* Vạch đã đọc tới đâu: chạy theo chính thân bài (từ lúc đầu bài chạm mép
+     trên tới lúc cuối bài chạm mép dưới), không theo cả trang có sidebar và
+     chân trang. CSS thuần (scroll-driven animation); trình duyệt chưa hỗ trợ
+     thì vạch không hiện, không hỏng gì. */
+  body {
+    timeline-scope: --gen-article;
+  }
+
+  .post {
+    view-timeline: --gen-article block;
+  }
+
+  .appbar-progress {
+    position: absolute;
+    inset: auto 0 0;
+    height: 2px;
+    background: var(--accent);
+    transform-origin: 0 50%;
+    scale: 0 1;
+  }
+
+  @supports (animation-timeline: view()) {
+    .appbar-progress {
+      animation: gen-progress linear both;
+      animation-timeline: --gen-article;
+      animation-range: contain 0% contain 100%;
+    }
+  }
+}
+
+@keyframes gen-progress {
+  to {
+    scale: 1 1;
+  }
 }
 
 /* ── 6. Bài trong danh sách ───────────────────────────────────────────────── */
@@ -2592,6 +2728,45 @@ a.pager-step:hover {
     animation-duration: 300ms;
     animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
   }
+
+  /* Ngăn Menu trượt ra, nền tối dần, theo đường cong của sheet trên iOS.
+     @starting-style là vị trí lúc vừa mở; allow-discrete để lúc đóng ngăn
+     còn kịp trượt về trước khi biến mất. */
+  #menu,
+  #menu::backdrop {
+    transition:
+      translate 320ms cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 320ms ease,
+      overlay 320ms allow-discrete,
+      display 320ms allow-discrete;
+  }
+
+  #menu:not(:popover-open) {
+    translate: -100% 0;
+  }
+
+  #menu:not(:popover-open)::backdrop {
+    opacity: 0;
+  }
+
+  @starting-style {
+    #menu:popover-open {
+      translate: -100% 0;
+    }
+
+    #menu:popover-open::backdrop {
+      opacity: 0;
+    }
+  }
+
+  /* Thanh tiêu đề trượt xuống / lui lên */
+  .appbar {
+    transition: translate 240ms cubic-bezier(0.32, 0.72, 0, 1), visibility 0s linear 240ms;
+  }
+
+  .appbar.is-shown {
+    transition: translate 240ms cubic-bezier(0.32, 0.72, 0, 1), visibility 0s;
+  }
 }
 
 .kamon-draw .leaf {
@@ -3185,7 +3360,7 @@ html:has(.lightbox[open]) {
    lộ qua lúc trôi. */
 .index-year-title {
   position: sticky;
-  inset-block-start: 0;
+  inset-block-start: var(--appbar-h, 0);
   z-index: 1;
   width: fit-content;
   margin-block-end: var(--space-4);

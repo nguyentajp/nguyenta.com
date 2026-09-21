@@ -26,6 +26,7 @@
     <div class="shell layout is-wide"><main id="noi-dung">{{ block "main" . }}{{ end }}</main></div>
   {{- else }}
     {{ partial "masthead.html" . }}
+    {{ partial "appbar.html" . }}
     {{- /* Hai cột như một blog quen thuộc: nội dung bên trái, sidebar bên phải.
          Trang nào cần cả bề ngang (trang Ảnh) đặt "sidebar: false". */}}
     {{- $sidebar := ne .Params.sidebar false }}

@@ -1,0 +1,29 @@
+{{- /* Thanh tiêu đề dính trên điện thoại, theo kiểu thanh điều hướng của iOS:
+     tiêu đề lớn của trang cuộn đi thì một thanh mảnh trượt xuống, mang tên
+     trang ở giữa. Chỉ có trên màn hình hẹp (main.css mục 5b); máy tính không
+     cần vì đầu trang và sidebar đã đủ lối đi.
+
+       ☰ (mở ngăn Menu) · tên bài / tên trang (chạm để lên đầu) · kính lúp
+       hàng thứ hai, chỉ ở bài có furigana: nút chọn furigana, để đang đọc
+       giữa bài vẫn bật tắt được mà không phải cuộn ngược lên
+       vạch mảnh dưới đáy, chỉ ở bài viết: đã đọc tới đâu (CSS thuần)
+
+     Ẩn và inert cho tới khi site.js mục 11 thấy tiêu đề lớn đã ra khỏi màn
+     hình; không có JS thì thanh không bao giờ hiện. Trang chủ không có tiêu đề
+     trang nên hiện chữ Gen. */ -}}
+{{- $furigana := and .IsPage (findRE `[（(][ぁ-ゖァ-ヺー]+[）)]` .RawContent 1) -}}
+<div class="appbar" data-appbar inert>
+  <div class="appbar-row">
+    <button class="icon-button" type="button" popovertarget="menu" aria-label="{{ i18n "nav_menu" }}">{{ partial "icon.html" "menu" }}</button>
+    <button class="appbar-title" type="button" data-to-top aria-label="{{ i18n "to_top" }}">
+      {{- if .IsHome }}{{ partial "wordmark.html" . }}{{ else }}<span>{{ .Title }}</span>{{ end -}}
+    </button>
+    {{- with site.GetPage "/search" }}
+      <a class="icon-button" href="{{ .RelPermalink }}" aria-label="{{ .Title }}">{{ partial "icon.html" "search" }}</a>
+    {{- end }}
+  </div>
+  {{- if $furigana }}
+    <div class="appbar-sub">{{ partial "furigana-switch.html" . }}</div>
+  {{- end }}
+  {{- if and .IsPage (eq .Section "posts") }}<span class="appbar-progress" aria-hidden="true"></span>{{ end }}
+</div>

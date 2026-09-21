@@ -4,6 +4,8 @@
 other = "アーカイブ"
 [nav_menu]
 other = "メニュー"
+[to_top]
+other = "ページの先頭へ"
 [nav_menu_close]
 other = "閉じる"
 [nav_breadcrumb]

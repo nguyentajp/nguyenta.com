@@ -841,6 +841,11 @@ Mọi thứ về **một trục giữa** như đầu trang (bìa sổ).
 - **Chân trang một cột:** căn giữa; bản tin lên ngay sau logo; hai cột link
   đứng cạnh nhau.
 - **Ô bấm trên điện thoại cao ít nhất 40–44px.**
+- **Thanh tiêu đề dính** (kiểu thanh điều hướng iOS): tiêu đề lớn cuộn đi thì
+  thanh mảnh trượt xuống: ☰ · tên bài (chạm để lên đầu) · kính lúp. Bài có
+  furigana thêm hàng nút furigana; bài viết có vạch đã đọc tới đâu.
+- **Menu là ngăn kéo trượt từ trái** (off-canvas), nền tối phía sau, chạm ra
+  ngoài để đóng. Không có JS vẫn mở được (Popover API).
 
 #### Sau đợt review code — chốt ngày 21/9/2026
 

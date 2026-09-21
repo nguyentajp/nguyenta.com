@@ -4,6 +4,8 @@
 other = "Lưu trữ"
 [nav_menu]
 other = "Menu"
+[to_top]
+other = "Lên đầu trang"
 [nav_menu_close]
 other = "Đóng"
 [nav_breadcrumb]

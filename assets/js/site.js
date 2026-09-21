@@ -10,6 +10,7 @@
 //   8. Ô đăng ký bản tin ở chân trang (gửi ngầm sang Kit)
 //   9. Khung giải thích tiết khí: mở khi rê chuột (máy tính có chuột)
 //  10. Đồng hồ Osaka và TP.HCM ở chân trang
+//  11. Thanh tiêu đề dính trên điện thoại
 
 // ── 1. Kamon ────────────────────────────────────────────────────────────────
 // Lần thứ hai trở đi trong cùng phiên, kamon hiện sẵn. Người đọc bật
@@ -488,3 +489,28 @@
     });
   }
 }
+
+// ── 11. Thanh tiêu đề dính (điện thoại) ────────────────────────────────────
+// Như thanh điều hướng của iOS: tiêu đề lớn của trang (tên bài, tên trang;
+// trang chủ thì cả đầu trang) cuộn ra khỏi màn hình phía trên thì thanh mảnh
+// trượt xuống; cuộn ngược lên thấy lại tiêu đề lớn thì thanh lui đi. Thanh ẩn
+// thì inert, để Tab và máy đọc màn hình không đi vào. Trên máy tính CSS giấu
+// hẳn thanh, đoạn này chạy cũng vô hại.
+(() => {
+  const bar = document.querySelector("[data-appbar]");
+  if (!bar) return;
+  const target = document.querySelector(".post-title, .page-title") || document.querySelector(".masthead");
+  if (!target) return;
+
+  new IntersectionObserver(([entry]) => {
+    const shown = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+    bar.classList.toggle("is-shown", shown);
+    bar.inert = !shown;
+  }).observe(target);
+
+  // Chạm vào tên trang: lên đầu, như chạm thanh trạng thái của iPhone
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  bar.querySelector("[data-to-top]")?.addEventListener("click", () => {
+    scrollTo({ top: 0, behavior: reduce.matches ? "auto" : "smooth" });
+  });
+})();
