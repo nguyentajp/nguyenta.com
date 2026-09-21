@@ -279,7 +279,8 @@
 // ── 8. Bản tin ──────────────────────────────────────────────────────────────
 // Hai trạng thái, do params.newsletter.id trong hugo.toml quyết định.
 //  - Có dịch vụ: JS gửi ngầm sang Kit (Kit mở CORS, trả JSON), người đọc ở lại
-//    trang và thấy lời nhắn ngay dưới ô. Mạng lỗi thì gửi form như thường, sang
+//    trang và thấy lời nhắn ngay dưới ô. Form Kit bật auto-confirm nên đăng ký
+//    là xong, không có thư xác nhận. Mạng lỗi thì gửi form như thường, sang
 //    trang của Kit. Không có JS thì form cũng POST thẳng như thế.
 //  - Chưa có (data-news-mock): footer.html khoá fieldset để không JS thì không
 //    bấm gửi được; có JS thì mở khoá cho xem giao diện, bấm Đăng ký chỉ hiện

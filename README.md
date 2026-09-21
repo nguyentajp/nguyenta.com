@@ -848,8 +848,8 @@ Có quyết định mới thì ghi vào đây.
       không giấu bài khỏi bản xem trước; nó chỉ chặn bài lên nguyenta.com và
       giúp lệnh grep ở trên tìm thấy.
 - [ ] Thay ảnh chân dung (`assets/brand/avatar.jpg`) và thêm ảnh bìa cho các bài.
-- [x] Bản tin ở chân trang: đã nối với **Kit**, form `9940557`, bật thư xác
-      nhận. Ô đăng ký gửi thật. Đổi nhà sau này thì sửa bốn dòng
+- [x] Bản tin ở chân trang: đã nối với **Kit**, form `9940557` ("Gen's Blog
+      Form"), auto-confirm. Ô đăng ký gửi thật. Đổi nhà sau này thì sửa bốn dòng
       `[params.newsletter]` trong `hugo.toml`; thông số của từng nhà ghi sẵn
       ngay trong file đó. Để trống `id` thì khối quay về giao diện mẫu.
 
@@ -857,19 +857,18 @@ Có quyết định mới thì ghi vào đây.
       không tự gửi theo RSS, mỗi bài anh tự soạn và bấm gửi.
 
       Form gửi thẳng sang Kit nên **không có API key nào trong repo**. Có JS thì
-      gửi ngầm: người đọc ở lại trang, thấy lời nhắn "còn một bước" ngay dưới
-      ô (`news_done` / `news_fail` trong `i18n`). Không có JS hoặc mạng lỗi thì
-      form POST như thường và dừng ở trang của Kit. Sau đó người đọc nhận thư,
-      bấm link xác nhận (double opt-in).
+      gửi ngầm: người đọc ở lại trang, thấy lời cảm ơn ngay dưới ô
+      (`news_done` / `news_fail` trong `i18n`). Không có JS hoặc mạng lỗi thì
+      form POST như thường và dừng ở trang của Kit (câu trong form → Settings →
+      General, đã đặt song ngữ).
 
-      Chỉ dùng **một form Kit, song ngữ**: thư xác nhận viết cả tiếng Việt lẫn
-      tiếng Nhật, trang Cảm ơn cũng vậy. Bấm link xác nhận xong, Kit đưa người
-      đọc về `/cam-on/` (`content/vi/cam-on.md`, có `noindex: true` nên không
-      lên Google, không vào sitemap, không vào ô tìm kiếm).
+      Form Kit bật **Auto-confirm new subscribers**: nhập email là thành người
+      đăng ký, không có thư xác nhận (thư của Kit chỉ có bản tiếng Anh, không
+      sửa được). Một form duy nhất cho cả hai tiếng.
 
-      Thư của Kit mặc cùng dáng với blog nhờ mẫu `tools/kit/email-template.html`
-      (dán vào Kit → Send → Email Templates → New → HTML, rồi đặt làm mẫu mặc
-      định và chọn ở thư xác nhận của form). Đổi màu site thì sửa cả mẫu này.
+      Thư bản tin mặc cùng dáng với blog nhờ mẫu `tools/kit/email-template.html`
+      (Kit → Email Templates → Import code, đặt làm mặc định). Đổi màu site thì
+      sửa cả mẫu này.
 
       Mức free của vài nhà, tra lại ngày 21/9/2026:
 

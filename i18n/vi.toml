@@ -229,9 +229,9 @@ other = "Hãy nhập email"
 [news_invalid]
 other = "Email chưa đúng dạng, ví dụ ten@vidu.com"
 [news_note]
-other = "Sau khi đăng ký, anh chị sẽ nhận một thư xác nhận. Địa chỉ email do Kit giữ, không dùng vào việc gì khác."
+other = "Địa chỉ email do Kit giữ, không dùng vào việc gì khác. Muốn thôi nhận, anh chị bấm link hủy ở cuối mỗi thư."
 [news_done]
-other = "Còn một bước: anh chị mở hộp thư và bấm vào thư xác nhận vừa gửi tới. Cảm ơn anh chị đã đăng ký."
+other = "Cảm ơn anh chị, đăng ký xong rồi. Có bài mới, bản tin sẽ gửi tới hộp thư của anh chị."
 [news_fail]
 other = "Chưa đăng ký được. Anh chị xem lại địa chỉ email rồi thử lại giúp."
 [news_not_open]

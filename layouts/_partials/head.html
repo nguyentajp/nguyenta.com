@@ -1,9 +1,7 @@
 {{- /* Thẻ trong <head>: meta, Open Graph, font và CSS. */ -}}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-{{- /* noindex: cả site khi đang bảo trì, hoặc một trang có noindex: true
-     (trang Cảm ơn của bản tin: chỉ người vừa đăng ký mới tới) */}}
-{{ if or (and hugo.IsProduction site.Params.maintenance) .Params.noindex -}}
+{{ if and hugo.IsProduction site.Params.maintenance -}}
   <meta name="robots" content="noindex">
 {{ end -}}
 {{/* Thanh địa chỉ trên điện thoại cùng màu nền trang. Hai mã màu này phải khớp
