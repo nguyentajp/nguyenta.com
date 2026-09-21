@@ -318,18 +318,22 @@
   }
 
   const fieldset = form.querySelector("fieldset");
-  const show = (text) => {
+  const show = (state, text) => {
+    status.dataset.state = state;
     status.textContent = text;
     status.hidden = false;
   };
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    // Gom dữ liệu TRƯỚC khi khoá fieldset: ô bị disabled không vào FormData,
+    // Kit sẽ nhận email rỗng.
+    const body = new FormData(form);
     fieldset.disabled = true;
     let result;
     try {
       const response = await fetch(form.action, {
         method: "POST",
-        body: new FormData(form),
+        body,
         headers: { Accept: "application/json" },
       });
       result = await response.json();
@@ -340,12 +344,16 @@
       return;
     }
     fieldset.disabled = false;
-    if (result.status === "failed") {
-      show(form.dataset.msgFail);
+    if (result.status !== "failed") {
+      show("done", form.dataset.msgDone);
+      form.reset();
+    } else if ((result.errors?.fields || []).every((f) => f === "email_address" || f === "fields")) {
+      show("fail", form.dataset.msgFail);
       email.focus();
     } else {
-      show(form.dataset.msgDone);
-      form.reset();
+      // Kit từ chối vì lý do khác email (bộ lọc bot…): gửi như form thường để
+      // Kit tự xử lý ở trang của nó, ví dụ hỏi "không phải robot".
+      form.submit();
     }
   });
 })();

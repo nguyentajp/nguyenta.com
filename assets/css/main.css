@@ -2154,20 +2154,27 @@ a.pager-step:hover {
   margin-block-start: var(--space-3);
 }
 
+/* Lời nhắn sau khi bấm Đăng ký. Chữ trần cùng cỡ với đoạn giới thiệu thì chìm
+   mất, nên đặt lên một tờ giấy (--card) có gạch màu bên trái: xanh tre khi
+   xong, màu nhấn khi chưa được (data-state do site.js mục 8 đặt). */
 .news-status {
-  margin-block-start: var(--space-2);
-  font-size: 0.875rem;
+  margin-block-start: var(--space-3);
+  padding: 0.625rem 0.875rem;
+  background: var(--card);
+  border-inline-start: 3px solid var(--rule);
+  border-radius: 4px;
+  font-size: 0.9375rem;
+  font-weight: 600;
   color: var(--ink);
   text-wrap: pretty;
 }
 
-/* Dòng nói email đi đâu và phải bấm thư xác nhận. Mảnh hơn .news-status vì là
-   chú thích thường trực, không phải lời nhắn vừa xảy ra. */
-.news-note {
-  margin-block-start: var(--space-2);
-  font-size: 0.8125rem;
-  color: var(--muted);
-  text-wrap: pretty;
+.news-status[data-state="done"] {
+  border-inline-start-color: var(--bamboo);
+}
+
+.news-status[data-state="fail"] {
+  border-inline-start-color: var(--accent);
 }
 
 .footer-bottom {

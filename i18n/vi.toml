@@ -136,7 +136,7 @@ other = "Vòng ensō vẽ bằng một nét bút lông"
 other = "Quay lại"
 
 [maint_line]
-other = "Nơi này đang được dựng. Mời anh chị ghé lại sau, khi mọi thứ đã sẵn sàng."
+other = "Nơi này đang được dựng. Mời bạn ghé lại sau, khi mọi thứ đã sẵn sàng."
 [maint_other_lang]
 other = "日本語"
 
@@ -228,11 +228,9 @@ other = "Đăng ký"
 other = "Hãy nhập email"
 [news_invalid]
 other = "Email chưa đúng dạng, ví dụ ten@vidu.com"
-[news_note]
-other = "Địa chỉ email do Kit giữ, không dùng vào việc gì khác. Muốn thôi nhận, anh chị bấm link hủy ở cuối mỗi thư."
 [news_done]
-other = "Cảm ơn anh chị, đăng ký xong rồi. Có bài mới, bản tin sẽ gửi tới hộp thư của anh chị."
+other = "Cảm ơn bạn, đăng ký xong rồi. Có bài mới, bản tin sẽ gửi tới hộp thư của bạn."
 [news_fail]
-other = "Chưa đăng ký được. Anh chị xem lại địa chỉ email rồi thử lại giúp."
+other = "Chưa đăng ký được. Bạn xem lại địa chỉ email rồi thử lại nhé."
 [news_not_open]
-other = "Bản tin đang được chuẩn bị, chưa nhận đăng ký. Trong lúc chờ, anh chị có thể theo dõi blog qua RSS."
+other = "Bản tin đang được chuẩn bị, chưa nhận đăng ký. Trong lúc chờ, bạn có thể theo dõi blog qua RSS."

@@ -66,7 +66,6 @@
         </fieldset>
         {{- with $newsId }}
           <p class="news-status" role="status" aria-live="polite" hidden></p>
-          <p class="news-note">{{ i18n "news_note" }}</p>
         {{- else }}
           <p class="news-status" role="status" aria-live="polite" hidden>{{ i18n "news_not_open" }}</p>
         {{- end }}
