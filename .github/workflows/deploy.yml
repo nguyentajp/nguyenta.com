@@ -164,7 +164,7 @@ jobs:
           fi
           mkdir kept
           for p in index.html ja/index.html 404.html robots.txt favicon.ico \
-                   apple-touch-icon.png css js fonts brand concept ve-blog \
+                   apple-touch-icon.png sw.js css js fonts brand concept ve-blog \
                    ja/about-blog; do
             if [ -e "public/$p" ]; then
               mkdir -p "kept/$(dirname "$p")"

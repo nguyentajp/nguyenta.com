@@ -12,6 +12,7 @@
 //  10. Đồng hồ Osaka và TP.HCM ở chân trang
 //  11. Thanh tiêu đề dính trên điện thoại
 //  12. Tải trước trang khi chạm vào link (trình duyệt không có Speculation Rules)
+//  13. Service Worker: giữ font, CSS, JS, ảnh trên máy (static/sw.js)
 
 // ── 1. Kamon ────────────────────────────────────────────────────────────────
 // Lần thứ hai trở đi trong cùng phiên, kamon hiện sẵn. Người đọc bật
@@ -551,3 +552,16 @@
   addEventListener("touchstart", warm, { capture: true, passive: true });
   addEventListener("mousedown", warm, { capture: true });
 })();
+
+// ── 13. Service Worker ──────────────────────────────────────────────────────
+// static/sw.js giữ sẵn trên máy những file có mã băm trong tên (font, CSS, JS,
+// ảnh), để chuyển trang không phải hỏi lại máy chủ; HTML vẫn luôn lấy mới. Đăng
+// ký sau khi trang tải xong, không giành băng thông với trang đầu. Bỏ qua khi
+// chạy ở máy (hugo server), để sửa CSS là thấy ngay, không vướng bộ nhớ đệm.
+if ("serviceWorker" in navigator && !["localhost", "127.0.0.1"].includes(location.hostname)) {
+  addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {
+      // Không đăng ký được (trình duyệt chặn, chế độ riêng tư): site vẫn chạy như thường.
+    });
+  });
+}

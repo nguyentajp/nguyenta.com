@@ -20,6 +20,7 @@ Font gốc lấy bằng tools/fonts/get-sources.py.
 from __future__ import annotations
 
 import argparse
+import collections
 import hashlib
 import html
 import json
@@ -351,77 +352,176 @@ def page_text(markup: str) -> tuple[str, str]:
     return visible + " " + attrs, headings
 
 
-def build_pages(public: pathlib.Path) -> None:
-    font_dir = public / "fonts/p"
-    cache: dict[tuple[str, str], str] = {}
-    pages = sorted(public.rglob("*.html"))
-    total_after = 0
+def unicode_range(chars: set[str]) -> str:
+    """Bộ ký tự thành chuỗi unicode-range gọn: U+3041-3096,U+4E00,..."""
+    parts: list[str] = []
+    codes = sorted(ord(c) for c in chars)
+    start = prev = None
+    for code in codes + [None]:
+        if start is not None and code == prev + 1:
+            prev = code
+            continue
+        if start is not None:
+            parts.append(f"U+{start:X}" if start == prev else f"U+{start:X}-{prev:X}")
+        start = prev = code
+    return ",".join(parts)
 
-    for page in pages:
-        markup = page.read_text(encoding="utf-8")
+
+def latin_chars(text: str) -> set[str]:
+    return {c for c in text if not is_cjk(c) and ord(c) < 0x3000}
+
+
+def ja_chars(text: str) -> set[str]:
+    return {c for c in text if is_cjk(c) or 0x3000 <= ord(c) < 0x3100 or 0xFF00 <= ord(c) < 0xFFF0}
+
+
+def build_pages(public: pathlib.Path) -> None:
+    """Font cho từng trang, chia làm hai loại file:
+
+    Dùng chung, giống hệt nhau ở mọi trang: tải ở trang đầu tiên rồi nằm sẵn
+    trong bộ nhớ đệm (và trong Service Worker, static/sw.js), nên chuyển sang
+    trang khác không phải tải lại, chữ không nháy từ font dự phòng sang font
+    thật. Gồm:
+      - chữ Latin và tiếng Việt: toàn bộ dấu tiếng Việt cộng mọi chữ Latin
+        site có dùng (thân bài, bản in nghiêng, bản tiêu đề);
+      - trang tiếng Nhật: kana, dấu câu và những chữ Hán có mặt ở từ nửa số
+        trang tiếng Nhật trở lên (chữ của giao diện: menu, sidebar, chân trang);
+      - trang tiếng Việt: vài chữ Nhật lẻ của giao diện (日本語…), gom chung.
+    Riêng từng trang, chỉ ở trang tiếng Nhật: những chữ Hán còn lại của bài đó.
+    File này khai báo unicode-range, nên trình duyệt chỉ tìm tới nó cho đúng các
+    chữ đó; kana và chữ giao diện hiện ngay từ file dùng chung.
+
+    Trước đây mỗi trang có trọn bộ font riêng: trang đầu nhẹ hơn một chút, nhưng
+    mỗi lần chuyển trang lại tải 45–90 KB font mới và chữ nháy đổi font, nhất là
+    trên điện thoại.
+    """
+    font_dir = public / "fonts/p"
+    faces = {face["key"]: face for face in FACES}
+    made: dict[tuple[str, str], str] = {}
+
+    def file_for(key: str, chars: set[str]) -> str:
+        digest = hashlib.sha256("".join(sorted(chars)).encode("utf-8")).hexdigest()[:12]
+        if (key, digest) not in made:
+            name = f"{key}.{digest}.woff2"
+            subset_font(prepared_source(faces[key]), chars, font_dir / name)
+            made[key, digest] = name
+        return made[key, digest]
+
+    def rule(key: str, name: str, chars: set[str] | None = None) -> str:
+        face = faces[key]
+        return (
+            "@font-face{"
+            f"font-family:'{face['family']}';"
+            f"font-style:{face['style']};"
+            f"font-weight:{face['weight']};"
+            "font-display:swap;"
+            f"src:url(/fonts/p/{name}) format('woff2')"
+            + (f";unicode-range:{unicode_range(chars)}" if chars else "")
+            + "}"
+        )
+
+    # Lượt 1: đọc chữ của mọi trang
+    pages = []
+    for path in sorted(public.rglob("*.html")):
+        markup = path.read_text(encoding="utf-8")
         if not STYLE_RE.search(markup):
             continue
         all_text, display_text = page_text(markup)
-        # Trang có chữ sinh ra động (trang tìm kiếm) tự khai báo cần bộ cốt lõi,
-        # nhưng chỉ bộ cốt lõi của đúng ngôn ngữ trang đó: tìm bằng tiếng Việt
-        # thì kết quả không bao giờ có kana.
-        core = bool(CORE_RE.search(markup))
         lang = LANG_RE.search(markup)
-        core_ja = core and bool(lang) and lang.group(1).startswith("ja")
+        pages.append({
+            "path": path,
+            "markup": markup,
+            "all": all_text,
+            "display": display_text,
+            "ja": bool(lang) and lang.group(1).startswith("ja"),
+            "italic": bool(re.search(r"<(em|i)[ >]", markup)),
+        })
 
-        rules = []
-        page_files: dict[str, str] = {}
-        page_bytes = 0
-        has_italic = bool(re.search(r"<(em|i)[ >]", markup))
-        for face in FACES:
-            if face.get("needs") == "italic" and not has_italic:
+    # Bộ chữ dùng chung. Luôn có CORE_LATIN (và CORE_JA cho trang tiếng Nhật)
+    # để chữ sinh ra lúc đọc (kết quả tìm kiếm, bài mới chưa build lại font)
+    # vẫn đúng font.
+    ja_pages = [p for p in pages if p["ja"]]
+    vi_pages = [p for p in pages if not p["ja"]]
+    threshold = max(2, len(ja_pages) // 2)
+
+    def ja_common(field: str) -> set[str]:
+        count: collections.Counter[str] = collections.Counter()
+        for p in ja_pages:
+            count.update(ja_chars(p[field]))
+        return {c for c, n in count.items() if n >= threshold}
+
+    shared_latin = CORE_LATIN | set().union(*(latin_chars(p["all"]) for p in pages))
+    shared = {
+        "literata-roman": shared_latin,
+        "literata-italic": shared_latin,
+        "literata-display": CORE_LATIN | set().union(*(latin_chars(p["display"]) for p in pages)),
+    }
+    ja_shared = {
+        "shippori-body": (CORE_JA | ja_common("all"), set().union(*(ja_chars(p["all"]) for p in vi_pages))),
+        "shippori-display": (ja_common("display"), set().union(*(ja_chars(p["display"]) for p in vi_pages))),
+    }
+    field_of = {"shippori-body": "all", "shippori-display": "display"}
+
+    # Lượt 2: ghi khối @font-face và preload vào từng trang
+    own_bytes = []
+    for p in pages:
+        rules: list[str] = []
+        preload: list[str] = []
+        for key in ("literata-roman", "literata-italic", "literata-display"):
+            if key == "literata-italic" and not p["italic"]:
                 continue          # không có chữ in nghiêng thì không cần face italic
-            use_core = core_ja if face["scope"].startswith("ja") else core
-            # Kết quả tìm kiếm hiện bằng chữ thân bài, không dùng font tiêu đề,
-            # nên font tiêu đề không cần bộ cốt lõi ngay cả ở trang tìm kiếm
-            if face["scope"] == "latin-display":
-                use_core = False
-            chars = chars_for(face["scope"], all_text, display_text, core=use_core)
-            if not {c for c in chars if not c.isspace()}:
-                continue          # trang tiếng Việt thường không có chữ Nhật nào
-            digest = hashlib.sha256("".join(sorted(chars)).encode("utf-8")).hexdigest()[:12]
-            key = (face["key"], digest)
-            if key not in cache:
-                name = f"{face['key']}.{digest}.woff2"
-                size = subset_font(prepared_source(face), chars, font_dir / name)
-                cache[key] = name
-            name = cache[key]
-            page_files[face["key"]] = name
-            page_bytes += (font_dir / name).stat().st_size
-            rules.append(
-                "@font-face{"
-                f"font-family:'{face['family']}';"
-                f"font-style:{face['style']};"
-                f"font-weight:{face['weight']};"
-                "font-display:swap;"
-                f"src:url(/fonts/p/{name}) format('woff2')"
-                "}"
-            )
+            name = file_for(key, shared[key])
+            rules.append(rule(key, name))
+            if key != "literata-italic":
+                preload.append(name)
 
-        css = "".join(rules)
-        # Preload đúng file subset của trang này, thay cho dòng preload trỏ tới
+        page_own = 0
+        for key in ("shippori-body", "shippori-display"):
+            common, vi_set = ja_shared[key]
+            own = {c for c in ja_chars(p[field_of[key]]) if not c.isspace()}
+            if not p["ja"]:
+                if own:           # trang tiếng Việt: vài chữ Nhật lẻ, file chung
+                    rules.append(rule(key, file_for(key, vi_set)))
+                continue
+            # Khai báo file chung trước, file riêng sau: với chữ nằm trong
+            # unicode-range của file riêng, trình duyệt thử file khai báo sau
+            # trước (đặc tả CSS Fonts), chữ còn lại đi thẳng về file chung.
+            if common:
+                name = file_for(key, common)
+                rules.append(rule(key, name))
+                if key == "shippori-body":
+                    preload.append(name)
+            rest = own - common
+            if rest:
+                name = file_for(key, rest)
+                rules.append(rule(key, name, rest))
+                page_own += (font_dir / name).stat().st_size
+                if key == "shippori-body":
+                    preload.append(name)
+        own_bytes.append(page_own)
+
+        # Preload đúng các file của trang này, thay cho dòng preload trỏ tới
         # file toàn site mà Hugo sinh ra (nếu giữ, trình duyệt tải thừa một file
-        # và file thật lại về muộn, chữ bị đổi font muộn làm bố cục xô lệch).
-        # Font tiêu đề cũng preload: nó về muộn thì tiêu đề đổi độ rộng, có thể
-        # xuống dòng khác và đẩy nội dung bên dưới (CLS).
-        wanted = ["literata-roman", "literata-display"] + (["shippori-body"] if lang and lang.group(1).startswith("ja") else [])
-        preload = "".join(
-            f'<link rel=preload href=/fonts/p/{page_files[k]} as=font type=font/woff2 crossorigin>'
-            for k in wanted if k in page_files
+        # và file thật lại về muộn, chữ đổi font muộn làm bố cục xô lệch).
+        links = "".join(
+            f"<link rel=preload href=/fonts/p/{name} as=font type=font/woff2 crossorigin>" for name in preload
         )
-        markup = PRELOAD_RE.sub("", markup)
-        markup = STYLE_RE.sub(lambda m: preload + m.group(1) + css + m.group(3), markup, count=1)
-        page.write_text(markup, encoding="utf-8")
-        total_after += page_bytes
+        markup = PRELOAD_RE.sub("", p["markup"])
+        markup = STYLE_RE.sub(lambda m: links + m.group(1) + "".join(rules) + m.group(3), markup, count=1)
+        p["path"].write_text(markup, encoding="utf-8")
 
-    print(f"Đã subset font riêng cho {len(pages)} trang.")
-    print(f"  số file woff2 sinh ra: {len(cache)}")
-    print(f"  tổng dung lượng font: {total_after / 1024:.1f} KB")
+    def size(name: str) -> float:
+        return (font_dir / name).stat().st_size / 1024
+
+    print(f"Đã ghi font cho {len(pages)} trang, sinh {len(made)} file woff2.")
+    for key, chars in shared.items():
+        print(f"  dùng chung {key:<18} {size(file_for(key, chars)):>7.1f} KB")
+    for key, (common, _vi) in ja_shared.items():
+        if common:
+            print(f"  dùng chung {key:<18} {size(file_for(key, common)):>7.1f} KB (trang tiếng Nhật)")
+    ja_own = [b / 1024 for b, p in zip(own_bytes, pages) if p["ja"] and b]
+    if ja_own:
+        print(f"  riêng mỗi trang tiếng Nhật: trung bình {sum(ja_own) / len(ja_own):.1f} KB, nhiều nhất {max(ja_own):.1f} KB")
 
 
 def main() -> None:

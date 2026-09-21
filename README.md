@@ -858,6 +858,12 @@ Mọi thứ về **một trục giữa** như đầu trang (bìa sổ).
   "mô tả · số bài". Điện thoại: sát hai mép, nối liền dưới hàng menu.
 - **Đoạn trích và thẻ mô tả bỏ cách đọc furigana** (秋（あき） → 秋); mở bài
   ra thì furigana vẫn đủ.
+- **Chuyển trang mượt như app** (22/9): font dùng chung cho cả site (chữ
+  Latin, tiếng Việt; kana và chữ giao diện tiếng Nhật), chỉ chữ Hán riêng của
+  từng bài tiếng Nhật là file riêng; Service Worker (`static/sw.js`) giữ font,
+  CSS, JS, ảnh có mã băm trên máy; Speculation Rules dựng sẵn trang khi chạm
+  vào link. Trang đầu nặng hơn (~110 KB font thay vì ~45 KB), các trang sau
+  gần như không tải font. Tắt khẩn cấp Service Worker: xem đầu `static/sw.js`.
 - **Chữ đọc canh đều hai lề** (thân bài, trang giới thiệu, đoạn trích, lời
   giới thiệu ở sidebar, kết quả tìm kiếm). Tiếng Nhật giãn giữa ký tự
   (両端揃え). Đoạn trích trong khối căn giữa thì dòng cuối nằm giữa.
