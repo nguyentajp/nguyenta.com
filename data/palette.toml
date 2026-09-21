@@ -39,8 +39,8 @@
   vi_name = "Lục nhạt"
   light = "#dce3d6"
   dark = "#222720"
-  vi = "Màu nhạt duy nhất, cho nhãn khung và những dải nền nhạt."
-  ja_role = "唯一の淡い色。枠の題簽や、控えめな帯に。"
+  vi = "Màu nhạt duy nhất: nhãn đề của khung, tấm đầu trang danh sách, dải chân trang, nút Đọc tiếp."
+  ja_role = "唯一の淡い色。枠の題簽、一覧の見出し、フッターの帯、「続きを読む」のボタンに。"
 
 [[colors]]
   ja = "奉書"
@@ -48,8 +48,8 @@
   vi_name = "Giấy trắng"
   light = "#fcfdfa"
   dark = "#1d201b"
-  vi = "Nền các khung có nhãn đề. Sáng hơn nền trang một nấc, như tờ giấy đặt lên trang."
-  ja_role = "題簽のある枠の地。地の色より一段明るく、紙を一枚重ねたように。"
+  vi = "Nền các khung có nhãn đề và các ô bấm. Sáng hơn nền trang một nấc, như tờ giấy đặt lên trang."
+  ja_role = "題簽のある枠やボタンの地。地の色より一段明るく、紙を一枚重ねたように。"
 
 [[colors]]
   ja = "竹"
@@ -57,8 +57,8 @@
   vi_name = "Tre"
   light = "#3f6a47"
   dark = "#8fbf95"
-  vi = "Xanh thân tre: tên tiết khí bấm được để đọc giải thích."
-  ja_role = "竹の幹の緑。説明が開く節気の名前に。"
+  vi = "Xanh thân tre: tên tiết khí bấm được để đọc giải thích, và dấu báo đã đăng ký bản tin."
+  ja_role = "竹の幹の緑。説明が開く節気の名前と、ニュースレター登録が済んだしるしに。"
 
 [[colors]]
   ja = "銀杏"

@@ -337,6 +337,15 @@ a:hover {
   overflow-wrap: anywhere;
 }
 
+/* Điện thoại: mục danh sách hẹp hơn đoạn văn một khoảng gạch đầu dòng, canh
+   đều ở bề ngang đó làm câu tiếng Việt giãn hở từng chữ. Để mục danh sách
+   canh trái; tiếng Nhật giãn giữa ký tự nên vẫn canh đều được. */
+@media (max-width: 35.999rem) {
+  .prose li:not(:lang(ja)) {
+    text-align: start;
+  }
+}
+
 .prose h2,
 .prose h3 {
   font-family: var(--font-display);

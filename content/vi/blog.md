@@ -29,3 +29,12 @@ Blog dựng theo ba nguyên tắc của thẩm mỹ Nhật:
 - **Ma**: khoảng trắng có chủ đích, để mắt được nghỉ.
 - **Kanso**: giản lược tới mức cần thiết, bỏ mọi thứ không phục vụ việc đọc.
 - **Shibumi**: vẻ đẹp kiềm chế, màu dịu, không phô trương.
+
+## Trình bày
+
+Cả site dựng như một cuốn sổ đóng chỉ.
+
+- **Một trục giữa.** Đầu trang, tên bài, đầu mỗi trang danh sách đều nằm giữa, như chữ trên bìa sổ.
+- **Nhãn đề.** Tên các khung và đầu mỗi trang danh sách nằm trên một mảnh nền lục nhạt, như mảnh giấy đề tên dán trên bìa sách cũ.
+- **Chữ như trang sách.** Đoạn văn canh đều hai lề. Bài tiếng Nhật có chữ nhỏ ghi cách đọc trên chữ Hán, có thể để hiện, chạm mới hiện, hoặc tắt.
+- **Trên điện thoại**, cuộn xuống thì tên bài thu lại thành một thanh mảnh ở trên cùng, đọc tới đâu có vạch chỉ tới đó; menu là một ngăn kéo ra từ bên trái.
