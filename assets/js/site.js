@@ -7,7 +7,7 @@
 //   5. Furigana: nút chọn hiện, chạm để xem, tắt
 //   6. Nút giao diện sáng tối
 //   7. Hàng ngang cuộn (Bài viết liên quan): nút ‹ ›
-//   8. Ô đăng ký bản tin ở chân trang (giao diện mẫu, chưa gửi đi đâu)
+//   8. Ô đăng ký bản tin ở chân trang (gửi ngầm sang Kit)
 //   9. Khung giải thích tiết khí: mở khi rê chuột (máy tính có chuột)
 //  10. Đồng hồ Osaka và TP.HCM ở chân trang
 
@@ -329,6 +329,7 @@
     // Kit sẽ nhận email rỗng.
     const body = new FormData(form);
     fieldset.disabled = true;
+    form.setAttribute("aria-busy", "true");
     let result;
     try {
       const response = await fetch(form.action, {
@@ -344,6 +345,7 @@
       return;
     }
     fieldset.disabled = false;
+    form.removeAttribute("aria-busy");
     if (result.status !== "failed") {
       show("done", form.dataset.msgDone);
       form.reset();
@@ -366,7 +368,8 @@
 (() => {
   const button = document.querySelector("[data-sekki]");
   const note = document.getElementById("sekki-note");
-  if (!button || !note) return;
+  // Trình duyệt chưa có Popover API (Safari trước 17): không có gì để mở
+  if (!button || !note || !("showPopover" in note)) return;
 
   const GAP = 8;
   const EDGE = 12;
@@ -467,11 +470,21 @@
       }
     };
 
+    // Hẹn lại từng phút theo đồng hồ thật thay vì setInterval: tab chạy ngầm
+    // bị trình duyệt làm chậm hẹn giờ, setInterval sẽ trễ dần.
+    const schedule = () => {
+      const now = new Date();
+      setTimeout(() => {
+        tick();
+        schedule();
+      }, 60000 - now.getSeconds() * 1000 - now.getMilliseconds());
+    };
     tick();
     row.hidden = false;
-    setTimeout(() => {
-      tick();
-      setInterval(tick, 60000);
-    }, (60 - new Date().getSeconds()) * 1000);
+    schedule();
+    // Quay lại tab sau một lúc: cập nhật ngay, không chờ tới phút sau
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) tick();
+    });
   }
 }

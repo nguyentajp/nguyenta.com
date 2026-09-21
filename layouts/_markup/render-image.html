@@ -31,8 +31,11 @@
     {{- /* Bề rộng ảnh hiển thị: cột chữ khoảng 44rem khi có sidebar bên cạnh */ -}}
     {{- $sizes := "(min-width: 64rem) 44rem, 100vw" -}}
     {{- if eq $class "narrow" }}{{ $sizes = "20rem" }}{{ end -}}
-    {{- /* Ảnh đầu tiên của bài thường nằm ngay dưới tiêu đề: tải ngay, không lazy */ -}}
-    {{- $loading := cond (eq .Ordinal 0) "eager" "lazy" -}}
+    {{- /* Ảnh đầu tiên của bài tải ngay (và ưu tiên cao) chỉ khi bài không có
+         ảnh bìa. Có ảnh bìa thì ảnh bìa mới là ảnh lớn đầu màn hình; ảnh trong
+         thân bài giành băng thông với nó chỉ làm trang hiện chậm hơn. */ -}}
+    {{- $hasCover := partial "cover-resource.html" (dict "page" $page "fallback" false) -}}
+    {{- $loading := cond (and (eq .Ordinal 0) (not $hasCover)) "eager" "lazy" -}}
     {{- $picture := partial "picture.html" (dict
           "res" $res "alt" $alt "caption" (or $caption $alt)
           "sizes" $sizes "loading" $loading) -}}

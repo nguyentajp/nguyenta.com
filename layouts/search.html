@@ -11,7 +11,7 @@
   </header>
   <div class="search" data-fonts="core"
        data-results="{{ $count }}" data-none="{{ i18n "search_no_results" }}"
-       data-loading="{{ i18n "search_loading" }}">
+       data-loading="{{ i18n "search_loading" }}" data-error="{{ i18n "search_error" }}">
     <form class="search-form" role="search" action="{{ .RelPermalink }}" method="get">
       <label class="visually-hidden" for="q">{{ i18n "search_placeholder" }}</label>
       <input id="q" name="q" type="search" placeholder="{{ i18n "search_placeholder" }}"

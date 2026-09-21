@@ -3,3 +3,8 @@
 {{- range .Translations }}
 <link rel="alternate" hreflang="{{ .Site.Language.Lang }}" href="{{ .Permalink }}">
 {{- end }}
+{{- /* x-default: bản cho người đọc không khớp ngôn ngữ nào, lấy bản tiếng Việt
+     (ngôn ngữ mặc định) nếu trang có bản đó */}}
+{{- with index (where .AllTranslations "Lang" (index hugo.Sites 0).Language.Lang) 0 }}
+<link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
+{{- end }}

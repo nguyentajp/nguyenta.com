@@ -13,7 +13,9 @@ echo "① Font"
 
 echo "② Chỉ mục tìm kiếm"
 build_dir="$(mktemp -d)"
-hugo --quiet --buildDrafts --destination "$build_dir"
+# -e development: "hugo" trần build ở chế độ production, mà lúc site đang bảo
+# trì thì production chỉ ra trang ensō, chỉ mục sẽ gần như rỗng.
+hugo --quiet -e development --buildDrafts --destination "$build_dir"
 npx --yes pagefind@1.5.2 --site "$build_dir" --output-path static/pagefind > /dev/null
 rm -rf "$build_dir"
 

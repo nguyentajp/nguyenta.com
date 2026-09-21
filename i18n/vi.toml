@@ -114,8 +114,10 @@ other = "Không tìm thấy gì cho từ khoá này."
 [search_loading]
 other = "Đang tìm"
 
+[search_error]
+other = "Chưa tải được bộ tìm kiếm. Bạn thử tải lại trang nhé."
 [search_noscript]
-other = "Trang tìm kiếm cần bật JavaScript. Anh có thể xem toàn bộ bài ở trang Lưu trữ."
+other = "Trang tìm kiếm cần bật JavaScript. Bạn có thể xem toàn bộ bài ở trang Mục lục."
 
 [archive_month]
 other = "Tháng {{ .Month }}"

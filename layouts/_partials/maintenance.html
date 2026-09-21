@@ -3,8 +3,11 @@
      baseof.html khi bật params.maintenance. data-maintenance là dấu hiệu để
      workflow deploy biết cần xoá các trang còn lại. */ -}}
 {{- $other := cond (eq site.Language.Lang "vi") "/ja/" "/" }}
+{{- $otherLang := cond (eq site.Language.Lang "vi") "ja" "vi" }}
 <div class="nagi" data-maintenance>
+  <h1 class="visually-hidden">{{ site.Title }}</h1>
   {{ partial "enso.html" . }}
   <p class="nagi-line">{{ i18n "maint_line" }}</p>
-  <a class="nagi-back" href="{{ $other }}" hreflang="{{ cond (eq site.Language.Lang "vi") "ja" "vi" }}">{{ i18n "maint_other_lang" }}</a>
+  {{- /* Chữ của link viết bằng ngôn ngữ kia, nên mang lang của ngôn ngữ đó */}}
+  <a class="nagi-back" href="{{ $other }}" lang="{{ $otherLang }}" hreflang="{{ $otherLang }}">{{ i18n "maint_other_lang" }}</a>
 </div>

@@ -114,8 +114,10 @@ other = "見つかりませんでした。"
 [search_loading]
 other = "検索中"
 
+[search_error]
+other = "検索の準備ができませんでした。ページを再読み込みしてください。"
 [search_noscript]
-other = "検索には JavaScript が必要です。すべての記事はアーカイブから見られます。"
+other = "検索には JavaScript が必要です。すべての記事は目次から見られます。"
 
 [archive_month]
 other = "{{ .Month }}月"
