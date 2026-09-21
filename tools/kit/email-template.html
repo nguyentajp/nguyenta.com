@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+  Mẫu thư cho Kit (kit.com), cùng dáng với nguyenta.com: nền giấy cửa 障子,
+  chữ mực 墨, chữ phụ bóng tre 竹影, nút và link màu tre 竹, font có chân.
+  Dùng cho cả thư xác nhận đăng ký lẫn các số bản tin, song ngữ Việt – Nhật.
+
+  Dán nguyên file này vào Kit: Send → Email Templates → New → HTML.
+  Kit bắt buộc có ba thẻ: {{ message_content }} (nội dung từng thư),
+  {{ unsubscribe_url }} và {{ address }}. Đừng xoá chúng.
+
+  Màu viết thẳng vào từng thẻ (inline) vì Gmail bỏ phần lớn <style>. Font
+  Literata / Shippori Mincho chỉ hiện ở Apple Mail và vài app; Gmail, Outlook
+  lùi về Georgia và font Mincho của máy, vẫn là kiểu có chân.
+  Màu lấy từ assets/css/main.css; đổi màu site thì sửa cả ở đây.
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Gen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Những gì đặt được ở đây là phần thêm cho app đọc được <style>.
+       Mọi thứ cần thiết đã nằm inline bên dưới. */
+    body { margin: 0; padding: 0; background: #f6f7f2; }
+    .gen-content p { margin: 0 0 1em; }
+    .gen-content h1, .gen-content h2, .gen-content h3 {
+      font-weight: 600; line-height: 1.35; color: #22251f; margin: 1.6em 0 0.6em;
+    }
+    .gen-content a { color: #3f6a47; text-decoration: underline; text-underline-offset: 3px; }
+    .gen-content img { max-width: 100%; height: auto; border-radius: 4px; }
+    .gen-content hr { border: 0; border-top: 1px solid #dce3d6; margin: 2em 0; }
+    .gen-content blockquote {
+      margin: 1.2em 0; padding: 0 0 0 1em; border-left: 2px solid #dce3d6; color: #5a6055;
+    }
+    /* Nút của Kit (nút xác nhận đăng ký, nút trong bản tin) */
+    .gen-content .btn, .gen-content a.button, .gen-content .ck-button a {
+      display: inline-block; background: #3f6a47 !important; color: #fcfdfa !important;
+      text-decoration: none !important; padding: 12px 24px; border-radius: 4px; font-weight: 600;
+    }
+    @media (max-width: 620px) {
+      .gen-card { padding: 28px 22px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;background:#f6f7f2;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f6f7f2;">
+    <tr>
+      <td align="center" style="padding:32px 12px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;">
+
+          <!-- Đầu thư: kamon + tên, như góc trái trên của blog -->
+          <tr>
+            <td style="padding:0 4px 20px;">
+              <a href="https://nguyenta.com/" style="text-decoration:none;color:#22251f;">
+                <img src="https://nguyenta.com/apple-touch-icon.png" width="40" height="40" alt="" style="vertical-align:middle;border:0;border-radius:8px;">
+                <span style="font-family:Literata,Georgia,'Times New Roman',serif;font-size:24px;font-weight:600;letter-spacing:0.01em;vertical-align:middle;padding-left:8px;color:#22251f;">Gen</span>
+              </a>
+            </td>
+          </tr>
+
+          <!-- Thân thư -->
+          <tr>
+            <td class="gen-card gen-content" style="background:#fcfdfa;border:1px solid #dce3d6;border-radius:6px;padding:36px 40px;font-family:Literata,'Shippori Mincho',Georgia,'Hiragino Mincho ProN','Yu Mincho',serif;font-size:17px;line-height:1.75;color:#22251f;">
+              {{ message_content }}
+            </td>
+          </tr>
+
+          <!-- Chân thư: song ngữ, chữ phụ màu bóng tre -->
+          <tr>
+            <td style="padding:24px 4px 0;font-family:Literata,'Shippori Mincho',Georgia,'Hiragino Mincho ProN','Yu Mincho',serif;font-size:13px;line-height:1.7;color:#5a6055;">
+              <p style="margin:0 0 6px;">Từ Osaka, một người Việt chép lại hành trình của mình.<br>
+                <span lang="ja">大阪より、ベトナム人として、自分の旅を綴る。</span></p>
+              <p style="margin:0 0 6px;">
+                <a href="https://nguyenta.com/" style="color:#3f6a47;">nguyenta.com</a>
+                &nbsp;·&nbsp;
+                <a href="{{ unsubscribe_url }}" style="color:#5a6055;">Hủy đăng ký</a>
+                &nbsp;/&nbsp;
+                <a href="{{ unsubscribe_url }}" style="color:#5a6055;" lang="ja">配信停止</a>
+              </p>
+              <p style="margin:0;font-size:12px;">{{ address }}</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

@@ -862,11 +862,14 @@ Có quyết định mới thì ghi vào đây.
       form POST như thường và dừng ở trang của Kit. Sau đó người đọc nhận thư,
       bấm link xác nhận (double opt-in).
 
-      Bấm link xác nhận xong, Kit đưa người đọc về trang Cảm ơn của blog:
-      `/cam-on/` (`content/vi/cam-on.md`) và `/ja/thanks/` (`content/ja/thanks.md`).
-      Hai trang này có `noindex: true` nên không lên Google, không vào sitemap,
-      không vào ô tìm kiếm. Địa chỉ trang đặt trong Kit: form → **Settings** →
-      **Incentive** → **Redirect to URL** sau khi xác nhận.
+      Chỉ dùng **một form Kit, song ngữ**: thư xác nhận viết cả tiếng Việt lẫn
+      tiếng Nhật, trang Cảm ơn cũng vậy. Bấm link xác nhận xong, Kit đưa người
+      đọc về `/cam-on/` (`content/vi/cam-on.md`, có `noindex: true` nên không
+      lên Google, không vào sitemap, không vào ô tìm kiếm).
+
+      Thư của Kit mặc cùng dáng với blog nhờ mẫu `tools/kit/email-template.html`
+      (dán vào Kit → Send → Email Templates → New → HTML, rồi đặt làm mẫu mặc
+      định và chọn ở thư xác nhận của form). Đổi màu site thì sửa cả mẫu này.
 
       Mức free của vài nhà, tra lại ngày 21/9/2026:
 

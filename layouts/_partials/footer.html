@@ -14,9 +14,7 @@
      chân trang lệch nhịp, nên Ủng hộ trở lại làm một link trong cột trang
      khác, còn chân trang thì chỉ còn chữ và đường mảnh. */ -}}
 {{- $news := site.Params.newsletter | default dict -}}
-{{- /* Trang tiếng Nhật dùng form riêng (id_ja) nếu có, để thư xác nhận và
-     trang Cảm ơn đúng tiếng; chưa có thì dùng chung id */ -}}
-{{- $newsId := index $news (printf "id_%s" site.Language.Lang) | default $news.id | default "" -}}
+{{- $newsId := $news.id | default "" -}}
 {{- $newsField := $news.field | default "email" -}}
 <footer class="site-footer">
   <div class="shell footer-grid">
