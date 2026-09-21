@@ -2109,6 +2109,29 @@ a.pager-step:hover {
   text-wrap: pretty;
 }
 
+/* Link RSS dưới ô đăng ký: chữ phụ, biểu tượng nét mảnh đứng trước */
+.footer-news > .news-rss {
+  margin-block-start: var(--space-3);
+  font-size: 0.875rem;
+}
+
+.news-rss a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.news-rss a:hover {
+  color: var(--accent);
+}
+
+.news-rss .icon {
+  width: 1rem;
+  height: 1rem;
+}
+
 /* Ô chữ và nút liền nhau thành một khối, bo hai góc ngoài (ô tìm ở Mục lục,
    ô email bản tin) */
 .joined {

@@ -151,7 +151,7 @@ other = "大阪"
 [clock_saigon]
 other = "ホーチミン"
 [footer_rss]
-other = "RSS"
+other = "RSS でも購読できます"
 
 # サイドバー
 [sidebar_about]

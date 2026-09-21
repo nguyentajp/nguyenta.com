@@ -151,7 +151,7 @@ other = "Osaka"
 [clock_saigon]
 other = "TP.HCM"
 [footer_rss]
-other = "RSS"
+other = "Hoặc theo dõi bằng RSS"
 
 # Sidebar
 [sidebar_recent]

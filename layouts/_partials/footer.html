@@ -70,6 +70,11 @@
           <p class="news-status" role="status" aria-live="polite" hidden>{{ i18n "news_not_open" }}</p>
         {{- end }}
       </form>
+      {{- /* Cách thứ hai để nhận bài mới, đặt cạnh bản tin chứ không ở hàng mạng
+           xã hội: RSS trỏ về chính site, đứng lẫn với Facebook là sai chỗ */}}
+      {{- with site.Home.OutputFormats.Get "rss" }}
+        <p class="news-rss"><a href="{{ .RelPermalink }}" type="application/rss+xml">{{ partial "icon.html" "rss" }}{{ i18n "footer_rss" }}</a></p>
+      {{- end }}
     </section>
   </div>
 
