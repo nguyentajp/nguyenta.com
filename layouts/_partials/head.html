@@ -36,6 +36,13 @@
   <meta name="description" content="{{ partial "text-plain.html" . | truncate 180 }}">
 {{ end -}}
 <link rel="canonical" href="{{ .Permalink }}">
+{{- /* Tải sẵn trang (Speculation Rules, Chrome/Edge): ngón tay vừa chạm vào một
+     link trong site (máy tính: rê chuột qua) thì trình duyệt dựng sẵn trang
+     đích ở chế độ ẩn, nhấc tay lên là trang hiện ngay, font và ảnh đầu trang
+     đã về. "moderate" nghĩa là chỉ dựng trang người đọc sắp bấm, không đoán
+     bừa cả site. Bỏ qua link ảnh phóng to, file tải về, RSS. Safari chưa hỗ
+     trợ: site.js mục 12 tải trước HTML lúc chạm thay cho việc này. */}}
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/pagefind/*"}},{"not":{"selector_matches":".zoom, [download], [target]"}}]},"eagerness":"moderate"}]}</script>
 {{ partial "hreflang.html" . }}
 
 {{/* Favicon dùng chính kamon, bản giản lược cho cỡ nhỏ. Trình duyệt hiểu SVG

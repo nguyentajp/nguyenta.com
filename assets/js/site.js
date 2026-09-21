@@ -11,6 +11,7 @@
 //   9. Khung giải thích tiết khí: mở khi rê chuột (máy tính có chuột)
 //  10. Đồng hồ Osaka và TP.HCM ở chân trang
 //  11. Thanh tiêu đề dính trên điện thoại
+//  12. Tải trước trang khi chạm vào link (trình duyệt không có Speculation Rules)
 
 // ── 1. Kamon ────────────────────────────────────────────────────────────────
 // Lần thứ hai trở đi trong cùng phiên, kamon hiện sẵn. Người đọc bật
@@ -28,12 +29,19 @@
   }
   if (drawn) return;
 
-  kamon.classList.add("is-drawing");
-  try {
-    sessionStorage.setItem(KEY, "1");
-  } catch {
-    // Không lưu được thì thôi, chuyển động vẫn chạy đúng một lần trong trang này.
-  }
+  const draw = () => {
+    kamon.classList.add("is-drawing");
+    try {
+      sessionStorage.setItem(KEY, "1");
+    } catch {
+      // Không lưu được thì thôi, chuyển động vẫn chạy đúng một lần trong trang này.
+    }
+  };
+  // Trang đang được dựng sẵn ở chế độ ẩn (Speculation Rules, head.html): đợi
+  // tới lúc người đọc thật sự mở mới vẽ, không thì vòng tre vẽ xong khi chưa
+  // ai nhìn thấy.
+  if (document.prerendering) document.addEventListener("prerenderingchange", draw, { once: true });
+  else draw();
 })();
 
 // ── 2. Lightbox ─────────────────────────────────────────────────────────────
@@ -518,4 +526,28 @@
   bar.querySelector("[data-to-top]")?.addEventListener("click", () => {
     scrollTo({ top: 0, behavior: reduce.matches ? "auto" : "smooth" });
   });
+})();
+
+// ── 12. Tải trước trang khi chạm vào link ──────────────────────────────────
+// Chrome, Edge dựng sẵn trang bằng Speculation Rules (head.html). Safari,
+// Firefox chưa có: ở đó, lúc ngón tay chạm xuống (hay nút chuột nhấn xuống)
+// thì tải trước HTML của trang đích, để lúc nhấc lên trình duyệt đã có sẵn
+// trong bộ nhớ đệm, nhanh hơn chừng một phần mười giây. Mỗi trang tải một lần;
+// bỏ qua link ra ngoài, link ảnh phóng to, file tải về, link mở tab mới.
+(() => {
+  if (HTMLScriptElement.supports?.("speculationrules")) return;
+  const warmed = new Set([location.href.split("#")[0]]);
+
+  const warm = (event) => {
+    const link = event.target.closest?.("a[href]");
+    if (!link || link.origin !== location.origin) return;
+    if (link.classList.contains("zoom") || link.hasAttribute("download") || link.target) return;
+    const url = link.href.split("#")[0];
+    if (warmed.has(url)) return;
+    warmed.add(url);
+    fetch(url, { credentials: "same-origin", priority: "high" }).catch(() => {});
+  };
+
+  addEventListener("touchstart", warm, { capture: true, passive: true });
+  addEventListener("mousedown", warm, { capture: true });
 })();
