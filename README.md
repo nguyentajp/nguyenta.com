@@ -824,6 +824,24 @@ Có quyết định mới thì ghi vào đây.
   phải đăng bên đó nữa, tức là viết hai nơi và người đọc bị kéo sang sân của
   họ.
 
+#### Giao diện điện thoại — làm lại ngày 22/9/2026
+
+Nguyên tắc: điện thoại được thiết kế riêng, không phải bản máy tính thu nhỏ.
+Mọi thứ về **một trục giữa** như đầu trang (bìa sổ).
+
+- **Tiêu đề bài trong danh sách căn giữa** (bài nổi bật, lưới Gần đây, và
+  danh sách trên điện thoại). Riêng danh sách trên màn hình rộng giữ ảnh nhỏ
+  bên trái, chữ bám mép ảnh.
+- **Đầu trang điện thoại:** ☰ và kính lúp ở hàng công cụ (ô tìm chữ bị cắt
+  thành "Tìm tr…" nên bỏ); bốn mục menu vẫn nằm ngang, bấm một lần là tới;
+  bảng Menu (☰) là bản đồ đầy đủ: logo, ô tìm, danh mục dạng ô bấm, trang con.
+- **Sidebar khi nằm dưới nội dung** (tablet, điện thoại): nhãn đề ra giữa,
+  bỏ khối Bài viết mới (trùng danh sách / bài liên quan ngay trên), danh mục
+  và lưu trữ thành ô bấm xếp hàng.
+- **Chân trang một cột:** căn giữa; bản tin lên ngay sau logo; hai cột link
+  đứng cạnh nhau.
+- **Ô bấm trên điện thoại cao ít nhất 40–44px.**
+
 #### Sau đợt review code — chốt ngày 21/9/2026
 
 - **Link RSS nằm dưới ô đăng ký bản tin**, không ở hàng mạng xã hội.

@@ -23,7 +23,7 @@
   </header>
   {{- if $list }}
     <a class="post-item-thumb" href="{{ $page.RelPermalink }}" tabindex="-1" aria-hidden="true">
-      {{- partial "thumb.html" (dict "page" $page "sizes" "(min-width: 36rem) 13rem, 7.5rem") -}}
+      {{- partial "thumb.html" (dict "page" $page "sizes" "(min-width: 36rem) 13rem, calc(100vw - 2.5rem)") -}}
     </a>
     {{- with or $page.Summary $page.Description }}
       <p class="post-item-excerpt">{{ . | plainify | truncate 320 }}</p>

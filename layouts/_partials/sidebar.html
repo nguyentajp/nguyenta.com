@@ -1,8 +1,10 @@
 {{- /* Sidebar: mọi lối đi trong site nằm sẵn trên màn hình, như các blog quen
      thuộc. Các khối: người viết, bài viết mới, danh mục, lưu trữ theo tháng
      (link tới trang Mục lục). Ô tìm kiếm ở đầu trang, khung Ủng hộ ở chân trang. Mỗi khối là một khung có nhãn đề (xem main.css mục 8).
-     Trên tablet và mobile, sidebar nằm dưới nội dung và tự xếp thành hàng
-     ngang (CSS dựa vào bề rộng thật của sidebar, không dựa vào màn hình). */ -}}
+     Trên tablet và mobile, sidebar nằm dưới nội dung và đổi dáng (CSS dựa vào
+     bề rộng thật của sidebar, không dựa vào màn hình, main.css mục 8): khối
+     Bài viết mới ẩn đi vì trùng với chính danh sách hoặc Bài viết liên quan
+     ngay phía trên; danh mục và lưu trữ thành các ô bấm xếp hàng. */ -}}
 {{- $posts := where site.RegularPages "Section" "posts" -}}
 <aside class="sidebar" aria-label="{{ i18n "sidebar_label" }}" data-pagefind-ignore>
   <div class="sidebar-inner">
@@ -22,7 +24,7 @@
 
     {{- /* Năm bài mới nhất, không tính bài đang đọc */}}
     {{- with first 5 (where $posts "RelPermalink" "!=" $.RelPermalink) }}
-      <section class="widget">
+      <section class="widget widget-recent">
         <h2 class="widget-title">{{ i18n "sidebar_recent" }}</h2>
         <ul class="widget-posts">
           {{- range . }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}
@@ -38,8 +40,8 @@
           {{- range .Pages.ByWeight }}
             {{- $n := len .Pages }}
             <li{{ if eq $n 0 }} class="is-empty"{{ end }}>
-              <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
-              {{- if gt $n 0 }}<span class="count">{{ $n }}</span>{{ end }}
+              <a href="{{ .RelPermalink }}"><span>{{ .LinkTitle }}</span>
+                {{- if gt $n 0 }}<span class="count">{{ $n }}</span>{{ end }}</a>
             </li>
           {{- end }}
         </ul>
@@ -55,9 +57,9 @@
             {{- $first := index .Pages 0 }}
             <li>
               <a href="{{ with $archive }}{{ .RelPermalink }}{{ end }}#thang-{{ .Key }}">
-                {{- i18n "archive_month_year" (dict "Month" (printf "%d" $first.Date.Month) "Year" $first.Date.Year) -}}
+                <span>{{ i18n "archive_month_year" (dict "Month" (printf "%d" $first.Date.Month) "Year" $first.Date.Year) }}</span>
+                <span class="count">{{ len .Pages }}</span>
               </a>
-              <span class="count">{{ len .Pages }}</span>
             </li>
           {{- end }}
         </ul>

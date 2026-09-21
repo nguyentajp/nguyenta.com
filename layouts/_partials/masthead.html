@@ -1,16 +1,26 @@
 {{- /* Đầu trang, ba tầng, đặt giữa như bìa một cuốn sổ:
        1. Hàng công cụ mảnh: ô tìm kiếm bên trái; chọn ngôn ngữ và nút sáng tối
-          bên phải.
+          bên phải. Điện thoại: ô tìm kiếm nhường chỗ cho hai nút biểu tượng
+          (mở bảng Menu, sang trang Tìm kiếm), vì ô chữ hẹp chỉ còn "Tìm tr…".
        2. Kamon, tên blog, tagline. Cùng một cỡ ở mọi trang, để chuyển trang
           không thấy đầu trang co giãn. Trang chủ: kamon tự vẽ, tên blog là <h1>.
        3. Hàng menu giữa hai đường mảnh. Mục có submenu (Danh mục, Giới thiệu)
-          mở khi rê chuột hoặc Tab tới; trên điện thoại mọi mục nằm trong bảng
-          Menu (Popover API, không cần JS). */ -}}
+          mở khi rê chuột hoặc Tab tới. Điện thoại: vẫn là bốn mục nằm ngang,
+          bấm một lần là tới, không có submenu; bản đồ đầy đủ (danh mục, các
+          trang giới thiệu, Thẻ, Liên hệ…) nằm trong bảng Menu mở từ nút ☰
+          (Popover API, không cần JS). */ -}}
 {{- $search := site.GetPage "/search" -}}
 {{- $categories := site.GetPage "/categories" -}}
 <header class="masthead">
   <div class="masthead-top">
     <div class="shell masthead-top-inner">
+      {{- /* Chỉ hiện trên điện thoại (main.css mục 5) */}}
+      <button class="icon-button menu-toggle" type="button" popovertarget="menu" aria-label="{{ i18n "nav_menu" }}">{{ partial "icon.html" "menu" }}</button>
+      {{- with $search }}
+        {{- if ne $.RelPermalink .RelPermalink }}
+          <a class="icon-button head-search-link" href="{{ .RelPermalink }}" aria-label="{{ .Title }}">{{ partial "icon.html" "search" }}</a>
+        {{- end }}
+      {{- end }}
       {{- /* Trang Tìm kiếm đã có ô lớn của nó, không lặp ô nhỏ ở đây */}}
       {{- with $search }}
         {{- if ne $.RelPermalink .RelPermalink }}
@@ -71,13 +81,25 @@
           {{- end }}
         </ul>
       </nav>
-      <button class="menu-button" type="button" popovertarget="menu">{{ i18n "nav_menu" }}</button>
     </div>
   </div>
 
   {{/* Menu mobile dùng Popover API: đóng được bằng Esc và bấm ra ngoài, không cần JS */}}
   <div id="menu" popover>
-    <button class="menu-close" type="button" popovertarget="menu" popovertargetaction="hide">{{ i18n "nav_menu_close" }}</button>
+    <div class="menu-head">
+      <a class="menu-brand" href="{{ "" | relLangURL }}">
+        {{- partial "kamon.html" (dict "class" "kamon menu-mark") }}
+        {{- partial "wordmark.html" . }}<span class="visually-hidden">{{ .Site.Title }}</span>
+      </a>
+      <button class="icon-button menu-close" type="button" popovertarget="menu" popovertargetaction="hide" aria-label="{{ i18n "nav_menu_close" }}">{{ partial "icon.html" "close" }}</button>
+    </div>
+    {{- with $search }}
+      <form class="joined menu-search" role="search" action="{{ .RelPermalink }}" method="get">
+        <label class="visually-hidden" for="menu-q">{{ i18n "search_placeholder" }}</label>
+        <input id="menu-q" name="q" type="search" placeholder="{{ i18n "search_placeholder" }}" autocomplete="off" enterkeyhint="search">
+        <button type="submit" aria-label="{{ i18n "sidebar_search_button" }}">{{ partial "icon.html" "search" }}</button>
+      </form>
+    {{- end }}
     <nav class="menu-panel" aria-label="{{ i18n "nav_menu" }}">
       <ul>
         {{- range .Site.Menus.main }}
@@ -85,7 +107,7 @@
             <a href="{{ .URL }}">{{ .Name }}</a>
             {{- $isCategories := and $categories (eq .URL $categories.RelPermalink) }}
             {{- if or .HasChildren $isCategories }}
-              <ul class="menu-sub">
+              <ul class="menu-sub{{ if $isCategories }} menu-sub--grid{{ end }}">
                 {{- range .Children }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
                 {{- if $isCategories }}{{ range $categories.Pages.ByWeight }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>{{ end }}{{ end }}
               </ul>

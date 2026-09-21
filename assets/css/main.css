@@ -926,24 +926,35 @@ main {
   display: block;
 }
 
-/* Menu mobile dùng Popover API của HTML: không cần JavaScript, có sẵn đóng bằng
-   phím Esc và bấm ra ngoài. */
-.menu-button {
+/* Nút chỉ có biểu tượng (mở Menu, sang Tìm kiếm, đóng Menu): không viền, ô
+   bấm 44px theo chuẩn ngón tay (Apple HIG, WCAG 2.5.5) dù hình chỉ 22px.
+   Hai nút ở hàng công cụ chỉ có trên điện thoại (khối cuối mục 5). */
+.icon-button {
   display: none;
-  white-space: nowrap;
-  font: inherit;
-  font-size: 1rem;
-  color: inherit;
-  background: none;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
   border: 0;
-  padding: var(--space-1) 0;
+  border-radius: calc(var(--radius) / 2);
+  background: none;
+  color: var(--ink);
   cursor: pointer;
 }
 
-.menu-button:hover {
+.icon-button .icon {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.icon-button:hover {
   color: var(--accent);
 }
 
+/* Bảng Menu: Popover API của HTML, không cần JavaScript, có sẵn đóng bằng Esc
+   và bấm ra ngoài. Phủ kín màn hình như một trang riêng: đầu bảng là logo và
+   nút đóng (dính trên cùng khi cuộn), rồi ô tìm kiếm, rồi bản đồ cả site. */
 #menu {
   position: fixed;
   inset: 0;
@@ -952,8 +963,9 @@ main {
   max-width: none;
   max-height: none;
   margin: 0;
-  padding: var(--gutter);
+  padding: 0 var(--gutter) var(--space-6);
   overflow-y: auto;
+  overscroll-behavior: contain;
   border: 0;
   background: var(--bg);
   color: var(--ink);
@@ -963,64 +975,154 @@ main {
   display: none;
 }
 
+.menu-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 4rem;
+  border-block-end: 1px solid var(--rule);
+  background: var(--bg);
+}
+
+.menu-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+
+.menu-mark {
+  width: 2rem;
+}
+
+.menu-brand .wordmark svg {
+  height: 1.3rem;
+}
+
+.menu-close {
+  display: grid;
+  margin-inline-end: -0.625rem;
+}
+
+.menu-search {
+  margin-block-start: var(--space-4);
+}
+
+.menu-search input {
+  min-height: 2.75rem;
+  font-size: 1rem; /* 16px trở lên: iPhone không tự phóng to khi chạm vào ô */
+}
+
+.menu-search button {
+  display: grid;
+  place-items: center;
+  padding-inline: var(--space-3);
+}
+
 .menu-panel {
-  padding-block: 4rem var(--space-5);
+  padding-block-start: var(--space-3);
 }
 
 .menu-panel ul {
   list-style: none;
 }
 
-.menu-panel > ul:first-child {
-  display: grid;
-  gap: var(--space-4);
-  font-size: 1.5rem;
-}
-
 .menu-panel a {
   text-decoration: none;
 }
 
-/* Mục con (danh mục, các trang giới thiệu): chữ nhỏ hơn, thụt vào sau một
-   đường mảnh dọc */
+.menu-panel a:hover {
+  color: var(--accent);
+}
+
+/* Mục chính: mỗi mục một hàng cao, ngăn nhau bằng đường mảnh như mục lục
+   một cuốn sổ */
+.menu-panel > ul:first-child > li {
+  padding-block: var(--space-3);
+  border-block-end: 1px solid var(--rule);
+}
+
+.menu-panel > ul:first-child > li > a {
+  display: block;
+  padding-block: var(--space-1);
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  line-height: 1.4;
+}
+
+/* Mục con (các trang giới thiệu): chữ nhỏ, màu phụ, thụt sau một đường dọc */
 .menu-sub {
   display: grid;
-  gap: var(--space-2);
-  margin-block-start: var(--space-3);
+  gap: var(--space-1);
+  margin-block: var(--space-2) var(--space-1);
   padding-inline-start: var(--space-4);
   border-inline-start: 1px solid var(--rule);
   font-size: 1.0625rem;
   color: var(--muted);
 }
 
+.menu-sub a {
+  display: block;
+  padding-block: var(--space-1);
+}
+
+/* Danh mục: lưới hai cột ô bấm có viền, đủ to cho ngón tay */
+.menu-sub--grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  padding-inline-start: 0;
+  border: 0;
+}
+
+.menu-sub--grid a {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--rule);
+  border-radius: calc(var(--radius) / 2);
+  background: var(--card);
+  color: var(--ink);
+}
+
 .menu-under {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2) var(--space-5);
-  margin-block-start: var(--space-6);
-  padding-block-start: var(--space-4);
-  border-block-start: 1px solid var(--rule);
+  gap: 0 var(--space-5);
+  margin-block-start: var(--space-4);
   font-size: 1rem;
   color: var(--muted);
 }
 
-.menu-close {
-  position: absolute;
-  top: var(--gutter);
-  right: var(--gutter);
-  font: inherit;
-  color: inherit;
-  background: none;
-  border: 0;
-  padding: 0;
-  text-decoration: underline 1px var(--muted);
-  cursor: pointer;
+.menu-under a {
+  display: block;
+  padding-block: var(--space-2);
 }
 
 /* ── 6. Bài trong danh sách ───────────────────────────────────────────────── */
-/* Mỗi bài: tiêu đề, dòng thông tin, ảnh bìa, đoạn trích, link đọc tiếp, tất
-   cả cùng canh trái theo một mép. Ba cỡ: bài mới nhất (lead), danh sách, lưới
-   hai cột. */
+/* Mỗi bài: tiêu đề, dòng thông tin, ảnh bìa, đoạn trích, link đọc tiếp. Ba cỡ:
+   bài mới nhất (lead), danh sách, lưới hai cột.
+   Căn giữa, cùng một trục với đầu trang và tiêu đề trang bài viết: cả site
+   đặt giữa như bìa sổ, riêng tiêu đề bài trong danh sách mà lệch trái thì
+   nhìn như lạc nhịp. Ngoại lệ duy nhất là kiểu danh sách trên màn hình rộng
+   (ảnh nhỏ bên trái, chữ bên phải): chữ đứng cạnh ảnh thì phải bám mép ảnh. */
+.post-item--lead,
+.post-item--grid {
+  text-align: center;
+}
+
+.post-item--lead .meta,
+.post-item--grid .meta {
+  justify-content: center;
+}
+
+.post-item--lead .post-item-excerpt {
+  max-width: 38rem;
+  margin-inline: auto;
+}
 
 .post-item-title {
   font-family: var(--font-headline);
@@ -1199,20 +1301,31 @@ main {
   margin-block-start: var(--space-2);
 }
 
-/* Điện thoại: ảnh nhỏ hơn cạnh tiêu đề, đoạn mở đầu chạy hết bề ngang */
+/* Điện thoại: không còn chỗ cho hai cột, nên mỗi bài thành một khối dọc căn
+   giữa như lưới trang chủ: ảnh rộng hết cột (dẹt 2:1 cho danh sách đỡ dài),
+   tiêu đề, dòng thông tin, đoạn mở đầu, link đọc tiếp. */
 @media (max-width: 35.999rem) {
   .post-item--list {
-    grid-template-columns: 7.5rem minmax(0, 1fr);
-    grid-template-areas:
-      "thumb head"
-      "excerpt excerpt"
-      "more more";
-    grid-template-rows: auto;
-    column-gap: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .post-item--list .post-item-thumb {
+    order: -1;
+    margin-block-end: var(--space-4);
+  }
+
+  .post-item--list .post-item-thumb img {
+    aspect-ratio: 2 / 1;
+  }
+
+  .post-item--list .meta {
+    justify-content: center;
   }
 
   .post-item--list .post-item-title {
-    font-size: 1.1875rem;
+    font-size: 1.3125rem;
   }
 }
 
@@ -1899,29 +2012,6 @@ a.pager-step:hover {
   color: var(--accent);
 }
 
-/* Rộng hơn cột bên phải (16.5rem) nghĩa là sidebar đang nằm dưới nội dung:
-   các khối xếp hàng ngang. */
-@container sidebar (min-width: 17rem) {
-  .sidebar-inner {
-    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-    gap: var(--space-6) var(--space-5);
-  }
-
-  /* Ảnh chân dung không cần to bằng cả khối: thành ảnh nhỏ nằm cạnh lời
-     giới thiệu, như chữ ký cuối thư */
-  .widget-about:has(.avatar) {
-    display: grid;
-    grid-template-columns: 5.5rem minmax(0, 1fr);
-    gap: 0 var(--space-4);
-    align-content: start;
-  }
-
-  .widget-about .avatar {
-    grid-row: span 2;
-    margin: 0;
-  }
-}
-
 .avatar {
   width: 100%;
   aspect-ratio: 4 / 5;
@@ -1974,13 +2064,15 @@ a.pager-step:hover {
 }
 
 .widget-list li {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-3);
   padding-block: 0.3rem;
 }
 
+/* Cả hàng là link, số bài nằm trong link ở mép phải */
 .widget-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
   text-decoration: none;
 }
 
@@ -1996,6 +2088,70 @@ a.pager-step:hover {
   font-size: 0.8125rem;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
+}
+
+/* Rộng hơn cột bên phải (16.5rem) nghĩa là sidebar đang nằm dưới nội dung
+   (tablet, điện thoại). Lúc đó nó không còn là cột phụ đứng cạnh bài mà là
+   phần "đọc tiếp" ở cuối trang, nên đổi dáng chứ không chỉ thu nhỏ:
+   - nhãn đề ra giữa khung, cùng trục với cả trang;
+   - bỏ khối Bài viết mới: ngay phía trên đã là danh sách bài hoặc Bài viết
+     liên quan, lặp lại chỉ làm trang dài;
+   - danh mục và lưu trữ thành các ô bấm xếp hàng, ngón tay chạm trúng, cả
+     danh sách gọn trong vài hàng thay vì một cột dài. */
+@container sidebar (min-width: 17rem) {
+  .sidebar-inner {
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: var(--space-5);
+  }
+
+  .widget-recent {
+    display: none;
+  }
+
+  .widget-title {
+    inset-inline-start: 50%;
+    translate: -50% -50%;
+    white-space: nowrap;
+  }
+
+  .widget-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2);
+  }
+
+  .widget-list li {
+    padding: 0;
+  }
+
+  .widget-list a {
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2.5rem;
+    padding: 0 var(--space-3);
+    border: 1px solid var(--rule);
+    border-radius: calc(var(--radius) / 2);
+    background: var(--bg);
+  }
+
+  .widget-list a:hover {
+    border-color: var(--accent);
+  }
+
+  /* Ảnh chân dung không cần to bằng cả khối: thành ảnh nhỏ nằm cạnh lời
+     giới thiệu, như chữ ký cuối thư */
+  .widget-about:has(.avatar) {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 0 var(--space-4);
+    align-content: start;
+  }
+
+  .widget-about .avatar {
+    grid-row: span 2;
+    margin: 0;
+  }
 }
 
 /* ── 9. Chân trang ────────────────────────────────────────────────────────── */
@@ -2252,9 +2408,59 @@ a.pager-step:hover {
   }
 }
 
-@media (max-width: 35.999rem) {
+/* Tablet và điện thoại (một cột nội dung): cả chân trang về một trục giữa
+   như đầu trang. Thứ tự đổi theo việc người đọc cần: ai viết → nhận bài mới
+   (bản tin, RSS) → hai cột link đứng cạnh nhau thay vì chồng thành một cột
+   dài → bản quyền và đồng hồ. */
+@media (max-width: 55.999rem) {
   .footer-grid {
-    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5) var(--space-4);
+    text-align: center;
+  }
+
+  .footer-news {
+    order: 1;
+    padding-block: var(--space-5);
+    border-block: 1px solid var(--rule);
+  }
+
+  .footer-col {
+    order: 2;
+  }
+
+  .footer-tagline {
+    margin-inline: auto;
+    text-wrap: balance;
+  }
+
+  .footer-social {
+    justify-content: center;
+    margin-inline: 0;
+  }
+
+  .footer-news > p,
+  .news-form {
+    max-width: 24rem;
+    margin-inline: auto;
+  }
+
+  .footer-col a {
+    display: inline-block;
+    padding-block: var(--space-1);
+  }
+
+  .footer-col li + li {
+    margin-block-start: 0;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .footer-clock {
+    justify-content: center;
   }
 }
 
@@ -2367,36 +2573,93 @@ a.pager-step:hover {
     --size-brand: 2.1rem;
   }
 
-  .masthead-brand {
-    padding-block: var(--space-3) var(--space-4);
+  /* Đầu trang trên điện thoại. Hàng công cụ: ☰ và kính lúp bên trái, ngôn
+     ngữ và sáng tối bên phải; mọi thứ bấm được cao ít nhất 40px. Quả địa cầu
+     bỏ đi: công tắc "Tiếng Việt | 日本語" tự nói nó là gì. */
+  .masthead-top-inner {
+    gap: 0;
+    padding-block: var(--space-2);
   }
 
-  .nav {
+  .menu-toggle,
+  .head-search-link {
+    display: grid;
+  }
+
+  .menu-toggle {
+    margin-inline-start: -0.625rem;
+  }
+
+  .head-search {
     display: none;
   }
 
-  .menu-button {
-    display: inline-block;
+  .lang > .icon {
+    display: none;
   }
 
-  /* Ô tìm kiếm chiếm hết chỗ còn lại của hàng công cụ, và co lại được khi
-     tên ngôn ngữ dài (Tiếng Việt) */
-  .head-search {
-    flex: 1;
-    width: auto;
+  .masthead-tools {
+    gap: var(--space-2);
+  }
+
+  .lang-options > * {
+    min-height: 2.5rem;
+  }
+
+  .theme-toggle {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .masthead-brand {
+    gap: var(--space-2);
+    padding-block: var(--space-2) var(--space-4);
+  }
+
+  .brand-tagline {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  /* Hàng menu vẫn là bốn mục nằm ngang như trên máy tính, không thu vào một
+     chữ "Menu": bấm một lần là tới. Submenu (rê chuột) không có trên điện
+     thoại; danh mục và các trang con nằm trong bảng Menu. Chật quá (320px,
+     chữ dài) thì hàng cuộn ngang chứ không xuống dòng. */
+  .masthead-bar .shell {
+    padding-block: 0;
+  }
+
+  .nav {
     min-width: 0;
   }
 
-  /* Điện thoại rất hẹp (320px): bỏ quả địa cầu cho đủ chỗ, tên ngôn ngữ trong
-     khung vẫn đủ rõ đây là chỗ chọn ngôn ngữ */
+  .nav > ul {
+    flex-wrap: nowrap;
+    gap: 0 var(--space-4);
+    overflow-x: auto;
+    scrollbar-width: none;
+    font-size: 0.9375rem;
+  }
+
+  .nav-item > a {
+    min-height: 2.75rem;
+    white-space: nowrap;
+  }
+
+  .nav-item > a .icon,
+  .nav-sub {
+    display: none;
+  }
+
+  /* Điện thoại rất hẹp (320px) */
   @media (max-width: 22.999rem) {
-    .lang .icon {
-      display: none;
+    .lang-options > * {
+      padding-inline: 0.5rem;
     }
 
-    .masthead-top-inner,
-    .masthead-tools {
-      gap: var(--space-2);
+    .nav > ul {
+      gap: 0 var(--space-3);
+      font-size: 0.875rem;
     }
   }
 
@@ -2408,13 +2671,30 @@ a.pager-step:hover {
     font-size: 1.4rem;
   }
 
+  /* Cuối bài: thẻ, bài trước và bài sau về trục giữa như tiêu đề bài.
+     Bài trước và bài sau chồng lên nhau, ngăn bằng một đường mảnh. */
+  .post-tags {
+    justify-content: center;
+  }
+
   .neighbours {
     grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding-block: 0;
+    text-align: center;
+  }
+
+  .neighbour {
+    padding-block: var(--space-4);
+  }
+
+  .neighbour + .neighbour {
+    border-block-start: 1px solid var(--rule);
   }
 
   .neighbour-next {
     grid-column: 1;
-    text-align: start;
+    text-align: center;
   }
 
   .entry {
