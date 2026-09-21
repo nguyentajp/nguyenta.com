@@ -328,7 +328,14 @@ def build_dev() -> None:
 
 # ── Chế độ --pages: subset riêng cho từng trang, chạy sau hugo ───────────────
 TAG_RE = re.compile(r"<(script|style)\b.*?</\1>", re.S | re.I)
-ATTR_RE = re.compile(r'(?:alt|title|aria-label|content)="([^"]*)"', re.I)
+# Thuộc tính mang chữ người đọc thấy được: alt, title, placeholder… và mọi
+# data-* (JS lấy ra để hiện: lời nhắn bản tin, trạng thái tìm kiếm, chú thích
+# ảnh phóng to). Giá trị có thể không có dấu nháy vì hugo --minify bỏ nháy.
+ATTR_RE = re.compile(
+    r'\b(?:alt|title|aria-label|placeholder|content|data-[\w-]+)'
+    r'=(?:"([^"]*)"|\'([^\']*)\'|([^\s"\'=<>`]+))',
+    re.I,
+)
 HEADING_RE = re.compile(r"<h[1-3]\b[^>]*>(.*?)</h[1-3]>", re.S | re.I)
 STRIP_RE = re.compile(r"<[^>]+>")
 
@@ -336,7 +343,7 @@ STRIP_RE = re.compile(r"<[^>]+>")
 def page_text(markup: str) -> tuple[str, str]:
     body = TAG_RE.sub(" ", markup)
     visible = html.unescape(STRIP_RE.sub(" ", body))
-    attrs = " ".join(html.unescape(m) for m in ATTR_RE.findall(body))
+    attrs = " ".join(html.unescape("".join(m)) for m in ATTR_RE.findall(body))
     headings = " ".join(html.unescape(STRIP_RE.sub(" ", m)) for m in HEADING_RE.findall(body))
     title = re.search(r"<title>(.*?)</title>", body, re.S | re.I)
     if title:
