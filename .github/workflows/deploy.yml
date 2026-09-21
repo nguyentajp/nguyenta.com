@@ -5,7 +5,8 @@
 # 0:05 giờ Nhật, hoặc bấm tay "Run workflow" trong tab Actions.
 #
 # Thứ tự build giống hệt ở máy:
-#   tải font gốc → subset font toàn site → hugo → subset font từng trang → Pagefind
+#   tải font gốc → subset font toàn site → hugo → subset font từng trang
+#   → soát HTML (chỉ cảnh báo) → Pagefind
 # ─────────────────────────────────────────────────────────────────────────────
 name: Deploy
 
@@ -90,6 +91,18 @@ jobs:
 
       - name: Subset font riêng từng trang
         run: python tools/fonts/build.py --pages public
+
+      # Link nội bộ hỏng, id trùng, ảnh thiếu alt, số h1. Chỉ cảnh báo (hiện ở
+      # trang tóm tắt của lần chạy), không chặn deploy. Soát bản đầy đủ, vì lúc
+      # bảo trì public/ gần như chỉ còn trang ensō.
+      - name: Soát HTML
+        continue-on-error: true
+        env:
+          HUGO_ENVIRONMENT: production
+          HUGO_PARAMS_MAINTENANCE: "false"
+        run: |
+          hugo --minify --quiet -d "$RUNNER_TEMP/check"
+          python tools/check.py "$RUNNER_TEMP/check"
 
       - name: Lập chỉ mục tìm kiếm
         run: npx --yes "pagefind@${PAGEFIND_VERSION}" --site public

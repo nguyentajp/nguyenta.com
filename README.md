@@ -387,8 +387,13 @@ Không cần làm gì. Mỗi commit lên `main` (kể cả từ CMS) đều ch�
 [.github/workflows/deploy.yml](.github/workflows/deploy.yml):
 
 ```
-tải font gốc → subset font toàn site → hugo --minify → subset font từng trang → Pagefind → GitHub Pages
+tải font gốc → subset font toàn site → hugo --minify → subset font từng trang → soát HTML → Pagefind → GitHub Pages
 ```
+
+Bước **soát HTML** (`tools/check.py`) tìm link nội bộ hỏng, id trùng, ảnh thiếu
+chữ thay ảnh và trang không đúng một h1. Nó chỉ cảnh báo, không chặn deploy:
+có lỗi thì dấu ✓ vẫn xanh nhưng trang tóm tắt của lần chạy hiện danh sách lỗi
+màu vàng. Chạy ở máy sau khi build: `python3 tools/check.py public`.
 
 Xem tiến trình ở tab **Actions** trên GitHub: dấu ✓ xanh là đã lên site, dấu ✗
 đỏ là lỗi (xem [mục 8](#8-xử-lý-lỗi-thường-gặp)).
@@ -529,18 +534,22 @@ Hai bản phải có cùng `translationKey`. Mở hai file, so dòng `translatio
 
 ```
 content/vi/, content/ja/   Nội dung hai ngôn ngữ: bài viết (posts/), danh mục, các trang
-layouts/                   Template HTML của Hugo
+layouts/                   Template HTML của Hugo; home.rss.xml là RSS (chỉ bài viết)
 assets/css/main.css        Toàn bộ CSS, một file duy nhất
-assets/js/                 JavaScript: lightbox, video, tìm kiếm, kamon
+assets/js/                 site.js (lightbox, video, bản tin, tiết khí, đồng hồ…), search.js
 assets/brand/              Kamon, con dấu 元, ảnh chân dung, ảnh chia sẻ
 static/admin/              Decap CMS, chỉ dùng ở máy: config.yml (form), cms.js (nút chèn ảnh/video)
 i18n/                      Chữ trên giao diện, theo ngôn ngữ
-data/sekki.toml            24 tiết khí, hiện trong dòng thông tin của bài
+data/sekki.toml            24 tiết khí: ngày và mã màu nhấn
+data/sekki_notes.yaml      Chữ của 24 tiết khí: lời giải thích, tên màu, câu "vì sao"
 archetypes/posts.md        Mẫu cho bài mới tạo bằng hugo new
 tools/fonts/               Tải và subset font (Literata, Shippori Mincho)
 tools/brand/               Script vẽ kamon, favicon, con dấu, vòng ensō
 tools/new-ja-draft.py      Tạo khung bản dịch tiếng Nhật (lệnh /dich gọi script này)
 tools/preview/             Cấu hình Worker bản xem trước riêng (xem mục 11.4)
+tools/kit/                 Mẫu thư bản tin cho Kit, cùng dáng với blog
+tools/check.py             Soát HTML sau khi build (link hỏng, id trùng, alt, h1)
+tools/dev.sh               Chạy site ở máy kèm font và chỉ mục tìm kiếm
 .github/workflows/         Build và deploy tự động
 hugo.toml                  Cấu hình site, có ghi chú từng mục
 STYLE.md, GLOSSARY.md      Văn phong và thuật ngữ khi dịch
@@ -800,8 +809,9 @@ Có quyết định mới thì ghi vào đây.
 
 - **Dùng Kit (kit.com), không dùng Buttondown.** Buttondown free chỉ 100 người
   đăng ký; Kit free tới 10.000 người và gửi bao nhiêu số cũng được. Cả hai đều
-  là form POST thẳng, không API key trong repo, không cần JS — nên đổi nhà chỉ
-  là sửa bốn dòng trong `[params.newsletter]`.
+  là form POST thẳng, không API key trong repo — nên đổi nhà chỉ là sửa bốn
+  dòng trong `[params.newsletter]`. (JS gửi ngầm đang viết theo JSON của Kit;
+  đổi nhà thì sửa cả `site.js` mục 8.)
 - **Không cần tự gửi bài mới theo RSS.** Anh tự soạn và bấm gửi từng số cho
   những người đã đăng ký. Vì thế mức free của Kit là đủ, không phải trả tiền.
 - **Không dùng Substack**, tuy nó vừa free vừa không giới hạn người: bài sẽ
