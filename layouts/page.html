@@ -1,5 +1,5 @@
 {{ define "main" }}
-  <article data-pagefind-body>
+  <article{{ if not .Params.noindex }} data-pagefind-body{{ end }}>
     <header class="page-head">
       <h1 class="page-title">{{ .Title }}</h1>
     </header>

@@ -856,9 +856,17 @@ Có quyết định mới thì ghi vào đây.
       Gửi một số bản tin: vào kit.com → **Broadcasts** → soạn → gửi. Bản free
       không tự gửi theo RSS, mỗi bài anh tự soạn và bấm gửi.
 
-      Form POST thẳng sang Kit nên **không có API key nào trong repo** và không
-      cần JS. Người đọc bấm Đăng ký thì sang trang xác nhận của Kit, rồi nhận
-      thư để bấm xác nhận lần nữa (double opt-in).
+      Form gửi thẳng sang Kit nên **không có API key nào trong repo**. Có JS thì
+      gửi ngầm: người đọc ở lại trang, thấy lời nhắn "còn một bước" ngay dưới
+      ô (`news_done` / `news_fail` trong `i18n`). Không có JS hoặc mạng lỗi thì
+      form POST như thường và dừng ở trang của Kit. Sau đó người đọc nhận thư,
+      bấm link xác nhận (double opt-in).
+
+      Bấm link xác nhận xong, Kit đưa người đọc về trang Cảm ơn của blog:
+      `/cam-on/` (`content/vi/cam-on.md`) và `/ja/thanks/` (`content/ja/thanks.md`).
+      Hai trang này có `noindex: true` nên không lên Google, không vào sitemap,
+      không vào ô tìm kiếm. Địa chỉ trang đặt trong Kit: form → **Settings** →
+      **Incentive** → **Redirect to URL** sau khi xác nhận.
 
       Mức free của vài nhà, tra lại ngày 21/9/2026:
 

@@ -213,7 +213,7 @@ other = "Gia huy kiểu Nhật (kamon): ba lá bạch quả xanh đậm trong m�
 [blog_hanko_text]
 other = "Con dấu chữ Nguyên đóng ở cuối mỗi bài, như người viết thư pháp đóng dấu cuối tác phẩm."
 
-# Chân trang: bản tin (giao diện mẫu, chưa gửi đi đâu)
+# Chân trang: bản tin
 [news_title]
 other = "Bản tin"
 [news_text]
@@ -230,5 +230,9 @@ other = "Hãy nhập email"
 other = "Email chưa đúng dạng, ví dụ ten@vidu.com"
 [news_note]
 other = "Sau khi đăng ký, anh chị sẽ nhận một thư xác nhận. Địa chỉ email do Kit giữ, không dùng vào việc gì khác."
+[news_done]
+other = "Còn một bước: anh chị mở hộp thư và bấm vào thư xác nhận vừa gửi tới. Cảm ơn anh chị đã đăng ký."
+[news_fail]
+other = "Chưa đăng ký được. Anh chị xem lại địa chỉ email rồi thử lại giúp."
 [news_not_open]
 other = "Bản tin đang được chuẩn bị, chưa nhận đăng ký. Trong lúc chờ, anh chị có thể theo dõi blog qua RSS."

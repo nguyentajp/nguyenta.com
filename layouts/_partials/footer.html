@@ -47,22 +47,25 @@
     <section class="footer-news" aria-labelledby="ban-tin">
       <h2 class="footer-title" id="ban-tin">{{ i18n "news_title" }}</h2>
       <p>{{ i18n "news_text" }}</p>
-      {{- /* Có id: form POST thẳng sang dịch vụ bản tin, method="post" nên email
-           không bao giờ nằm trong URL. Dịch vụ trả về trang xác nhận của nó,
-           rồi gửi thư cho người đọc bấm xác nhận.
+      {{- /* Có id: site.js mục 8 gửi ngầm sang dịch vụ bản tin, người đọc ở lại
+           trang và thấy lời cảm ơn ngay dưới ô (data-msg-done / -fail). Không có
+           JS thì form POST thẳng sang dịch vụ như thường và dừng ở trang của
+           nó. method="post" nên email không bao giờ nằm trong URL.
            Chưa có id: fieldset disabled, để không có JS thì không bấm gửi
            được; site.js mục 8 mở khoá rồi hiện dòng "chưa mở".
            data-msg-*: trình duyệt báo lỗi ô nhập bằng tiếng của MÁY, nên mặc
            định ra tiếng Anh. site.js mục 8 thay bằng hai câu này. */}}
       <form class="news-form"{{ with $newsId }} action="{{ $news.action }}{{ . }}{{ $news.suffix }}" method="post"{{ else }} data-news-mock{{ end }}
             data-news
-            data-msg-required="{{ i18n "news_required" }}" data-msg-invalid="{{ i18n "news_invalid" }}">
+            data-msg-required="{{ i18n "news_required" }}" data-msg-invalid="{{ i18n "news_invalid" }}"
+            data-msg-done="{{ i18n "news_done" }}" data-msg-fail="{{ i18n "news_fail" }}">
         <fieldset class="joined"{{ if not $newsId }} disabled{{ end }}>
           <label class="visually-hidden" for="news-email">{{ i18n "news_label" }}</label>
           <input id="news-email" name="{{ $newsField }}" type="email" placeholder="{{ i18n "news_placeholder" }}" autocomplete="email" required>
           <button type="submit">{{ i18n "news_button" }}</button>
         </fieldset>
         {{- with $newsId }}
+          <p class="news-status" role="status" aria-live="polite" hidden></p>
           <p class="news-note">{{ i18n "news_note" }}</p>
         {{- else }}
           <p class="news-status" role="status" aria-live="polite" hidden>{{ i18n "news_not_open" }}</p>

@@ -277,9 +277,10 @@
 })();
 
 // ── 8. Bản tin ──────────────────────────────────────────────────────────────
-// Hai trạng thái, do params.newsletter.username trong hugo.toml quyết định.
-//  - Có dịch vụ: form tự POST sang Buttondown, JS ở đây chỉ lo dịch lời nhắn
-//    lỗi của ô email. Không có JS thì form vẫn gửi được bình thường.
+// Hai trạng thái, do params.newsletter.id trong hugo.toml quyết định.
+//  - Có dịch vụ: JS gửi ngầm sang Kit (Kit mở CORS, trả JSON), người đọc ở lại
+//    trang và thấy lời nhắn ngay dưới ô. Mạng lỗi thì gửi form như thường, sang
+//    trang của Kit. Không có JS thì form cũng POST thẳng như thế.
 //  - Chưa có (data-news-mock): footer.html khoá fieldset để không JS thì không
 //    bấm gửi được; có JS thì mở khoá cho xem giao diện, bấm Đăng ký chỉ hiện
 //    dòng "chưa mở", email không được gửi hay lưu ở đâu cả.
@@ -306,13 +307,46 @@
   email.addEventListener("invalid", say);
   email.addEventListener("input", say);
 
+  const status = form.querySelector(".news-status");
   if (mock) {
-    const status = form.querySelector(".news-status");
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       status.hidden = false;
     });
+    return;
   }
+
+  const fieldset = form.querySelector("fieldset");
+  const show = (text) => {
+    status.textContent = text;
+    status.hidden = false;
+  };
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    fieldset.disabled = true;
+    let result;
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      });
+      result = await response.json();
+    } catch {
+      // Không tới được Kit từ đây (mạng, chặn quảng cáo…): gửi như form thường.
+      // form.submit() không phát lại sự kiện submit nên không lặp.
+      form.submit();
+      return;
+    }
+    fieldset.disabled = false;
+    if (result.status === "failed") {
+      show(form.dataset.msgFail);
+      email.focus();
+    } else {
+      show(form.dataset.msgDone);
+      form.reset();
+    }
+  });
 })();
 
 // ── 9. Tiết khí ─────────────────────────────────────────────────────────────
