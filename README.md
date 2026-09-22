@@ -892,6 +892,14 @@ Mọi thứ về **một trục giữa** như đầu trang (bìa sổ).
   ở sidebar, bản tin, kết quả tìm kiếm). Tiếng Nhật giãn giữa ký tự (両端揃え).
   Khối căn giữa thì dòng cuối nằm giữa. Không canh đều: tiêu đề, tên bài,
   tagline, nhãn ngày tháng.
+- **Khe chữ chênh nhau trên điện thoại là chấp nhận, không sửa nữa**
+  (chốt 23/9). Cột trên điện thoại chỉ 37 ký tự nên canh đều làm khoảng trắng
+  giữa từ chênh tới 2,97 lần (hẹp nhất 3,6px, rộng nhất 10,7px). Đã đo bốn
+  cách chữa: `hyphens: auto` **vô tác dụng** với tiếng Việt (số liệu y hệt,
+  trình duyệt không có bộ gạch nối tiếng Việt); lề 20→16px đỡ 17%; chữ
+  18→17px đỡ 13% nhưng chữ nhỏ lại; gộp cả hai gần như vô ích (2,92×). Anh
+  chọn giữ nguyên: sách tiếng Việt in cũng vậy, hợp chủ ý "trang sách".
+  `text-wrap: pretty` đã bật sẵn. Đừng đề xuất lại, nhất là `hyphens: auto`.
 
 #### Sau đợt review code — chốt ngày 21/9/2026
 
