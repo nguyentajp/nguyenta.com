@@ -329,7 +329,7 @@ như bản tiếng Việt.
 | Muốn sửa | Ở đâu |
 |---|---|
 | Trang Về Nguyên (Gen) | CMS → **Trang**, hoặc `content/vi/about.md`, `content/ja/about.md` |
-| Trang Về blog này | Mục đích, ý tưởng: `content/vi/blog.md`, `content/ja/blog.md`. Bảng màu: `data/palette.toml` (màu nhấn theo tiết khí thì ở `data/sekki.toml`). Lời dưới kamon, con dấu: `i18n` (`blog_*`) |
+| Trang Về blog này | Mục đích, ý tưởng: CMS → **Trang** → **Về blog này**, hoặc `content/vi/blog.md`, `content/ja/blog.md`. Bảng màu: `data/palette.toml` (màu nhấn theo tiết khí thì ở `data/sekki.toml`). Lời dưới kamon, con dấu: `i18n` (`blog_*`) |
 | Menu đầu trang, submenu Giới thiệu | `hugo.toml` → `menus.main` (mục con có `parent`). Submenu Danh mục tự liệt kê các danh mục |
 | Menu nhỏ ở chân trang | `hugo.toml` → `menus.under` |
 | Trang 404 | `hugo.toml` → `notFoundTitle`, `notFoundText`, `notFoundHome` (mỗi ngôn ngữ một bộ) |

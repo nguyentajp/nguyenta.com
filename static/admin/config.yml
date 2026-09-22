@@ -335,6 +335,38 @@ collections:
             modes: [rich_text, raw]
             buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
             editor_components: [image]
+      - name: ve-blog
+        label: "Về blog này · Tiếng Việt"
+        file: content/vi/blog.md
+        fields:
+          - { label: "Tiêu đề", name: title, widget: string }
+          - label: "Mô tả ngắn"
+            name: description
+            widget: text
+            required: false
+            hint: "Hiện khi chia sẻ link lên mạng xã hội và trong kết quả tìm kiếm."
+          - label: "Nội dung"
+            name: body
+            widget: markdown
+            modes: [rich_text, raw]
+            buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
+            editor_components: [image]
+      - name: about-blog
+        label: "Về blog này · Tiếng Nhật"
+        file: content/ja/blog.md
+        fields:
+          - { label: "Tiêu đề", name: title, widget: string }
+          - label: "Mô tả ngắn"
+            name: description
+            widget: text
+            required: false
+            hint: "Hiện khi chia sẻ link lên mạng xã hội và trong kết quả tìm kiếm."
+          - label: "Nội dung"
+            name: body
+            widget: markdown
+            modes: [rich_text, raw]
+            buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
+            editor_components: [image]
 
   # ── 24 tiết khí ──────────────────────────────────────────────────────────
   # Mục riêng, chỉ để sửa chữ của 24 tiết khí. Sửa xong bấm Công bố là lưu
