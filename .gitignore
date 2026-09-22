@@ -33,3 +33,7 @@ Yêu cầu.md
 
 # Cache của wrangler (Cloudflare) khi deploy từ máy
 .wrangler/
+
+# Phòng xa: nếu sau này có file .env để thử token/secret ở máy
+.env
+.env.*
