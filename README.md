@@ -533,7 +533,9 @@ URL lấy từ ô `slug` trong front matter; không có `slug` thì lấy tên t
 bài. Sửa `slug` (không dấu, nối bằng gạch ngang).
 
 **Nút chuyển ngôn ngữ không trỏ tới bản dịch.**
-Hai bản phải có cùng `translationKey`. Mở hai file, so dòng `translationKey`.
+Hai bản phải có cùng `translationKey`. Xem ô **Mã nối bản dịch** trong CMS ở cả
+hai bài (hoặc mở hai file, so dòng `translationKey`) — phải giống nhau tuyệt
+đối.
 
 ---
 

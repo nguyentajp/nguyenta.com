@@ -114,6 +114,12 @@ collections:
       - label: "Tiêu đề"
         name: title
         widget: string
+      - label: "Mã nối bản dịch"
+        name: translationKey
+        widget: string
+        required: false
+        pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', "Chỉ chữ thường không dấu, số và gạch ngang."]
+        hint: "Để trống — lệnh /dich tự điền đúng khi tạo bản dịch. Chỉ gõ tay khi nối thủ công: lưu bài này trước, xem tên thư mục trong URL (vd. .../bai-viet/duong-ve-nha/ → gõ duong-ve-nha), rồi dán y hệt vào ô cùng tên ở bài tiếng Nhật tương ứng."
       - &date
         label: "Ngày đăng"
         name: date
@@ -268,7 +274,8 @@ collections:
         name: translationKey
         widget: string
         required: false
-        hint: "Tên thư mục của bản tiếng Việt, ví dụ tieng-la-tre-luc-chuyen-mua. Hai bản cùng mã thì nút chuyển ngôn ngữ nối đúng bài."
+        pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', "Chỉ chữ thường không dấu, số và gạch ngang — đúng bằng tên thư mục bài tiếng Việt."]
+        hint: "Để trống — lệnh /dich tự điền đúng khi tạo bản dịch. Chỉ gõ tay khi nối thủ công: mở bài tiếng Việt tương ứng, chép đúng giá trị ở ô “Mã nối bản dịch” của bài đó (hoặc tên thư mục trong URL nếu ô đó đang trống), dán y hệt vào đây. Hai bản phải giống nhau tuyệt đối thì nút chuyển ngôn ngữ mới nối được."
       - *date
       - *lastmod
       - *draft
