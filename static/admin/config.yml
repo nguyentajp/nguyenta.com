@@ -173,7 +173,7 @@ collections:
         widget: image
         required: false
         choose_url: false
-        hint: "Hiện trong danh sách bài và khi chia sẻ link. Để trống thì lấy ảnh đầu tiên trong bài."
+        hint: "Hiện trong danh sách bài và khi chia sẻ link. Để trống thì lấy ảnh đầu tiên trong bài. Ảnh bị cắt còn khung ngang 3:2 (chủ thể chính nên nằm giữa ảnh). Khuyên dùng: cạnh dài 1600–2000px, JPG, dưới 2MB."
       - &spotlight
         label: "Bài viết nổi bật"
         name: spotlight
@@ -187,7 +187,7 @@ collections:
         widget: image
         required: false
         choose_url: false
-        hint: "Không bắt buộc. Ảnh riêng cho chỗ nổi bật ở đầu trang chủ, nên là ảnh ngang. Để trống thì dùng ảnh bìa."
+        hint: "Không bắt buộc. Ảnh riêng cho chỗ nổi bật ở đầu trang chủ, nên là ảnh ngang. Để trống thì dùng ảnh bìa. Cũng bị cắt còn 3:2 — cùng khuyên dùng như Ảnh bìa: cạnh dài 1600–2000px, dưới 2MB."
       - &variant
         label: "Kiểu trình bày"
         name: variant
@@ -205,7 +205,7 @@ collections:
         modes: [rich_text, raw]
         buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
         editor_components: [image, gallery, youtube]
-        hint: "Dùng nút + để chèn Ảnh, Bộ ảnh hoặc Video YouTube. Furigana: viết cách đọc trong ngoặc sát sau chữ Hán, ví dụ 元（げん）, 食（た）べる."
+        hint: "Dùng nút + để chèn Ảnh, Bộ ảnh hoặc Video YouTube. Ảnh chèn trong bài giữ nguyên tỉ lệ gốc, không bị cắt — khuyên dùng cạnh dài dưới 1800px, dưới 2MB một ảnh. Furigana: viết cách đọc trong ngoặc sát sau chữ Hán, ví dụ 元（げん）, 食（た）べる."
 
   # ── Bài viết tiếng Nhật ──────────────────────────────────────────────────
   # Thường tạo bằng lệnh /dich trong Claude Code; ở đây để sửa và xuất bản.
