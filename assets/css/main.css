@@ -4010,7 +4010,9 @@ html:has(.lightbox[open]) {
   color: var(--accent);
 }
 
-.swatches--sekki .swatch-role b {
+.swatches--sekki .swatch-color {
+  display: block;
+  margin-block-end: 0.15rem;
   font-weight: 600;
 }
 

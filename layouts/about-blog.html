@@ -74,13 +74,13 @@
               {{ if $now }} · <span class="swatch-now">{{ i18n "blog_sekki_today" }}</span>{{ end }}
             </span>
           </span>
-          {{- /* Tên màu và câu "vì sao" nằm ở data/sekki_notes.yaml, nối bằng chữ Hán */}}
+          {{- /* Tên màu và câu "vì sao" nằm ở data/sekki_notes.yaml, nối bằng chữ Hán.
+               Tên màu tách riêng một dòng, chữ tô theo đúng accent của tiết đó
+               (light-dark() chọn theo color-scheme, giống mọi biến màu khác của site). */}}
           {{- $n := index (where hugo.Data.sekki_notes.sekki "ja" $t.ja) 0 }}
           <span class="swatch-role">
-            {{- /* Tiếng Nhật dùng dấu chấm 。 và không có dấu cách sau nó;
-                 tiếng Việt thì dấu chấm Latinh và có dấu cách */ -}}
-            <b>{{ cond (eq $lang "ja") (printf "%s。" $n.color_ja) (printf "%s." $n.color_vi) }}</b>
-            {{- if ne $lang "ja" }} {{ end }}{{ cond (eq $lang "ja") $n.why_ja $n.why_vi }}
+            <b class="swatch-color" style="{{ printf "color:light-dark(%s,%s)" $t.accent_light $t.accent_dark | safeCSS }}">{{ cond (eq $lang "ja") (printf "%s。" $n.color_ja) (printf "%s." $n.color_vi) }}</b>
+            {{ cond (eq $lang "ja") $n.why_ja $n.why_vi }}
           </span>
         </li>
       {{- end }}
