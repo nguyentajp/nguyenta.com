@@ -141,8 +141,10 @@ other = "Vòng ensō vẽ bằng một nét bút lông"
 [nagi_back]
 other = "Quay lại"
 
-[maint_line]
-other = "Nơi này đang được dựng. Mời bạn ghé lại sau, khi mọi thứ đã sẵn sàng."
+[maint_line_1]
+other = "Nơi này đang được dựng."
+[maint_line_2]
+other = "Mời bạn ghé lại khi sẵn sàng."
 [maint_other_lang]
 other = "日本語"
 

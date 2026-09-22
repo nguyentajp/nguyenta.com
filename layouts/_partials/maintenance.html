@@ -7,7 +7,7 @@
 <div class="nagi" data-maintenance>
   <h1 class="visually-hidden">{{ site.Title }}</h1>
   {{ partial "enso.html" . }}
-  <p class="nagi-line">{{ i18n "maint_line" }}</p>
+  <p class="nagi-line">{{ i18n "maint_line_1" }}<br>{{ i18n "maint_line_2" }}</p>
   {{- /* Chữ của link viết bằng ngôn ngữ kia, nên mang lang của ngôn ngữ đó */}}
   <a class="nagi-back" href="{{ $other }}" lang="{{ $otherLang }}" hreflang="{{ $otherLang }}">{{ i18n "maint_other_lang" }}</a>
 </div>

@@ -141,8 +141,10 @@ other = "一筆で描いた円相"
 [nagi_back]
 other = "戻る"
 
-[maint_line]
-other = "ただいま、場を整えています。整いましたら、またお越しください。"
+[maint_line_1]
+other = "ただいま、場を整えています。"
+[maint_line_2]
+other = "整いましたら、またお越しください。"
 [maint_other_lang]
 other = "Tiếng Việt"
 
