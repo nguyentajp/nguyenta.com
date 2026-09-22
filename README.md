@@ -537,6 +537,15 @@ Hai bản phải có cùng `translationKey`. Xem ô **Mã nối bản dịch** t
 hai bài (hoặc mở hai file, so dòng `translationKey`) — phải giống nhau tuyệt
 đối.
 
+**Nút "Kiểm tra Xem trước" trong CMS bấm không có gì xảy ra.**
+Bình thường — nút này của Decap dùng cho "deploy preview" (mỗi lần lưu có một
+bản build riêng để xem thử, kiểu Netlify), nhưng GitHub Pages không có tính
+năng đó nên `show_preview_links: false` đã tắt trong `config.yml`. Decap vẫn
+hiện nút (không ẩn được hoàn toàn) nhưng bấm vào không làm gì cả, không phải
+lỗi. Muốn xem bài đang viết thật sự: mở `http://localhost:1313/` (chạy song
+song `tools/dev.sh` hoặc `hugo server --buildDrafts`), site sẽ hiện cả bài
+đang để Bản nháp.
+
 ---
 
 ## 9. Cấu trúc thư mục
