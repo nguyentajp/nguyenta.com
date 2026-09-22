@@ -1,15 +1,13 @@
 ---
-title: Về blog này
-translationKey: page-blog
-url: "/ve-blog/"
-layout: "about-blog"
-# Trang giới thiệu không có sidebar
-sidebar: false
-description: "Blog này viết gì, viết cho ai, và vì sao trông như thế này."
-# Đường dẫn cũ của trang bản mẫu thiết kế
-aliases: ["/concept/"]
-# Vẫn mở được khi site đang bảo trì (params.maintenance trong hugo.toml)
+layout: about-blog
 maintenance_exempt: true
+translationKey: page-blog
+url: /ve-blog/
+title: Ý tưởng chủ đạo
+sidebar: false
+description: Trang này viết gì, viết cho ai, và tại sao nhìn như thế này.
+aliases:
+  - /concept/
 ---
 
 ## Mục đích
