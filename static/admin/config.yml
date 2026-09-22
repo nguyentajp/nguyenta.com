@@ -68,7 +68,9 @@ collections:
     public_folder: ""
     create: true
     slug: "{{slug}}"
-    summary: "{{title}} · {{date | date('DD/MM/YYYY')}}{{draft | ternary(' · bản nháp', '')}}"
+    # Ngày đứng trước, tách khỏi tiêu đề bằng dấu —; danh mục và cờ "đã dịch"
+    # (nếu có) nối thêm sau, mỗi thứ một dấu chấm giữa, để đọc lướt là biết.
+    summary: "{{date | date('DD/MM/YYYY')}} — {{title}} · {{categories.0}}{{has_ja | ternary(' · 🇯🇵 đã có bản Nhật', '')}}{{draft | ternary(' · bản nháp', '')}}"
     sortable_fields: [date, title]
     view_filters:
       - label: "Bản nháp"
@@ -77,10 +79,37 @@ collections:
       - label: "Đã đăng"
         field: draft
         pattern: false
+      - label: "Đã có bản tiếng Nhật"
+        field: has_ja
+        pattern: true
+      - label: "Chưa có bản tiếng Nhật"
+        field: has_ja
+        pattern: false
+      - label: "Nhật ký"
+        field: categories
+        pattern: nhat-ky
+      - label: "Sở thích"
+        field: categories
+        pattern: so-thich
+      - label: "Đời sống"
+        field: categories
+        pattern: doi-song
+      - label: "Chuyến đi"
+        field: categories
+        pattern: chuyen-di
+      - label: "Suy nghĩ"
+        field: categories
+        pattern: suy-nghi
+      - label: "Học tập"
+        field: categories
+        pattern: hoc-tap
     view_groups:
       - label: "Năm"
         field: date
         pattern: '\d{4}'
+      - label: "Danh mục"
+        field: categories.0
+        pattern: '.+'
     fields:
       - label: "Tiêu đề"
         name: title
@@ -128,6 +157,11 @@ collections:
           - { label: "Chuyến đi", value: chuyen-di }
           - { label: "Suy nghĩ", value: suy-nghi }
           - { label: "Học tập", value: hoc-tap }
+      - label: "Đã có bản tiếng Nhật"
+        name: has_ja
+        widget: boolean
+        default: false
+        hint: "Bật tay sau khi bài dịch đã đăng ở mục Bài viết · Tiếng Nhật — CMS không tự biết. Dùng để lọc ra bài chưa dịch (Lọc theo → Chưa có bản tiếng Nhật)."
       - label: "Thẻ"
         name: tags
         widget: list
@@ -187,7 +221,7 @@ collections:
     # Tiêu đề tiếng Nhật không bỏ dấu thành chữ Latin được, nên tên thư mục
     # lấy từ ô "Đường dẫn" (romaji) chứ không lấy từ tiêu đề
     slug: "{{fields.slug}}"
-    summary: "{{title}} · {{date | date('DD/MM/YYYY')}}{{draft | ternary(' · bản nháp', '')}}"
+    summary: "{{date | date('DD/MM/YYYY')}} — {{title}} · {{categories.0}}{{draft | ternary(' · bản nháp', '')}}"
     sortable_fields: [date, title]
     view_filters:
       - label: "Bản nháp"
@@ -196,6 +230,31 @@ collections:
       - label: "Đã đăng"
         field: draft
         pattern: false
+      - label: "日記 · Nhật ký"
+        field: categories
+        pattern: nikki
+      - label: "趣味 · Sở thích"
+        field: categories
+        pattern: shumi
+      - label: "暮らし · Đời sống"
+        field: categories
+        pattern: kurashi
+      - label: "旅 · Chuyến đi"
+        field: categories
+        pattern: tabi
+      - label: "思索 · Suy nghĩ"
+        field: categories
+        pattern: shisaku
+      - label: "学び · Học tập"
+        field: categories
+        pattern: manabi
+    view_groups:
+      - label: "Năm"
+        field: date
+        pattern: '\d{4}'
+      - label: "Danh mục"
+        field: categories.0
+        pattern: '.+'
     fields:
       - label: "Tiêu đề (tiếng Nhật)"
         name: title

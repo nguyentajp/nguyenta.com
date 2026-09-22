@@ -76,6 +76,7 @@ npx decap-server
    | Bản nháp | **Bật**: bài chưa hiện trên site. **Tắt**: bài được đăng |
    | Mô tả ngắn | Một hai câu, hiện trong danh sách bài, khi chia sẻ link và trong kết quả tìm kiếm |
    | Danh mục | Chọn đúng một: Nhật ký, Sở thích, Đời sống, Chuyến đi, Suy nghĩ, Học tập |
+   | Đã có bản tiếng Nhật | Để tắt lúc mới viết. Bật tay sau khi đăng xong bản dịch, để lọc ra bài chưa dịch (Lọc theo → Chưa có bản tiếng Nhật) |
    | Thẻ | Viết tự nhiên, có dấu, cách nhau bằng dấu phẩy: `osaka, mùa thu` |
    | Ảnh bìa | Không bắt buộc. Để trống thì lấy ảnh đầu tiên trong bài |
    | Nội dung | Thân bài. Nút **＋** để chèn Ảnh, Bộ ảnh, Video YouTube |
