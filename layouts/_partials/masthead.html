@@ -84,8 +84,10 @@
     </div>
   </div>
 
-  {{/* Menu mobile dùng Popover API: đóng được bằng Esc và bấm ra ngoài, không cần JS */}}
-  <div id="menu" popover>
+  {{/* Menu mobile dùng Popover API: đóng được bằng Esc và bấm ra ngoài, không cần JS.
+       aria-label: popover không tự có tên, trình đọc màn hình sẽ đọc là vùng
+       không tên nếu để trống. */}}
+  <div id="menu" popover aria-label="{{ i18n "nav_menu" }}">
     <div class="menu-head">
       <a class="menu-brand" href="{{ "" | relLangURL }}">
         {{- partial "kamon.html" (dict "class" "kamon menu-mark") }}

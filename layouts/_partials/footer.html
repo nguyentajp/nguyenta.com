@@ -46,7 +46,9 @@
 
     <section class="footer-news" aria-labelledby="ban-tin">
       <h2 class="footer-title" id="ban-tin">{{ i18n "news_title" }}</h2>
-      <p>{{ i18n "news_text" }}</p>
+      {{- /* id: ô nhập trỏ tới bằng aria-describedby, để trình đọc màn hình
+           đọc luôn câu này sau tên ô (nhãn "Địa chỉ email" đang ẩn) */}}
+      <p id="ban-tin-mo-ta">{{ i18n "news_text" }}</p>
       {{- /* Có id: site.js mục 8 gửi ngầm sang dịch vụ bản tin, người đọc ở lại
            trang và thấy lời cảm ơn ngay dưới ô (data-msg-done / -fail). Không có
            JS thì form POST thẳng sang dịch vụ như thường và dừng ở trang của
@@ -61,7 +63,7 @@
             data-msg-done="{{ i18n "news_done" }}" data-msg-fail="{{ i18n "news_fail" }}">
         <fieldset class="joined"{{ if not $newsId }} disabled{{ end }}>
           <label class="visually-hidden" for="news-email">{{ i18n "news_label" }}</label>
-          <input id="news-email" name="{{ $newsField }}" type="email" placeholder="{{ i18n "news_placeholder" }}" autocomplete="email" required>
+          <input id="news-email" name="{{ $newsField }}" type="email" placeholder="{{ i18n "news_placeholder" }}" autocomplete="email" aria-describedby="ban-tin-mo-ta" required>
           <button type="submit">{{ i18n "news_button" }}</button>
         </fieldset>
         {{- with $newsId }}

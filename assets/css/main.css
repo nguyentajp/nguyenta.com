@@ -1282,10 +1282,12 @@ main {
     visibility: visible;
   }
 
-  /* Hai bên cùng bề rộng (hai ô bấm) để tên trang nằm đúng giữa màn hình */
+  /* Hai bên cùng bề rộng (hai ô bấm) để tên trang nằm đúng giữa màn hình.
+     6rem = hai ô 2.75rem + khe 0.5rem giữa chúng: hai ô bấm cạnh nhau phải
+     chừa khe, không thì ngón cái ở mép phải hay chạm nhầm ô bên kia. */
   .appbar-row {
     display: grid;
-    grid-template-columns: 5.5rem minmax(0, 1fr) 5.5rem;
+    grid-template-columns: 6rem minmax(0, 1fr) 6rem;
     align-items: center;
     min-height: 3rem;
     padding-inline: calc(var(--gutter) - 0.625rem);
@@ -1298,6 +1300,7 @@ main {
   .appbar-actions {
     display: flex;
     justify-content: flex-end;
+    gap: var(--space-2);
     margin-inline-end: -0.625rem;
   }
 
@@ -1325,10 +1328,15 @@ main {
     color: var(--ink);
   }
 
+  /* min-height: cả ô cao bằng hai nút bên cạnh. Chữ vẫn một dòng như cũ, chỉ
+     vùng chạm rộng ra — chữ không thôi thì cao 21px, dưới mức tối thiểu
+     24px của WCAG 2.2 cho chỗ bấm được. */
   .appbar-title {
     display: grid;
+    align-content: center;
     justify-items: center;
     min-width: 0;
+    min-height: 2.75rem;
     padding: 0 var(--space-2);
     border: 0;
     background: none;
@@ -1963,6 +1971,16 @@ a.pager-step:hover {
   outline-offset: -3px;
 }
 
+/* Điện thoại: ba nút furigana nằm sát nhau nên phải cao đủ 40px, không thì
+   chạm nhầm sang nút bên cạnh. Bản trong thanh dính vẫn 28px (luật riêng ở
+   mục 5b, chọn cụ thể hơn nên thắng): thanh phải mảnh, và 28px vẫn trên mức
+   tối thiểu 24px của WCAG 2.2. */
+@media (max-width: 47.999rem) {
+  .furigana-options button {
+    min-height: 2.5rem;
+  }
+}
+
 :root[data-furigana="show"] [data-furigana-mode="show"],
 :root[data-furigana="tap"] [data-furigana-mode="tap"],
 :root[data-furigana="off"] [data-furigana-mode="off"] {
@@ -2330,10 +2348,16 @@ a.pager-step:hover {
 }
 
 /* Điện thoại: mỗi bài rộng hơn nửa màn hình, bài kế thò ra mép để biết là
-   vuốt được */
+   vuốt được. Hai nút trái/phải to lên cho đủ 40px như mọi ô bấm khác trên
+   điện thoại (trên máy tính 32px là đủ vì bấm bằng chuột). */
 @media (max-width: 35.999rem) {
   .rail-track {
     grid-auto-columns: 62%;
+  }
+
+  .rail-nav button {
+    width: 2.5rem;
+    height: 2.5rem;
   }
 }
 
@@ -3115,6 +3139,13 @@ a.pager-step:hover {
      Bài trước và bài sau chồng lên nhau, ngăn bằng một đường mảnh. */
   .post-tags {
     justify-content: center;
+  }
+
+  /* Chữ thẻ chỉ cao 24px; thêm đệm trên dưới để vùng chạm đủ 40px. Chữ và
+     gạch chân không xê dịch, chỉ ô bấm lớn ra. */
+  .post-tags a {
+    display: inline-block;
+    padding-block: var(--space-2);
   }
 
   .neighbours {

@@ -11,19 +11,19 @@
        workflow deploy còn xoá hết các trang khác trước khi đưa lên. Trang có
        maintenance_exempt: true (trang Về blog này) vẫn hiện, không header, footer. */}}
   {{- if and hugo.IsProduction site.Params.maintenance (not .Params.maintenance_exempt) }}
-  <main id="noi-dung">{{ partial "maintenance.html" . }}</main>
+  <main id="noi-dung" tabindex="-1">{{ partial "maintenance.html" . }}</main>
   {{- else }}
   <a class="skip" href="#noi-dung">{{ i18n "skip_to_content" }}</a>
   {{- /* Trang có "bare: true" trong front matter (trang 凪) và trang 404 không có
        header, sidebar và footer. Dùng cờ thay vì block rỗng: Go template bỏ
        qua define có thân rỗng. */}}
   {{- if or .Params.bare (eq .Kind "404") }}
-    <main id="noi-dung">{{ block "main" . }}{{ end }}</main>
+    <main id="noi-dung" tabindex="-1">{{ block "main" . }}{{ end }}</main>
   {{- /* Trang được mở khi bảo trì (maintenance_exempt) thì lúc bảo trì không có
        header, sidebar, footer: link trong menu khi đó đều dẫn tới trang đã bị
        xoá. Nội dung vẫn nằm trong khung như thường. */}}
   {{- else if and hugo.IsProduction site.Params.maintenance }}
-    <div class="shell layout is-wide"><main id="noi-dung">{{ block "main" . }}{{ end }}</main></div>
+    <div class="shell layout is-wide"><main id="noi-dung" tabindex="-1">{{ block "main" . }}{{ end }}</main></div>
   {{- else }}
     {{ partial "masthead.html" . }}
     {{ partial "appbar.html" . }}
@@ -31,7 +31,7 @@
          Trang nào cần cả bề ngang (trang Ảnh) đặt "sidebar: false". */}}
     {{- $sidebar := ne .Params.sidebar false }}
     <div class="shell layout{{ if not $sidebar }} is-wide{{ end }}">
-      <main id="noi-dung">
+      <main id="noi-dung" tabindex="-1">
         {{ block "main" . }}{{ end }}
       </main>
       {{- if $sidebar }}{{ partial "sidebar.html" . }}{{ end }}

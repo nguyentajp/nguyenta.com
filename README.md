@@ -856,7 +856,12 @@ Mọi thứ về **một trục giữa** như đầu trang (bìa sổ).
   và lưu trữ thành ô bấm xếp hàng.
 - **Chân trang một cột:** căn giữa; bản tin lên ngay sau logo; hai cột link
   đứng cạnh nhau.
-- **Ô bấm trên điện thoại cao ít nhất 40–44px.**
+- **Ô bấm trên điện thoại cao ít nhất 40–44px.** Soát lại ngày 23/9 và sửa
+  cho đủ: tên bài trên thanh dính (trước 21px), nút chuyển bài liên quan
+  (32px), link thẻ cuối bài (24px), nút furigana dưới tiêu đề (30px). Hai nút
+  🌐 và sáng/tối trên thanh dính trước đây dính sát nhau, nay chừa khe 8px.
+  **Ngoại lệ có chủ ý:** hàng furigana *trong thanh dính* giữ 28px để thanh
+  còn mảnh — vẫn trên mức tối thiểu 24px của WCAG 2.2 AA cho web.
 - **Thanh tiêu đề dính** (kiểu thanh điều hướng iOS): tiêu đề lớn cuộn đi thì
   thanh mảnh trượt xuống: ☰ · tên bài (chạm để lên đầu) · 🌐 · sáng tối. 🌐
   chỉ mở khung chọn ngôn ngữ khi bấm. Không có kính lúp (ô tìm nằm trong ☰).
