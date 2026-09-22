@@ -339,7 +339,7 @@ như bản tiếng Việt.
 | Email, mạng xã hội ở trang Liên hệ | `hugo.toml` → `[params]` → `email`, `[params.socials]` |
 | Bài lớn ở đầu trang chủ | Trong CMS bật ô **Bài viết nổi bật** ở bài muốn đưa lên (trường `spotlight: true`), ảnh riêng ở ô **Ảnh bài viết nổi bật** (`spotlight_image`, để trống thì dùng ảnh bìa). Nhiều bài cùng bật thì bài mới nhất được chọn; không bài nào bật thì là bài mới nhất. Mỗi ngôn ngữ bật riêng |
 | Số bài ở trang chủ | `hugo.toml` → `homeRecentCount` |
-| Chữ của 24 tiết khí: lời giải thích (khung hiện khi rê chuột vào tên tiết khí), tên màu và câu "vì sao" ở trang Về blog này | CMS → **Dữ liệu** → **24 tiết khí**, hoặc `data/sekki_notes.yaml` |
+| Chữ của 24 tiết khí: lời giải thích (khung hiện khi rê chuột vào tên tiết khí), tên màu và câu "vì sao" ở trang Về blog này | CMS → **24 tiết khí** (mục riêng), hoặc `data/sekki_notes.yaml` |
 | Màu nhấn của site (đổi theo tiết khí) | `tools/sekki_colors.py` — sửa sắc/độ tươi của tiết trong bảng `SEKKI`, chạy `./.venv/bin/python tools/sekki_colors.py --toml` rồi dán vào `data/sekki.toml`. Chạy không có `--toml` thì ra bảng kiểm tương phản. Đừng sửa tay mã màu trong `data/sekki.toml` |
 | Chữ trên giao diện (nút, nhãn) | `i18n/vi.toml`, `i18n/ja.toml` |
 | Màu, cỡ chữ, khoảng cách | `assets/css/main.css`, phần **1. Token** ở đầu file |

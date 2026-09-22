@@ -270,16 +270,17 @@ collections:
             buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
             editor_components: [image]
 
-  # ── Dữ liệu dùng chung ───────────────────────────────────────────────────
-  - name: du-lieu
-    label: "Dữ liệu"
-    label_singular: "dữ liệu"
-    description: "Những đoạn chữ dùng chung cho cả site, không thuộc bài nào."
+  # ── 24 tiết khí ──────────────────────────────────────────────────────────
+  # Mục riêng, chỉ để sửa chữ của 24 tiết khí. Sửa xong bấm Công bố là lưu
+  # thẳng vào data/sekki_notes.yaml, không cần đụng tới file.
+  - name: tiet-khi
+    label: "24 tiết khí"
+    label_singular: "tiết khí"
+    description: "Chữ của 24 tiết khí. Lời giải thích hiện trong khung nhỏ khi rê chuột (điện thoại: chạm) vào tên tiết khí dưới ngày đăng bài; tên màu và câu “vì sao” hiện ở trang Về blog này, mục Màu của tiết khí."
     files:
       - name: tiet-khi
         label: "24 tiết khí"
         file: data/sekki_notes.yaml
-        description: "Toàn bộ chữ của 24 tiết khí. Lời giải thích hiện trong khung nhỏ khi rê chuột (điện thoại: chạm) vào tên tiết khí dưới ngày đăng bài; tên màu và câu “vì sao” hiện ở trang Về blog này, mục Màu của tiết khí."
         fields:
           - label: "24 tiết khí"
             name: sekki
