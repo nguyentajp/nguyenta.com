@@ -2025,6 +2025,12 @@ a.pager-step:hover {
   left: 50%;
   translate: -50% -50%;
   width: min(20rem, 100% - 2 * var(--gutter));
+  /* height: auto để đè UA stylesheet, chỗ nào cũng đặt [popover] { height:
+     fit-content }. Safari giải fit-content ra chiều cao CÒN TRỐNG của màn
+     hình chứ không phải chiều cao của chữ, nên khung bị kéo tới tận
+     max-height (lỗi thấy trên iPhone 14 Pro, 23/9). height: auto thì khung
+     co đúng bằng nội dung, không trình duyệt nào làm khác được. */
+  height: auto;
   max-height: min(22rem, 100svh - 2 * var(--gutter));
   margin: 0;
   overflow-y: auto;
@@ -2043,6 +2049,9 @@ a.pager-step:hover {
 
 .sekki-note:popover-open {
   display: grid;
+  /* start, không phải stretch: nếu vì lý do gì khung có cao hơn chữ thì ba
+     dòng vẫn nằm sát nhau ở trên, chứ không giãn ra cho đầy khung */
+  align-content: start;
   gap: var(--space-2);
 }
 
