@@ -811,6 +811,12 @@ Có quyết định mới thì ghi vào đây.
 - **Không làm 七十二候.** Claude từng tự đề xuất rồi ghi nhầm là đã duyệt;
   đã gỡ ở commit `402a743`. Đừng đề xuất lại.
 - **Màu nhấn đổi theo 24 tiết khí thì giữ** — cái này có trong "Yêu cầu.md".
+- **Màu 24 tiết khí xếp theo MÙA, không theo vòng bánh xe màu** (chốt 23/9).
+  Xuân hồng hoa rồi xanh lá; hạ đỏ và các màu nóng; thu vàng lúa, vàng lá,
+  nâu đất, đỏ sậm; đông các màu lạnh. Ngoại lệ duy nhất là 冬至 vàng quả
+  yuzu: đêm dài nhất năm đúng là ngày thả yuzu vào bồn tắm, nên giữa dải
+  lạnh có một đốm ấm. Bản trước xếp theo vòng bánh xe nên có xanh biển giữa
+  hè và xanh lơ đầu thu; anh xem rồi bác. Đừng quay lại cách đó.
 - **Vòng tre của kamon có ba vành đốt (節)**, không còn là ba cung tròn cách
   nhau bằng khe trống. Hồi vòng mang màu tre khô thì màu gánh phần "tre"; đổi
   sang màu mực thì hình phải tự nói được, nên đưa cái đốt vào. Favicon 16–32px

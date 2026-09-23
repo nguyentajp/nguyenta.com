@@ -1,9 +1,27 @@
 #!/usr/bin/env python3
 """Sinh và kiểm bộ màu nhấn của 24 tiết khí.
 
-Mỗi tiết khí có một màu nhấn, tên theo dấu mốc của mùa (hoa mai, lá non, lá
-đỏ…). Màu đi một vòng bánh xe màu trong năm, nên người đọc quay lại sau vài
-tuần thấy site đã ngả sang màu khác mà không thấy màu nào lạc ra ngoài.
+Mỗi tiết khí một màu nhấn, lấy từ một thứ có thật của tiết đó: hoa đang nở,
+đồng đang chín, thời tiết ngoài trời, tục lệ trong nhà.
+
+Luật xếp màu (chốt 23/9/2026) — MÀU PHẢI ĐÚNG MÙA, chứ không phải đi cho đủ
+một vòng bánh xe màu:
+
+    xuân   hồng hoa (mơ, đào, anh đào), rồi xanh lá non
+    hạ     đỏ và các màu nóng: đỏ, cam, vàng chín
+    thu    vàng lúa, vàng lá, nâu đất, đỏ sậm
+    đông   các màu lạnh: xám tuyết, xanh băng, xanh chàm
+
+Ngoài luật ấy đúng một chỗ: 冬至 mang màu vàng quả yuzu. Đêm dài nhất năm là
+đúng ngày người Nhật thả yuzu vào bồn tắm, nên giữa dải màu lạnh có một đốm
+ấm — cố ý, không phải sót.
+
+Nửa nóng của bánh xe (hạ và thu, sắc 8° → 108°) xếp liền một mạch đỏ → cam →
+vàng, và mỗi tiết đứng đúng chỗ màu của vật mang tên nó: tía tô đỏ tím nhất,
+lá bạch quả vàng nhất.
+
+Bản trước xếp màu theo vòng bánh xe nên mới có xanh biển giữa hè và xanh lơ
+đầu thu; đừng quay lại cách đó.
 
 Cách làm: giữ ĐỘ SÁNG cố định trong không gian OKLCh — bằng đúng độ sáng của
 màu 銀杏 đang dùng (L 0,45 cho giao diện sáng; 0,81 cho giao diện tối) — rồi
@@ -33,30 +51,34 @@ FLOOR = 4.5            # WCAG AA cho chữ thường
 
 # order: thứ tự trong năm (khớp data/sekki.toml). hue: OKLCh, độ. chroma: OKLCh.
 SEKKI = [
-    (1,  "立春", "Lập xuân",    "朝焼け ráng sớm",      355, 0.085),
-    (2,  "雨水", "Vũ thủy",     "霞 sương mù",          250, 0.045),
-    (3,  "啓蟄", "Kinh trập",   "天道虫 bọ rùa",         15, 0.085),
-    (4,  "春分", "Xuân phân",   "黄昏 chạng vạng",      340, 0.080),
-    (5,  "清明", "Thanh minh",  "若葉 lá non",          130, 0.095),
-    (6,  "穀雨", "Cốc vũ",      "緋鯉 cá chép",         350, 0.095),
-    (7,  "立夏", "Lập hạ",      "新竹 tre mới",         150, 0.090),
-    (8,  "小満", "Tiểu mãn",    "繭 kén tằm",            40, 0.100),
-    (9,  "芒種", "Mang chủng",  "早苗 mạ non",          115, 0.090),
-    (10, "夏至", "Hạ chí",      "遠山 núi xa",          295, 0.090),
-    (11, "小暑", "Tiểu thử",    "赤紫蘇 tía tô đỏ",     335, 0.085),
-    (12, "大暑", "Đại thử",     "雷雨 mưa dông",        240, 0.085),
-    (13, "立秋", "Lập thu",     "涼風 gió mát",         205, 0.075),
-    (14, "処暑", "Xử thử",      "稲 lúa chín",           90, 0.090),
-    (15, "白露", "Bạch lộ",     "蜻蛉 chuồn chuồn",     265, 0.090),
-    (16, "秋分", "Thu phân",    "秋雲 mây thu",         320, 0.085),
-    (17, "寒露", "Hàn lộ",      "銀杏 lá bạch quả",      80, 0.095),
-    (18, "霜降", "Sương giáng", "紅葉 lá đỏ",            35, 0.100),
-    (19, "立冬", "Lập đông",    "丹頂 hạc đỏ mào",       20, 0.095),
-    (20, "小雪", "Tiểu tuyết",  "枯野 đồng cỏ khô",      60, 0.055),
-    (21, "大雪", "Đại tuyết",   "雪 tuyết",             220, 0.040),
-    (22, "冬至", "Đông chí",    "南瓜 bí đỏ",            95, 0.095),
-    (23, "小寒", "Tiểu hàn",    "芹 rau cần",           145, 0.085),
-    (24, "大寒", "Đại hàn",     "蕗の薹 ngồng fuki",  110, 0.085),
+    # ── Xuân: hồng hoa, rồi xanh lá ────────────────────────────────────────
+    (1,  "立春", "Lập xuân",    "紅梅 hoa mơ đỏ",       352, 0.085),
+    (2,  "雨水", "Vũ thủy",     "霞 sương giăng",       344, 0.038),
+    (3,  "啓蟄", "Kinh trập",   "桃の花 hoa đào",       336, 0.092),
+    (4,  "春分", "Xuân phân",   "桜 hoa anh đào",       328, 0.060),
+    (5,  "清明", "Thanh minh",  "若葉 lá non",          140, 0.098),
+    (6,  "穀雨", "Cốc vũ",      "新茶 trà mới hái",     152, 0.084),
+    # ── Hạ: đỏ và các màu nóng ─────────────────────────────────────────────
+    (7,  "立夏", "Lập hạ",      "鯉のぼり cờ cá chép",   44, 0.098),
+    (8,  "小満", "Tiểu mãn",    "麦の秋 lúa mạch chín",  80, 0.090),
+    (9,  "芒種", "Mang chủng",  "梅の実 quả mơ chín",    71, 0.094),
+    (10, "夏至", "Hạ chí",      "夕焼け ráng chiều",     53, 0.096),
+    (11, "小暑", "Tiểu thử",    "赤紫蘇 tía tô đỏ",       8, 0.092),
+    (12, "大暑", "Đại thử",     "炎天 trời nắng lửa",    26, 0.100),
+    # ── Thu: vàng lúa, vàng lá, nâu đất, đỏ sậm ────────────────────────────
+    (13, "立秋", "Lập thu",     "灯籠 đèn hoa đăng",     62, 0.088),
+    (14, "処暑", "Xử thử",      "稲 lúa chín",           89, 0.095),
+    (15, "白露", "Bạch lộ",     "芒 cỏ lau",             82, 0.038),
+    (16, "秋分", "Thu phân",    "彼岸花 hoa bỉ ngạn",    17, 0.100),
+    (17, "寒露", "Hàn lộ",      "銀杏 lá bạch quả",     107, 0.094),
+    (18, "霜降", "Sương giáng", "紅葉 lá phong đỏ",      35, 0.086),
+    # ── Đông: các màu lạnh (trừ 冬至, xem đầu file) ────────────────────────
+    (19, "立冬", "Lập đông",    "木枯らし gió heo may", 272, 0.046),
+    (20, "小雪", "Tiểu tuyết",  "初雪 tuyết đầu mùa",   252, 0.030),
+    (21, "大雪", "Đại tuyết",   "雪の影 bóng trên tuyết", 258, 0.094),
+    (22, "冬至", "Đông chí",    "柚子 quả yuzu",         98, 0.080),
+    (23, "小寒", "Tiểu hàn",    "氷 băng",              212, 0.050),
+    (24, "大寒", "Đại hàn",     "凍空 trời rét cóng",   238, 0.078),
 ]
 
 
