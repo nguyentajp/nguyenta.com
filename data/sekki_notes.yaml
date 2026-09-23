@@ -29,7 +29,7 @@ sekki:
   - ja: 啓蟄
     vi_text: "Sâu bọ ngủ đông dưới đất tỉnh dậy, chui lên đón hơi ấm. Kinh trập nghĩa là sâu bọ đang ngủ đông giật mình thức giấc."
     color_vi: "Hồng hoa đào"
-    why_vi: "Sâu bọ dưới đất vừa tỉnh thì trên cành hoa đào đã nở: ở Nhật là tết búp bê mồng ba tháng Ba, ở Việt Nam đào vẫn còn sót lại từ Tết."
+    why_vi: "Sâu bọ dưới đất vừa tỉnh thì hoa đào đã nở trên cành: tết búp bê mồng ba ở Nhật, đào cuối mùa Tết ở Việt Nam."
     ja_text: "冬ごもりしていた虫たちが、土の中から這い出てくるころ。「啓」は開くという意味、「蟄」は土の中で冬を越す虫のことです。"
     color_ja: "桃の花の紅"
     why_ja: "土の虫が目覚めるころ、枝では桃が咲いています。日本では三月三日の桃の節句、ベトナムでも旧正月の桃がまだ残っています。"
@@ -148,7 +148,7 @@ sekki:
   - ja: 小雪
     vi_text: "Tuyết nhẹ bắt đầu rơi ở vùng núi và miền bắc. Trong phố, hàng bạch quả vàng rực."
     color_vi: "Xám tuyết đầu mùa"
-    why_vi: "Tuyết mới lác đác trên núi, chưa kịp đọng. Dưới trời mây, tuyết không trắng mà là một màu xám lạnh, gần như không còn sắc."
+    why_vi: "Tuyết mới lác đác trên núi, chưa kịp đọng. Trời mây phủ, tuyết ngả xám lạnh, gần như không còn sắc."
     ja_text: "北国や山では、わずかに雪が降り始めるころ。街では銀杏並木が色づきます。"
     color_ja: "初雪の白鼠"
     why_ja: "山にわずかな雪が舞い、まだ積もりません。曇り空の下の雪は、色を失った冷たい鼠色に見えます。"
@@ -162,7 +162,7 @@ sekki:
   - ja: 冬至
     vi_text: "Ngày ngắn nhất trong năm. Người Nhật tắm bồn thả quả yuzu và ăn bí đỏ, cầu một mùa đông khoẻ mạnh."
     color_vi: "Chàm ngân hà mùa đông"
-    why_vi: "Đêm dài nhất năm cũng là đêm trời sáng sao nhất. Màu này lấy từ nền trời quanh dải ngân hà mùa đông — chàm sẫm, lạnh, chưa tới đen."
+    why_vi: "Đêm dài nhất năm cũng là đêm sao sáng nhất. Màu lấy từ trời đêm quanh dải ngân hà mùa đông, chàm sẫm."
     ja_text: "一年でもっとも昼が短い日。柚子湯に入り、かぼちゃを食べて、無病息災を願います。"
     color_ja: "冬銀河の藍"
     why_ja: "一年でもっとも夜が長い日は、星がもっとも冴える夜でもあります。冬の銀河がかかる空の、黒には至らない深い藍から。"
