@@ -1270,9 +1270,11 @@ main {
     display: block;
     padding-block-start: env(safe-area-inset-top);
     border-block-end: 1px solid var(--rule);
-    background: color-mix(in oklab, var(--bg) 86%, transparent);
-    -webkit-backdrop-filter: saturate(1.5) blur(14px);
-    backdrop-filter: saturate(1.5) blur(14px);
+    /* Nền gần đặc, KHÔNG dùng backdrop-filter: vệt kính mờ bắt máy dựng lại
+       phần nền sau thanh trong từng khung hình lúc cuộn — việc nặng nhất trên
+       trang khi đang đọc — trong khi dưới lớp nền này gần như không ai thấy
+       khác biệt (đo ngày 23/9: đặt hai bản cạnh nhau trên cùng một ảnh bìa). */
+    background: color-mix(in oklab, var(--bg) 97%, transparent);
     translate: 0 -100%;
     visibility: hidden;
   }
@@ -1283,11 +1285,12 @@ main {
   }
 
   /* Hai bên cùng bề rộng (hai ô bấm) để tên trang nằm đúng giữa màn hình.
-     6rem = hai ô 2.75rem + khe 0.5rem giữa chúng: hai ô bấm cạnh nhau phải
-     chừa khe, không thì ngón cái ở mép phải hay chạm nhầm ô bên kia. */
+     5.5rem = hai ô 2.75rem đặt sát nhau, đúng như ☰ và kính lúp ở đầu trang:
+     ô bấm vẫn đủ 44px, mà 🌐 và sáng/tối nhìn ra là một cặp chứ không rời
+     nhau ra hai phía (chốt 23/9). */
   .appbar-row {
     display: grid;
-    grid-template-columns: 6rem minmax(0, 1fr) 6rem;
+    grid-template-columns: 5.5rem minmax(0, 1fr) 5.5rem;
     align-items: center;
     min-height: 3rem;
     padding-inline: calc(var(--gutter) - 0.625rem);
@@ -1300,7 +1303,6 @@ main {
   .appbar-actions {
     display: flex;
     justify-content: flex-end;
-    gap: var(--space-2);
     margin-inline-end: -0.625rem;
   }
 
@@ -2007,14 +2009,26 @@ a.pager-step:hover {
   text-decoration-color: var(--accent);
 }
 
-/* Khung giải thích. Mặc định (điện thoại, bàn phím, không có JS): nằm giữa màn
-   hình, nền phía sau tối đi, có nút × để đóng. */
+/* Khung giải thích. Mặc định (điện thoại, bàn phím, không có JS): một tấm thẻ
+   nhỏ giữa màn hình, nền phía sau tối đi, có nút × để đóng.
+
+   Neo bằng MỘT mép (top/left + translate) chứ không phải inset: 0 + margin
+   auto: khi cả mép trên lẫn mép dưới cùng bằng 0, chiều cao "tự động" của một
+   khung position: fixed là cao bằng cả màn hình — chỉ cần trình duyệt không
+   áp được height: fit-content là tấm thẻ phình to bằng màn hình (lỗi thấy
+   trên điện thoại, 23/9). Neo một mép thì chiều cao luôn vừa đúng chữ bên
+   trong, không trình duyệt nào làm khác được. */
 .sekki-note {
   position: fixed;
-  inset: 0;
-  width: min(22rem, 100% - 2 * var(--gutter));
-  height: fit-content;
-  margin: auto;
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: min(20rem, 100% - 2 * var(--gutter));
+  max-height: min(22rem, 100svh - 2 * var(--gutter));
+  margin: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: var(--space-4);
   border: 1px solid var(--ink);
   border-radius: var(--radius);
@@ -2098,10 +2112,9 @@ a.pager-step:hover {
 /* Máy tính có chuột (site.js mục 9): khung mở khi rê chuột, đặt sát dưới tên
    tiết khí, không phủ tối nền, không cần nút × */
 .sekki-note.is-anchored {
-  inset: auto;
   top: var(--y, 0);
   left: var(--x, 0);
-  margin: 0;
+  translate: none;
 }
 
 .sekki-note.is-anchored::backdrop {
@@ -2935,15 +2948,24 @@ a.pager-step:hover {
      cần JS). Phần giống nhau giữa hai trang như đầu trang, sidebar trông như
      đứng yên. Không đặt view-transition-name riêng cho đầu trang: đang cuộn
      giữa bài mà bấm sang trang khác thì nó sẽ trượt từ xa về, quá ồn.
-     Trình duyệt chưa hỗ trợ thì chuyển trang như thường. */
-  @view-transition {
-    navigation: auto;
-  }
+     Trình duyệt chưa hỗ trợ thì chuyển trang như thường.
 
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 300ms;
-    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+     CHỈ trên máy tính (chốt 23/9). Cách hiệu ứng này chạy là: giữ nguyên trang
+     cũ trên màn hình cho tới khi trang mới sẵn sàng, rồi mới mờ chồng 300ms —
+     nghĩa là mỗi lần bấm link đều mất thêm ít nhất 300ms không bấm được gì.
+     Trên máy tính thì không sao, nhưng trên điện thoại nó xoá sạch cái nhanh
+     mà Service Worker và Speculation Rules vừa mang lại, và cảm giác là trang
+     khựng lại một nhịp rồi mới hiện. */
+  @media (min-width: 48rem) {
+    @view-transition {
+      navigation: auto;
+    }
+
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 300ms;
+      animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
   }
 
   /* Ngăn Menu trượt ra, nền tối dần, theo đường cong của sheet trên iOS.
@@ -2976,12 +2998,15 @@ a.pager-step:hover {
     }
   }
 
-  /* Thanh tiêu đề trượt xuống / lui lên */
-  .appbar {
+  /* Thanh tiêu đề trượt xuống / lui lên. Chỉ trượt SAU khi site.js mục 11 đặt
+     xong trạng thái đầu tiên (data-ready): mở một bài ở lưng chừng (tải lại
+     trang, bấm Back) thì thanh phải có sẵn ngay, chứ không trượt vào ngay
+     trước mắt người đọc mỗi lần trang tải. */
+  .appbar[data-ready] {
     transition: translate 240ms cubic-bezier(0.32, 0.72, 0, 1), visibility 0s linear 240ms;
   }
 
-  .appbar.is-shown {
+  .appbar[data-ready].is-shown {
     transition: translate 240ms cubic-bezier(0.32, 0.72, 0, 1), visibility 0s;
   }
 }

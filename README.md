@@ -858,10 +858,14 @@ Mọi thứ về **một trục giữa** như đầu trang (bìa sổ).
   đứng cạnh nhau.
 - **Ô bấm trên điện thoại cao ít nhất 40–44px.** Soát lại ngày 23/9 và sửa
   cho đủ: tên bài trên thanh dính (trước 21px), nút chuyển bài liên quan
-  (32px), link thẻ cuối bài (24px), nút furigana dưới tiêu đề (30px). Hai nút
-  🌐 và sáng/tối trên thanh dính trước đây dính sát nhau, nay chừa khe 8px.
+  (32px), link thẻ cuối bài (24px), nút furigana dưới tiêu đề (30px).
   **Ngoại lệ có chủ ý:** hàng furigana *trong thanh dính* giữ 28px để thanh
   còn mảnh — vẫn trên mức tối thiểu 24px của WCAG 2.2 AA cho web.
+- **Hai nút 🌐 và sáng/tối trên thanh dính đứng sát nhau** (chốt 23/9). Ngày
+  23/9 từng chừa khe 8px cho đỡ chạm nhầm, nhưng mỗi ô bấm 44px đã có sẵn
+  11px lề quanh hình 22px, nên hai biểu tượng cách nhau 30px — nhìn ra là hai
+  thứ rời nhau. Bỏ khe: cách 22px, đúng bằng ☰ và kính lúp ở đầu trang, ô bấm
+  vẫn nguyên 44px.
 - **Thanh tiêu đề dính** (kiểu thanh điều hướng iOS): tiêu đề lớn cuộn đi thì
   thanh mảnh trượt xuống: ☰ · tên bài (chạm để lên đầu) · 🌐 · sáng tối. 🌐
   chỉ mở khung chọn ngôn ngữ khi bấm. Không có kính lúp (ô tìm nằm trong ☰).
@@ -881,6 +885,20 @@ Mọi thứ về **một trục giữa** như đầu trang (bìa sổ).
   "mô tả · số bài". Điện thoại: sát hai mép, nối liền dưới hàng menu.
 - **Đoạn trích và thẻ mô tả bỏ cách đọc furigana** (秋（あき） → 秋); mở bài
   ra thì furigana vẫn đủ.
+- **Chuyển trang mờ dần chỉ còn trên máy tính** (chốt 23/9). View Transitions
+  giữ nguyên trang cũ trên màn hình cho tới khi trang mới sẵn sàng rồi mới mờ
+  chồng 300ms, nên mỗi lần bấm link đều mất thêm ít nhất 300ms không bấm được
+  gì. Trên điện thoại, chỗ đó xoá đúng cái nhanh mà Service Worker và
+  Speculation Rules vừa mang lại và cho cảm giác trang khựng một nhịp; nay
+  bọc trong `@media (min-width: 48rem)`.
+- **Thanh dính không dùng kính mờ** (chốt 23/9). `backdrop-filter` bắt máy
+  dựng lại phần nền sau thanh trong từng khung hình lúc cuộn — việc nặng nhất
+  trên trang khi đang đọc. Đặt hai bản cạnh nhau trên cùng một ảnh bìa thì gần
+  như không phân biệt được, vì nền thanh vốn đã đục 86%. Nay là nền đục 97%,
+  không lọc gì.
+- **Thanh dính không trượt vào lúc trang vừa tải** (chốt 23/9). Lần
+  IntersectionObserver chạy đầu tiên chỉ đặt trạng thái; mở một bài ở lưng
+  chừng (tải lại, bấm Back) thì thanh có sẵn ngay. Từ lần thứ hai mới trượt.
 - **Chuyển trang mượt như app** (22/9): font dùng chung cho cả site (chữ
   Latin, tiếng Việt; kana và chữ giao diện tiếng Nhật), chỉ chữ Hán riêng của
   từng bài tiếng Nhật là file riêng; Service Worker (`static/sw.js`) giữ font,

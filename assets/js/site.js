@@ -407,12 +407,18 @@
     note.style.setProperty("--y", `${y}px`);
   };
 
+  // Chỉ nghe sự kiện cuộn trong lúc khung đang neo dưới tên tiết khí. Gắn sẵn
+  // một handler chạy suốt đời trang thì mỗi cú cuộn ở mọi trang đều phải gọi
+  // vào đây, chỉ để thấy không có gì phải làm.
+  const follow = () => place();
+
   const open = () => {
     clearTimeout(timer);
     if (isOpen()) return;
     note.classList.add("is-anchored");
     note.showPopover();
     place();
+    addEventListener("scroll", follow, { passive: true });
   };
 
   const closeSoon = () => {
@@ -442,13 +448,10 @@
 
   note.addEventListener("toggle", (event) => {
     if (event.newState !== "closed") return;
+    removeEventListener("scroll", follow);
     note.classList.remove("is-anchored");
     pinned = false;
   });
-
-  addEventListener("scroll", () => {
-    if (anchored() && isOpen()) place();
-  }, { passive: true });
 })();
 
 // ── 10. Đồng hồ hai thành phố ───────────────────────────────────────────────
@@ -516,10 +519,18 @@
   const target = document.querySelector(".post-title, .page-title") || document.querySelector(".masthead");
   if (!target) return;
 
+  // Lần gọi đầu tiên chỉ ĐẶT trạng thái, chưa cho trượt: mở một bài ở lưng
+  // chừng (tải lại trang, bấm Back) thì thanh có sẵn ngay thay vì trượt vào
+  // ngay trước mắt người đọc. Hai khung hình sau mới bật hiệu ứng lại, giống
+  // cách nút sáng tối ở mục 6 tạm tắt hiệu ứng đổi màu.
+  let ready = false;
   new IntersectionObserver(([entry]) => {
     const shown = !entry.isIntersecting && entry.boundingClientRect.top < 0;
     bar.classList.toggle("is-shown", shown);
     bar.inert = !shown;
+    if (ready) return;
+    ready = true;
+    requestAnimationFrame(() => requestAnimationFrame(() => bar.setAttribute("data-ready", "")));
   }).observe(target);
 
   // Chạm vào tên trang: lên đầu, như chạm thanh trạng thái của iPhone
@@ -535,6 +546,8 @@
 // thì tải trước HTML của trang đích, để lúc nhấc lên trình duyệt đã có sẵn
 // trong bộ nhớ đệm, nhanh hơn chừng một phần mười giây. Mỗi trang tải một lần;
 // bỏ qua link ra ngoài, link ảnh phóng to, file tải về, link mở tab mới.
+// priority "low": ngón tay đặt xuống để CUỘN mà trúng một link cũng tính là
+// chạm, nên lượt tải này phải xếp sau ảnh và font của trang đang đọc.
 (() => {
   if (HTMLScriptElement.supports?.("speculationrules")) return;
   const warmed = new Set([location.href.split("#")[0]]);
@@ -546,7 +559,7 @@
     const url = link.href.split("#")[0];
     if (warmed.has(url)) return;
     warmed.add(url);
-    fetch(url, { credentials: "same-origin", priority: "high" }).catch(() => {});
+    fetch(url, { credentials: "same-origin", priority: "low" }).catch(() => {});
   };
 
   addEventListener("touchstart", warm, { capture: true, passive: true });
