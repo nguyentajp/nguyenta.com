@@ -12,9 +12,9 @@ một vòng bánh xe màu:
     thu    vàng lúa, vàng lá, nâu đất, đỏ sậm
     đông   các màu lạnh: xám tuyết, xanh băng, xanh chàm
 
-Ngoài luật ấy đúng một chỗ: 冬至 mang màu vàng quả yuzu. Đêm dài nhất năm là
-đúng ngày người Nhật thả yuzu vào bồn tắm, nên giữa dải màu lạnh có một đốm
-ấm — cố ý, không phải sót.
+Không có ngoại lệ nào. Bản 23/9 từng cho 冬至 màu vàng quả yuzu (ngày thả yuzu
+vào bồn tắm); bỏ, vì một đốm ấm giữa dải màu lạnh làm gãy mùa đông. 冬至 nay
+lấy màu trời đêm: đêm dài nhất năm cũng là đêm nhiều sao nhất.
 
 Nửa nóng của bánh xe (hạ và thu, sắc 8° → 108°) xếp liền một mạch đỏ → cam →
 vàng, và mỗi tiết đứng đúng chỗ màu của vật mang tên nó: tía tô đỏ tím nhất,
@@ -72,11 +72,11 @@ SEKKI = [
     (16, "秋分", "Thu phân",    "彼岸花 hoa bỉ ngạn",    17, 0.100),
     (17, "寒露", "Hàn lộ",      "銀杏 lá bạch quả",     107, 0.094),
     (18, "霜降", "Sương giáng", "紅葉 lá phong đỏ",      35, 0.086),
-    # ── Đông: các màu lạnh (trừ 冬至, xem đầu file) ────────────────────────
+    # ── Đông: các màu lạnh ─────────────────────────────────────────────────
     (19, "立冬", "Lập đông",    "木枯らし gió heo may", 272, 0.046),
     (20, "小雪", "Tiểu tuyết",  "初雪 tuyết đầu mùa",   252, 0.030),
     (21, "大雪", "Đại tuyết",   "雪の影 bóng trên tuyết", 258, 0.094),
-    (22, "冬至", "Đông chí",    "柚子 quả yuzu",         98, 0.080),
+    (22, "冬至", "Đông chí",    "冬銀河 ngân hà đông",  285, 0.088),
     (23, "小寒", "Tiểu hàn",    "氷 băng",              212, 0.050),
     (24, "大寒", "Đại hàn",     "凍空 trời rét cóng",   238, 0.078),
 ]
