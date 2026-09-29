@@ -341,7 +341,7 @@ như bản tiếng Việt.
 | Bài lớn ở đầu trang chủ | Trong CMS bật ô **Bài viết nổi bật** ở bài muốn đưa lên (trường `spotlight: true`), ảnh riêng ở ô **Ảnh bài viết nổi bật** (`spotlight_image`, để trống thì dùng ảnh bìa). Nhiều bài cùng bật thì bài mới nhất được chọn; không bài nào bật thì là bài mới nhất. Mỗi ngôn ngữ bật riêng |
 | Số bài ở trang chủ | `hugo.toml` → `homeRecentCount` |
 | Chữ của 24 tiết khí: lời giải thích (khung hiện khi rê chuột vào tên tiết khí), tên màu và câu "vì sao" ở trang Về blog này | CMS → **24 tiết khí** (mục riêng), hoặc `data/sekki_notes.yaml` |
-| Màu nhấn của site (đổi theo tiết khí) | `tools/sekki_colors.py` — sửa sắc/độ tươi của tiết trong bảng `SEKKI`, chạy `./.venv/bin/python tools/sekki_colors.py --toml` rồi dán vào `data/sekki.toml`. Chạy không có `--toml` thì ra bảng kiểm tương phản. Đừng sửa tay mã màu trong `data/sekki.toml` |
+| Màu nhấn của site (đổi theo tiết khí) | `tools/sekki_colors.py` — sửa sắc/độ tươi của tiết trong bảng `SEKKI`, chạy `./.venv/bin/python tools/sekki_colors.py --write` để tự ghi vào `data/sekki.toml`. Chạy không có `--write` thì ra bảng kiểm (tương phản với nền, độ khác nhau giữa hai tiết liền kề, toml có khớp không); CI chạy `--check` và chặn deploy nếu không đạt. Đừng sửa tay mã màu trong `data/sekki.toml` |
 | Chữ trên giao diện (nút, nhãn) | `i18n/vi.toml`, `i18n/ja.toml` |
 | Màu, cỡ chữ, khoảng cách | `assets/css/main.css`, phần **1. Token** ở đầu file |
 
@@ -817,7 +817,11 @@ Có quyết định mới thì ghi vào đây.
   quả yuzu, anh bác vì một đốm ấm làm gãy dải mùa đông, nay là chàm 冬銀河
   (đêm dài nhất cũng là đêm nhiều sao nhất). Bản trước nữa xếp theo vòng
   bánh xe nên có xanh biển giữa hè và xanh lơ đầu thu; anh cũng bác. Đừng
-  quay lại cả hai cách đó.
+  quay lại cả hai cách đó. Bộ màu hiện tại (29/9) giữ luật mùa, đổi vật mang
+  màu cho khớp với tên màu truyền thống Nhật (寒露 quả hồng thay lá bạch quả,
+  vì bạch quả ở Nhật chỉ vàng từ cuối tháng Mười Một), và có thêm ràng buộc:
+  hai tiết liền kề cách nhau ΔE ≥ 3,5 ở cả hai giao diện (bản trước có cặp
+  chỉ cách 1,5, mắt thường coi là một màu).
 - **Vòng tre của kamon có ba vành đốt (節)**, không còn là ba cung tròn cách
   nhau bằng khe trống. Hồi vòng mang màu tre khô thì màu gánh phần "tre"; đổi
   sang màu mực thì hình phải tự nói được, nên đưa cái đốt vào. Favicon 16–32px

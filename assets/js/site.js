@@ -410,15 +410,13 @@
   // Chỉ nghe sự kiện cuộn trong lúc khung đang neo dưới tên tiết khí. Gắn sẵn
   // một handler chạy suốt đời trang thì mỗi cú cuộn ở mọi trang đều phải gọi
   // vào đây, chỉ để thấy không có gì phải làm.
-  const follow = () => place();
-
   const open = () => {
     clearTimeout(timer);
     if (isOpen()) return;
     note.classList.add("is-anchored");
     note.showPopover();
     place();
-    addEventListener("scroll", follow, { passive: true });
+    addEventListener("scroll", place, { passive: true });
   };
 
   const closeSoon = () => {
@@ -448,7 +446,7 @@
 
   note.addEventListener("toggle", (event) => {
     if (event.newState !== "closed") return;
-    removeEventListener("scroll", follow);
+    removeEventListener("scroll", place);
     note.classList.remove("is-anchored");
     pinned = false;
   });

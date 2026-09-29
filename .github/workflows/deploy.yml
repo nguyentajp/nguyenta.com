@@ -87,6 +87,11 @@ jobs:
           key: hugo-gen-${{ env.HUGO_VERSION }}-${{ hashFiles('content/**/*.jpg', 'content/**/*.jpeg', 'content/**/*.png', 'content/**/*.webp', 'assets/**/*.jpg', 'assets/**/*.png') }}
           restore-keys: hugo-gen-${{ env.HUGO_VERSION }}-
 
+      # Màu nhấn 24 tiết khí: tương phản với nền, hai tiết liền kề phân biệt được,
+      # và data/sekki.toml khớp với bảng trong tool. Chỉ dùng thư viện chuẩn.
+      - name: Kiểm màu tiết khí
+        run: python tools/sekki_colors.py --check
+
       - name: Build site
         env:
           HUGO_ENVIRONMENT: production
