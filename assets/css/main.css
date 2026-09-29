@@ -2953,27 +2953,54 @@ a.pager-step:hover {
     transition: opacity var(--ink-in) ease, visibility 0s;
   }
 
-  /* Chuyển trang: trang cũ mờ đi, trang mới hiện lên (View Transitions, không
-     cần JS). Phần giống nhau giữa hai trang như đầu trang, sidebar trông như
-     đứng yên. Không đặt view-transition-name riêng cho đầu trang: đang cuộn
-     giữa bài mà bấm sang trang khác thì nó sẽ trượt từ xa về, quá ồn.
+  /* Chuyển trang (View Transitions, không cần JS). Trình duyệt giữ ảnh chụp
+     trang cũ trên màn hình cho tới khi trang mới vẽ xong khung hình đầu, rồi
+     mới đổi; nhờ vậy giữa hai trang không bao giờ có khung hình trắng hay
+     khung hình mới dựng dở. Đó là cái nháy người đọc thấy trên iPhone khi
+     bấm link: không có hiệu ứng này, Safari để trống một nhịp giữa hai trang.
      Trình duyệt chưa hỗ trợ thì chuyển trang như thường.
 
-     CHỈ trên máy tính (chốt 23/9). Cách hiệu ứng này chạy là: giữ nguyên trang
-     cũ trên màn hình cho tới khi trang mới sẵn sàng, rồi mới mờ chồng 300ms —
-     nghĩa là mỗi lần bấm link đều mất thêm ít nhất 300ms không bấm được gì.
-     Trên máy tính thì không sao, nhưng trên điện thoại nó xoá sạch cái nhanh
-     mà Service Worker và Speculation Rules vừa mang lại, và cảm giác là trang
-     khựng lại một nhịp rồi mới hiện. */
-  @media (min-width: 48rem) {
-    @view-transition {
-      navigation: auto;
-    }
+     Máy tính: hai trang mờ chồng lên nhau 300ms. Phần giống nhau như đầu
+     trang, sidebar trông như đứng yên. Không đặt view-transition-name riêng
+     cho đầu trang: đang cuộn giữa bài mà bấm sang trang khác thì nó sẽ trượt
+     từ xa về, quá ồn.
 
+     Điện thoại: chỉ để chống nháy, không để làm đẹp. Trang cũ đứng nguyên
+     (animation: none, cả lớp group mặc định 250ms, nếu không thì hiệu ứng kéo dài hơn 140ms), trang mới hiện lên trong 140ms. Không mờ chồng, vì
+     mờ chồng thì cả màn hình chớp sáng-tối một nhịp, đúng thứ đang cần bỏ.
+     Cả hai lớp phải đặt mix-blend-mode: normal: mặc định của trình duyệt là
+     plus-lighter, cộng sáng hai ảnh chụp, mà ảnh cũ đứng nguyên thì tổng vượt
+     quá trắng. Trước 23/9 hiệu ứng này từng tắt hẳn ở điện thoại vì 300ms làm
+     trang khựng; 140ms là mức không còn ai nhận ra. */
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 300ms;
+    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  @media (max-width: 47.999rem) {
     ::view-transition-old(root),
     ::view-transition-new(root) {
-      animation-duration: 300ms;
-      animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+      mix-blend-mode: normal;
+    }
+
+    ::view-transition-group(root),
+    ::view-transition-old(root) {
+      animation: none;
+    }
+
+    ::view-transition-new(root) {
+      animation: gen-page-in 140ms ease-out both;
+    }
+  }
+
+  @keyframes gen-page-in {
+    from {
+      opacity: 0;
     }
   }
 
