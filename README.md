@@ -896,12 +896,16 @@ Mọi thứ về **một trục giữa** như đầu trang (bìa sổ).
   "mô tả · số bài". Điện thoại: sát hai mép, nối liền dưới hàng menu.
 - **Đoạn trích và thẻ mô tả bỏ cách đọc furigana** (秋（あき） → 秋); mở bài
   ra thì furigana vẫn đủ.
-- **Chuyển trang mờ dần chỉ còn trên máy tính** (chốt 23/9). View Transitions
-  giữ nguyên trang cũ trên màn hình cho tới khi trang mới sẵn sàng rồi mới mờ
-  chồng 300ms, nên mỗi lần bấm link đều mất thêm ít nhất 300ms không bấm được
-  gì. Trên điện thoại, chỗ đó xoá đúng cái nhanh mà Service Worker và
-  Speculation Rules vừa mang lại và cho cảm giác trang khựng một nhịp; nay
-  bọc trong `@media (min-width: 48rem)`.
+- **Chuyển trang: máy tính mờ chồng 300ms; điện thoại chỉ chống nháy** (chốt
+  29/9, sửa lại quyết định 23/9 tắt hẳn trên điện thoại). Tắt hẳn thì bấm link
+  trên iPhone là Safari để trống một nhịp giữa hai trang — cái nháy anh thấy.
+  View Transitions giữ ảnh chụp trang cũ cho tới khi trang mới vẽ xong khung
+  đầu nên không còn khung trống. Để không lặp lại cái khựng của bản 300ms,
+  trên điện thoại (< 48rem) trang cũ đứng nguyên, trang mới hiện trong 140ms,
+  lớp `group` tắt animation, và cả hai lớp đặt `mix-blend-mode: normal` (mặc
+  định `plus-lighter` làm màn hình chớp sáng). Đã kiểm bằng Chrome headless
+  mobile: chỉ còn một animation 140ms. Chưa thử được trên iPhone thật; nếu vẫn
+  thấy khựng thì bọc lại `@view-transition` trong `@media (min-width: 48rem)`.
 - **Thanh dính không dùng kính mờ** (chốt 23/9). `backdrop-filter` bắt máy
   dựng lại phần nền sau thanh trong từng khung hình lúc cuộn — việc nặng nhất
   trên trang khi đang đọc. Đặt hai bản cạnh nhau trên cùng một ảnh bìa thì gần
