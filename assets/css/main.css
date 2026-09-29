@@ -189,6 +189,19 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* Nền đặt cả trên <html>, không chỉ <body>: khung hình đầu của trang mới
+     và vùng kéo quá đáy đều mang đúng màu trang, không lộ nền mặc định */
+  background: var(--bg);
+  /* iOS tô một ô xám mờ quanh link vừa chạm, chớp lên rồi tắt ngay trước khi
+     trang mới hiện: chính là một cái "nháy" nữa. Bỏ; cảm giác chạm do :active dưới đây */
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: none) {
+  a:active,
+  button:active {
+    opacity: 0.6;
+  }
 }
 
 /* Trang ngắn thì chân trang vẫn nằm sát đáy màn hình */

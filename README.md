@@ -906,6 +906,12 @@ Mọi thứ về **một trục giữa** như đầu trang (bìa sổ).
   định `plus-lighter` làm màn hình chớp sáng). Đã kiểm bằng Chrome headless
   mobile: chỉ còn một animation 140ms. Chưa thử được trên iPhone thật; nếu vẫn
   thấy khựng thì bọc lại `@view-transition` trong `@media (min-width: 48rem)`.
+- **Chống nháy khi bấm link trên iPhone, các lớp phụ** (29/9): `html` có
+  `background` (không chỉ `body`); `-webkit-tap-highlight-color: transparent`
+  kèm `:active` mờ 60% ở thiết bị cảm ứng (ô xám mờ iOS tô quanh link vừa chạm
+  cũng là một cái nháy); ảnh `eager` dùng `decoding="sync"` để hiện cùng khung
+  hình đầu thay vì bật ra sau. Đã đo trên Safari máy Mac: font preload đã nạp
+  xong trước khung hình đầu, nên chữ không phải thủ phạm.
 - **Thanh dính không dùng kính mờ** (chốt 23/9). `backdrop-filter` bắt máy
   dựng lại phần nền sau thanh trong từng khung hình lúc cuộn — việc nặng nhất
   trên trang khi đang đọc. Đặt hai bản cạnh nhau trên cùng một ảnh bìa thì gần

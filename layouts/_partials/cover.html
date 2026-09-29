@@ -19,10 +19,11 @@
     {{- $srcset = $srcset | append (printf "%s %dw" $r.RelPermalink $r.Width) -}}
     {{- if eq . 800 }}{{ $fallback = $r }}{{ end -}}
   {{- end -}}
-  {{- $img := printf `<img src="%s" srcset="%s" sizes="%s" width="%d" height="%d" alt="" loading="%s"%s decoding="async">`
+  {{- $img := printf `<img src="%s" srcset="%s" sizes="%s" width="%d" height="%d" alt="" loading="%s"%s decoding="%s">`
         $fallback.RelPermalink (delimit $srcset ", ") ($.sizes | default "(min-width: 64rem) 44rem, 100vw")
         $fallback.Width $fallback.Height ($.loading | default "lazy")
-        (cond (eq $.loading "eager") ` fetchpriority="high"` "") -}}
+        (cond (eq $.loading "eager") ` fetchpriority="high"` "")
+        (cond (eq $.loading "eager") "sync" "async") -}}
   {{- if ne $.link false }}
     <a class="cover" href="{{ $page.RelPermalink }}" tabindex="-1" aria-hidden="true">{{ $img | safeHTML }}</a>
   {{- else }}
